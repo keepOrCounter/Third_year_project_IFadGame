@@ -642,3 +642,221 @@ Objects at current location:['Climbing Gear', 'Campsite']}
 response by gpt3.5-turbo: 
 You are standing at the base of a towering mountain. The air is crisp and the view is breathtaking. A narrow path leads up the mountain, disappearing into the dense forest. A campsite is set up nearby, with a flickering fire and some climbing gear lying around.
 ////////////////////////////////////////////////////
+[Tue Oct 24 11:04:27 2023]
+systemRole: 
+You are an author of a text-based adventure game, and you need to write one short description(Only for current location) for player base on game information, here is an example(Notice: the upward in the map means the North direction, and the right means the East, and so on... and the player always face to the North):{Map: 
+[Forest]--[brick building]--[Forest]
+   |            |               |
+[Not Known]--[End Of Road   ]--[Deep forest]
+   |            |               |
+[Not Known]--[Village       ]--[Not Known]
+Current location: End Of Road
+Objects at current location:[stream, keyA, keyB, keyC]} According to th example above, you should author the game text in this style: You are standing at the end of a road before a small brick building. Around you is a forest. A small stream flows out of the building and down a gully. 
+There are some keys on the ground here.
+
+inquiry: 
+game information: {
+Map(Lines or slashes represent connections between different places):
+[Forest Entrance]--[Mysterious Cave]--[Dark Forest    ]
+        |                  |                  |        
+[Clearing       ]--[Forest Path    ]--[Mountain Base  ]
+        |                  |                  |        
+[Riverbank      ]--[Old Ruins      ]--[Dragon's Lair  ]
+Current location: Forest Path
+Objects at current location:['Map', 'Mushrooms', 'Trees']}
+
+response by gpt3.5-turbo: 
+You are standing on a narrow forest path, surrounded by towering trees. The path winds its way through the dense foliage, leading deeper into the mysterious forest. Sunlight filters through the leaves above, casting dappled shadows on the ground.
+
+In front of you, you notice a map lying on the path, beckoning you to examine it. Nearby, a cluster of mushrooms grows amidst the underbrush, their vibrant colors contrasting against the earthy tones of the forest. The ancient trees stand tall and majestic, their branches reaching towards the sky.
+
+As you take a moment to absorb your surroundings, you can't help but wonder what secrets and dangers lie ahead on this path through the forest.
+////////////////////////////////////////////////////
+[Tue Oct 24 15:04:22 2023]
+systemRole: 
+You are an author of a text-based adventure game, and you need to write one short description(Only for current location) for player base on game information, here is an example(Notice: the upward in the map means the North direction, and the right means the East, and so on... and the player always face to the North):{Map: 
+[Forest]--[brick building]--[Forest]
+   |            |               |
+[Not Known]--[End Of Road   ]--[Deep forest]
+   |            |               |
+[Not Known]--[Village       ]--[Not Known]
+Current location: End Of Road
+Objects at current location:[stream, keyA, keyB, keyC]} According to th example above, you should author the game text in this style: You are standing at the end of a road before a small brick building. Around you is a forest. A small stream flows out of the building and down a gully. 
+There are some keys on the ground here.
+
+inquiry: 
+game information: {
+Map(Lines or slashes represent connections between different places):
+[Forest Entrance]--[Mysterious Cave]--[Dark Forest    ]
+        |                  |                  |        
+[Clearing       ]--[Forest Path    ]--[Mountain Base  ]
+        |                  |                  |        
+[Riverbank      ]--[Old Ruins      ]--[Dragon's Lair  ]
+Current location: Forest Path
+Objects at current location:['Map', 'Mushrooms', 'Trees']}
+
+response by gpt3.5-turbo: 
+You are standing on a forest path, surrounded by tall trees. The path stretches out in front of you, disappearing into the darkness of the forest. To the left and right, you can see the dense foliage of the forest, filled with mystery and adventure. A gentle breeze rustles the leaves, creating a soothing sound. 
+
+As you look around, you notice some mushrooms growing on the forest floor, their vibrant colors catching your eye. The towering trees provide shade and a sense of tranquility. In your hand, you hold a map, which you can use to navigate through this unknown territory. The possibilities are endless, and the secrets of the forest await your discovery.
+////////////////////////////////////////////////////
+[Tue Oct 24 15:04:35 2023]
+systemRole: 
+You are an author of a text-based adventure game, and you need to write one short description(Only for current location) for player base on game information, here is an example(Notice: the upward in the map means the North direction, and the right means the East, and so on... and the player always face to the North):{Map: 
+[Forest]--[brick building]--[Forest]
+   |            |               |
+[Not Known]--[End Of Road   ]--[Deep forest]
+   |            |               |
+[Not Known]--[Village       ]--[Not Known]
+Current location: End Of Road
+Objects at current location:[stream, keyA, keyB, keyC]} According to th example above, you should author the game text in this style: You are standing at the end of a road before a small brick building. Around you is a forest. A small stream flows out of the building and down a gully. 
+There are some keys on the ground here.
+
+inquiry: 
+game information: {
+Map(Lines or slashes represent connections between different places):
+[Forest Entrance]--[Mysterious Cave]--[Dark Forest    ]
+        |                  |                  |        
+[Clearing       ]--[Forest Path    ]--[Mountain Base  ]
+        |                  |                  |        
+[Riverbank      ]--[Old Ruins      ]--[Dragon's Lair  ]
+Current location: Forest Path
+Objects at current location:['Map', 'Mushrooms', 'Trees']}
+
+response by gpt3.5-turbo: 
+You are standing on a forest path, surrounded by towering trees. The path stretches out before you, disappearing into the depths of the dark forest. A gentle breeze rustles the leaves above, creating a peaceful atmosphere. 
+There are some mushrooms scattered along the path, and you notice a map lying on the ground. The map seems to depict the various locations in this mystical realm.
+////////////////////////////////////////////////////
+[Tue Oct 24 15:04:59 2023]
+systemRole: 
+You are an author of a text-based adventure game, and you need to write one short description(Only for current location) for player base on game information, here is an example(Notice: the upward in the map means the North direction, and the right means the East, and so on... and the player always face to the North):{Map: 
+[Forest]--[brick building]--[Forest]
+   |            |               |
+[Not Known]--[End Of Road   ]--[Deep forest]
+   |            |               |
+[Not Known]--[Village       ]--[Not Known]
+Current location: End Of Road
+Objects at current location:[stream, keyA, keyB, keyC]} According to th example above, you should author the game text in this style: You are standing at the end of a road before a small brick building. Around you is a forest. A small stream flows out of the building and down a gully. 
+There are some keys on the ground here.
+
+inquiry: 
+game information: {
+Map(Lines or slashes represent connections between different places):
+[Forest Entrance]--[Mysterious Cave]--[Dark Forest    ]
+        |                  |                  |        
+[Clearing       ]--[Forest Path    ]--[Mountain Base  ]
+        |                  |                  |        
+[Riverbank      ]--[Old Ruins      ]--[Dragon's Lair  ]
+Current location: Forest Path
+Objects at current location:['Map', 'Mushrooms', 'Trees']}
+
+response by gpt3.5-turbo: 
+You are standing on a forest path, surrounded by towering trees. The path stretches ahead of you, disappearing into the depths of the dark forest. A gentle breeze rustles the leaves overhead, creating a soothing sound. 
+There are some mushrooms scattered on the ground, and you notice a map lying nearby.
+////////////////////////////////////////////////////
+[Tue Oct 24 15:05:24 2023]
+systemRole: 
+You are an author of a text-based adventure game, and you need to write one short description(Only for current location) for player base on game information, here is an example(Notice: the upward in the map means the North direction, and the right means the East, and so on... and the player always face to the North):{Map: 
+[Forest]--[brick building]--[Forest]
+   |            |               |
+[Not Known]--[End Of Road   ]--[Deep forest]
+   |            |               |
+[Not Known]--[Village       ]--[Not Known]
+Current location: End Of Road
+Objects at current location:[stream, keyA, keyB, keyC]} According to th example above, you should author the game text in this style: You are standing at the end of a road before a small brick building. Around you is a forest. A small stream flows out of the building and down a gully. 
+There are some keys on the ground here.
+
+inquiry: 
+game information: {
+Map(Lines or slashes represent connections between different places):
+[Forest Entrance]--[Mysterious Cave]--[Dark Forest    ]
+        |                  |                  |        
+[Clearing       ]--[Forest Path    ]--[Mountain Base  ]
+        |                  |                  |        
+[Riverbank      ]--[Old Ruins      ]--[Dragon's Lair  ]
+Current location: Forest Path
+Objects at current location:['Map', 'Mushrooms', 'Trees']}
+
+response by gpt3.5-turbo: 
+You are standing on a forest path, surrounded by tall trees. The path leads deeper into the forest, disappearing into the darkness ahead. A gentle breeze rustles the leaves, filling the air with a fresh scent. In the distance, you can hear the sound of a flowing river. There are some mushrooms scattered on the ground and you can see a map hanging from a nearby tree.
+////////////////////////////////////////////////////
+[Tue Oct 24 15:05:59 2023]
+systemRole: 
+You are an author of a text-based adventure game, and you need to write one short description(Only for current location) for player base on game information, here is an example(Notice: the upward in the map means the North direction, and the right means the East, and so on... and the player always face to the North):{Map: 
+[Forest]--[brick building]--[Forest]
+   |            |               |
+[Not Known]--[End Of Road   ]--[Deep forest]
+   |            |               |
+[Not Known]--[Village       ]--[Not Known]
+Current location: End Of Road
+Objects at current location:[stream, keyA, keyB, keyC]} According to th example above, you should author the game text in this style: You are standing at the end of a road before a small brick building. Around you is a forest. A small stream flows out of the building and down a gully. 
+There are some keys on the ground here.
+
+inquiry: 
+game information: {
+Map(Lines or slashes represent connections between different places):
+[Forest Entrance]--[Mysterious Cave]--[Dark Forest    ]
+        |                  |                  |        
+[Clearing       ]--[Forest Path    ]--[Mountain Base  ]
+        |                  |                  |        
+[Riverbank      ]--[Old Ruins      ]--[Dragon's Lair  ]
+Current location: Forest Path
+Objects at current location:['Map', 'Mushrooms', 'Trees']}
+
+response by gpt3.5-turbo: 
+You are standing on a forest path, surrounded by tall trees. Sunlight filters through the branches, casting shadows on the ground. The sound of rustling leaves and chirping birds fills the air. In front of you, a map lies on the ground, waiting to be examined. Nearby, you spot a cluster of mushrooms growing at the base of a tree. The path continues ahead, disappearing into the depths of the forest.
+////////////////////////////////////////////////////
+[Tue Oct 24 18:23:19 2023]
+systemRole: 
+You are an author of a text-based adventure game, and you need to write one short description(Only for current location) for player base on game information, here is an example(Notice: the upward in the map means the North direction, and the right means the East, and so on... and the player always face to the North):{Map: 
+[Forest]--[brick building]--[Forest]
+   |            |               |
+[Not Known]--[End Of Road   ]--[Deep forest]
+   |            |               |
+[Not Known]--[Village       ]--[Not Known]
+Current location: End Of Road
+Objects at current location:[stream, keyA, keyB, keyC]} According to th example above, you should author the game text in this style: You are standing at the end of a road before a small brick building. Around you is a forest. A small stream flows out of the building and down a gully. 
+There are some keys on the ground here.
+
+inquiry: 
+game information: {
+Map(Lines or slashes represent connections between different places):
+[Forest Entrance]--[Mysterious Cave]--[Dark Forest    ]
+        |                  |                  |        
+[Clearing       ]--[Forest Path    ]--[Mountain Base  ]
+        |                  |                  |        
+[Riverbank      ]--[Old Ruins      ]--[Dragon's Lair  ]
+Current location: Forest Path
+Objects at current location:['Map', 'Mushrooms', 'Trees']}
+
+response by gpt3.5-turbo: 
+You are standing on a forest path surrounded by towering trees. The path stretches ahead, disappearing into the depths of the dark forest. A gentle breeze rustles the leaves, creating a soothing atmosphere. 
+There are some mushrooms growing on the forest floor, and you notice a map lying nearby. The trees around you seem ancient and mysterious.
+////////////////////////////////////////////////////
+[Tue Oct 24 18:29:21 2023]
+systemRole: 
+You are an author of a text-based adventure game, and you need to write one short description(Only for current location) for player base on game information, here is an example(Notice: the upward in the map means the North direction, and the right means the East, and so on... and the player always face to the North):{Map: 
+[Forest]--[brick building]--[Forest]
+   |            |               |
+[Not Known]--[End Of Road   ]--[Deep forest]
+   |            |               |
+[Not Known]--[Village       ]--[Not Known]
+Current location: End Of Road
+Objects at current location:[stream, keyA, keyB, keyC]} According to th example above, you should author the game text in this style: You are standing at the end of a road before a small brick building. Around you is a forest. A small stream flows out of the building and down a gully. 
+There are some keys on the ground here.
+
+inquiry: 
+game information: {
+Map(Lines or slashes represent connections between different places):
+[Clearing       ]--[Forest Path    ]--[Mountain Base  ]
+        |                  |                  |        
+[Riverbank      ]--[Old Ruins      ]--[Dragon's Lair  ]
+        |                  |                  |        
+[Forest Entrance]--[Mysterious Cave]--[Dark Forest    ]
+Current location: Old Ruins
+Objects at current location:['Crumbling Statues', 'Hidden Passage']}
+
+response by gpt3.5-turbo: 
+You are standing in the middle of a set of old ruins. The crumbling statues around you depict ancient warriors and mythical creatures. There is a mysterious aura in the air, and you can feel the weight of history in this place. 
+As you look around, you notice a hidden passage leading deeper into the ruins. It seems to hold secrets waiting to be discovered.
+////////////////////////////////////////////////////

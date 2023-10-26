@@ -234,7 +234,7 @@ There are some keys on the ground here."
 
     translate_system = "You are the translator between player and text-based adventure game \
 system, you will need to translate the command in natual language from player into game command \
-below(Notice: forward = North, right = East and so on...): " + str(move_commands[:-1]) + "\nPleas do \
+below(Notice: forward = North, right = East, and so on...): " + str(move_commands[:-1]) + "\nPleas do \
 not reply something more than the command given above(Even if punctuation mark). If the player command is less likely to \
 be any of the game command above, just reply a '<Rejected>.'"
 
