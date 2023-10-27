@@ -73,7 +73,7 @@ class Gpt3():
         self.output_systemRole = output_systemRole
         self.command_translator_systemRole = command_translator_systemRole
 
-    def inquiry(self, prompt) -> str:
+    def inquiry(self, prompt:str) -> str:
         # Generate a response
         response = openai.ChatCompletion.create(
         model="gpt-3.5-turbo",#gpt-3.5-turbo-0301
@@ -115,28 +115,38 @@ class UserInterface():
     
     def output(self, textual_map: dict[int, list[Location]], objects_type: dict[str, set[str]], \
         current_location: tuple[int,int] = (0,0)):
-        current_location_details = textual_map[current_location[0]][current_location[1]]
+        map_size = 3 # only for fixed map
+        print("current_location", current_location)
+        
+        current_location_details = textual_map[current_location[0] % map_size][current_location[1] % map_size]
         shortCut_map = ""
         maxLength = 0
         shortCut_locations_list = []
         for y in range(3):
-            y_coor = current_location_details.y + y - 1
-            if y_coor >= len(textual_map[0]):
-                y_coor = y_coor - len(textual_map[0])
-            elif y_coor < 0:
-                y_coor = y_coor + len(textual_map[0])
+            tem = []
+            # print("print(y_coor)", y_coor)
+            y_coor = (current_location_details.y + y - 1) % map_size
+            # if y_coor >= map_size:
+            #     y_coor = y_coor - map_size
+            # elif y_coor < 0:
+            #     y_coor = y_coor + map_size
+            print("y_coor", y_coor)
             for x in range(3):
-                x_coor = current_location_details.x + x - 1
-                if x_coor >= len(textual_map.keys()):
-                    x_coor = x_coor - len(textual_map.keys())
-                elif x_coor < 0:
-                    x_coor = x_coor + len(textual_map.keys())
+                # print("print(x_coor)", x_coor)
+                x_coor = (current_location_details.x + x - 1) % map_size
+                # if x_coor >= map_size:
+                #     x_coor = x_coor - map_size
+                # elif x_coor < 0:
+                #     x_coor = x_coor + map_size
+                print("x_coor", x_coor)
                 
                 maxLength = max(maxLength, len(textual_map[x_coor][y_coor].location_name))
-                shortCut_locations_list.append(textual_map[x_coor][y_coor].location_name)
+                tem.append(textual_map[x_coor][y_coor].location_name)
+                print(tem)
                 print(x_coor, y_coor)
                 print(current_location_details.x, current_location_details.y)
                 print("-------------------------")
+            shortCut_locations_list = tem + shortCut_locations_list
         changeLine = 3
         for x in range(1, len(shortCut_locations_list) + 1):
             shortCut_map += "[" + shortCut_locations_list[x - 1] + (" " * (maxLength - len(shortCut_locations_list[x - 1]))) + "]"
