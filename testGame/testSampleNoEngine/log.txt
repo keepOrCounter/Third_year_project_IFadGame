@@ -860,3 +860,58 @@ response by gpt3.5-turbo:
 You are standing in the middle of a set of old ruins. The crumbling statues around you depict ancient warriors and mythical creatures. There is a mysterious aura in the air, and you can feel the weight of history in this place. 
 As you look around, you notice a hidden passage leading deeper into the ruins. It seems to hold secrets waiting to be discovered.
 ////////////////////////////////////////////////////
+[Fri Oct 27 14:13:41 2023]
+systemRole: 
+You are an author of a text-based adventure game, and you need to write one short description(Only for current location) for player base on game information, here is an example(Notice: the upward in the map means the North direction, and the right means the East, and so on... and the player always face to the North):{Map: 
+[Forest]--[brick building]--[Forest]
+   |            |               |
+[Not Known]--[End Of Road   ]--[Deep forest]
+   |            |               |
+[Not Known]--[Village       ]--[Not Known]
+Current location: End Of Road
+Objects at current location:[stream, keyA, keyB, keyC]} According to th example above, you should author the game text in this style: You are standing at the end of a road before a small brick building. Around you is a forest. A small stream flows out of the building and down a gully. 
+There are some keys on the ground here.
+
+inquiry: 
+game information: {
+Map(Lines or slashes represent connections between different places):
+[Forest Entrance]--[Mysterious Cave]--[Dark Forest    ]
+        |                  |                  |        
+[Clearing       ]--[Forest Path    ]--[Mountain Base  ]
+        |                  |                  |        
+[Riverbank      ]--[Old Ruins      ]--[Dragon's Lair  ]
+Current location: Forest Path
+Objects at current location:['Map', 'Mushrooms', 'Trees']}
+
+response by gpt3.5-turbo: 
+You are standing on a forest path, surrounded by tall trees. The path continues ahead, disappearing into the depths of the dark forest. To the left, you can see the entrance to a mysterious cave, and to the right, there is a clearing. In the distance, you can catch a glimpse of the imposing mountain base. The air is filled with a sense of mystery and adventure.
+
+At your current location, you notice some mushrooms growing on the forest floor, and the trees around you seem to whisper secrets of the land. There is also a map lying on the ground, waiting to be picked up.
+////////////////////////////////////////////////////
+[Fri Oct 27 14:13:54 2023]
+systemRole: 
+You are an author of a text-based adventure game, and you need to write one short description(Only for current location) for player base on game information, here is an example(Notice: the upward in the map means the North direction, and the right means the East, and so on... and the player always face to the North):{Map: 
+[Forest]--[brick building]--[Forest]
+   |            |               |
+[Not Known]--[End Of Road   ]--[Deep forest]
+   |            |               |
+[Not Known]--[Village       ]--[Not Known]
+Current location: End Of Road
+Objects at current location:[stream, keyA, keyB, keyC]} According to th example above, you should author the game text in this style: You are standing at the end of a road before a small brick building. Around you is a forest. A small stream flows out of the building and down a gully. 
+There are some keys on the ground here.
+
+inquiry: 
+game information: {
+Map(Lines or slashes represent connections between different places):
+[Forest Entrance]--[Mysterious Cave]--[Dark Forest    ]
+        |                  |                  |        
+[Clearing       ]--[Forest Path    ]--[Mountain Base  ]
+        |                  |                  |        
+[Riverbank      ]--[Old Ruins      ]--[Dragon's Lair  ]
+Current location: Forest Path
+Objects at current location:['Map', 'Mushrooms', 'Trees']}
+
+response by gpt3.5-turbo: 
+You are standing on a narrow forest path, surrounded by towering trees. The path leads deeper into the mysterious forest, with the sound of rustling leaves filling the air. 
+There are some mushrooms growing on the side of the path, and you notice a map lying on the ground. The map seems to be a guide to this treacherous forest.
+////////////////////////////////////////////////////
