@@ -82,7 +82,7 @@ class Gpt3():
         {"role": "user", "content": prompt}
         ],
         temperature=0.5,
-        max_tokens=2000,
+        max_tokens=1000,
         top_p=1,
         frequency_penalty=0,
         presence_penalty=0,
@@ -100,7 +100,7 @@ class Gpt3():
         {"role": "user", "content": user_command}
         ],
         temperature=0.5,
-        max_tokens=400,
+        max_tokens=300,
         top_p=1,
         frequency_penalty=0,
         presence_penalty=0,
@@ -163,10 +163,15 @@ class UserInterface():
             else:
                 shortCut_map += "--"
         print(shortCut_map)
-        inquiry = "game information: {\n\
+        inquiry = "game information(Notice: the place around current location is \
+just to make sure that there is not contradiction between your writting and the \
+game map, please do not tell player about the place around current location): {\n\
 Map(Lines or slashes represent connections between different places):\n" + \
         shortCut_map + "\nCurrent location: " + current_location_details.location_name + \
-        "\nObjects at current location:" + str(current_location_details.objects) + "}"
+        "\nObjects at current location(All possible objects and scene in here, \
+please don't write something doesn't in this list. For example, if tree is not in \
+list, don't tell about tree in description even if the Current location is a forest):" \
+    + str(current_location_details.objects) + "}"
         print(inquiry)
         print("=======================================\n")
         gpt_response = self.gptAPI.inquiry(inquiry)
@@ -231,20 +236,20 @@ if __name__ == "__main__":
     systemRole = "You are an author of a text-based adventure game, \
 and you need to write one short description(Only for current location) \
 for player base on game information, here \
-is an example(Notice: the upward in the map means the North direction, and the right means the \
-East, and so on... and the player always face to the North):{Map: \n[Forest]--[brick building]--[Forest]\n\
-   |            |               |\n\
-[Not Known]--[End Of Road   ]--[Deep forest]\n\
-   |            |               |\n\
-[Not Known]--[Village       ]--[Not Known]\nCurrent location: End Of Road\nObjects at current location:[stream, keyA, keyB, keyC]} \
+is an example:{Map: \n[Forest      ]--[brick building]--[Forest     ]\n\
+        |            |               |\n\
+[Forest      ]--[End Of Road   ]--[Deep forest]\n\
+        |            |               |\n\
+[Not Known   ]--[Forest        ]--[Not Known  ]\nCurrent location: End Of Road\nObjects at current location:[stream, keyA, keyB, keyC]} \
 According to th example above, you should author the game text in this style: You are standing \
 at the end of a road before a small brick building. Around you is a forest. \
 A small stream flows out of the building and down a gully. \n\
 There are some keys on the ground here."
 
-    translate_system = "You are the translator between player and text-based adventure game \
-system, you will need to translate the command in natual language from player into game command \
-below(Notice: forward = North, right = East, and so on...): " + str(move_commands[:-1]) + "\nPleas do \
+    translate_system = "You are trying to translate the command in natual language \
+from player to the command of text-based adventure game \
+system, the game command are listed below(Notice: player always face to north in game, which means forward=north, \
+right=east, left=west, south=backward): " + str(move_commands[:-1]) + "\nPlease do \
 not reply something more than the command given above(Even if punctuation mark). If the player command is less likely to \
 be any of the game command above, just reply a '<Rejected>.'"
 
