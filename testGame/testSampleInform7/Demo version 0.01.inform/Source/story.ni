@@ -5,12 +5,14 @@ When play begins:
 
 Grassland is a room. A old man is here.
 
+A place is a kind of value. The place are city, town, village.
+
 Asking is an action applying to nothing. Understand "ask" or "request" or "help" as asking.
 
 Killing is an action applying to nothing. Understand "fight" or "punch" or "kill" as killing.
 
 Report asking:
-      say "The old man gives you a location about [the noun].";
+      say "The old man gives you a location about [random place].";
       end the story finally.
       
 Report killing:

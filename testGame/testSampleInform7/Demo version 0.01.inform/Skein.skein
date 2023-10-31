@@ -1,13 +1,185 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<Skein rootNode="node-0x56267ea5a660" xmlns="http://www.logicalshift.org.uk/IF/Skein">
+<Skein rootNode="node-0x558316ed44e0" xmlns="http://www.logicalshift.org.uk/IF/Skein">
   <generator>Inform 7</generator>
-  <activeNode nodeId="node-0x56267ea5a660"/>
-  <item nodeId="node-0x56267ea5a660">
+  <activeNode nodeId="node-0x55831751a070"/>
+  <item nodeId="node-0x558316ed44e0">
     <command xml:space="preserve">- start -</command>
-    <result xml:space="preserve"></result>
+    <result xml:space="preserve">
+
+
+
+You wake up from a deep sleep, you open your eye and see a endless grassland
+Demo 0.01
+An Interactive Fiction by Wai
+Release 1 / Serial number 231031 / Inform 7 v10.1.2 / D
+
+Grassland
+You can see an old man here.
+
+&gt;</result>
     <commentary xml:space="preserve"></commentary>
     <played>YES</played>
-    <changed>NO</changed>
+    <changed>YES</changed>
+    <temporary score="0">YES</temporary>
+    <annotation xml:space="preserve"></annotation>
+    <children>
+      <child nodeId="node-0x558317412010"/>
+    </children>
+  </item>
+  <item nodeId="node-0x558317412010">
+    <command xml:space="preserve">ask</command>
+    <result xml:space="preserve">The old man gives you a location about town.
+
+
+
+    *** The End ***
+
+
+
+
+Would you like to RESTART, RESTORE a saved game, QUIT or UNDO the last command?
+&gt; </result>
+    <commentary xml:space="preserve"></commentary>
+    <played>YES</played>
+    <changed>YES</changed>
+    <temporary score="0">YES</temporary>
+    <annotation xml:space="preserve"></annotation>
+    <children>
+      <child nodeId="node-0x55831744a8f0"/>
+    </children>
+  </item>
+  <item nodeId="node-0x55831744a8f0">
+    <command xml:space="preserve">restart</command>
+    <result xml:space="preserve">
+
+
+
+You wake up from a deep sleep, you open your eye and see a endless grassland
+Demo 0.01
+An Interactive Fiction by Wai
+Release 1 / Serial number 231031 / Inform 7 v10.1.2 / D
+
+Grassland
+You can see an old man here.
+
+&gt;</result>
+    <commentary xml:space="preserve"></commentary>
+    <played>YES</played>
+    <changed>YES</changed>
+    <temporary score="0">YES</temporary>
+    <annotation xml:space="preserve"></annotation>
+    <children>
+      <child nodeId="node-0x558317490d80"/>
+    </children>
+  </item>
+  <item nodeId="node-0x558317490d80">
+    <command xml:space="preserve">ask</command>
+    <result xml:space="preserve">The old man gives you a location about village.
+
+
+
+    *** The End ***
+
+
+
+
+Would you like to RESTART, RESTORE a saved game, QUIT or UNDO the last command?
+&gt; </result>
+    <commentary xml:space="preserve"></commentary>
+    <played>YES</played>
+    <changed>YES</changed>
+    <temporary score="0">YES</temporary>
+    <annotation xml:space="preserve"></annotation>
+    <children>
+      <child nodeId="node-0x558317479e70"/>
+    </children>
+  </item>
+  <item nodeId="node-0x558317479e70">
+    <command xml:space="preserve">restart</command>
+    <result xml:space="preserve">
+
+
+
+You wake up from a deep sleep, you open your eye and see a endless grassland
+Demo 0.01
+An Interactive Fiction by Wai
+Release 1 / Serial number 231031 / Inform 7 v10.1.2 / D
+
+Grassland
+You can see an old man here.
+
+&gt;</result>
+    <commentary xml:space="preserve"></commentary>
+    <played>YES</played>
+    <changed>YES</changed>
+    <temporary score="0">YES</temporary>
+    <annotation xml:space="preserve"></annotation>
+    <children>
+      <child nodeId="node-0x5583174d6960"/>
+    </children>
+  </item>
+  <item nodeId="node-0x5583174d6960">
+    <command xml:space="preserve">ask</command>
+    <result xml:space="preserve">The old man gives you a location about city.
+
+
+
+    *** The End ***
+
+
+
+
+Would you like to RESTART, RESTORE a saved game, QUIT or UNDO the last command?
+&gt; </result>
+    <commentary xml:space="preserve"></commentary>
+    <played>YES</played>
+    <changed>YES</changed>
+    <temporary score="0">YES</temporary>
+    <annotation xml:space="preserve"></annotation>
+    <children>
+      <child nodeId="node-0x5583174bf550"/>
+    </children>
+  </item>
+  <item nodeId="node-0x5583174bf550">
+    <command xml:space="preserve">restart</command>
+    <result xml:space="preserve">
+
+
+
+You wake up from a deep sleep, you open your eye and see a endless grassland
+Demo 0.01
+An Interactive Fiction by Wai
+Release 1 / Serial number 231031 / Inform 7 v10.1.2 / D
+
+Grassland
+You can see an old man here.
+
+&gt;</result>
+    <commentary xml:space="preserve"></commentary>
+    <played>YES</played>
+    <changed>YES</changed>
+    <temporary score="0">YES</temporary>
+    <annotation xml:space="preserve"></annotation>
+    <children>
+      <child nodeId="node-0x55831751a070"/>
+    </children>
+  </item>
+  <item nodeId="node-0x55831751a070">
+    <command xml:space="preserve">ask</command>
+    <result xml:space="preserve">The old man gives you a location about town.
+
+
+
+    *** The End ***
+
+
+
+
+Would you like to RESTART, RESTORE a saved game, QUIT or UNDO the last command?
+&gt; </result>
+    <commentary xml:space="preserve"></commentary>
+    <played>YES</played>
+    <changed>YES</changed>
     <temporary score="0">YES</temporary>
     <annotation xml:space="preserve"></annotation>
   </item>
