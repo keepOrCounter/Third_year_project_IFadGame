@@ -1822,4 +1822,3 @@ Objects at current location(All possible objects and scene in here, please don't
 response by gpt3.5-turbo: 
 You are standing on a narrow path that winds through the dense forest. Sunlight filters through the canopy of tall trees, casting dappled shadows on the ground. The air is filled with the earthy scent of moss and the gentle rustling of leaves. In the distance, you can see a cluster of mushrooms growing by the side of the path.
 ////////////////////////////////////////////////////
-就像我刚才说的，你现在Inform已经完成基础部分

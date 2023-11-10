@@ -120,30 +120,34 @@ class Sphere:
             plt.contourf(lon, lat, h2, cmap='Blues_r')
         plt.show()
 
-# earth=Sphere(radius=2)
-# lon,lat,h=earth.create_sphere(octaves=10, persistence=0.5,multiplier=2,seed=57)
-# earth.draw_sphere(lon,lat,h,map='ellipse')
-import noise
-import numpy as np
-import matplotlib.pyplot as plt
+earth=Sphere(radius=2)
+lon,lat,h=earth.create_sphere(octaves=10, persistence=0.5,multiplier=2,seed=57)
+earth.draw_sphere(lon,lat,h,map='ellipse')
 
-# Set the seed for reproducibility
-seed = 42
+# import noise
+# import numpy as np
+# import matplotlib.pyplot as plt
 
-# Define the number of points you want in your 1D Perlin noise
-num_points = 100
+# # Set the seed for reproducibility
+# seed = 42
 
-# Generate Perlin noise values
-perlin_values = [noise.pnoise1(x/100.0, octaves=6, persistence=0.5, lacunarity=2.0, repeat=num_points, base=seed) for x in range(num_points)]
+# # Define the number of points you want in your 1D Perlin noise
+# num_points = 100
 
-# Plot the Perlin noise
-plt.plot(perlin_values)
-plt.title("1D Perlin Noise")
-plt.xlabel("X")
-plt.ylabel("Value")
-plt.show()
+# # Generate Perlin noise values
+# perlin_values = [noise.pnoise1(x/100.0, octaves=6, persistence=0.5, lacunarity=2.0, repeat=num_points, base=seed) for x in range(num_points)]
+
+
+# # Plot the Perlin noise
+# plt.plot(perlin_values)
+# plt.title("1D Perlin Noise")
+# plt.xlabel("X")
+# plt.ylabel("Value")
+# plt.show()
 # print(noise.pnoise1(1, octaves=6, persistence=0.5, lacunarity=2.0, repeat=num_points, base=49))
 # print(noise.pnoise1(5, octaves=2, persistence=0.8, lacunarity=5.0, repeat=100, base=57))
+
+
 
 # import noise
 # import numpy as np
