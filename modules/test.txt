@@ -1,0 +1,1 @@
+Could you provide me some location names in text-based adventure game, with more nature but less fantastic elements, I would like to use them to build a mini game if possible. It is better to divide these locations into three python list, each means the locations could appear at sea, land, highland.
