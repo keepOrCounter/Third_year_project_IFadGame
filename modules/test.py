@@ -180,3 +180,5 @@ scaled_image = cv2.resize(colored_image, None, fx=scale_factor, fy=scale_factor,
 cv2.imshow('Visualized Image', scaled_image)
 cv2.waitKey(0)
 cv2.destroyAllWindows()
+
+print(np.zeros((50,)))

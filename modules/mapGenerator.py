@@ -5,10 +5,13 @@ import cv2
 
 
 class MapGenerator():
-    def __init__(self, player : Player_status) -> None:
+    def __init__(self, player : Player_status, map_info: Map_information) -> None:
         self.textual_map = {}  # {x_coordinate : [Location_names(whose indices are y cordinate)]}
-        self.current_coord = {"x" : player.x_coordinate, "y" : player.y_coordinate}
+        self.current_coord = {"x" : player.coordinate_get()[0], "y" : player.coordinate_get()[1]} # a copy of coord
         self.current_main_terrain = 0 # land pattern, main terrain would be land mass
+        self.terrain_type = np.array(["sea", "land"])
+        self.player = player
+        self.map_info = map_info
 
     def generate_random_map(self, rows: int, cols: int, land_prob: float=None): # rows, cols = y, x
         if land_prob == None:
@@ -47,17 +50,27 @@ class MapGenerator():
         if mode == "8_neighbours":
             return self.random_map_update_8n_rule(grid, threshold)
         
-    def game_map_generation(self, rows: int, cols: int, land_prob: float, \
-        cellular_timesteps: int, convert_threshold: int, mode="8_neighbours"): # rows, cols = y, x
+    def game_map_generation(self, rows: int, cols: int, cellular_timesteps: int, \
+        convert_threshold: int, mode="8_neighbours"): # rows, cols = y, x
 
-        random_map = self.generate_random_map(rows, cols, land_prob=land_prob)
+        if self.map_info.current_area_type == 1:
+            random_map = self.generate_random_map(rows, cols, land_prob=0.65)
+            random_map[0, :] = np.zeros((50,))
+            random_map[rows - 1, :] = np.zeros((50,))
+            
+            random_map[:, 0] = np.zeros((50,))
+            random_map[:, cols - 1] = np.zeros((50,))
+            
+        else:
+            random_map = self.generate_random_map(rows, cols, land_prob=0.35)
+            
         cellular_automaton = cpl.init_simple2d(rows, cols)
         cellular_automaton[0] = random_map
         # print(cellular_automaton)
         # print(np.where(np.array([0, 0, 1, 0, 1, 0, 0, 1, 1, 1]) == 1)[0].shape[0])
 
         # The rule function must return a scalar for each cell
-
+        
 
         # print(cpl.nks_rule(np.array([[0, 0, 0],[0, 1, 0],[0, 0, 0]]), 30))
         updated_map = cpl.evolve2d(cellular_automaton, timesteps=cellular_timesteps, \
@@ -65,8 +78,23 @@ class MapGenerator():
                 self.rule(grid, cell, time_step, mode, convert_threshold))
 
         # print(updated_map)
+        # print(random_map)
+        # print(updated_map[-1])
+
+        return random_map, updated_map[-1] # for debug use
+        # return updated_map[-1]
+        
+        
+    def debug(self, rows: int, cols: int, cellular_timesteps: int, convert_threshold: int, \
+        mode="8_neighbours"): # rows, cols = y, x
+
+        random_map, updated_map = self.game_map_generation(rows, cols, cellular_timesteps, \
+            convert_threshold, mode)
+
+        # print(updated_map)
         print(random_map)
-        print(updated_map[-1])
+        print(updated_map)
+        print(self.terrain_type[updated_map].tolist())
 
         array = random_map
 
@@ -86,7 +114,7 @@ class MapGenerator():
         cv2.destroyAllWindows()
 
 
-        array = updated_map[-1]
+        array = updated_map
 
         # Convert the array to a grayscale image
         # image = np.uint8(array * 255)
@@ -102,7 +130,8 @@ class MapGenerator():
         cv2.imshow('Visualized Image', scaled_image)
         cv2.waitKey(0)
         cv2.destroyAllWindows()
+        
 
 if __name__ == "__main__":
-    test = MapGenerator(Player_status())
-    test.game_map_generation(50, 50, 0.65, 5, 4)
+    test = MapGenerator(Player_status(), Map_information(1))
+    test.debug(50, 50, 5, 4)
