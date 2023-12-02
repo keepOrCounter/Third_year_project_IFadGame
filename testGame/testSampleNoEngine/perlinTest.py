@@ -2,7 +2,6 @@ import cv2
 import noise
 import numpy as np
 
-# Create a window with sliders for controlling Perlin noise parameters
 cv2.namedWindow("Perlin Noise Experiment")
 cv2.createTrackbar("Octaves", "Perlin Noise Experiment", 1, 8, lambda x: None)
 cv2.createTrackbar("Persistence", "Perlin Noise Experiment", 10, 100, lambda x: None)
@@ -18,7 +17,6 @@ while True:
     width = cv2.getTrackbarPos("Width", "Perlin Noise Experiment")
     height = cv2.getTrackbarPos("Height", "Perlin Noise Experiment")
 
-    # Generate 2D Perlin noise
     world = np.zeros((height, width), dtype=np.float32)
     for i in range(height):
         for j in range(width):
@@ -26,7 +24,6 @@ while True:
 
 
     # print(world)
-    # Normalize the noise values to the range [0, 255]
     # print(world)
     min_value = np.min(world)
     max_value = np.max(world)
