@@ -81,6 +81,8 @@ class MapGenerator():
         # print(random_map)
         # print(updated_map[-1])
 
+        self.map_info.currentMap = updated_map[-1]
+        
         return random_map, updated_map[-1] # for debug use
         # return updated_map[-1]
         
@@ -133,5 +135,5 @@ class MapGenerator():
         
 
 if __name__ == "__main__":
-    test = MapGenerator(Player_status(), Map_information(1))
+    test = MapGenerator(Player_status(), Map_information(0))
     test.debug(50, 50, 5, 4)

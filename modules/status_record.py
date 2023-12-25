@@ -34,10 +34,11 @@ class Location():
         self.y = y
         
 class Map_information():
-    def __init__(self, current_area_type: int = 0) -> None:
+    def __init__(self, current_area_type: int = 0, currentMap = []) -> None:
         """`current_area_type:` used for generate map, 0 for sea area, 1 for land \
             area, affect the probility of different terrain\n
             `visitedPlace:` 
         """
         self.visitedPlace = {} # {(x, y): "Location_object"}
         self.current_area_type = current_area_type
+        self.currentMap = currentMap

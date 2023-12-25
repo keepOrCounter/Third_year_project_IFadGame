@@ -1,1 +1,30 @@
 Could you provide me some location names in text-based adventure game, with more nature but less fantastic elements, I would like to use them to build a mini game if possible. It is better to divide these locations into three python list, each means the locations could appear at sea, land, highland.
+
+Could you help me create an event of a text-based adventure game based on following game information?
+{
+	"location": "desert",
+	"play_hp": "50/100",
+	"play_action_point": "5/100"
+}
+
+
+You are creating a event for a text-based adventure game, you should create event in following form based on game information provided in later:
+{
+	"event_name": <event name here>,
+	"succeed_condition": <condition in inequality or equality list here>,
+	"reward": <reward in list>, 
+	"fail_penalty": <penalty in list if fail to finish event>
+}, Here is an example:
+{
+	"event_name": "thirstily crisis",
+	"succeed_condition": [action == "drink", object == "water"],
+	"reward": [action_point + 10, play_hp + 10], 
+	"fail_penalty": [action_point = 0]
+	
+}
+
+You need to know the basic value of this game:
+{
+	"play_hp": "health point of player, reduced when any damage or some event occured, and exhausted hp will lead to player character dead",
+	"play_action_point": "reduced when taking any action, and exhausted hp will lead to player character dead"
+}
