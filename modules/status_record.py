@@ -1,21 +1,51 @@
+import numpy as np
+
 class Player_status():
-    def __init__(self, currentLocation:list[int,int] = [0,0], items:list[str] = []) -> None:
+    def __init__(self, currentLocation:list[int,int] = [0,0], items:list[str] = [], \
+        hp: int = 100, action_point: int = 100) -> None:
         """ `__currentLocation:` player coordinate [x,y]\n
-            `items:` items in bag
+            `items:` items in bag\n
+            `action_point:` energy bar of player
         """
         
         self.__currentLocation = currentLocation
-        self.items = items
+        self.__items = items
+        self.__hp = hp
+        self.__action_point = action_point
     
-    def coordinate_get(self) -> tuple[int]:
-        
+    # Getter for currentLocation
+    def get_currentLocation(self) -> tuple[int]:
         return (self.__currentLocation[0], self.__currentLocation[1])
     
-    def XCoord_setter(self, x:int) -> None:
+    # Setter for currentLocation
+    def set_currentLocation(self, x:int, y:int) -> None:
         self.__currentLocation[0] = x
-        
-    def YCoord_setter(self, y:int) -> None:
         self.__currentLocation[1] = y
+
+    # Getter for items
+    def get_items(self) -> list[str]:
+        return self.__items
+    
+    # Setter for items
+    def set_items(self, items: list[str]) -> None:
+        self.__items = items
+
+    # Getter for hp
+    def get_hp(self) -> int:
+        return self.__hp
+    
+    # Setter for hp
+    def set_hp(self, hp: int) -> None:
+        self.__hp = hp
+
+    # Getter for action_point
+    def get_action_point(self) -> int:
+        return self.__action_point
+    
+    # Setter for action_point
+    def set_action_point(self, action_point: int) -> None:
+        self.__action_point = action_point
+
         
 class Location():
     def __init__(self, location_name:str, x:int, y:int, objects:list = [], scene: list = [], \
@@ -34,11 +64,46 @@ class Location():
         self.y = y
         
 class Map_information():
-    def __init__(self, current_area_type: int = 0, currentMap = []) -> None:
+    def __init__(self, current_area_type: int = 0, currentMap: np.ndarray[str] = [], \
+        map_size: tuple[int] = (25, 25)) -> None:
         """`current_area_type:` used for generate map, 0 for sea area, 1 for land \
-            area, affect the probility of different terrain\n
-            `visitedPlace:` 
+            area, affect the probability of different terrain\n
+            `visitedPlace:` Place has visited in this form: {(x, y): "Location_object"}\n
+            `map_size: ` tuple in (row, cols), height and width of map
         """
-        self.visitedPlace = {} # {(x, y): "Location_object"}
-        self.current_area_type = current_area_type
-        self.currentMap = currentMap
+        self.__visitedPlace = {} # {(x, y): "Location_object"}
+        self.__current_area_type = current_area_type
+        self.__currentMap = currentMap
+        self.__map_size = map_size # rows, cols = y, x
+
+    # Getter for current_area_type
+    def get_current_area_type(self) -> int:
+        return self.__current_area_type
+
+    # Setter for current_area_type
+    def set_current_area_type(self, current_area_type: int):
+        self.__current_area_type = current_area_type
+
+    # Getter for currentMap
+    def get_currentMap(self) -> np.ndarray[str]:
+        return self.__currentMap
+
+    # Setter for currentMap
+    def set_currentMap(self, currentMap: np.ndarray[str]):
+        self.__currentMap = currentMap
+
+    # Getter for visitedPlace
+    def get_visitedPlace(self) -> dict:
+        return self.__visitedPlace
+
+    # Setter for visitedPlace
+    def set_visitedPlace(self, visitedPlace: dict):
+        self.__visitedPlace = visitedPlace
+
+    def get_map_size(self) -> tuple[int]:
+        return self.__map_size
+
+    # Setter for current_area_type
+    def set_map_size(self, map_size: tuple[int]):
+        self.__map_size = map_size
+        

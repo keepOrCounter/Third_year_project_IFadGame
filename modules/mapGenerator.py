@@ -6,19 +6,14 @@ import cv2
 
 class MapGenerator():
     def __init__(self, player : Player_status, map_info: Map_information) -> None:
-        self.textual_map = {}  # {x_coordinate : [Location_names(whose indices are y cordinate)]}
-        self.current_coord = {"x" : player.coordinate_get()[0], "y" : player.coordinate_get()[1]} # a copy of coord
-        self.current_main_terrain = 0 # land pattern, main terrain would be land mass
+        # self.textual_map = {}  # {x_coordinate : [Location_names(whose indices are y cordinate)]}
+        # self.current_coord = {"x" : player.get_currentLocation()[0], "y" : player.get_currentLocation()[1]} # a copy of coord
+        # self.current_main_terrain = 0 # land pattern, main terrain would be land mass
         self.terrain_type = np.array(["sea", "land"])
-        self.player = player
-        self.map_info = map_info
+        self.__player = player
+        self.__map_info = map_info
 
-    def generate_random_map(self, rows: int, cols: int, land_prob: float=None): # rows, cols = y, x
-        if land_prob == None:
-            if self.current_main_terrain == 0:
-                land_prob = 0.65
-            else:
-                land_prob = 0.35
+    def generate_random_map(self, rows: int, cols: int, land_prob: float=0.65): # rows, cols = y, x
         return np.random.choice([0, 1], size=(rows, cols), p=[1-land_prob, land_prob])
 
 
@@ -50,16 +45,18 @@ class MapGenerator():
         if mode == "8_neighbours":
             return self.random_map_update_8n_rule(grid, threshold)
         
-    def game_map_generation(self, rows: int, cols: int, cellular_timesteps: int, \
-        convert_threshold: int, mode="8_neighbours"): # rows, cols = y, x
+    def game_map_generation(self, cellular_timesteps: int, convert_threshold: int, \
+        mode="8_neighbours"): # rows, cols = y, x
 
-        if self.map_info.current_area_type == 1:
+        self.map_info_update()
+        rows, cols = self.__map_info.get_map_size()
+        if self.__map_info.get_current_area_type() == 1:
             random_map = self.generate_random_map(rows, cols, land_prob=0.65)
-            random_map[0, :] = np.zeros((50,))
-            random_map[rows - 1, :] = np.zeros((50,))
+            random_map[0, :] = np.zeros((cols,))
+            random_map[rows - 1, :] = np.zeros((cols,))
             
-            random_map[:, 0] = np.zeros((50,))
-            random_map[:, cols - 1] = np.zeros((50,))
+            random_map[:, 0] = np.zeros((rows,))
+            random_map[:, cols - 1] = np.zeros((rows,))
             
         else:
             random_map = self.generate_random_map(rows, cols, land_prob=0.35)
@@ -81,16 +78,16 @@ class MapGenerator():
         # print(random_map)
         # print(updated_map[-1])
 
-        self.map_info.currentMap = updated_map[-1]
+        self.__map_info.set_currentMap(self.terrain_type[updated_map[-1]])
         
         return random_map, updated_map[-1] # for debug use
         # return updated_map[-1]
         
         
-    def debug(self, rows: int, cols: int, cellular_timesteps: int, convert_threshold: int, \
+    def debug(self, cellular_timesteps: int, convert_threshold: int, \
         mode="8_neighbours"): # rows, cols = y, x
 
-        random_map, updated_map = self.game_map_generation(rows, cols, cellular_timesteps, \
+        random_map, updated_map = self.game_map_generation(cellular_timesteps, \
             convert_threshold, mode)
 
         # print(updated_map)
@@ -133,7 +130,18 @@ class MapGenerator():
         cv2.waitKey(0)
         cv2.destroyAllWindows()
         
+    def map_info_update(self) -> None:
+        x, y = self.__player.get_currentLocation()
+        rows, cols = self.__map_info.get_map_size() # row, cols = y, x
+
+        x_areaType = (x + int(cols/2)) /cols
+        y_areaType = (y + int(rows/2)) /rows
+        if x_areaType == y_areaType:
+            self.__map_info.set_current_area_type = 1
+        else:
+            self.__map_info.set_current_area_type = 0
+
 
 if __name__ == "__main__":
-    test = MapGenerator(Player_status(), Map_information(0))
-    test.debug(50, 50, 5, 4)
+    test = MapGenerator(Player_status(), Map_information(1))
+    test.debug(5, 4)
