@@ -7,7 +7,6 @@ class Player_status():
             `items:` items in bag\n
             `action_point:` energy bar of player
         """
-        
         self.__currentLocation = currentLocation
         self.__items = items
         self.__hp = hp
@@ -57,7 +56,7 @@ class Location():
         
 class Map_information():
     def __init__(self, current_area_type: int = 0, currentMap: np.ndarray[str] = [], \
-        map_size: tuple[int] = (25, 25)) -> None:
+        map_size: tuple[int] = (20, 20)) -> None:
         """`current_area_type:` used for generate map, 0 for sea area, 1 for land \
             area, affect the probability of different terrain\n
             `visitedPlace:` Place has visited in this form: {(x, y): "Location_object"}\n
@@ -98,9 +97,9 @@ class Items:
         self.item_name = item_name
         self.item_energy_recovery = item_energy_recovery
 
-class defininedSys(): # from gpt
+class DefininedSys(): # 
     def __init__(self) -> None:
-        self.def_items = [
+        self.__def_items = [
             Items("Campfire", 20),
             Items("Water Source", 10),
             Items("Shelter", 30),
@@ -119,4 +118,11 @@ class defininedSys(): # from gpt
             Items("Footprints", 0),
             Items("Weapon Crafting Bench", 0)
         ]
+        
+    def get_items(self) -> list[Items]:
+        return self.__def_items
+    
+    # Setter method for def_items
+    def set_items(self, new_items: list[Items]):
+        self.__def_items = new_items
 

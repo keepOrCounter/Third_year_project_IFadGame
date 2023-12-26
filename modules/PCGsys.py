@@ -2,6 +2,7 @@ import numpy as np
 import cellpylib as cpl
 from status_record import *
 import cv2
+import random
 
 
 class MapGenerator():
@@ -142,6 +143,24 @@ class MapGenerator():
             self.__map_info.set_current_area_type = 0
 
 
+class objectsGenerator():
+    def __init__(self, defininedContent: DefininedSys) -> None:
+        self.__defininedContent = defininedContent
+        
+    def objectGeneration(self, lowest_amount: int, highest_amount: int):
+        """
+        Args:
+            `lowest_amount` (int): lower bound of number of objects generated (includ end point)\n
+            `highest_amount` (int): upper bound of number of objects generated (includ end point)\n
+        """
+        objectList = self.__defininedContent.get_items()
+        a = random.choices(objectList, k=random.randint(lowest_amount, highest_amount))
+        print(a)
+        print(a[0].item_name)
+
+
 if __name__ == "__main__":
-    test = MapGenerator(Player_status(), Map_information(1))
-    test.debug(5, 4)
+    # test = MapGenerator(Player_status(), Map_information(1))
+    # test.debug(5, 4)
+    test = objectsGenerator(DefininedSys())
+    test.objectGeneration(1, 6)
