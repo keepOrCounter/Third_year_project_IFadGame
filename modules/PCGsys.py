@@ -1,6 +1,7 @@
 import numpy as np
 import cellpylib as cpl
 from status_record import *
+from Pre_definedContent import *
 import cv2
 import random
 
@@ -147,16 +148,30 @@ class objectsGenerator():
     def __init__(self, defininedContent: DefininedSys) -> None:
         self.__defininedContent = defininedContent
         
-    def objectGeneration(self, lowest_amount: int, highest_amount: int):
+    def objectGeneration(self, lowest_amount: int, highest_amount: int) -> list[Items]:
         """
         Args:
             `lowest_amount` (int): lower bound of number of objects generated (includ end point)\n
             `highest_amount` (int): upper bound of number of objects generated (includ end point)\n
         """
         objectList = self.__defininedContent.get_items()
-        a = random.choices(objectList, k=random.randint(lowest_amount, highest_amount))
-        print(a)
-        print(a[0].item_name)
+        generateResult = random.choices(objectList, k=random.randint(lowest_amount, highest_amount))
+        
+        return generateResult
+
+
+class eventGenerator():
+    def __init__(self, defininedContent: DefininedSys) -> None:
+        self.__defininedContent = defininedContent
+
+
+class PCGController():
+    def __init__(self, mapPCG: MapGenerator, objectsPCG: objectsGenerator, \
+        eventPCG: eventGenerator) -> None:
+        self.__mapPCG = mapPCG
+        self.__objectsPCG = objectsPCG
+        self.__eventPCG = eventPCG
+    
 
 
 if __name__ == "__main__":
