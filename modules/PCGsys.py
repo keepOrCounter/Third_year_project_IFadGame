@@ -163,14 +163,20 @@ class objectsGenerator():
 class eventGenerator():
     def __init__(self, defininedContent: DefininedSys) -> None:
         self.__defininedContent = defininedContent
+        
+    def eventGeneration(self) -> list[Events]:
+        eventList = self.__defininedContent.get_events()
+        generateResult = random.choice(eventList)
+        
+        return generateResult
 
 
-class PCGController():
-    def __init__(self, mapPCG: MapGenerator, objectsPCG: objectsGenerator, \
-        eventPCG: eventGenerator) -> None:
-        self.__mapPCG = mapPCG
-        self.__objectsPCG = objectsPCG
-        self.__eventPCG = eventPCG
+# class PCGController():
+#     def __init__(self, mapPCG: MapGenerator, objectsPCG: objectsGenerator, \
+#         eventPCG: eventGenerator) -> None:
+#         self.__mapPCG = mapPCG
+#         self.__objectsPCG = objectsPCG
+#         self.__eventPCG = eventPCG
     
 
 

@@ -28,3 +28,14 @@ You need to know the basic value of this game:
 	"play_hp": "health point of player, reduced when any damage or some event occured, and exhausted hp will lead to player character dead",
 	"play_action_point": "reduced when taking any action, and exhausted hp will lead to player character dead"
 }
+
+
+You are writing a description about current location player is at for a text-based adventure game program, you will receive a game details from game program like this "{Current location: End Of Road, Front: brick building, Back: Forest, Right hand side: Forest, Left hand side: Forest, Landscape Features: [flat ground, small stream], Items: [keyA, keyB, keyC]}". You should write a description in this style: "
+
+End Of Road
+
+You are standing at the end of a road before a small brick building. Around you is a forest. A small stream flows out of the building and down a gully. 
+There are some keys on the ground here."
+
+
+{Current location: grassland, Front: <Do not know>, Back: Forest, Right hand side: <Do not know>, Left hand side: <Do not know>, Landscape Features: [flat ground, Big rocks], Items: [Bag]}
