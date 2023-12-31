@@ -8,6 +8,9 @@ import random
 
 class MapGenerator():
     def __init__(self, player : Player_status, map_info: Map_information) -> None:
+        """
+        Generate game map, just call "game_map_generation()" method to do so
+        """
         # self.textual_map = {}  # {x_coordinate : [Location_names(whose indices are y cordinate)]}
         # self.current_coord = {"x" : player.get_currentLocation()[0], "y" : player.get_currentLocation()[1]} # a copy of coord
         # self.current_main_terrain = 0 # land pattern, main terrain would be land mass

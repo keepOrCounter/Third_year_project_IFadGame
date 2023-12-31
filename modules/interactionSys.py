@@ -7,6 +7,9 @@ from Pre_definedContent import *
 
 class IOSys():
     def __init__(self) -> None:
+        """
+        This class is just a log system for debugging
+        """
         pass
     
     def inquery_response_log_recorder(self,systemRole:str, inquiry:str, response:str) -> None:

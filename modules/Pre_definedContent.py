@@ -2,10 +2,16 @@ from status_record import *
 
 class Commands():
     def __init__(self, player: Player_status, map: Map_information) -> None:
+        """
+        This class is pre-defined commands in methods form
+        """
         self.__player = player
         self.__map = map
         
     def move(self, target) -> None:
+        """
+        Move to specific direction or target place
+        """
         if target == "North":
             x, y = self.__player.get_currentLocation()
             self.__player.set_currentLocation(x, y+1)
@@ -22,12 +28,21 @@ class Commands():
             self.__player.set_currentLocation(*target)
             
     def action_point_adjust(self, value: int) -> None:
+        """
+        Recovery or consume action point
+        """
         self.__player.set_action_point(self.__player.get_action_point() + value)
         
     
 
 class DefininedSys(): # 
     def __init__(self, preDefinedCommands: Commands) -> None:
+        """
+        All the defined content stored here\n\n
+        `__def_items:` All the objects with same or differnt type here\n
+        `__def_actions:` Defined player action, contains the name of action and the command will be executed in method form,
+        usage example>>> <method stored in Actions>(*<arguments of method>), this would call the method\n
+        """
         self.__def_items = [
             # Items("Campfire", 20, "Items"),
             Items("Stream", 10, "Landscape Features"),

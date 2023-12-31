@@ -3,6 +3,12 @@ import numpy as np
 
 class Items():
     def __init__(self, item_name: str, item_energy_recovery: int, category: str):
+        """
+            `item_name (str)`: name for player or gpt to recognized
+            `item_energy_recovery (int)`: the amount of action point player can recovery when \
+                making some actions
+            `category (str)`: Type of object, current types are "items", "Landscape Features", this would be improve later
+        """
         self.item_name = item_name
         self.item_energy_recovery = item_energy_recovery
         self.category = category
@@ -21,6 +27,10 @@ class Events():
 
 class Actions():
     def __init__(self, actionName: str, command_executed: list[tuple]) -> None:
+        """
+            `actionName (str)`: related to player input
+            `command_executed (list[tuple])`: a list of method and its arguments would be called when player make this action
+        """
         self.actionName = actionName
         self.command_executed = command_executed
         
