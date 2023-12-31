@@ -20,7 +20,7 @@ class Events():
         
 
 class Actions():
-    def __init__(self, actionName: str, command_executed: tuple) -> None:
+    def __init__(self, actionName: str, command_executed: list[tuple]) -> None:
         self.actionName = actionName
         self.command_executed = command_executed
         

@@ -3,6 +3,7 @@ import copy
 import time
 import Levenshtein
 from status_record import *
+from Pre_definedContent import *
 
 class IOSys():
     def __init__(self) -> None:
@@ -79,81 +80,23 @@ There are some keys on the ground here." """
     
     
 class InputTranslator():
-    def __init__(self) -> None:
-        pass
-    
-    
-class UserInterface():
-    def __init__(self, gptAPI:Gpt3) -> None:
-        self.gptAPI = gptAPI
-    
-#     def output(self, textual_map: dict[int, list[Location]], objects_type: dict[str, set[str]], \
-#         current_location: tuple[int,int] = (0,0)):
-#         map_size = 3 # only for fixed map
-#         print("current_location", current_location)
+    def __init__(self, gptAPI: Gpt3, playerStatus: Player_status, mapInfo: Map_information, \
+        defined_content: DefininedSys) -> None:
+        self.__gptAPI = gptAPI
+        self.__playerStatus = playerStatus
+        self.__mapInfo = mapInfo
+        self.__defined_content = defined_content
         
-#         current_location_details = textual_map[current_location[0] % map_size][current_location[1] % map_size]
-#         shortCut_map = ""
-#         maxLength = 0
-#         shortCut_locations_list = []
-#         for y in range(3):
-#             tem = []
-#             # print("print(y_coor)", y_coor)
-#             y_coor = (current_location_details.y + y - 1) % map_size
-#             # if y_coor >= map_size:
-#             #     y_coor = y_coor - map_size
-#             # elif y_coor < 0:
-#             #     y_coor = y_coor + map_size
-#             print("y_coor", y_coor)
-#             for x in range(3):
-#                 # print("print(x_coor)", x_coor)
-#                 x_coor = (current_location_details.x + x - 1) % map_size
-#                 # if x_coor >= map_size:
-#                 #     x_coor = x_coor - map_size
-#                 # elif x_coor < 0:
-#                 #     x_coor = x_coor + map_size
-#                 print("x_coor", x_coor)
-                
-#                 maxLength = max(maxLength, len(textual_map[x_coor][y_coor].location_name))
-#                 tem.append(textual_map[x_coor][y_coor].location_name)
-#                 print(tem)
-#                 print(x_coor, y_coor)
-#                 print(current_location_details.x, current_location_details.y)
-#                 print("-------------------------")
-#             shortCut_locations_list = tem + shortCut_locations_list
-#         changeLine = 3
-#         for x in range(1, len(shortCut_locations_list) + 1):
-#             shortCut_map += "[" + shortCut_locations_list[x - 1] + (" " * (maxLength - len(shortCut_locations_list[x - 1]))) + "]"
-#             if x != 0 and x != len(shortCut_locations_list) and x % 3 == 0:
-#                 shortCut_map += "\n"
-#                 for y in range(3):
-#                     shortCut_map += (" " * int(maxLength / 2 + 1)) + "|" + (" " * int(maxLength / 2 + 1 - int(maxLength % 2 == 0)))
-#                     if y < 2:
-#                         shortCut_map += "  "
-#                     else:
-#                         shortCut_map += "\n"
-#             elif x == len(shortCut_locations_list):
-#                 pass
-#             else:
-#                 shortCut_map += "--"
-#         print(shortCut_map)
-#         inquiry = "game information(Notice: the place around current location is \
-# just to make sure that there is not contradiction between your writting and the \
-# game map, please do not tell player about the place around current location): {\n\
-# Map(Lines or slashes represent connections between different places):\n" + \
-#         shortCut_map + "\nCurrent location: " + current_location_details.location_name + \
-#         "\nObjects at current location(All possible objects and scene in here, \
-# please don't write something doesn't in this list. For example, if tree is not in \
-# list, don't tell about tree in description even if the Current location is a forest):" \
-#     + str(current_location_details.objects) + "}"
-#         print(inquiry)
-#         print("=======================================\n")
-#         gpt_response = self.gptAPI.inquiry(inquiry)
-#         print(gpt_response)
-#         self.inquery_response_log_recorder(self.gptAPI.output_systemRole, inquiry, gpt_response)
+    def command_translator(self, user_input:str):
+        move_commands = list(self.__defined_content.get_Actions().keys())
+        move_commands.append("<Rejected>")
+        systemRole = "You are trying to translate the command in natual language \
+from player to the command of text-based adventure game \
+system, the game command are listed below: " + str(move_commands[:-1]) + "\nPlease do \
+not reply something more than the command given above(Even if punctuation mark). If the player command is less likely to \
+be any of the game command above, just reply a '<Rejected>'."
         
-    def command_translator(self, user_input:str, player_status:Player_status, move_commands:list[str]):
-        command = self.gptAPI.command_translator(user_input)
+        command = self.__gptAPI.inquiry(user_input, systemRole)
         
         dis = Levenshtein.distance(move_commands[0], command)
         target = 0
@@ -162,16 +105,11 @@ class UserInterface():
             if tem_dis < dis:
                 target = x
                 dis = tem_dis
-        if move_commands[target] == "Move North":
-            player_status.location_adder(0, 1)
-        elif move_commands[target] == "Move South":
-            player_status.location_adder(0, -1)
-        elif move_commands[target] == "Move East":
-            player_status.location_adder(1, 0)
-        elif move_commands[target] == "Move West":
-            player_status.location_adder(-1, 0)
+        if move_commands[target] != "<Rejected>":
+            action = self.__defined_content.get_Actions()[move_commands[target]]
+            for commands in action.command_executed:
+                commands[0](*commands[1])
         else:
             print("Nothing happen...")
-            
-        print(command)
+    
         

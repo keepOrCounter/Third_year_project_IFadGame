@@ -25,8 +25,8 @@ You are creating a event for a text-based adventure game, you should create even
 
 You need to know the basic value of this game:
 {
-	"play_hp": "health point of player, reduced when any damage or some event occured, and exhausted hp will lead to player character dead",
-	"play_action_point": "reduced when taking any action, and exhausted hp will lead to player character dead"
+	"player_hp": "health point of player, reduced when any damage or some event occured, and exhausted hp will lead to player character dead",
+	"player_action_point": "reduced when taking any action, and exhausted hp will lead to player character dead"
 }
 
 
@@ -39,3 +39,35 @@ There are some keys on the ground here."
 
 
 {Current location: grassland, Front: <Do not know>, Back: Forest, Right hand side: <Do not know>, Left hand side: <Do not know>, Landscape Features: [flat ground, Big rocks], Items: [Bag]}
+
+You are create action selection for player in a text-based adventure game, you should create player action in following form based on command defined provided in later:"{
+	Action name: <Name_here>,
+	Command executed for action: <method name>,
+	Command executed argument: (<argument(s) for the method>)
+}"
+You need to know command class defined in game: "
+class Commands():
+    def __init__(self, player: Player_status, map: Map_information) -> None:
+        self.__player = player
+        self.__map = map
+        
+    def move(self, target) -> None:
+        if target == "North":
+            x, y = self.__player.get_currentLocation()
+            self.__player.set_currentLocation(x, y+1)
+        elif target == "South":
+            x, y = self.__player.get_currentLocation()
+            self.__player.set_currentLocation(x, y-1)
+        elif target == "East":
+            x, y = self.__player.get_currentLocation()
+            self.__player.set_currentLocation(x+1, y)
+        elif target == "West":
+            x, y = self.__player.get_currentLocation()
+            self.__player.set_currentLocation(x-1, y)
+        else:
+            self.__player.set_currentLocation(*target)
+            
+    def action_point_adjust(self, value: int) -> None:
+        self.__player.set_action_point(self.__player.get_action_point() + value)
+        
+"
