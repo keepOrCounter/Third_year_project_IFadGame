@@ -44,10 +44,9 @@ class Gpt3():
         return response.choices[0].message.content
     
 class OutputGenerator():
-    def __init__(self, gptAPI: Gpt3, playerStatus: Player_status, mapInfo: Map_information, \
-        OuterData: IOSys) -> None:
+    def __init__(self, gptAPI: Gpt3, playerStatus: Player_status, mapInfo: Map_information) -> None:
         self.__gptAPI = gptAPI
-        self.__OuterData = OuterData
+        self.__OuterData = IOSys()
         self.__playerStatus = playerStatus
         self.__mapInfo = mapInfo
         self.__locationDiscriptionSysRole = """You are writing a description about current location \
@@ -63,6 +62,12 @@ There are some keys on the ground here." """
         
     
     def locationDescription(self, locationList: dict[str, Location]):
+        """
+        Args:
+            `locationList (dict[str, Location])`: {current: <Location>, Front: \
+                <Location>, Back: <Location>, Right hand side: <Location>, \
+                    Left hand side: <Location>}
+        """
         inputDictionary = {"Current location": locationList["Current location"].location_name, \
             "Front": locationList["Front"].location_name, "Back": locationList["Back"].location_name,\
                 "Right hand side": locationList["Right hand side"].location_name, \

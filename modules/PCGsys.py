@@ -9,7 +9,9 @@ import random
 class MapGenerator():
     def __init__(self, player : Player_status, map_info: Map_information) -> None:
         """
-        Generate game map, just call "game_map_generation()" method to do so
+        Generate game map, just call `map_info_update()` to update any new information and \
+            call `game_map_generation()` method to Generate a map, the map will be automaticly \
+                record into `map_info` object
         """
         # self.textual_map = {}  # {x_coordinate : [Location_names(whose indices are y cordinate)]}
         # self.current_coord = {"x" : player.get_currentLocation()[0], "y" : player.get_currentLocation()[1]} # a copy of coord
@@ -17,8 +19,32 @@ class MapGenerator():
         self.terrain_type = np.array(["sea", "land"])
         self.__player = player
         self.__map_info = map_info
+        self.__generated_map = dict()
+        
+        init_start_point = np.random.randint(0,2**31) # generate init place
+        init_start_point -= init_start_point % 100
+        self.__random_seeds: np.ndarray = np.arange(init_start_point, init_start_point + 100)
+        self.__used_seed = {init_start_point}
+        
 
     def generate_random_map(self, rows: int, cols: int, land_prob: float=0.65): # rows, cols = y, x
+        if self.__map_info.get_current_map_coordinate() not in self.__generated_map.keys():
+            if self.__random_seeds.shape[0] == 0:
+                init_start_point = None
+                while init_start_point == None or init_start_point in self.__used_seed:
+                    init_start_point = np.random.randint(0,2**31) # generate init place
+                    init_start_point -= init_start_point % 100
+                self.__random_seeds: np.ndarray = np.arange(init_start_point, init_start_point + 100)
+                self.__used_seed.add(init_start_point)
+
+            index_random = np.random.randint(0, self.__random_seeds.shape[0])
+            map_seed = self.__random_seeds[index_random]
+            self.__generated_map[self.__map_info.get_current_map_coordinate()] = map_seed
+            self.__random_seeds = np.delete(self.__random_seeds, index_random)
+        else:
+            map_seed = self.__generated_map[self.__map_info.get_current_map_coordinate()]
+        
+        np.random.seed(map_seed) # use seed to get the same map for visited place
         return np.random.choice([0, 1], size=(rows, cols), p=[1-land_prob, land_prob])
 
 
@@ -174,12 +200,44 @@ class eventGenerator():
         return generateResult
 
 
-# class PCGController():
-#     def __init__(self, mapPCG: MapGenerator, objectsPCG: objectsGenerator, \
-#         eventPCG: eventGenerator) -> None:
-#         self.__mapPCG = mapPCG
-#         self.__objectsPCG = objectsPCG
-#         self.__eventPCG = eventPCG
+class PCGController():
+    def __init__(self, defininedContent: DefininedSys, player : Player_status, \
+        map_info: Map_information) -> None:
+        self.__mapPCG = MapGenerator(player, map_info)
+        self.__objectsPCG = objectsGenerator(defininedContent)
+        self.__eventPCG = eventGenerator(defininedContent)
+        self.__player = player
+        self.__map_info = map_info
+        self.__new_class = True
+        
+    def locationPCG_each_turn(self):
+        """
+        Should be called each turn to generat objects and other things in current location
+        """
+        init_area = self.__map_info.get_init_map_coordinate()
+        current_area = self.__map_info.get_current_map_coordinate()
+        playerCoord = self.__player.get_currentLocation()
+        map_size = self.__map_info.get_map_size()
+        
+        if self.__new_class or not (current_area[0] <= playerCoord[0] < current_area[0]+map_size[0] \
+            and current_area[1] <= playerCoord[1] < current_area[1]+map_size[1]):
+            # enetering into a new area
+            self.__mapPCG.map_info_update()
+            self.__mapPCG.game_map_generation(5, 4) # TODO edit arguments to get potential better map
+            
+            normalized_coord = (int((playerCoord[0] - init_area[0])/map_size[0]) - int(playerCoord[0]<0), 
+                        int((playerCoord[1] - init_area[1])/map_size[0]) + int(playerCoord[1]<0))
+            new_area_coord = (normalized_coord[0]*map_size[0] + init_area[0], \
+                normalized_coord[1]*map_size[1] + init_area[1]) # !!! Bug Potential TODO need to testing
+            self.__map_info.set_current_map_coordinate(new_area_coord)
+            # update current map coordination
+        
+        current_location_name = self.__map_info.get_currentMap()
+        objects_in_current_location = self.__objectsPCG.objectGeneration(1, 3) # TODO edit to change object amount
+        current_location = Location(current_location_name, playerCoord[0], playerCoord[1], \
+            objects_in_current_location)
+        
+        self.__map_info.currentLocation = current_location
     
 
 

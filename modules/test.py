@@ -77,6 +77,7 @@ import cellpylib as cpl
 import cv2
 
 def generate_random_map(rows, cols, land_prob=0.6):
+    np.random.seed(0)
     return np.random.choice([0, 1], size=(rows, cols), p=[1-land_prob, land_prob])
 
 # def get_neighbors(cell_grid, row, col):
