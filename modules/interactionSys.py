@@ -84,6 +84,7 @@ There are some keys on the ground here." """
         gpt_response = self.__gptAPI.inquiry(inquiry, self.__locationDiscriptionSysRole)
         print(gpt_response)
         self.__OuterData.inquery_response_log_recorder(self.__locationDiscriptionSysRole, inquiry, gpt_response)
+        locationList["Current location"].description = gpt_response
     
     
     

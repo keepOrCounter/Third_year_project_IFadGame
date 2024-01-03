@@ -1,0 +1,248 @@
+[Tue Jan  2 17:13:06 2024]
+systemRole: 
+You are writing a description about current location player is at for a text-based adventure game program, you will receive a game details from game program like this "{Current location: End Of Road, Front: brick building, Back: Forest, Right hand side: Forest, Left hand side: Forest, Landscape Features: [flat ground, small stream], Items: [keyA, keyB, keyC]}". You should write a description in this style: "
+
+End Of Road
+
+You are standing at the end of a road before a small brick building. Around you is a forest. A small stream flows out of the building and down a gully. 
+There are some keys on the ground here." 
+
+inquiry: 
+{'Current location': 'sea', 'Front': '<Do not know>', 'Back': '<Do not know>', 'Right hand side': '<Do not know>', 'Left hand side': '<Do not know>', 'Items': ['Edible Plants', 'Traps'], 'Landscape Features': ['Rocks']}
+
+response by gpt3.5-turbo: 
+Sea
+
+You are standing on the shore of a vast sea. The view in front of you is unknown, as it stretches out endlessly. Behind you is also unknown, as the sea extends as far as the eye can see. To your right and left are more unknown stretches of sea. The landscape is dotted with rocks, adding a rugged touch to the scenery. You notice some edible plants growing nearby, offering a potential source of sustenance. There are also traps scattered around, perhaps left by previous adventurers.
+////////////////////////////////////////////////////
+[Wed Jan  3 15:10:59 2024]
+systemRole: 
+You are writing a description about current location player is at for a text-based adventure game program, you will receive a game details from game program like this "{Current location: End Of Road, Front: brick building, Back: Forest, Right hand side: Forest, Left hand side: Forest, Landscape Features: [flat ground, small stream], Items: [keyA, keyB, keyC]}". You should write a description in this style: "
+
+End Of Road
+
+You are standing at the end of a road before a small brick building. Around you is a forest. A small stream flows out of the building and down a gully. 
+There are some keys on the ground here." 
+
+inquiry: 
+{'Current location': 'sea', 'Front': '<Do not know>', 'Back': '<Do not know>', 'Right hand side': '<Do not know>', 'Left hand side': '<Do not know>', 'Landscape Features': ['Rocks'], 'Items': ['Edible Plants', 'Bread']}
+
+response by gpt3.5-turbo: 
+Sea
+
+You are standing at the edge of the sea. The vast expanse of water stretches out before you, disappearing into the horizon. The sound of crashing waves fills the air, creating a soothing rhythm. The sea breeze gently brushes against your skin, carrying with it a hint of salt. 
+
+The landscape is adorned with rocks scattered along the shore, adding a rugged beauty to the scene. 
+
+As you explore the area, you notice some edible plants growing nearby, offering a potential source of sustenance. Additionally, you spot a loaf of bread lying on the ground, possibly left behind by someone.
+////////////////////////////////////////////////////
+[Wed Jan  3 15:11:58 2024]
+systemRole: 
+You are writing a description about current location player is at for a text-based adventure game program, you will receive a game details from game program like this "{Current location: End Of Road, Front: brick building, Back: Forest, Right hand side: Forest, Left hand side: Forest, Landscape Features: [flat ground, small stream], Items: [keyA, keyB, keyC]}". You should write a description in this style: "
+
+End Of Road
+
+You are standing at the end of a road before a small brick building. Around you is a forest. A small stream flows out of the building and down a gully. 
+There are some keys on the ground here." 
+
+inquiry: 
+{'Current location': 'sea', 'Front': '<Do not know>', 'Back': '<Do not know>', 'Right hand side': '<Do not know>', 'Left hand side': '<Do not know>', 'Items': ['First Aid Kit', 'Edible Plants']}
+
+response by gpt3.5-turbo: 
+Sea
+
+You are standing at the edge of a vast sea, stretching out as far as the eye can see. The sound of crashing waves fills the air, creating a soothing and peaceful atmosphere. The sea sparkles under the sunlight, its blue waters captivating and mesmerizing. 
+
+As you gaze into the distance, you can't help but feel a sense of wonder and awe at the vastness and beauty of the ocean. The sea breeze gently brushes against your face, carrying with it a faint scent of salt and adventure. 
+
+There are a few items scattered around here, including a First Aid Kit and some Edible Plants.
+////////////////////////////////////////////////////
+[Wed Jan  3 15:13:48 2024]
+systemRole: 
+You are writing a description about current location player is at for a text-based adventure game program, you will receive a game details from game program like this "{Current location: End Of Road, Front: brick building, Back: Forest, Right hand side: Forest, Left hand side: Forest, Landscape Features: [flat ground, small stream], Items: [keyA, keyB, keyC]}". You should write a description in this style: "
+
+End Of Road
+
+You are standing at the end of a road before a small brick building. Around you is a forest. A small stream flows out of the building and down a gully. 
+There are some keys on the ground here." 
+
+inquiry: 
+{'Current location': 'sea', 'Front': '<Do not know>', 'Back': '<Do not know>', 'Right hand side': '<Do not know>', 'Left hand side': '<Do not know>', 'Items': ['Firewood']}
+
+response by gpt3.5-turbo: 
+Sea
+
+You are standing at the edge of a vast sea, with no land in sight. The sound of crashing waves fills the air, and a salty breeze blows through your hair. The water stretches out as far as the eye can see, with no end in sight. 
+There is some firewood lying on the ground here.
+////////////////////////////////////////////////////
+[Wed Jan  3 15:15:00 2024]
+systemRole: 
+You are writing a description about current location player is at for a text-based adventure game program, you will receive a game details from game program like this "{Current location: End Of Road, Front: brick building, Back: Forest, Right hand side: Forest, Left hand side: Forest, Landscape Features: [flat ground, small stream], Items: [keyA, keyB, keyC]}". You should write a description in this style: "
+
+End Of Road
+
+You are standing at the end of a road before a small brick building. Around you is a forest. A small stream flows out of the building and down a gully. 
+There are some keys on the ground here." 
+
+inquiry: 
+{'Current location': 'sea', 'Front': '<Do not know>', 'Back': '<Do not know>', 'Right hand side': '<Do not know>', 'Left hand side': '<Do not know>', 'Items': ['Edible Plants']}
+
+response by gpt3.5-turbo: 
+Sea
+
+You are standing by the edge of a vast sea, the waves crashing against the shore. The salty air fills your nostrils as you gaze out into the endless expanse of water. The sound of seagulls fills the air, their calls echoing in the distance. 
+
+There are some edible plants scattered along the sandy beach, their vibrant green leaves standing out against the golden sand.
+////////////////////////////////////////////////////
+[Wed Jan  3 15:15:21 2024]
+systemRole: 
+You are writing a description about current location player is at for a text-based adventure game program, you will receive a game details from game program like this "{Current location: End Of Road, Front: brick building, Back: Forest, Right hand side: Forest, Left hand side: Forest, Landscape Features: [flat ground, small stream], Items: [keyA, keyB, keyC]}". You should write a description in this style: "
+
+End Of Road
+
+You are standing at the end of a road before a small brick building. Around you is a forest. A small stream flows out of the building and down a gully. 
+There are some keys on the ground here." 
+
+inquiry: 
+{'Current location': 'sea', 'Front': '<Do not know>', 'Back': '<Do not know>', 'Right hand side': '<Do not know>', 'Left hand side': '<Do not know>', 'Items': ['Traps'], 'Landscape Features': ['Rocks']}
+
+response by gpt3.5-turbo: 
+Sea
+
+You are standing on the edge of a vast sea, with no land in sight. The waves crash against the shore, creating a soothing sound. The air is salty and the breeze is refreshing. The sea stretches out as far as the eye can see, with no end in sight. There are some traps scattered on the ground here, possibly left by fishermen. The landscape is dotted with rocks, adding texture to the otherwise endless expanse of water.
+////////////////////////////////////////////////////
+[Wed Jan  3 15:16:09 2024]
+systemRole: 
+You are writing a description about current location player is at for a text-based adventure game program, you will receive a game details from game program like this "{Current location: End Of Road, Front: brick building, Back: Forest, Right hand side: Forest, Left hand side: Forest, Landscape Features: [flat ground, small stream], Items: [keyA, keyB, keyC]}". You should write a description in this style: "
+
+End Of Road
+
+You are standing at the end of a road before a small brick building. Around you is a forest. A small stream flows out of the building and down a gully. 
+There are some keys on the ground here." 
+
+inquiry: 
+{'Current location': 'sea', 'Front': '<Do not know>', 'Back': '<Do not know>', 'Right hand side': '<Do not know>', 'Left hand side': '<Do not know>', 'Items': ['Weapon Crafting Bench']}
+
+response by gpt3.5-turbo: 
+Sea
+
+You are standing at the edge of a vast sea. The sound of crashing waves fills the air, and the salty scent of the ocean surrounds you. As far as the eye can see, there is nothing but water stretching out into the horizon. The sea is a mesmerizing shade of blue, with gentle ripples dancing across its surface. 
+
+There is a weapon crafting bench here, providing you with the opportunity to create powerful tools and weapons to aid you on your journey.
+////////////////////////////////////////////////////
+[Wed Jan  3 15:16:21 2024]
+systemRole: 
+You are writing a description about current location player is at for a text-based adventure game program, you will receive a game details from game program like this "{Current location: End Of Road, Front: brick building, Back: Forest, Right hand side: Forest, Left hand side: Forest, Landscape Features: [flat ground, small stream], Items: [keyA, keyB, keyC]}". You should write a description in this style: "
+
+End Of Road
+
+You are standing at the end of a road before a small brick building. Around you is a forest. A small stream flows out of the building and down a gully. 
+There are some keys on the ground here." 
+
+inquiry: 
+{'Current location': 'sea', 'Front': '<Do not know>', 'Back': '<Do not know>', 'Right hand side': '<Do not know>', 'Left hand side': '<Do not know>', 'Items': ['Firewood'], 'Landscape Features': ['Rocks']}
+
+response by gpt3.5-turbo: 
+Sea
+
+You find yourself standing by the vast expanse of the sea. The sound of crashing waves fills the air, creating a serene atmosphere. As far as the eye can see, there is nothing but water stretching out into the horizon. The salty breeze brushes against your face, carrying with it the scent of the ocean. 
+
+The landscape here is dotted with rocks, forming small islands amidst the water. These rocky formations add a touch of rugged beauty to the scene. 
+
+On the ground, you notice a pile of firewood, perhaps left behind by someone. It could come in handy for starting a fire or building shelter.
+////////////////////////////////////////////////////
+[Wed Jan  3 15:18:07 2024]
+systemRole: 
+You are writing a description about current location player is at for a text-based adventure game program, you will receive a game details from game program like this "{Current location: End Of Road, Front: brick building, Back: Forest, Right hand side: Forest, Left hand side: Forest, Landscape Features: [flat ground, small stream], Items: [keyA, keyB, keyC]}". You should write a description in this style: "
+
+End Of Road
+
+You are standing at the end of a road before a small brick building. Around you is a forest. A small stream flows out of the building and down a gully. 
+There are some keys on the ground here." 
+
+inquiry: 
+{'Current location': 'sea', 'Front': '<Do not know>', 'Back': '<Do not know>', 'Right hand side': '<Do not know>', 'Left hand side': '<Do not know>', 'Items': ['Traps']}
+
+response by gpt3.5-turbo: 
+Sea
+
+You are standing at the edge of a vast sea. The sound of crashing waves fills the air as you gaze out into the horizon. The water stretches as far as the eye can see, with no land in sight. The sea is a deep blue color, with occasional whitecaps forming on the surface. 
+
+There are some traps scattered around here, perhaps left by previous adventurers. Be careful where you step.
+////////////////////////////////////////////////////
+[Wed Jan  3 15:31:47 2024]
+systemRole: 
+You are writing a description about current location player is at for a text-based adventure game program, you will receive a game details from game program like this "{Current location: End Of Road, Front: brick building, Back: Forest, Right hand side: Forest, Left hand side: Forest, Landscape Features: [flat ground, small stream], Items: [keyA, keyB, keyC]}". You should write a description in this style: "
+
+End Of Road
+
+You are standing at the end of a road before a small brick building. Around you is a forest. A small stream flows out of the building and down a gully. 
+There are some keys on the ground here." 
+
+inquiry: 
+{'Current location': 'land', 'Front': '<Do not know>', 'Back': '<Do not know>', 'Right hand side': '<Do not know>', 'Left hand side': '<Do not know>', 'Landscape Features': ['Stream'], 'Items': ['Bread']}
+
+response by gpt3.5-turbo: 
+Land
+
+You are standing in an open field. The surroundings are unknown, as you cannot see anything in front, back, right hand side, or left hand side. However, you notice a stream flowing nearby. On the ground, you find a piece of bread.
+////////////////////////////////////////////////////
+[Wed Jan  3 16:49:02 2024]
+systemRole: 
+You are writing a description about current location player is at for a text-based adventure game program, you will receive a game details from game program like this "{Current location: End Of Road, Front: brick building, Back: Forest, Right hand side: Forest, Left hand side: Forest, Landscape Features: [flat ground, small stream], Items: [keyA, keyB, keyC]}". You should write a description in this style: "
+
+End Of Road
+
+You are standing at the end of a road before a small brick building. Around you is a forest. A small stream flows out of the building and down a gully. 
+There are some keys on the ground here." 
+
+inquiry: 
+{'Current location': 'land', 'Front': 'land', 'Back': 'land', 'Right hand side': 'land', 'Left hand side': 'land', 'Items': ['Firewood']}
+
+response by gpt3.5-turbo: 
+Land
+
+You are standing on a vast expanse of land. There is nothing particularly remarkable about this area. The land stretches out in all directions, with no distinguishing features or landmarks. The ground beneath your feet is flat and solid. 
+
+There is a pile of firewood nearby, suggesting that someone may have been here recently. Other than that, there is nothing else of note in this area.
+////////////////////////////////////////////////////
+[Wed Jan  3 16:55:58 2024]
+systemRole: 
+You are writing a description about current location player is at for a text-based adventure game program, you will receive a game details from game program like this "{Current location: End Of Road, Front: brick building, Back: Forest, Right hand side: Forest, Left hand side: Forest, Landscape Features: [flat ground, small stream], Items: [keyA, keyB, keyC]}". You should write a description in this style: "
+
+End Of Road
+
+You are standing at the end of a road before a small brick building. Around you is a forest. A small stream flows out of the building and down a gully. 
+There are some keys on the ground here." 
+
+inquiry: 
+{'Current location': 'land', 'Front': 'land', 'Back': 'land', 'Right hand side': 'land', 'Left hand side': 'land', 'Items': ['Firewood']}
+
+response by gpt3.5-turbo: 
+Land
+
+You are standing in the middle of a vast expanse of land. There is no specific landmark or structure in sight. The land stretches out in all directions, with nothing but open space surrounding you. The ground is flat and barren, with no signs of vegetation. 
+
+You notice a pile of firewood lying on the ground nearby. It seems to have been left here by someone.
+////////////////////////////////////////////////////
+[Wed Jan  3 17:05:26 2024]
+systemRole: 
+You are writing a description about current location player is at for a text-based adventure game program, you will receive a game details from game program like this "{Current location: End Of Road, Front: brick building, Back: Forest, Right hand side: Forest, Left hand side: Forest, Landscape Features: [flat ground, small stream], Items: [keyA, keyB, keyC]}". You should write a description in this style: "
+
+End Of Road
+
+You are standing at the end of a road before a small brick building. Around you is a forest. A small stream flows out of the building and down a gully. 
+There are some keys on the ground here." 
+
+inquiry: 
+{'Current location': 'land', 'Front': 'land', 'Back': 'land', 'Right hand side': 'land', 'Left hand side': 'land', 'Items': ['Firewood', 'Traps']}
+
+response by gpt3.5-turbo: 
+Land
+
+You are standing in the middle of a vast, open land. There is no sign of civilization as far as the eye can see. The land stretches out in all directions, with no landmarks or distinguishing features. The ground beneath your feet is flat and barren, devoid of any vegetation or life.
+
+In the distance, you can see rolling hills and mountains, but they are too far away to reach on foot. The sky above is clear and blue, with a few fluffy white clouds drifting lazily by.
+
+As you look around, you notice some firewood and traps lying on the ground nearby. It seems someone may have left them here, but there is no indication of who or why.
+////////////////////////////////////////////////////

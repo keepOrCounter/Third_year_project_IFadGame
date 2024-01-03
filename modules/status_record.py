@@ -107,8 +107,8 @@ class Map_information():
         self.__current_area_type = current_area_type # update when entering new area
         self.__currentMap = currentMap # update when entering new area
         self.__map_size = map_size # rows, cols = y, x, never update!!!
-        self.__init_map_coordinate = (0 - int(map_size[0]/2), 0 + int(map_size[1]/2)) # never update!!!
-        self.__current_map_coordinate = (0 - int(map_size[0]/2), 0 + int(map_size[1]/2)) # update when entering new area
+        self.__init_map_coordinate = (0 - int(map_size[1]/2), 0 + int(map_size[0]/2)) # never update!!!
+        self.__current_map_coordinate = (0 - int(map_size[1]/2), 0 + int(map_size[0]/2)) # update when entering new area
         self.currentLocation: Location = None
 
     def get_current_area_type(self) -> int:
