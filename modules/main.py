@@ -2,8 +2,31 @@ from status_record import Player_status, Map_information
 from PCGsys import PCGController
 from interactionSys import OutputGenerator, InputTranslator, Gpt3
 from Pre_definedContent import DefininedSys, Commands
+import sys
 
-from status_record import Location
+# from status_record import Location
+class rule_system():
+    def __init__(self, player : Player_status, map_info: Map_information) -> None:
+        self.__player = player
+        self.__map_info = map_info
+        
+    def eachTurn_handler(self):
+        if not self.player_alive():
+            print("Game over.")
+            sys.exit(0)
+        if self.player_active():
+            pass
+        
+    def player_alive(self):
+        return self.__player.get_hp() > 0
+    
+    def player_active(self):
+        return self.__player.get_action_point() > 0
+    
+    def event_triger(self):
+        pass
+    
+    # def 
 
 if __name__ == "__main__":
     player_info = Player_status()

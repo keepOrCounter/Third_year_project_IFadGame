@@ -122,7 +122,7 @@ class DefininedSys(): #
             "Move South": Actions("Move South", [(preDefinedCommands.move, ("South",))]),
             "Move East": Actions("Move East", [(preDefinedCommands.move, ("East",))]),
             "Move West": Actions("Move West", [(preDefinedCommands.move, ("West",))])
-}
+        }
         
     def get_items(self) -> list[Items]:
         return self.__def_items
