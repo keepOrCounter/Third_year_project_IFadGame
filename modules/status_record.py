@@ -49,6 +49,7 @@ class Location():
         self.y = y
 
 
+
 class Player_status():
     def __init__(self, currentLocation:list[int,int] = [0,0], items:list[str] = [], \
         hp: int = 100, action_point: int = 100, currentAction: Actions = None) -> None:

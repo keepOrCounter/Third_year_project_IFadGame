@@ -11,15 +11,15 @@ Could you help me create an event of a text-based adventure game based on follow
 You are creating a event for a text-based adventure game, you should create event in following form based on game information provided in later:
 {
 	"event_name": <event name here>,
-	"succeed_condition": <condition in inequality or equality list here>,
-	"reward": <reward in list>, 
-	"fail_penalty": <penalty in list if fail to finish event>
+	"succeed_condition": <condition in compare functions list here>,
+	"reward": <reward in functions in list>, 
+	"fail_penalty": <penalty in functions in list if fail to finish event>
 }, Here is an example:
 {
 	"event_name": "thirstily crisis",
-	"succeed_condition": [action == "drink", object == "water"],
-	"reward": [action_point + 10, play_hp + 10], 
-	"fail_penalty": [action_point = 0]
+	"succeed_condition": [equalTo(action, "drink"), equalTo(target, "water")],
+	"reward": [action_point_adjust(10), hp_adjust(10)], 
+	"fail_penalty": [action_point_adjust(-100)]
 	
 }
 
@@ -39,6 +39,7 @@ There are some keys on the ground here."
 
 
 {Current location: grassland, Front: <Do not know>, Back: Forest, Right hand side: <Do not know>, Left hand side: <Do not know>, Landscape Features: [flat ground, Big rocks], Items: [Bag]}
+
 
 You are create action selection for player in a text-based adventure game, you should create player action in following form based on command defined provided in later:"{
 	Action name: <Name_here>,
