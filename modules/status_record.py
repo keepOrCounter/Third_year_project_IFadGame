@@ -52,7 +52,7 @@ class Location():
 
 class Player_status():
     def __init__(self, currentLocation:list[int,int] = [0,0], items:list[str] = [], \
-        hp: int = 100, action_point: int = 100, currentAction: Actions = None) -> None:
+        hp: int = 100, action_point: int = 100, currentAction: Actions = None, cash = 0) -> None:
         """ `__currentLocation:` player coordinate [x,y]\n
             `items:` items in bag\n
             `action_point:` energy bar of player
@@ -62,6 +62,7 @@ class Player_status():
         self.__hp = hp
         self.__action_point = action_point
         self.__currentAction = currentAction
+        self.__cash = cash
     
     def get_currentLocation(self) -> tuple[int]:
         return (self.__currentLocation[0], self.__currentLocation[1])
@@ -93,6 +94,12 @@ class Player_status():
     
     def set_currentAction(self, newAction: Actions) -> None:
         self.__currentAction = newAction
+
+    def get_cash(self) -> int:
+        return self.__cash
+    
+    def set_cash(self, newAmount: int) -> None:
+        self.__cash = newAmount
 
         
 class Map_information():
