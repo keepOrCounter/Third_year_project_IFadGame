@@ -15,14 +15,18 @@ class Items():
 
 
 class Events():
-    def __init__(self, eventName: str, succeedCondition: tuple, reward: tuple, \
-        fail_penalty: tuple, time_limit: int) -> None:
+    def __init__(self, eventName: str, eventType: str, triggered_reason: str, \
+        possible_reward: list, possible_penalty: list, time_limit: int, description: str) -> None:
         
         self.eventName = eventName
-        self.succeedCondition = succeedCondition
-        self.reward = reward
-        self.fail_penalty = fail_penalty
+        self.eventType = eventType
+        # self.succeedCondition = succeedCondition
+        self.triggered_reason = triggered_reason
+        self.possible_reward = possible_reward
+        self.possible_penalty = possible_penalty
         self.time_limit = time_limit
+        self.description = description
+        # self.gpt_required = gpt_required
         
 
 class Actions():
@@ -49,10 +53,18 @@ class Location():
         self.y = y
 
 
+class Buff():
+    def __init__(self, buff_name: str, exe_function, exe_args: tuple) -> None:
+        self.buff_name = buff_name
+        self.exe_function = exe_function
+        self.exe_args = exe_args
+
 
 class Player_status():
     def __init__(self, currentLocation:list[int,int] = [0,0], items:list[str] = [], \
-        hp: int = 100, action_point: int = 100, currentAction: Actions = None, cash = 0) -> None:
+        hp: int = 100, maximum_hp: int = 100, maximum_action_point: int = 100, \
+            action_point: int = 100, currentAction: Actions = None, cash:int = 0, \
+                buff:list[Buff] = []) -> None:
         """ `__currentLocation:` player coordinate [x,y]\n
             `items:` items in bag\n
             `action_point:` energy bar of player
@@ -60,9 +72,12 @@ class Player_status():
         self.__currentLocation = currentLocation
         self.__items = items
         self.__hp = hp
+        self.__maximum_hp = maximum_hp
         self.__action_point = action_point
+        self.__maximum_action_point = maximum_action_point
         self.__currentAction = currentAction
         self.__cash = cash
+        self.__buff = buff
     
     def get_currentLocation(self) -> tuple[int]:
         return (self.__currentLocation[0], self.__currentLocation[1])
@@ -89,6 +104,18 @@ class Player_status():
     def set_action_point(self, action_point: int) -> None:
         self.__action_point = action_point
 
+    def get_maximum_hp(self) -> int:
+        return self.__maximum_hp
+    
+    def set_maximum_hp(self, new_hp_limit: int) -> None:
+        self.__maximum_hp = new_hp_limit
+
+    def get_maximum_action_point(self) -> int:
+        return self.__maximum_action_point
+    
+    def set_maximum_action_point(self, new_action_point_limit: int) -> None:
+        self.__maximum_action_point = new_action_point_limit
+
     def get_currentAction(self) -> Actions:
         return self.__currentAction
     
@@ -100,6 +127,12 @@ class Player_status():
     
     def set_cash(self, newAmount: int) -> None:
         self.__cash = newAmount
+        
+    def get_buffs(self) -> list[Buff]:
+        return self.__buff
+    
+    def set_buffs(self, newBuffs: list[Buff]) -> None:
+        self.__buff = newBuffs
 
         
 class Map_information():
@@ -148,6 +181,5 @@ class Map_information():
     
     def set_current_map_coordinate(self, map_ccord: tuple[int]):
         self.__current_map_coordinate = map_ccord
-
 
 

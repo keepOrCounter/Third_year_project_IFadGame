@@ -1,6 +1,8 @@
 from status_record import *
 import random
 
+
+
 class Commands():
     def __init__(self, player: Player_status, map: Map_information) -> None:
         """
@@ -54,23 +56,43 @@ class Commands():
         
         self.__player.set_items(self.__player.get_items() + items)
         
-    def equalTo(self, value, target) -> bool:
-        return value == target
+    # def equalTo(self, value, target) -> bool:
+    #     return value == target
     
-    def greaterThan(self, value, target) -> bool:
-        return value > target
+    # def greaterThan(self, value, target) -> bool:
+    #     return value > target
     
-    def greaterThanOrEqualTo(self, value, target) -> bool:
-        return value >= target
+    # def greaterThanOrEqualTo(self, value, target) -> bool:
+    #     return value >= target
     
-    def smallerThan(self, value, target) -> bool:
-        return value < target
+    # def smallerThan(self, value, target) -> bool:
+    #     return value < target
     
-    def smallerThanOrEqualTo(self, value, target) -> bool:
-        return value <= target
+    # def smallerThanOrEqualTo(self, value, target) -> bool:
+    #     return value <= target
     
     # def callableExecution(self, callablePosition, itsArguemts):
     #     pass
+    
+class character_effectSys():
+    def __init__(self, player: Player_status, preDefinedCommands: Commands) -> None:
+        """
+        This class is pre-defined buff function in methods form
+        """
+        self.__player = player
+        self.__preDefinedCommands = preDefinedCommands
+        
+    def hp_recovery(self, amount):
+        self.__preDefinedCommands.hp_adjust(amount)
+        
+    def more_hp(self, amount):
+        self.__player.set_maximum_hp(self.__player.get_maximum_hp() + amount)
+        
+    def action_point_recovery(self, amount):
+        self.__preDefinedCommands.action_point_adjust(amount)
+        
+    def more_ap(self, amount):
+        self.__player.set_maximum_action_point(self.__player.get_maximum_action_point() + amount)
 
 class DefininedSys(): # 
     def __init__(self, preDefinedCommands: Commands, player: Player_status) -> None:
@@ -113,9 +135,12 @@ class DefininedSys(): #
         #         [(preDefinedCommands.add_items, (None, random.choice, (self.__def_items, )))])
         # ]
         
-        self.__def_events = [
-            
-        ]
+        self.__pre_def_events = {
+            "survival crisis": {"action point": Events("Exhausted","survival crisis", \
+                "low action point in anywhere", ["increase action point", \
+                    "increase maximum action point"], ["decrease action point", \
+                    "decrease maximum action point"], 3, "I'm so tired, I need have a rest!")}
+        }
         
         self.__def_actions = {
             "Move North": Actions("Move North", [(preDefinedCommands.move, ("North",))]),
@@ -132,11 +157,11 @@ class DefininedSys(): #
         self.__def_items = new_items
 
     def get_events(self) -> list[Events]:
-        return self.__def_events
+        return self.__pre_def_events
     
     # Setter method for def_items
-    def set_events(self, new_events: list[Events]):
-        self.__def_events = new_events
+    # def set_events(self, new_events: list[Events]):
+    #     self.__pre_def_events = new_events
 
     def get_Actions(self) -> dict[str,Actions]:
         return self.__def_actions

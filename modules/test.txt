@@ -72,3 +72,79 @@ class Commands():
         self.__player.set_action_point(self.__player.get_action_point() + value)
         
 "
+
+
+You are creating a event for a text-based adventure game, you should create event in following form based on game information provided in later:
+{
+	"event_name": <event name here>,
+	"event_discription": <possible discription in third person and first person view>
+}, Here is an example:
+	game information:
+	{
+		"event type": "survival crisis",
+		"triggered reason": "low action point moving in the desert",
+		"Tool(s) assist with moving": [],
+		"player current status": "thirsty"
+	}
+	
+	expected result:
+	{
+		"event_name": "thirstily crisis",
+		"event_discription": "The relentless sun is beating down in the scorching desert. Thirst claws at my throat as I trudge through shifting sands, each step a battle against exhaustion. I am so tired and thirsty. My only hope is to press on, seeking refuge or even a mere sip of water to quench this insatiable thirst before it consumes me entirely."
+	}
+
+Could you help me create an event based on this information:
+{
+	"event type": "poisoning potential",
+	"triggered reason": "attacked by snake",
+	"player current status": "normal",
+	"possible reward": ["increase maximum hp", "increase maximum action point"],
+	"possible penalty": ["decrease hp", "decrease action point", "add poisoning status"]
+}
+
+
+
+You are determine the development of an event in a text-based adventure game, you should tell the program the development in following form of event based on the game information provided later:
+{
+	"successful": <True if succeed, False if not>,
+	"fail": <True if failed, False if not>,
+	"reward": <select the index of zero or more of reward from possible reward list in game information provided based on player action in game information>, 
+	"penalty": <select the index of zero or more of penalty from possible penalty list in game information provided based on player action in game information>
+}, Here is an example(the event is not necessary be succeed or failed immediately, it won't failed as long as in the time limit, we will tell you if times up):
+	game information:
+	{
+		"event_name": "Venomous Encounter",
+		"event type": "poisoning potential",
+		"triggered reason": "attacked by snake",
+		"player current status": "normal",
+		"player action": "suck the attcked part",
+		"times up": False,
+		"possible reward": ["increase maximum hp", "increase maximum action point", "obtain a poison"],
+		"possible penalty": ["decrease hp", "decrease action point", "add poisoning status"]
+	}
+	
+	expected result:
+	{
+		"successful": False,
+		"fail": False,
+		"reward": [], 
+		"penalty": [2]
+}
+
+Could you help me determine this event development based on this information{
+	"event_name": "thirstily crisis",
+	"event type": "survival crisis",
+	"triggered reason": "low action point in desert",
+	"player current status": "thirsty",
+	"player action": "stay in campsite",
+	"times up": True,
+	"possible reward": ["increase maximum hp", "remove thirsty status"],
+	"possible penalty": ["decrease hp", "decrease action point", "add sick status"]
+}
+
+{
+	"event type": "survival crisis",
+	"triggered reason": "low action point moving in the sea",
+	"Tool(s) assist with moving": [],
+	"player current status": "normal"
+}
