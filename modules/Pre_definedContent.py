@@ -135,6 +135,12 @@ class DefininedSys(): #
         #         [(preDefinedCommands.add_items, (None, random.choice, (self.__def_items, )))])
         # ]
         
+        self.__pre_def_events_frameWork = {
+            "survival crisis": {"action point": Events("", "survival crisis", \
+                "low action point", ["increase action point", "increase maximum action point"], \
+                    ["decrease action point", "decrease maximum action point"], -1, "")}
+        }
+        
         self.__pre_def_events = {
             "survival crisis": {"action point": Events("Exhausted","survival crisis", \
                 "low action point in anywhere", ["increase action point", \
@@ -158,6 +164,9 @@ class DefininedSys(): #
 
     def get_events(self) -> list[Events]:
         return self.__pre_def_events
+    
+    def get_events_frameWork(self) -> dict:
+        return self.__pre_def_events_frameWork
     
     # Setter method for def_items
     # def set_events(self, new_events: list[Events]):

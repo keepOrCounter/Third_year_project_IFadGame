@@ -166,7 +166,7 @@ inquiry:
 response by gpt3.5-turbo: 
 Sea
 
-You are standing at the edge of a vast sea. The sound of crashing waves fills the air as you gaze out into the horizon. The water stretches as far as the eye can see, with no land in sight. The sea is a deep blue color, with occasional whitecaps forming on the surface. 
+You are making an effort to tread water to prevent yourself from sinking into the sea. sea. The sound of crashing waves fills the air as you gaze out into the horizon. The water stretches as far as the eye can see, with no land in sight. The sea is a deep blue color, with occasional whitecaps forming on the surface. 
 
 There are some traps scattered around here, perhaps left by previous adventurers. Be careful where you step.
 ////////////////////////////////////////////////////

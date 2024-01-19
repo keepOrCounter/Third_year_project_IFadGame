@@ -5,6 +5,7 @@ from Pre_definedContent import *
 from interactionSys import OutputGenerator
 import cv2
 import random
+import copy
 
 
 class MapGenerator():
@@ -190,14 +191,34 @@ class objectsGenerator():
 
 
 class eventGenerator():
-    def __init__(self, defininedContent: DefininedSys) -> None:
+    def __init__(self, defininedContent: DefininedSys, player : Player_status, \
+        map_info: Map_information) -> None:
         self.__defininedContent = defininedContent
+        self.__player = player
+        self.__map_info = map_info
         
     def eventGeneration(self) -> list[Events]:
         eventList = self.__defininedContent.get_events()
         generateResult = random.choice(eventList)
         
         return generateResult
+    
+    def event_triger(self) -> Events:
+        triggered_event: Events = None
+        if self.__player.get_action_point() < 40:
+            triggered_event = copy.deepcopy(self.__defininedContent.get_events_frameWork()["survival crisis"]["action point"])
+            
+            triggered_event.current_location = self.__map_info.currentLocation.location_name
+            triggered_event.currentAction = self.__player.get_currentAction().actionName
+            
+            state = self.__player.get_buffs()
+            if len(state) == 0:
+                state = "normal"
+            triggered_event.play_current_status = state
+            triggered_event.description = self.__map_info.currentLocation.description
+            
+            
+        return triggered_event
 
 
 class PCGController():
@@ -205,7 +226,7 @@ class PCGController():
         map_info: Map_information, descriptionGenerator: OutputGenerator) -> None:
         self.__mapPCG = MapGenerator(player, map_info)
         self.__objectsPCG = objectsGenerator(defininedContent)
-        self.__eventPCG = eventGenerator(defininedContent)
+        self.__eventPCG = eventGenerator(defininedContent, player, map_info)
         self.__player = player
         self.__map_info = map_info
         self.__new_class = True

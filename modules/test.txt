@@ -82,15 +82,25 @@ You are creating a event for a text-based adventure game, you should create even
 	game information:
 	{
 		"event type": "survival crisis",
-		"triggered reason": "low action point moving in the desert",
+		"triggered reason": "low action point",
+		"Current location": "End Of Road",
+		"Current action": "moving",
 		"Tool(s) assist with moving": [],
-		"player current status": "thirsty"
+		"player current status": "Normal",
+		"description needed to be modified": "
+End Of Road
+
+You are standing at the end of a road before a small brick building. Around you is a forest. A small stream flows out of the building and down a gully. 
+There are some keys on the ground here."
 	}
 	
 	expected result:
 	{
-		"event_name": "thirstily crisis",
-		"event_discription": "The relentless sun is beating down in the scorching desert. Thirst claws at my throat as I trudge through shifting sands, each step a battle against exhaustion. I am so tired and thirsty. My only hope is to press on, seeking refuge or even a mere sip of water to quench this insatiable thirst before it consumes me entirely."
+		"event_name": "starting feeling tired",
+		"event_discription": "
+End Of Road
+
+You stand at the end of a road before a small brick building. The dense forest surrounds you, its looming trees casting shadows. A weary sensation seeps through your limbs, accentuating the fatigue in your bones. A small stream trickles from the building, and amidst the weariness, you notice a glint—keys scattered on the ground, waiting to be claimed."
 	}
 
 Could you help me create an event based on this information:
@@ -144,7 +154,15 @@ Could you help me determine this event development based on this information{
 
 {
 	"event type": "survival crisis",
-	"triggered reason": "low action point moving in the sea",
+	"triggered reason": "low action point",	
+	"Current location": "Sea",
+	"Current action": "moving",
 	"Tool(s) assist with moving": [],
-	"player current status": "normal"
+	"player current status": "normal",
+	"description needed to be modified": "
+Sea
+
+You are making an effort to tread water to prevent yourself from sinking into the sea. The sound of crashing waves fills the air as you gaze out into the horizon. The water stretches as far as the eye can see, with no land in sight. The sea is a deep blue color, with occasional whitecaps forming on the surface. 
+
+There are some traps scattered around here, perhaps left by previous adventurers. Be careful where you step."
 }

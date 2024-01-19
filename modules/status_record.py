@@ -25,7 +25,13 @@ class Events():
         self.possible_reward = possible_reward
         self.possible_penalty = possible_penalty
         self.time_limit = time_limit
+        
         self.description = description
+        
+        self.currentAction = ""
+        self.current_location = ""
+        self.moving_tool = []
+        self.play_current_status = ""
         # self.gpt_required = gpt_required
         
 

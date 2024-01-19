@@ -59,9 +59,38 @@ End Of Road
 
 You are standing at the end of a road before a small brick building. Around you is a forest. A small stream flows out of the building and down a gully. 
 There are some keys on the ground here." """
+
+        self.__eventDiscriptionSysRole = """You are creating a event for a text-based adventure game, you should create event in following form based on game information provided in later:
+{
+	"event_name": <event name here>,
+	"event_discription": <possible discription in third person and first person view>
+}, Here is an example:
+	game information:
+	{
+		"event type": "survival crisis",
+		"triggered reason": "low action point",
+		"Current location": "End Of Road",
+		"Current action": "moving",
+		"Tool(s) assist with moving": [],
+		"player current status": "Normal",
+		"description needed to be modified": "
+End Of Road
+
+You are standing at the end of a road before a small brick building. Around you is a forest. A small stream flows out of the building and down a gully. 
+There are some keys on the ground here."
+	}
+	
+	expected result:
+	{
+		"event_name": "starting feeling tired",
+		"event_discription": "
+End Of Road
+
+You stand at the end of a road before a small brick building. The dense forest surrounds you, its looming trees casting shadows. A weary sensation seeps through your limbs, accentuating the fatigue in your bones. A small stream trickles from the building, and amidst the weariness, you notice a glint—keys scattered on the ground, waiting to be claimed."
+	}"""
         
     
-    def locationDescription(self, locationList: dict[str, Location]):
+    def locationDescription(self, locationList: dict[str, Location]) -> None:
         """
         Args:
             `locationList (dict[str, Location])`: {current: <Location>, Front: \
@@ -87,6 +116,20 @@ There are some keys on the ground here." """
         locationList["Current location"].description = gpt_response
     
     
+    def eventDescription(self, event: Events) -> str:
+        inputDictionary = {"event type": event.eventType, "triggered reason": event.triggered_reason, \
+            "Current location": event.current_location, "Current action": event.currentAction, \
+                "Tool(s) assist with moving": event.moving_tool, "player current status": event.play_current_status, \
+                    "description needed to be modified": event.description}
+        
+        inquiry = str(inputDictionary)
+        print(inquiry)
+        print("=======================================\n")
+        gpt_response = self.__gptAPI.inquiry(inquiry, self.__eventDiscriptionSysRole)
+        print(gpt_response)
+        self.__OuterData.inquery_response_log_recorder(self.__eventDiscriptionSysRole, inquiry, gpt_response)
+
+        return gpt_response
     
 class InputTranslator():
     def __init__(self, gptAPI: Gpt3, playerStatus: Player_status, mapInfo: Map_information, \

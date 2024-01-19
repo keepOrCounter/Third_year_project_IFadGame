@@ -23,8 +23,6 @@ class rule_system():
     def player_active(self):
         return self.__player.get_action_point() > 0
     
-    def event_triger(self):
-        pass
     
     # def 
 
