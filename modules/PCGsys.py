@@ -209,7 +209,11 @@ class eventGenerator():
             triggered_event = copy.deepcopy(self.__defininedContent.get_events_frameWork()["survival crisis"]["action point"])
             
             triggered_event.current_location = self.__map_info.currentLocation.location_name
-            triggered_event.currentAction = self.__player.get_currentAction().actionName
+            player_action = self.__player.get_currentAction()
+            if player_action == None:
+                triggered_event.currentAction = "None"
+            else:
+                triggered_event.currentAction = player_action.actionName
             
             state = self.__player.get_buffs()
             if len(state) == 0:
@@ -241,6 +245,7 @@ class PCGController():
         playerCoord = self.__player.get_currentLocation()
         map_size = self.__map_info.get_map_size()
         
+        print("player action:", self.__player.get_currentAction())
         if self.__new_class or not (current_area[0] <= playerCoord[0] < current_area[0]+map_size[0] \
             and current_area[1] <= playerCoord[1] < current_area[1]+map_size[1]):
             # enetering into a new area
@@ -292,8 +297,12 @@ class PCGController():
         #         "Right hand side": Location("<Do not know>", 0, 0), "Left hand side": Location("<Do not know>", 0, 0)}
         if player_arounding["Current location"].description == "":
             self.__descriptionGenerator.locationDescription(player_arounding)
+            print(self.__map_info.currentLocation.description)
         
-        
+        triggered_event = self.__eventPCG.event_triger()
+        if triggered_event != None:
+            output = self.__descriptionGenerator.eventDescription(triggered_event)
+            print(output)
     
 
 

@@ -95,7 +95,7 @@ class character_effectSys():
         self.__player.set_maximum_action_point(self.__player.get_maximum_action_point() + amount)
 
 class DefininedSys(): # 
-    def __init__(self, preDefinedCommands: Commands, player: Player_status) -> None:
+    def __init__(self, preDefinedCommands: Commands) -> None:
         """
         All the defined content stored here\n\n
         `__def_items:` All the objects with same or differnt type here\n

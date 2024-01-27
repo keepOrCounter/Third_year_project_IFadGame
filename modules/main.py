@@ -27,7 +27,7 @@ class rule_system():
     # def 
 
 if __name__ == "__main__":
-    player_info = Player_status()
+    player_info = Player_status(action_point = 30)
     map_record = Map_information(current_area_type = 1, map_size=(20, 20)) # land type
     # mapPCG = MapGenerator(player_info, map_record)
     defined_command = Commands(player_info, map_record)

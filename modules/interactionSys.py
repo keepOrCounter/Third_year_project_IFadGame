@@ -4,6 +4,7 @@ import time
 import Levenshtein
 from status_record import *
 from Pre_definedContent import *
+import json
 
 class IOSys():
     def __init__(self) -> None:
@@ -111,12 +112,12 @@ You stand at the end of a road before a small brick building. The dense forest s
         print(inquiry)
         print("=======================================\n")
         gpt_response = self.__gptAPI.inquiry(inquiry, self.__locationDiscriptionSysRole)
-        print(gpt_response)
+        # print(gpt_response)
         self.__OuterData.inquery_response_log_recorder(self.__locationDiscriptionSysRole, inquiry, gpt_response)
         locationList["Current location"].description = gpt_response
     
     
-    def eventDescription(self, event: Events) -> str:
+    def eventDescription(self, event: Events) -> dict[str]:
         inputDictionary = {"event type": event.eventType, "triggered reason": event.triggered_reason, \
             "Current location": event.current_location, "Current action": event.currentAction, \
                 "Tool(s) assist with moving": event.moving_tool, "player current status": event.play_current_status, \
@@ -126,10 +127,16 @@ You stand at the end of a road before a small brick building. The dense forest s
         print(inquiry)
         print("=======================================\n")
         gpt_response = self.__gptAPI.inquiry(inquiry, self.__eventDiscriptionSysRole)
-        print(gpt_response)
+        # print(gpt_response)
         self.__OuterData.inquery_response_log_recorder(self.__eventDiscriptionSysRole, inquiry, gpt_response)
+        
+        data = json.loads(gpt_response, strict=False)
 
-        return gpt_response
+        # Extract the value of the "event_name" key and "event_description" key
+        result = {"event_name": str(data.get("event_name")), "event_description": str(data.get("event_description"))}
+
+
+        return result
     
 class InputTranslator():
     def __init__(self, gptAPI: Gpt3, playerStatus: Player_status, mapInfo: Map_information, \
@@ -159,6 +166,7 @@ be any of the game command above, just reply a '<Rejected>'."
                 dis = tem_dis
         if move_commands[target] != "<Rejected>":
             action = self.__defined_content.get_Actions()[move_commands[target]]
+            self.__playerStatus.set_currentAction(action)
             for commands in action.command_executed:
                 commands[0](*commands[1])
         else:

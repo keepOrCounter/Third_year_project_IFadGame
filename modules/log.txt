@@ -246,3 +246,138 @@ In the distance, you can see rolling hills and mountains, but they are too far a
 
 As you look around, you notice some firewood and traps lying on the ground nearby. It seems someone may have left them here, but there is no indication of who or why.
 ////////////////////////////////////////////////////
+[Sat Jan 27 16:25:33 2024]
+systemRole: 
+You are writing a description about current location player is at for a text-based adventure game program, you will receive a game details from game program like this "{Current location: End Of Road, Front: brick building, Back: Forest, Right hand side: Forest, Left hand side: Forest, Landscape Features: [flat ground, small stream], Items: [keyA, keyB, keyC]}". You should write a description in this style: "
+
+End Of Road
+
+You are standing at the end of a road before a small brick building. Around you is a forest. A small stream flows out of the building and down a gully. 
+There are some keys on the ground here." 
+
+inquiry: 
+{'Current location': 'land', 'Front': 'land', 'Back': 'land', 'Right hand side': 'land', 'Left hand side': 'land', 'Items': ['First Aid Kit']}
+
+response by gpt3.5-turbo: 
+Land
+
+You are standing on a vast expanse of land. In every direction, all you can see is more land. The landscape stretches out endlessly, with no distinguishing features or landmarks. The ground beneath your feet is flat and barren, devoid of any vegetation. 
+
+There is nothing of note here except for a lone item - a First Aid Kit - lying on the ground. It seems out of place in this desolate landscape.
+////////////////////////////////////////////////////
+[Sat Jan 27 16:33:24 2024]
+systemRole: 
+You are writing a description about current location player is at for a text-based adventure game program, you will receive a game details from game program like this "{Current location: End Of Road, Front: brick building, Back: Forest, Right hand side: Forest, Left hand side: Forest, Landscape Features: [flat ground, small stream], Items: [keyA, keyB, keyC]}". You should write a description in this style: "
+
+End Of Road
+
+You are standing at the end of a road before a small brick building. Around you is a forest. A small stream flows out of the building and down a gully. 
+There are some keys on the ground here." 
+
+inquiry: 
+{'Current location': 'land', 'Front': 'land', 'Back': 'land', 'Right hand side': 'land', 'Left hand side': 'land', 'Items': ['Weapon Crafting Bench', 'Traps'], 'Landscape Features': ['Rocks']}
+
+response by gpt3.5-turbo: 
+Land
+
+You are standing in a vast expanse of land. There is no specific landmark or structure in sight. The landscape is dominated by rocky terrain, with scattered rocks of various sizes. The land stretches out in all directions, with no discernible boundaries.
+
+As you explore, you notice a few landscape features that catch your attention. Large rocks jut out from the ground, creating a rugged and uneven surface. These rocks could potentially provide cover or serve as a vantage point.
+
+In addition to the natural formations, you also spot some items scattered on the ground. There is a Weapon Crafting Bench, suggesting that this area may have been used for weapon preparation or training. You also notice some Traps, hinting at a possible danger or the presence of hunters or adventurers.
+
+The land seems desolate and devoid of any significant activity. It is up to you to decide where to go or what to do next.
+////////////////////////////////////////////////////
+[Sat Jan 27 16:35:09 2024]
+systemRole: 
+You are writing a description about current location player is at for a text-based adventure game program, you will receive a game details from game program like this "{Current location: End Of Road, Front: brick building, Back: Forest, Right hand side: Forest, Left hand side: Forest, Landscape Features: [flat ground, small stream], Items: [keyA, keyB, keyC]}". You should write a description in this style: "
+
+End Of Road
+
+You are standing at the end of a road before a small brick building. Around you is a forest. A small stream flows out of the building and down a gully. 
+There are some keys on the ground here." 
+
+inquiry: 
+{'Current location': 'land', 'Front': 'land', 'Back': 'land', 'Right hand side': 'land', 'Left hand side': 'land', 'Landscape Features': ['Stream', 'Stream']}
+
+response by gpt3.5-turbo: 
+Land
+
+You are standing in the middle of vast land. There is nothing but open space in every direction. The landscape is flat and featureless, with no distinguishable landmarks or objects. The only thing that breaks the monotony is the presence of two small streams, running parallel to each other. The sound of running water adds a calming touch to the otherwise desolate surroundings.
+////////////////////////////////////////////////////
+[Sat Jan 27 16:42:01 2024]
+systemRole: 
+You are writing a description about current location player is at for a text-based adventure game program, you will receive a game details from game program like this "{Current location: End Of Road, Front: brick building, Back: Forest, Right hand side: Forest, Left hand side: Forest, Landscape Features: [flat ground, small stream], Items: [keyA, keyB, keyC]}". You should write a description in this style: "
+
+End Of Road
+
+You are standing at the end of a road before a small brick building. Around you is a forest. A small stream flows out of the building and down a gully. 
+There are some keys on the ground here." 
+
+inquiry: 
+{'Current location': 'land', 'Front': 'land', 'Back': 'land', 'Right hand side': 'land', 'Left hand side': 'land', 'Landscape Features': ['Stream']}
+
+response by gpt3.5-turbo: 
+Land
+
+You are standing in a vast expanse of land. All around you is nothing but open space. The landscape stretches as far as the eye can see, with no signs of civilization in sight. The only feature that breaks the monotony is a gentle stream that meanders through the land, providing a soothing sound and a touch of life to the otherwise barren surroundings.
+////////////////////////////////////////////////////
+[Sat Jan 27 16:48:37 2024]
+systemRole: 
+You are writing a description about current location player is at for a text-based adventure game program, you will receive a game details from game program like this "{Current location: End Of Road, Front: brick building, Back: Forest, Right hand side: Forest, Left hand side: Forest, Landscape Features: [flat ground, small stream], Items: [keyA, keyB, keyC]}". You should write a description in this style: "
+
+End Of Road
+
+You are standing at the end of a road before a small brick building. Around you is a forest. A small stream flows out of the building and down a gully. 
+There are some keys on the ground here." 
+
+inquiry: 
+{'Current location': 'land', 'Front': 'land', 'Back': 'land', 'Right hand side': 'land', 'Left hand side': 'land', 'Items': ['Weapon Crafting Bench', 'Weapon Crafting Bench']}
+
+response by gpt3.5-turbo: 
+Land
+
+You are standing in the middle of a vast, open land. There is no sign of civilization as far as the eye can see. The landscape stretches out in all directions, with no distinguishing features. The land is barren and devoid of any vegetation or structures. It is a desolate and lonely place. 
+
+There are a couple of weapon crafting benches scattered around the area. They seem to have been left here by someone, but there is no sign of who or why. These benches can be used to craft powerful weapons, if you have the necessary materials.
+////////////////////////////////////////////////////
+[Sat Jan 27 16:48:44 2024]
+systemRole: 
+You are creating a event for a text-based adventure game, you should create event in following form based on game information provided in later:
+{
+	"event_name": <event name here>,
+	"event_discription": <possible discription in third person and first person view>
+}, Here is an example:
+	game information:
+	{
+		"event type": "survival crisis",
+		"triggered reason": "low action point",
+		"Current location": "End Of Road",
+		"Current action": "moving",
+		"Tool(s) assist with moving": [],
+		"player current status": "Normal",
+		"description needed to be modified": "
+End Of Road
+
+You are standing at the end of a road before a small brick building. Around you is a forest. A small stream flows out of the building and down a gully. 
+There are some keys on the ground here."
+	}
+	
+	expected result:
+	{
+		"event_name": "starting feeling tired",
+		"event_discription": "
+End Of Road
+
+You stand at the end of a road before a small brick building. The dense forest surrounds you, its looming trees casting shadows. A weary sensation seeps through your limbs, accentuating the fatigue in your bones. A small stream trickles from the building, and amidst the weariness, you notice a glint¡ªkeys scattered on the ground, waiting to be claimed."
+	}
+
+inquiry: 
+{'event type': 'survival crisis', 'triggered reason': 'low action point', 'Current location': 'land', 'Current action': 'None', 'Tool(s) assist with moving': [], 'player current status': 'normal', 'description needed to be modified': 'Land\n\nYou are standing in the middle of a vast, open land. There is no sign of civilization as far as the eye can see. The landscape stretches out in all directions, with no distinguishing features. The land is barren and devoid of any vegetation or structures. It is a desolate and lonely place. \n\nThere are a couple of weapon crafting benches scattered around the area. They seem to have been left here by someone, but there is no sign of who or why. These benches can be used to craft powerful weapons, if you have the necessary materials.'}
+
+response by gpt3.5-turbo: 
+{
+	"event_name": "discovering an abandoned camp",
+	"event_discription": "Land\n\nYou find yourself standing in the middle of a vast, open land. The desolation of the surroundings weighs heavily on your spirit, as if the land itself is sapping away your strength. There is no sign of civilization as far as the eye can see, leaving you feeling isolated and vulnerable.\n\nAmidst the barren landscape, you spot a few weapon crafting benches scattered around. They stand as silent reminders of a presence that once inhabited this desolate place. The mystery of who left them behind and why lingers in the air, adding an eerie touch to the already somber atmosphere. These benches hold the potential to create formidable weapons, if you possess the necessary materials." 
+}
+////////////////////////////////////////////////////

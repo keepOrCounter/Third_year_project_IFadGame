@@ -183,11 +183,37 @@
 # cv2.destroyAllWindows()
 
 # print(np.zeros((50,)))
-def ttt(t):
-    print(t)
+# def ttt(t):
+#     print(t)
 
-v = ttt
-print(str(v))
-b = (2, )
-print(type(b))
-v(*b)
+# v = ttt
+# print(str(v))
+# b = (2, )
+# print(type(b))
+# v(*b)
+
+import json
+
+# Your JSON formatted string
+json_string = '''
+{
+    "event_name": "discovering an abandoned camp",
+    "event_description": "Land\n\nYou find yourself standing in the middle of a vast, open land. The desolation of the surroundings weighs heavily on your spirit, as if the land itself is sapping away your strength. There is no sign of civilization as far as the eye can see, leaving you feeling isolated and vulnerable.\n\nAmidst the barren landscape, you spot a few weapon crafting benches scattered around. They stand as silent reminders of a presence that once inhabited this desolate place. The mystery of who left them behind and why lingers in the air, adding an eerie touch to the already somber atmosphere. These benches hold the potential to create formidable weapons, if you possess the necessary materials."
+}
+'''
+
+# Parse the JSON string
+data = json.loads(json_string, strict=False)
+print(type(data))
+a = dict()
+print(type(a))
+
+# Extract the value of the "event_name" key
+event_name = data.get("event_name")
+
+# Extract the value of the "event_description" key
+event_description = data.get("event_description")
+
+# Print the extracted values
+print("Event Name:", event_name)
+print("Event Description:", event_description)

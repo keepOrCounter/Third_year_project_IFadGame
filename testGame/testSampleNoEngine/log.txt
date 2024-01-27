@@ -1979,3 +1979,29 @@ Objects at current location(All possible objects and scene in here, please don't
 response by gpt3.5-turbo: 
 You are standing on a narrow path that winds through a dense forest. Tall trees surround you, their branches creating a canopy overhead. Sunlight filters through the leaves, casting dappled shadows on the ground. The forest floor is covered in a thick carpet of moss and fallen leaves. In the distance, you can see a cluster of mushrooms growing at the base of a tree. As you look around, you notice a map lying on the ground, waiting to be discovered.
 ////////////////////////////////////////////////////
+[Tue Dec  5 15:26:54 2023]
+systemRole: 
+You are an author of a text-based adventure game, and you need to write one short description(Only for current location) for player base on game information, here is an example:{Map: 
+[Forest      ]--[brick building]--[Forest     ]
+        |            |               |
+[Forest      ]--[End Of Road   ]--[Deep forest]
+        |            |               |
+[Not Known   ]--[Forest        ]--[Not Known  ]
+Current location: End Of Road
+Objects at current location:[stream, keyA, keyB, keyC]} According to th example above, you should author the game text in this style: You are standing at the end of a road before a small brick building. Around you is a forest. A small stream flows out of the building and down a gully. 
+There are some keys on the ground here.
+
+inquiry: 
+game information(Notice: the place around current location is just to make sure that there is not contradiction between your writting and the game map, please do not tell player about the place around current location): {
+Map(Lines or slashes represent connections between different places):
+[Riverbank      ]--[Old Ruins      ]--[Dragon's Lair  ]
+        |                  |                  |        
+[Clearing       ]--[Forest Path    ]--[Mountain Base  ]
+        |                  |                  |        
+[Forest Entrance]--[Mysterious Cave]--[Dark Forest    ]
+Current location: Forest Path
+Objects at current location(All possible objects and scene in here, please don't write something doesn't in this list. For example, if tree is not in list, don't tell about tree in description even if the Current location is a forest):['Map', 'Mushrooms', 'Trees']}
+
+response by gpt3.5-turbo: 
+You are standing on a narrow path surrounded by towering trees in the middle of a dense forest. Shafts of sunlight filter through the canopy above, casting dappled shadows on the forest floor. The air is filled with the earthy scent of moss and the distant chirping of birds. You notice some mushrooms growing along the edge of the path and a map lying on the ground.
+////////////////////////////////////////////////////
