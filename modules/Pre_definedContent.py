@@ -16,6 +16,14 @@ class Commands():
         """
         Move to specific direction or target place
         """
+        action_point_changed = 0
+        if self.__map.get_current_area_type() == 1:
+            action_point_changed = -5
+        elif self.__map.get_current_area_type() == 0:
+            if False:
+                pass
+            else:
+                action_point_changed = -20
         if target == "North":
             x, y = self.__player.get_currentLocation()
             self.__player.set_currentLocation(x, y+1)
@@ -30,7 +38,9 @@ class Commands():
             self.__player.set_currentLocation(x-1, y)
         else:
             self.__player.set_currentLocation(*target)
-            
+        self.__player.set_action_point(self.__player.get_action_point() +\
+            action_point_changed)
+        
     def action_point_adjust(self, value: int) -> None:
         """
         Recovery or consume action point
