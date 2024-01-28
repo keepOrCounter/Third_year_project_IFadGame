@@ -192,28 +192,74 @@
 # print(type(b))
 # v(*b)
 
-import json
+# import json
 
-# Your JSON formatted string
-json_string = '''
-{
-    "event_name": "discovering an abandoned camp",
-    "event_description": "Land\n\nYou find yourself standing in the middle of a vast, open land. The desolation of the surroundings weighs heavily on your spirit, as if the land itself is sapping away your strength. There is no sign of civilization as far as the eye can see, leaving you feeling isolated and vulnerable.\n\nAmidst the barren landscape, you spot a few weapon crafting benches scattered around. They stand as silent reminders of a presence that once inhabited this desolate place. The mystery of who left them behind and why lingers in the air, adding an eerie touch to the already somber atmosphere. These benches hold the potential to create formidable weapons, if you possess the necessary materials."
-}
-'''
+# # Your JSON formatted string
+# json_string = '''
+# {
+#     "event_name": "discovering an abandoned camp",
+#     "event_description": "Land\n\nYou find yourself standing in the middle of a vast, open land. The desolation of the surroundings weighs heavily on your spirit, as if the land itself is sapping away your strength. There is no sign of civilization as far as the eye can see, leaving you feeling isolated and vulnerable.\n\nAmidst the barren landscape, you spot a few weapon crafting benches scattered around. They stand as silent reminders of a presence that once inhabited this desolate place. The mystery of who left them behind and why lingers in the air, adding an eerie touch to the already somber atmosphere. These benches hold the potential to create formidable weapons, if you possess the necessary materials."
+# }
+# '''
 
-# Parse the JSON string
-data = json.loads(json_string, strict=False)
-print(type(data))
-a = dict()
-print(type(a))
+# # Parse the JSON string
+# data = json.loads(json_string, strict=False)
+# print(type(data))
+# a = dict()
+# print(type(a))
 
-# Extract the value of the "event_name" key
-event_name = data.get("event_name")
+# # Extract the value of the "event_name" key
+# event_name = data.get("event_name")
 
-# Extract the value of the "event_description" key
-event_description = data.get("event_description")
+# # Extract the value of the "event_description" key
+# event_description = data.get("event_description")
 
-# Print the extracted values
-print("Event Name:", event_name)
-print("Event Description:", event_description)
+# # Print the extracted values
+# print("Event Name:", event_name)
+# print("Event Description:", event_description)
+
+
+    def visualized(self, random_map, updated_map, mode="8_neighbours"): # rows, cols = y, x
+
+        # random_map, updated_map = self.game_map_generation(cellular_timesteps, \
+        #     convert_threshold, mode)
+
+        # print(updated_map)
+        print(random_map)
+        print(updated_map)
+        print(self.terrain_type[updated_map].tolist())
+
+        array = random_map
+
+        # Convert the array to a grayscale image
+        # image = np.uint8(array * 255)
+        colored_image = np.zeros((array.shape[0], array.shape[1], 3), dtype=np.uint8)
+        colored_image[array == 0] = [255, 0, 0]  # Blue for 0s
+        colored_image[array == 1] = [0, 255, 0]  # Green for 1s
+
+        # Optionally, scale the image to make it visually better
+        scale_factor = 5
+        scaled_image = cv2.resize(colored_image, None, fx=scale_factor, fy=scale_factor, interpolation=cv2.INTER_NEAREST)
+
+        # Display the image
+        cv2.imshow('Visualized Image', scaled_image)
+        cv2.waitKey(0)
+        cv2.destroyAllWindows()
+
+
+        array = updated_map
+
+        # Convert the array to a grayscale image
+        # image = np.uint8(array * 255)
+        colored_image = np.zeros((array.shape[0], array.shape[1], 3), dtype=np.uint8)
+        colored_image[array == 0] = [255, 0, 0]  # Blue for 0s
+        colored_image[array == 1] = [0, 255, 0]  # Green for 1s
+
+        # Optionally, scale the image to make it visually better
+        scale_factor = 5
+        scaled_image = cv2.resize(colored_image, None, fx=scale_factor, fy=scale_factor, interpolation=cv2.INTER_NEAREST)
+
+        # Display the image
+        cv2.imshow('Visualized Image', scaled_image)
+        cv2.waitKey(0)
+        cv2.destroyAllWindows()
