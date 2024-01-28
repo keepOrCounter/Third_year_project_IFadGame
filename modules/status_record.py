@@ -203,7 +203,7 @@ class EventsTriggered():
     def add_new_event(self, newEvent: Events) -> None:
         self.__eventsTriggered.append(newEvent)
         
-    def eventHandler(self):
+    def event_handler(self):
         """
         Please call this every turn
         """

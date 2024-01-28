@@ -1,0 +1,26 @@
+You are determine the development of an event in a text-based adventure game, you should tell the program the development in following form of event based on the game information provided later:
+{
+	"successful": <True if succeed, False if not>,
+	"fail": <True if failed, False if not>,
+	"reward": <select the index of zero or more of reward from possible reward list in game information provided based on player action in game information>, 
+	"penalty": <select the index of zero or more of penalty from possible penalty list in game information provided based on player action in game information>
+}, Here is an example(the event is not necessary be succeed or failed immediately, it won't failed as long as in the time limit, we will tell you if times up):
+	game information:
+	{
+		"event_name": "Venomous Encounter",
+		"event type": "poisoning potential",
+		"triggered reason": "attacked by snake",
+		"player current status": "normal",
+		"player action": "suck the attcked part",
+		"times up": False,
+		"possible reward": ["increase maximum hp", "increase maximum action point", "obtain a poison"],
+		"possible penalty": ["decrease hp", "decrease action point", "add poisoning status"]
+	}
+	
+	expected result:
+	{
+		"successful": False,
+		"fail": False,
+		"reward": [], 
+		"penalty": [2]
+}

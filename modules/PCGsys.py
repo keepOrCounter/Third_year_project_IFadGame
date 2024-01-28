@@ -227,7 +227,8 @@ class eventGenerator():
 
 class PCGController():
     def __init__(self, defininedContent: DefininedSys, player : Player_status, \
-        map_info: Map_information, descriptionGenerator: OutputGenerator) -> None:
+        map_info: Map_information, descriptionGenerator: OutputGenerator, \
+            eventController: EventsTriggered) -> None:
         self.__mapPCG = MapGenerator(player, map_info)
         self.__objectsPCG = objectsGenerator(defininedContent)
         self.__eventPCG = eventGenerator(defininedContent, player, map_info)
@@ -235,6 +236,7 @@ class PCGController():
         self.__map_info = map_info
         self.__new_class = True
         self.__descriptionGenerator = descriptionGenerator
+        self.__eventController = eventController
         
     def locationPCG_each_turn(self) -> dict[str, Location]:
         """
@@ -244,6 +246,8 @@ class PCGController():
         current_area = self.__map_info.get_current_map_coordinate()
         playerCoord = self.__player.get_currentLocation()
         map_size = self.__map_info.get_map_size()
+        
+        self.__eventController.event_handler() # determine the effects caused by any events
         
         print("player action:", self.__player.get_currentAction())
         if self.__new_class or not (current_area[0] <= playerCoord[0] < current_area[0]+map_size[0] \
@@ -301,6 +305,7 @@ class PCGController():
         
         triggered_event = self.__eventPCG.event_triger()
         if triggered_event != None:
+            # TODO change the eventDescription to make it description all current events
             output = self.__descriptionGenerator.eventDescription(triggered_event)
             print(output)
     

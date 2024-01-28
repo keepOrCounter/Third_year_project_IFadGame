@@ -92,6 +92,7 @@ You stand at the end of a road before a small brick building. The dense forest s
         
     
     def locationDescription(self, locationList: dict[str, Location]) -> None:
+        # TODO change function make it allowed for structured description
         """
         Args:
             `locationList (dict[str, Location])`: {current: <Location>, Front: \
@@ -118,6 +119,7 @@ You stand at the end of a road before a small brick building. The dense forest s
     
     
     def eventDescription(self, event: Events) -> dict[str]:
+        # TODO change the eventDescription to make it description all current events
         inputDictionary = {"event type": event.eventType, "triggered reason": event.triggered_reason, \
             "Current location": event.current_location, "Current action": event.currentAction, \
                 "Tool(s) assist with moving": event.moving_tool, "player current status": event.play_current_status, \
