@@ -188,4 +188,23 @@ class Map_information():
     def set_current_map_coordinate(self, map_ccord: tuple[int]):
         self.__current_map_coordinate = map_ccord
 
-
+class EventsTriggered():
+    def __init__(self, player: Player_status, map: Map_information) -> None:
+        """
+        This class is used to record and process the effects caused by events
+        """
+        self.__player = player
+        self.__map = map
+        self.__eventsTriggered: list[Events]= []
+        
+    def get_current_events(self) -> list[Events]:
+        return self.__eventsTriggered
+    
+    def add_new_event(self, newEvent: Events) -> None:
+        self.__eventsTriggered.append(newEvent)
+        
+    def eventHandler(self):
+        """
+        Please call this every turn
+        """
+        pass
