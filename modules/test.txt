@@ -166,3 +166,5 @@ You are making an effort to tread water to prevent yourself from sinking into th
 
 There are some traps scattered around here, perhaps left by previous adventurers. Be careful where you step."
 }
+
+{'event type': 'survival crisis', 'triggered reason': 'low action point', 'Current location': 'land', 'Current action': 'None', 'Tool(s) assist with moving': [], 'player current status': 'normal', 'Description of current and surrounding locations': 'You are standing in the middle of a vast, open land. There is no sign of civilization as far as the eye can see.', 'Landscape Features description': 'The landscape stretches out in all directions, with no distinguishing features. The land is barren and devoid of any vegetation or structures. It is a desolate and lonely place.', 'Items description': 'There are a couple of weapon crafting benches scattered around the area. They seem to have been left here by someone, but there is no sign of who or why. These benches can be used to craft powerful weapons, if you have the necessary materials.'}

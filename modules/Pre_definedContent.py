@@ -145,7 +145,7 @@ class DefininedSys(): #
         #         [(preDefinedCommands.add_items, (None, random.choice, (self.__def_items, )))])
         # ]
         
-        self.__pre_def_events_frameWork = {
+        self.__pre_def_events_frameWork = {# TODO Change event description format
             "survival crisis": {"action point": Events("", "survival crisis", \
                 "low action point", ["increase action point", "increase maximum action point"], \
                     ["decrease action point", "decrease maximum action point"], -1, "")}

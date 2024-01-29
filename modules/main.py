@@ -27,8 +27,8 @@ class rule_system():
     # def 
 
 if __name__ == "__main__":
-    # player_info = Player_status(action_point = 30)
-    player_info = Player_status()
+    player_info = Player_status(action_point = 30)
+    # player_info = Player_status()
     map_record = Map_information(current_area_type = 1, map_size=(20, 20)) # land type
     eventHandler = EventsTriggered(player_info, map_record)
     # mapPCG = MapGenerator(player_info, map_record)
@@ -42,13 +42,14 @@ if __name__ == "__main__":
     descriptionGenerator = OutputGenerator(gpt, player_info, map_record)
     inputAdapter = InputTranslator(gpt, player_info, map_record, game_content)
     
-    pcgSystem = PCGController(game_content, player_info, map_record, descriptionGenerator)
+    pcgSystem = PCGController(game_content, player_info, map_record, descriptionGenerator, eventHandler)
     
     
     
     begin = True
     while begin:
         print(player_info.get_currentLocation())
+        print("Action_point:", player_info.get_action_point())
         pcgSystem.locationPCG_each_turn()
         print(map_record.get_currentMap())
 

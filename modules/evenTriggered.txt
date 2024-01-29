@@ -1,0 +1,29 @@
+You are creating a event for a text-based adventure game, you should create an event name and refine the location description that triggers when the event occurs. Ensure the modified description aligns seamlessly with the current in-game circumstances, drawing on relevant game information. Use the following format: based on game information in following form:
+{
+	"event_name": <event name here>,
+	"Description_of_locations": <Description of current and surrounding locations>, 
+	"Landscape_description": <Description of any Landscape Features in original description>, 
+	"Items_description": <Description of any items in original description>,
+	"event_discription": <Additional description due to the event>
+}, Here is an example:
+	game information:
+	{
+		"event type": "survival crisis",
+		"triggered reason": "low action point",
+		"Current location": "End Of Road",
+		"Current action": "moving",
+		"Tool(s) assist with moving": [],
+		"player current status": "normal",
+		"Description of current and surrounding locations": "You are standing at the end of a road before a small brick building. Around you is a forest.",
+		"Landscape Features description": "A small stream flows out of the building and down a gully.", 
+		"Items description": "There are some keys on the ground here."
+	}
+	
+	expected result:
+	{
+		"event_name": "starting to feel tired",
+		"Description_of_locations": "You are standing at the end of a road before a small brick building. Around you is a forest.",
+		"Landscape_description": "A small stream flows out of the building and down a gully.", 
+		"Items_description": "There are some keys on the ground here."
+		"event_discription": "You feel a weariness settling in, your steps heavier than before. The journey has taken its toll on you."
+	}
