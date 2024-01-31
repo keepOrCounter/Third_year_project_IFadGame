@@ -50,31 +50,19 @@ class OutputGenerator():
         self.__OuterData = IOSys()
         self.__playerStatus = playerStatus
         self.__mapInfo = mapInfo
-        self.__locationDiscriptionSysRole = """You are writing a description about current location player is at for a text-based adventure game program, you will receive a game details from game program like this: 
-{
-	"Current location": "End Of Road", 
-	"Front": "brick building", 
-	"Back": "Forest", 
-	"Right hand side": "Forest", 
-	"Left hand side": "Forest", 
-	"Landscape Features": "[small stream]", 
-	"Items": "[keyA, keyB, keyC]"
-} 
-And the expected result would be: 
-{
-	"location name": "End Of Road",
-	"Description of current and surrounding locations": "You are standing at the end of a road before a small brick building. Around you is a forest.",
-	"Landscape Features description": "A small stream flows out of the building and down a gully.", 
-	"Items description": "There are some keys on the ground."
-} """
+        self.__locationDiscriptionSysRole = """You are writing a description about current location \
+player is at for a text-based adventure game program, you will receive a game details from game \
+program like this "{Current location: End Of Road, Front: brick building, Back: Forest, \
+Right hand side: Forest, Left hand side: Forest, Landscape Features: [flat ground, small stream], \
+Items: [keyA, keyB, keyC]}". Here is the example of expected result: "
+End Of Road
+You are standing at the end of a road before a small brick building. Around you is a forest. A small stream flows out of the building and down a gully. 
+There are some keys on the ground here." """
 
-        self.__eventDiscriptionSysRole = """You are creating a event for a text-based adventure game, you should create an event name and refine the location description that triggers when the event occurs. Ensure the modified description aligns seamlessly with the current in-game circumstances, drawing on relevant game information. Use the following format: based on game information in following form:
+        self.__eventDiscriptionSysRole = """You are creating a event for a text-based adventure game, you should create event in following form based on game information(Mainly the triggered reason) provided in later:
 {
 	"event_name": <event name here>,
-	"Description_of_locations": <Description of current and surrounding locations>, 
-	"Landscape_description": <Description of any Landscape Features in original description>, 
-	"Items_description": <Description of any items in original description>,
-	"event_discription": <Additional description due to the event>
+	"event_discription": <possible discription in third person and first person view>
 }, Here is an example:
 	game information:
 	{
@@ -83,24 +71,23 @@ And the expected result would be:
 		"Current location": "End Of Road",
 		"Current action": "moving",
 		"Tool(s) assist with moving": [],
-		"player current status": "normal",
-		"Description of current and surrounding locations": "You are standing at the end of a road before a small brick building. Around you is a forest.",
-		"Landscape Features description": "A small stream flows out of the building and down a gully.", 
-		"Items description": "There are some keys on the ground here."
+		"player current status": "Normal",
+		"description needed to be modified": "
+End Of Road
+You are standing at the end of a road before a small brick building. Around you is a forest. A small stream flows out of the building and down a gully. 
+There are some keys on the ground here."
 	}
 	
 	expected result:
 	{
-		"event_name": "starting to feel tired",
-		"Description_of_locations": "You are standing at the end of a road before a small brick building. Around you is a forest.",
-		"Landscape_description": "A small stream flows out of the building and down a gully.", 
-		"Items_description": "There are some keys on the ground here."
-		"event_discription": "You feel a weariness settling in, your steps heavier than before. The journey has taken its toll on you."
+		"event_name": "starting feeling tired",
+		"event_description": "
+End Of Road
+You stand at the end of a road before a small brick building. The dense forest surrounds you, its looming trees casting shadows. A weary sensation seeps through your limbs, accentuating the fatigue in your bones. A small stream trickles from the building, and amidst the weariness, you notice a glint—keys scattered on the ground, waiting to be claimed."
 	}"""
         
     
     def locationDescription(self, locationList: dict[str, Location]) -> None:
-        # TODO change function make it allowed for structured description
         """
         Args:
             `locationList (dict[str, Location])`: {current: <Location>, Front: \
@@ -124,12 +111,12 @@ And the expected result would be:
         # print(gpt_response)
         self.__OuterData.inquery_response_log_recorder(self.__locationDiscriptionSysRole, inquiry, gpt_response)
         
-        result = json.loads(gpt_response, strict=False)
+        # result = json.loads(gpt_response, strict=False)
         
-        locationList["Current location"].description = result
+        locationList["Current location"].description = gpt_response
     
     
-    def eventDescription(self, event: Events) -> dict[str]:
+    def eventDescription(self, event: Events) -> None:
         # TODO change the eventDescription to make it description all current events
         inputDictionary = {"event type": event.eventType, "triggered reason": event.triggered_reason, \
             "Current location": event.current_location, "Current action": event.currentAction, \
@@ -147,9 +134,10 @@ And the expected result would be:
 
         # Extract the value of the "event_name" key and "event_description" key
         # result = {"event_name": str(data.get("event_name")), "event_description": str(data.get("event_description"))}
+        event.eventName = result["event_name"]
+        event.description = result["event_description"]
 
-
-        return result
+        # return result
     
 class InputTranslator():
     def __init__(self, gptAPI: Gpt3, playerStatus: Player_status, mapInfo: Map_information, \

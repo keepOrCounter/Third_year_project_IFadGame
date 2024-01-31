@@ -297,19 +297,22 @@ class PCGController():
         # player_arounding = {"Current location": current_location, \
         #     "Front": Location("<Do not know>", 0, 0), "Back": Location("<Do not know>", 0, 0), \
         #         "Right hand side": Location("<Do not know>", 0, 0), "Left hand side": Location("<Do not know>", 0, 0)}
-        if player_arounding["Current location"].description == {}:
+        if player_arounding["Current location"].description == "":
             self.__descriptionGenerator.locationDescription(player_arounding)
-            output = self.__map_info.currentLocation.description
-            # print(output)
-            print("\n{}\n\n{}\n\n{}\n\n{}".format(output["location name"], \
-                output["Description of current and surrounding locations"], output["Landscape Features description"], \
-                    output["Items description"]))
+            # print("\n{}\n\n{}\n\n{}\n\n{}".format(output["location name"], \
+            #     output["Description of current and surrounding locations"], output["Landscape Features description"], \
+            #         output["Items description"]))
         
         triggered_event = self.__eventPCG.event_triger()
         if triggered_event != None:
             # TODO change the eventDescription to make it description all current events
-            output = self.__descriptionGenerator.eventDescription(triggered_event)
-            print(output["event_description"])
+            self.__descriptionGenerator.eventDescription(triggered_event)
+            output = triggered_event.description
+            self.__eventController.add_new_event(triggered_event)
+        else:
+            output = self.__map_info.currentLocation.description
+        
+        print(output)
     
 
 
