@@ -30,7 +30,6 @@ if __name__ == "__main__":
     player_info = Player_status(action_point = 30)
     # player_info = Player_status()
     map_record = Map_information(current_area_type = 1, map_size=(20, 20)) # land type
-    eventHandler = EventsTriggered(player_info, map_record)
     # mapPCG = MapGenerator(player_info, map_record)
     defined_command = Commands(player_info, map_record)
     game_content = DefininedSys(defined_command)
@@ -41,6 +40,7 @@ if __name__ == "__main__":
     gpt = Gpt3(user_input)
     descriptionGenerator = OutputGenerator(gpt, player_info, map_record)
     inputAdapter = InputTranslator(gpt, player_info, map_record, game_content)
+    eventHandler = EventsTriggered(player_info, map_record)
     
     pcgSystem = PCGController(game_content, player_info, map_record, descriptionGenerator, eventHandler)
     

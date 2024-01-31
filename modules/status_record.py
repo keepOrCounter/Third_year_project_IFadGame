@@ -1,5 +1,6 @@
 import numpy as np
 # from typing import Callable
+# from interactionSys import OutputGenerator
 
 class Items():
     def __init__(self, item_name: str, item_energy_recovery: int, category: str):
@@ -33,6 +34,8 @@ class Events():
         self.current_location = ""
         self.moving_tool = []
         self.play_current_status = ""
+        
+        self.triggered_time = 0
         # self.gpt_required = gpt_required
         
 
@@ -203,6 +206,7 @@ class EventsTriggered():
         self.__player = player
         self.__map = map
         self.__eventsTriggered: list[Events]= []
+        # self.__descriptionGenerator = descriptionGenerator
         
     def get_current_events(self) -> list[Events]:
         return self.__eventsTriggered
@@ -210,8 +214,16 @@ class EventsTriggered():
     def add_new_event(self, newEvent: Events) -> None:
         self.__eventsTriggered.append(newEvent)
         
-    def event_handler(self):
+    def event_handler(self, descriptionGenerator):
         """
         Please call this every turn
         """
-        pass
+        for x in range(len(self.__eventsTriggered)):
+            self.__eventsTriggered[x].triggered_time += 1
+            player_action = self.__player.get_currentAction()
+            if player_action == None:
+                self.__eventsTriggered[x].currentAction = "None"
+            else:
+                self.__eventsTriggered[x].currentAction = player_action.actionName
+        
+            descriptionGenerator.eventDevelopment(self.__eventsTriggered[x])

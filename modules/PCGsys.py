@@ -246,7 +246,7 @@ class PCGController():
         playerCoord = self.__player.get_currentLocation()
         map_size = self.__map_info.get_map_size()
         
-        self.__eventController.event_handler() # determine the effects caused by any events
+        self.__eventController.event_handler(self.__descriptionGenerator) # determine the effects caused by any events
         
         print("player action:", self.__player.get_currentAction())
         if self.__new_class or not (current_area[0] <= playerCoord[0] < current_area[0]+map_size[0] \
