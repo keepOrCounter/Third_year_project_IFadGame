@@ -5,6 +5,7 @@ import Levenshtein
 from status_record import *
 from Pre_definedContent import *
 import json
+from autocorrect improt Speller
 
 class IOSys():
     def __init__(self) -> None:
@@ -201,21 +202,27 @@ system, the game command are listed below: " + str(move_commands[:-1]) + "\nPlea
 not reply something more than the command given above(Even if punctuation mark). If the player command is less likely to \
 be any of the game command above, just reply a '<Rejected>'."
         
-        command = self.__gptAPI.inquiry(user_input, systemRole)
-        
-        dis = Levenshtein.distance(move_commands[0], command)
-        target = 0
-        for x in range(1, len(move_commands)):
-            tem_dis = Levenshtein.distance(move_commands[x], command)
-            if tem_dis < dis:
-                target = x
-                dis = tem_dis
-        if move_commands[target] != "<Rejected>":
-            action = self.__defined_content.get_Actions()[move_commands[target]]
-            self.__playerStatus.set_currentAction(action)
-            for commands in action.command_executed:
-                commands[0](*commands[1])
+        spell = Speller(lang = 'en')
+        corrected_user_input = spell(user_input)
+
+        if (corrected_user_input != user_input):
+            print("Wait, why I have that mind, is it\"", corrected_user_input, "\"?")
         else:
-            print("Nothing happen...")
+            command = self.__gptAPI.inquiry(user_input, systemRole)
+            
+            dis = Levenshtein.distance(move_commands[0], command)
+            target = 0
+            for x in range(1, len(move_commands)):
+                tem_dis = Levenshtein.distance(move_commands[x], command)
+                if tem_dis < dis:
+                    target = x
+                    dis = tem_dis
+            if move_commands[target] != "<Rejected>":
+                action = self.__defined_content.get_Actions()[move_commands[target]]
+                self.__playerStatus.set_currentAction(action)
+                for commands in action.command_executed:
+                    commands[0](*commands[1])
+            else:
+                print("Nothing happen...")
     
         
