@@ -5,7 +5,7 @@ import Levenshtein
 from status_record import *
 from Pre_definedContent import *
 import json
-from autocorrect improt Speller
+from autocorrect import Speller
 
 class IOSys():
     def __init__(self) -> None:
