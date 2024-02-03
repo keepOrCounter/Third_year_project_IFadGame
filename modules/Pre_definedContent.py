@@ -1,29 +1,23 @@
-from status_record import *
-import random
+from status_record import Player_status, Map_information, globalInfo, Items, Events, \
+    Actions
+# import random
 
 
 
 class Commands():
-    def __init__(self, player: Player_status, map: Map_information) -> None:
+    def __init__(self, player: Player_status, map: Map_information, worldStatus: globalInfo) -> None:
         """
         This class is pre-defined commands in methods form
         """
         self.__player = player
         self.__map = map
+        self.__worldStatus = worldStatus
         # self.__executionTranslator
         
     def move(self, target) -> None:
         """
         Move to specific direction or target place
         """
-        action_point_changed = 0
-        if self.__map.get_current_area_type() == 1:
-            action_point_changed = -5
-        elif self.__map.get_current_area_type() == 0:
-            if False:
-                pass
-            else:
-                action_point_changed = -20
         if target == "North":
             x, y = self.__player.get_currentLocation()
             self.__player.set_currentLocation(x, y+1)
@@ -38,8 +32,8 @@ class Commands():
             self.__player.set_currentLocation(x-1, y)
         else:
             self.__player.set_currentLocation(*target)
-        self.__player.set_action_point(self.__player.get_action_point() +\
-            action_point_changed)
+        self.__player.set_action_point(self.__player.get_action_point() -\
+            self.__worldStatus.move_APCost)
         
     def action_point_adjust(self, value: int) -> None:
         """

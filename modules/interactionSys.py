@@ -1,5 +1,5 @@
 import openai
-import copy
+# import copy
 import time
 import Levenshtein
 from status_record import *
@@ -204,6 +204,7 @@ be any of the game command above, just reply a '<Rejected>'."
         
         spell = Speller(lang = 'en')
         corrected_user_input = spell(user_input)
+        print(corrected_user_input)
 
         if (corrected_user_input != user_input):
             print("Wait, why I have that mind, is it\"", corrected_user_input, "\"?")

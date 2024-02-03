@@ -1,4 +1,4 @@
-from status_record import Player_status, Map_information, EventsTriggered
+from status_record import Player_status, Map_information, EventsTriggered, globalInfo
 from PCGsys import PCGController
 from interactionSys import OutputGenerator, InputTranslator, Gpt3
 from Pre_definedContent import DefininedSys, Commands
@@ -6,16 +6,23 @@ import sys
 
 # from status_record import Location
 class rule_system():
-    def __init__(self, player : Player_status, map_info: Map_information) -> None:
+    def __init__(self, player : Player_status, map_info: Map_information, worldStatus: globalInfo) -> None:
         self.__player = player
         self.__map_info = map_info
+        self.__worldStatus = worldStatus
         
     def eachTurn_handler(self):
         if not self.player_alive():
             print("Game over.")
             sys.exit(0)
-        if self.player_active():
-            pass
+            
+        if self.__map_info.get_current_area_type() == 1:
+            self.__worldStatus.move_APCost = 5
+        elif self.__map_info.get_current_area_type() == 0:
+            if False:
+                pass
+            else:
+                self.__worldStatus.move_APCost = 20
         
     def player_alive(self):
         return self.__player.get_hp() > 0
@@ -36,7 +43,7 @@ if __name__ == "__main__":
     # objectPCG = objectsGenerator(game_content)
     # event_Engage = eventGenerator(game_content)
     
-    user_input = input("To start the game, please provide a openai key>>>")
+    user_input = input("To start the game, please provide an openai key>>>")
     gpt = Gpt3(user_input)
     descriptionGenerator = OutputGenerator(gpt, player_info, map_record)
     inputAdapter = InputTranslator(gpt, player_info, map_record, game_content)
@@ -44,10 +51,11 @@ if __name__ == "__main__":
     
     pcgSystem = PCGController(game_content, player_info, map_record, descriptionGenerator, eventHandler)
     
-    
+    game_rule = rule_system(player_info, map_record)
     
     begin = True
     while begin:
+        game_rule.eachTurn_handler()
         print(player_info.get_currentLocation())
         print("Action_point:", player_info.get_action_point())
         pcgSystem.locationPCG_each_turn()

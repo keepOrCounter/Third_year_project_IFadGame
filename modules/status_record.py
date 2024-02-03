@@ -227,3 +227,9 @@ class EventsTriggered():
                 self.__eventsTriggered[x].currentAction = player_action.actionName
         
             descriptionGenerator.eventDevelopment(self.__eventsTriggered[x])
+
+
+class globalInfo():
+    def __init__(self) -> None:
+        self.move_APCost = 5
+        self.directionKnown = False
