@@ -12,6 +12,8 @@ class rule_system():
         self.__worldStatus = worldStatus
         
     def eachTurn_handler(self):
+        """Need to be called each turn
+        """
         if not self.player_alive():
             print("Game over.")
             sys.exit(0)
@@ -22,7 +24,7 @@ class rule_system():
             if False:
                 pass
             else:
-                self.__worldStatus.move_APCost = 20
+                self.__worldStatus.move_APCost = 20 # determine the action point cost of each move
         
     def player_alive(self):
         return self.__player.get_hp() > 0
@@ -47,7 +49,7 @@ if __name__ == "__main__":
     gpt = Gpt3(user_input)
     descriptionGenerator = OutputGenerator(gpt, player_info, map_record)
     inputAdapter = InputTranslator(gpt, player_info, map_record, game_content)
-    eventHandler = EventsTriggered(player_info, map_record)
+    eventHandler = EventsTriggered()
     
     pcgSystem = PCGController(game_content, player_info, map_record, descriptionGenerator, eventHandler)
     

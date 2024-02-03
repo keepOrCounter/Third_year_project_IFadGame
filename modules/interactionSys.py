@@ -144,7 +144,6 @@ You stand at the end of a road before a small brick building. The dense forest s
     
     
     def eventDescription(self, event: Events) -> None:
-        # TODO change the eventDescription to make it description all current events
         inputDictionary = {"event type": event.eventType, "triggered reason": event.triggered_reason, \
             "Current location": event.current_location, "Current action": event.currentAction, \
                 "Tool(s) assist with moving": event.moving_tool, "player current status": event.play_current_status, \
@@ -166,7 +165,7 @@ You stand at the end of a road before a small brick building. The dense forest s
 
         # return result
         
-    def eventDevelopment(self, event: Events) -> None:
+    def eventDevelopment(self, event: Events) -> dict:
         # TODO
         inputDictionary = {"event_name": event.eventName, "event type": event.eventType, \
             "triggered reason": event.triggered_reason, "player current status": event.play_current_status,\
@@ -184,6 +183,7 @@ You stand at the end of a road before a small brick building. The dense forest s
         result = json.loads(gpt_response, strict=False)
 
         print(result)
+        return result
     
 class InputTranslator():
     def __init__(self, gptAPI: Gpt3, playerStatus: Player_status, mapInfo: Map_information, \

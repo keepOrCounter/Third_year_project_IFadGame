@@ -199,37 +199,27 @@ class Map_information():
         self.__current_map_coordinate = map_ccord
 
 class EventsTriggered():
-    def __init__(self, player: Player_status, map: Map_information) -> None:
+    def __init__(self) -> None:
         """
         This class is used to record and process the effects caused by events
         """
-        self.__player = player
-        self.__map = map
-        self.__eventsTriggered: list[Events]= []
+        self.eventsTriggered: list[Events]= []
         # self.__descriptionGenerator = descriptionGenerator
         
-    def get_current_events(self) -> list[Events]:
-        return self.__eventsTriggered
+    # def get_current_events(self) -> list[Events]:
+    #     return self.__eventsTriggered
     
-    def add_new_event(self, newEvent: Events) -> None:
-        self.__eventsTriggered.append(newEvent)
+    # def add_new_event(self, newEvent: Events) -> None:
+    #     self.__eventsTriggered.append(newEvent)
         
-    def event_handler(self, descriptionGenerator):
-        """
-        Please call this every turn
-        """
-        for x in range(len(self.__eventsTriggered)):
-            self.__eventsTriggered[x].triggered_time += 1
-            player_action = self.__player.get_currentAction()
-            if player_action == None:
-                self.__eventsTriggered[x].currentAction = "None"
-            else:
-                self.__eventsTriggered[x].currentAction = player_action.actionName
-        
-            descriptionGenerator.eventDevelopment(self.__eventsTriggered[x])
 
 
 class globalInfo():
     def __init__(self) -> None:
+        """determine any global dynamic variable
+        
+        `move_APCost`: Action point cost of every move
+        `directionKnown`: Whether player know about direction
+        """
         self.move_APCost = 5
         self.directionKnown = False
