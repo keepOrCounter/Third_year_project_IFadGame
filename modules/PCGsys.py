@@ -243,10 +243,23 @@ class eventGenerator():
         
             result = self.__descriptionGenerator.eventDevelopment(self.__currentEvents.eventsTriggered[x])
             
+                
+            for y in range(len(result["reward"])):
+                strCommand = self.__currentEvents.eventsTriggered[y].possible_reward[result["reward"][y]]
+                
+                func, arg = self.__defininedContent.get_eventCommandMap()[strCommand]
+                self.__defininedContent.get_commandTranslate()[func](arg)
+                
+            for y in range(len(result["penalty"])):
+                strCommand = self.__currentEvents.eventsTriggered[y].possible_penalty[result["penalty"][y]]
+                
+                func, arg = self.__defininedContent.get_eventCommandMap()[strCommand]
+                self.__defininedContent.get_commandTranslate()[func](arg)
+            
             if result["fail"] == True or result["successful"] == True:
                 self.__currentEvents.eventsTriggered.pop(x)
                 x -= 1
-            
+                
             x += 1
 
 

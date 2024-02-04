@@ -35,17 +35,29 @@ class Commands():
         self.__player.set_action_point(self.__player.get_action_point() -\
             self.__worldStatus.move_APCost)
         
-    def action_point_adjust(self, value: int) -> None:
+    def increase_action_point(self, value: int) -> None:
         """
-        Recovery or consume action point
+        Recovery action point
         """
         self.__player.set_action_point(self.__player.get_action_point() + value)
         
-    def hp_adjust(self, value: int) -> None:
+    def decrease_action_point(self, value: int) -> None:
         """
-        Recovery or reduce health point
+        consume action point
+        """
+        self.__player.set_action_point(self.__player.get_action_point() - value)
+        
+    def increase_hp(self, value: int) -> None:
+        """
+        Recovery health point
         """
         self.__player.set_hp(self.__player.get_hp() + value)
+        
+    def decrease_hp(self, value: int) -> None:
+        """
+        reduce health point
+        """
+        self.__player.set_hp(self.__player.get_hp() - value)
         
     def add_items(self, items: list[Items]) -> None:
         """
@@ -60,6 +72,17 @@ class Commands():
         
         self.__player.set_items(self.__player.get_items() + items)
         
+    def increase_maximum_action_point(self, value: int) -> None:
+        """
+        Recovery action point
+        """
+        self.__player.set_maximum_action_point(self.__player.get_maximum_action_point() + value)
+        
+    def decrease_maximum_action_point(self, value: int) -> None:
+        """
+        consume action point
+        """
+        self.__player.set_maximum_action_point(self.__player.get_maximum_action_point() - value)
     # def equalTo(self, value, target) -> bool:
     #     return value == target
     
@@ -159,6 +182,20 @@ class DefininedSys(): #
             "Move West": Actions("Move West", [(preDefinedCommands.move, ("West",))])
         }
         
+        self.__eventCommandMap = {
+            "increase action point": ("increase action point", "random"),
+            "decrease action point": ("decrease action point", "random"),
+            "increase maximum action point": ("increase maximum action point", "random"),
+            "decrease maximum action point": ("decrease maximum action point", "random")
+        }
+        
+        self.__commandTranslate = {
+            "increase action point": preDefinedCommands.increase_action_point,
+            "decrease action point": preDefinedCommands.decrease_action_point,
+            "increase maximum action point": preDefinedCommands.increase_maximum_action_point,
+            "decrease maximum action point": preDefinedCommands.decrease_maximum_action_point,
+        }
+        
     def get_items(self) -> list[Items]:
         return self.__def_items
     
@@ -183,3 +220,8 @@ class DefininedSys(): #
     def set_Actions(self, new_Actions: dict[str,Actions]):
         self.__def_actions = new_Actions
         
+    def get_eventCommandMap(self) -> dict:
+        return self.__eventCommandMap
+    
+    def get_commandTranslate(self) -> dict:
+        return self.__commandTranslate

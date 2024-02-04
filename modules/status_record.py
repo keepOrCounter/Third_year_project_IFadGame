@@ -220,6 +220,8 @@ class globalInfo():
         
         `move_APCost`: Action point cost of every move
         `directionKnown`: Whether player know about direction
+        `normal_move`: Difficulty of player move
         """
         self.move_APCost = 5
         self.directionKnown = False
+        self.normal_move = 1
