@@ -1,0 +1,181 @@
+Could you provide me some location names in text-based adventure game, with more nature but less fantastic elements, I would like to use them to build a mini game if possible. It is better to divide these locations into three python list, each means the locations could appear at sea, land, highland.
+
+Could you help me create an event of a text-based adventure game based on following game information?
+{
+	"location": "desert",
+	"play_hp": "50/100",
+	"play_action_point": "5/100"
+}
+
+
+You are creating a event for a text-based adventure game, you should create event in following form based on game information provided in later:
+{
+	"event_name": <event name here>,
+	"succeed_condition": <condition in compare functions list here>,
+	"reward": <reward in functions in list>, 
+	"fail_penalty": <penalty in functions in list if fail to finish event>
+}, Here is an example:
+{
+	"event_name": "thirstily crisis",
+	"succeed_condition": [equalTo(action, "drink"), equalTo(target, "water")],
+	"reward": [action_point_adjust(10), hp_adjust(10)], 
+	"fail_penalty": [action_point_adjust(-100)]
+	
+}
+
+You need to know the basic value of this game:
+{
+	"player_hp": "health point of player, reduced when any damage or some event occured, and exhausted hp will lead to player character dead",
+	"player_action_point": "reduced when taking any action, and exhausted hp will lead to player character dead"
+}
+
+
+You are writing a description about current location player is at for a text-based adventure game program, you will receive a game details from game program like this "{Current location: End Of Road, Front: brick building, Back: Forest, Right hand side: Forest, Left hand side: Forest, Landscape Features: [flat ground, small stream], Items: [keyA, keyB, keyC]}". You should write a description in this style: "
+
+End Of Road
+
+You are standing at the end of a road before a small brick building. Around you is a forest. A small stream flows out of the building and down a gully. 
+There are some keys on the ground here."
+
+
+{Current location: grassland, Front: <Do not know>, Back: Forest, Right hand side: <Do not know>, Left hand side: <Do not know>, Landscape Features: [flat ground, Big rocks], Items: [Bag]}
+
+
+You are create action selection for player in a text-based adventure game, you should create player action in following form based on command defined provided in later:"{
+	Action name: <Name_here>,
+	Command executed for action: <method name>,
+	Command executed argument: (<argument(s) for the method>)
+}"
+You need to know command class defined in game: "
+class Commands():
+    def __init__(self, player: Player_status, map: Map_information) -> None:
+        self.__player = player
+        self.__map = map
+        
+    def move(self, target) -> None:
+        if target == "North":
+            x, y = self.__player.get_currentLocation()
+            self.__player.set_currentLocation(x, y+1)
+        elif target == "South":
+            x, y = self.__player.get_currentLocation()
+            self.__player.set_currentLocation(x, y-1)
+        elif target == "East":
+            x, y = self.__player.get_currentLocation()
+            self.__player.set_currentLocation(x+1, y)
+        elif target == "West":
+            x, y = self.__player.get_currentLocation()
+            self.__player.set_currentLocation(x-1, y)
+        else:
+            self.__player.set_currentLocation(*target)
+            
+    def action_point_adjust(self, value: int) -> None:
+        self.__player.set_action_point(self.__player.get_action_point() + value)
+        
+"
+
+
+You are creating a event for a text-based adventure game, you should create an event name and refine the location description that triggers when the event occurs. Ensure the modified description aligns seamlessly with the current in-game circumstances, drawing on relevant game information. Use the following format: based on game information in following form:
+{
+	"event_name": <event name here>,
+	"event_discription": <possible discription in third person and first person view>
+}, Here is an example:
+	game information:
+	{
+		"event type": "survival crisis",
+		"triggered reason": "low action point",
+		"Current location": "End Of Road",
+		"Current action": "moving",
+		"Tool(s) assist with moving": [],
+		"player current status": "Normal",
+		"description needed to be modified": "
+End Of Road
+
+You are standing at the end of a road before a small brick building. Around you is a forest. A small stream flows out of the building and down a gully. 
+There are some keys on the ground here."
+	}
+	
+	expected result:
+	{
+		"event_name": "starting to feel tired",
+		"event_discription": "
+End Of Road
+
+You are standing at the end of a road before a small brick building. Around you is a forest. A small stream flows out of the building and down a gully. You feel a weariness settling in, your steps heavier than before. The journey has taken its toll on you. There are some keys on the ground here."
+	}
+
+Could you help me create an event based on this information:
+{
+	"event type": "poisoning potential",
+	"triggered reason": "attacked by snake",
+	"player current status": "normal",
+	"possible reward": ["increase maximum hp", "increase maximum action point"],
+	"possible penalty": ["decrease hp", "decrease action point", "add poisoning status"]
+}
+
+
+
+You are determine the development of an event in a text-based adventure game, you should tell the program the development in following form of event based on the game information provided later:
+{
+	"successful": <True if succeed, False if not>,
+	"fail": <True if failed, False if not>,
+	"reward": <select the index of zero or more of reward from possible reward list in game information provided based on player action in game information>, 
+	"penalty": <select the index of zero or more of penalty from possible penalty list in game information provided based on player action in game information>
+}, Here is an example(the event is not necessary be succeed or failed immediately, it won't failed as long as in the time limit, we will tell you if times up):
+	game information:
+	{
+		"event_name": "Venomous Encounter",
+		"event type": "poisoning potential",
+		"triggered reason": "attacked by snake",
+		"player current status": "normal",
+		"player action": "suck the attcked part",
+		"times up": False,
+		"possible reward": ["increase maximum hp", "increase maximum action point", "obtain a poison"],
+		"possible penalty": ["decrease hp", "decrease action point", "add poisoning status"]
+	}
+	
+	expected result:
+	{
+		"successful": False,
+		"fail": False,
+		"reward": [], 
+		"penalty": [2]
+}
+
+Could you help me determine this event development based on this information{
+	"event_name": "thirstily crisis",
+	"event type": "survival crisis",
+	"triggered reason": "low action point in desert",
+	"player current status": "thirsty",
+	"player action": "stay in campsite",
+	"times up": True,
+	"possible reward": ["increase maximum hp", "remove thirsty status"],
+	"possible penalty": ["decrease hp", "decrease action point", "add sick status"]
+}
+
+{
+	"event type": "survival crisis",
+	"triggered reason": "low action point",	
+	"Current location": "Sea",
+	"Current action": "moving",
+	"Tool(s) assist with moving": [],
+	"player current status": "normal",
+	"description needed to be modified": "
+Sea
+
+You are making an effort to tread water to prevent yourself from sinking into the sea. The sound of crashing waves fills the air as you gaze out into the horizon. The water stretches as far as the eye can see, with no land in sight. The sea is a deep blue color, with occasional whitecaps forming on the surface. 
+
+There are some traps scattered around here, perhaps left by previous adventurers. Be careful where you step."
+}
+
+{'event type': 'survival crisis', 'triggered reason': 'low action point', 'Current location': 'land', 'Current action': 'None', 'Tool(s) assist with moving': [], 'player current status': 'normal', 'Description of current and surrounding locations': 'You are standing in the middle of a vast, open land. There is no sign of civilization as far as the eye can see.', 'Landscape Features description': 'The landscape stretches out in all directions, with no distinguishing features. The land is barren and devoid of any vegetation or structures. It is a desolate and lonely place.', 'Items description': 'There are a couple of weapon crafting benches scattered around the area. They seem to have been left here by someone, but there is no sign of who or why. These benches can be used to craft powerful weapons, if you have the necessary materials.'}
+
+{
+	"event_name": "feeling exhausted",
+	"event type": "survival crisis",
+	"triggered reason": "low action point",
+	"player current status": "normal",
+	"player action": "move to north",
+	"times up": False,
+	"possible reward": ["increase action point", "increase maximum action point"],
+	"possible penalty": ["decrease action point", "decrease maximum action point"]
+}

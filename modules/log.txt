@@ -1,0 +1,1081 @@
+[Tue Jan  2 17:13:06 2024]
+systemRole: 
+You are writing a description about current location player is at for a text-based adventure game program, you will receive a game details from game program like this "{Current location: End Of Road, Front: brick building, Back: Forest, Right hand side: Forest, Left hand side: Forest, Landscape Features: [flat ground, small stream], Items: [keyA, keyB, keyC]}". You should write a description in this style: "
+
+End Of Road
+
+You are standing at the end of a road before a small brick building. Around you is a forest. A small stream flows out of the building and down a gully. 
+There are some keys on the ground here." 
+
+inquiry: 
+{'Current location': 'sea', 'Front': '<Do not know>', 'Back': '<Do not know>', 'Right hand side': '<Do not know>', 'Left hand side': '<Do not know>', 'Items': ['Edible Plants', 'Traps'], 'Landscape Features': ['Rocks']}
+
+response by gpt3.5-turbo: 
+Sea
+
+You are standing on the shore of a vast sea. The view in front of you is unknown, as it stretches out endlessly. Behind you is also unknown, as the sea extends as far as the eye can see. To your right and left are more unknown stretches of sea. The landscape is dotted with rocks, adding a rugged touch to the scenery. You notice some edible plants growing nearby, offering a potential source of sustenance. There are also traps scattered around, perhaps left by previous adventurers.
+////////////////////////////////////////////////////
+[Wed Jan  3 15:10:59 2024]
+systemRole: 
+You are writing a description about current location player is at for a text-based adventure game program, you will receive a game details from game program like this "{Current location: End Of Road, Front: brick building, Back: Forest, Right hand side: Forest, Left hand side: Forest, Landscape Features: [flat ground, small stream], Items: [keyA, keyB, keyC]}". You should write a description in this style: "
+
+End Of Road
+
+You are standing at the end of a road before a small brick building. Around you is a forest. A small stream flows out of the building and down a gully. 
+There are some keys on the ground here." 
+
+inquiry: 
+{'Current location': 'sea', 'Front': '<Do not know>', 'Back': '<Do not know>', 'Right hand side': '<Do not know>', 'Left hand side': '<Do not know>', 'Landscape Features': ['Rocks'], 'Items': ['Edible Plants', 'Bread']}
+
+response by gpt3.5-turbo: 
+Sea
+
+You are standing at the edge of the sea. The vast expanse of water stretches out before you, disappearing into the horizon. The sound of crashing waves fills the air, creating a soothing rhythm. The sea breeze gently brushes against your skin, carrying with it a hint of salt. 
+
+The landscape is adorned with rocks scattered along the shore, adding a rugged beauty to the scene. 
+
+As you explore the area, you notice some edible plants growing nearby, offering a potential source of sustenance. Additionally, you spot a loaf of bread lying on the ground, possibly left behind by someone.
+////////////////////////////////////////////////////
+[Wed Jan  3 15:11:58 2024]
+systemRole: 
+You are writing a description about current location player is at for a text-based adventure game program, you will receive a game details from game program like this "{Current location: End Of Road, Front: brick building, Back: Forest, Right hand side: Forest, Left hand side: Forest, Landscape Features: [flat ground, small stream], Items: [keyA, keyB, keyC]}". You should write a description in this style: "
+
+End Of Road
+
+You are standing at the end of a road before a small brick building. Around you is a forest. A small stream flows out of the building and down a gully. 
+There are some keys on the ground here." 
+
+inquiry: 
+{'Current location': 'sea', 'Front': '<Do not know>', 'Back': '<Do not know>', 'Right hand side': '<Do not know>', 'Left hand side': '<Do not know>', 'Items': ['First Aid Kit', 'Edible Plants']}
+
+response by gpt3.5-turbo: 
+Sea
+
+You are standing at the edge of a vast sea, stretching out as far as the eye can see. The sound of crashing waves fills the air, creating a soothing and peaceful atmosphere. The sea sparkles under the sunlight, its blue waters captivating and mesmerizing. 
+
+As you gaze into the distance, you can't help but feel a sense of wonder and awe at the vastness and beauty of the ocean. The sea breeze gently brushes against your face, carrying with it a faint scent of salt and adventure. 
+
+There are a few items scattered around here, including a First Aid Kit and some Edible Plants.
+////////////////////////////////////////////////////
+[Wed Jan  3 15:13:48 2024]
+systemRole: 
+You are writing a description about current location player is at for a text-based adventure game program, you will receive a game details from game program like this "{Current location: End Of Road, Front: brick building, Back: Forest, Right hand side: Forest, Left hand side: Forest, Landscape Features: [flat ground, small stream], Items: [keyA, keyB, keyC]}". You should write a description in this style: "
+
+End Of Road
+
+You are standing at the end of a road before a small brick building. Around you is a forest. A small stream flows out of the building and down a gully. 
+There are some keys on the ground here." 
+
+inquiry: 
+{'Current location': 'sea', 'Front': '<Do not know>', 'Back': '<Do not know>', 'Right hand side': '<Do not know>', 'Left hand side': '<Do not know>', 'Items': ['Firewood']}
+
+response by gpt3.5-turbo: 
+Sea
+
+You are standing at the edge of a vast sea, with no land in sight. The sound of crashing waves fills the air, and a salty breeze blows through your hair. The water stretches out as far as the eye can see, with no end in sight. 
+There is some firewood lying on the ground here.
+////////////////////////////////////////////////////
+[Wed Jan  3 15:15:00 2024]
+systemRole: 
+You are writing a description about current location player is at for a text-based adventure game program, you will receive a game details from game program like this "{Current location: End Of Road, Front: brick building, Back: Forest, Right hand side: Forest, Left hand side: Forest, Landscape Features: [flat ground, small stream], Items: [keyA, keyB, keyC]}". You should write a description in this style: "
+
+End Of Road
+
+You are standing at the end of a road before a small brick building. Around you is a forest. A small stream flows out of the building and down a gully. 
+There are some keys on the ground here." 
+
+inquiry: 
+{'Current location': 'sea', 'Front': '<Do not know>', 'Back': '<Do not know>', 'Right hand side': '<Do not know>', 'Left hand side': '<Do not know>', 'Items': ['Edible Plants']}
+
+response by gpt3.5-turbo: 
+Sea
+
+You are standing by the edge of a vast sea, the waves crashing against the shore. The salty air fills your nostrils as you gaze out into the endless expanse of water. The sound of seagulls fills the air, their calls echoing in the distance. 
+
+There are some edible plants scattered along the sandy beach, their vibrant green leaves standing out against the golden sand.
+////////////////////////////////////////////////////
+[Wed Jan  3 15:15:21 2024]
+systemRole: 
+You are writing a description about current location player is at for a text-based adventure game program, you will receive a game details from game program like this "{Current location: End Of Road, Front: brick building, Back: Forest, Right hand side: Forest, Left hand side: Forest, Landscape Features: [flat ground, small stream], Items: [keyA, keyB, keyC]}". You should write a description in this style: "
+
+End Of Road
+
+You are standing at the end of a road before a small brick building. Around you is a forest. A small stream flows out of the building and down a gully. 
+There are some keys on the ground here." 
+
+inquiry: 
+{'Current location': 'sea', 'Front': '<Do not know>', 'Back': '<Do not know>', 'Right hand side': '<Do not know>', 'Left hand side': '<Do not know>', 'Items': ['Traps'], 'Landscape Features': ['Rocks']}
+
+response by gpt3.5-turbo: 
+Sea
+
+You are standing on the edge of a vast sea, with no land in sight. The waves crash against the shore, creating a soothing sound. The air is salty and the breeze is refreshing. The sea stretches out as far as the eye can see, with no end in sight. There are some traps scattered on the ground here, possibly left by fishermen. The landscape is dotted with rocks, adding texture to the otherwise endless expanse of water.
+////////////////////////////////////////////////////
+[Wed Jan  3 15:16:09 2024]
+systemRole: 
+You are writing a description about current location player is at for a text-based adventure game program, you will receive a game details from game program like this "{Current location: End Of Road, Front: brick building, Back: Forest, Right hand side: Forest, Left hand side: Forest, Landscape Features: [flat ground, small stream], Items: [keyA, keyB, keyC]}". You should write a description in this style: "
+
+End Of Road
+
+You are standing at the end of a road before a small brick building. Around you is a forest. A small stream flows out of the building and down a gully. 
+There are some keys on the ground here." 
+
+inquiry: 
+{'Current location': 'sea', 'Front': '<Do not know>', 'Back': '<Do not know>', 'Right hand side': '<Do not know>', 'Left hand side': '<Do not know>', 'Items': ['Weapon Crafting Bench']}
+
+response by gpt3.5-turbo: 
+Sea
+
+You are standing at the edge of a vast sea. The sound of crashing waves fills the air, and the salty scent of the ocean surrounds you. As far as the eye can see, there is nothing but water stretching out into the horizon. The sea is a mesmerizing shade of blue, with gentle ripples dancing across its surface. 
+
+There is a weapon crafting bench here, providing you with the opportunity to create powerful tools and weapons to aid you on your journey.
+////////////////////////////////////////////////////
+[Wed Jan  3 15:16:21 2024]
+systemRole: 
+You are writing a description about current location player is at for a text-based adventure game program, you will receive a game details from game program like this "{Current location: End Of Road, Front: brick building, Back: Forest, Right hand side: Forest, Left hand side: Forest, Landscape Features: [flat ground, small stream], Items: [keyA, keyB, keyC]}". You should write a description in this style: "
+
+End Of Road
+
+You are standing at the end of a road before a small brick building. Around you is a forest. A small stream flows out of the building and down a gully. 
+There are some keys on the ground here." 
+
+inquiry: 
+{'Current location': 'sea', 'Front': '<Do not know>', 'Back': '<Do not know>', 'Right hand side': '<Do not know>', 'Left hand side': '<Do not know>', 'Items': ['Firewood'], 'Landscape Features': ['Rocks']}
+
+response by gpt3.5-turbo: 
+Sea
+
+You find yourself standing by the vast expanse of the sea. The sound of crashing waves fills the air, creating a serene atmosphere. As far as the eye can see, there is nothing but water stretching out into the horizon. The salty breeze brushes against your face, carrying with it the scent of the ocean. 
+
+The landscape here is dotted with rocks, forming small islands amidst the water. These rocky formations add a touch of rugged beauty to the scene. 
+
+On the ground, you notice a pile of firewood, perhaps left behind by someone. It could come in handy for starting a fire or building shelter.
+////////////////////////////////////////////////////
+[Wed Jan  3 15:18:07 2024]
+systemRole: 
+You are writing a description about current location player is at for a text-based adventure game program, you will receive a game details from game program like this "{Current location: End Of Road, Front: brick building, Back: Forest, Right hand side: Forest, Left hand side: Forest, Landscape Features: [flat ground, small stream], Items: [keyA, keyB, keyC]}". You should write a description in this style: "
+
+End Of Road
+
+You are standing at the end of a road before a small brick building. Around you is a forest. A small stream flows out of the building and down a gully. 
+There are some keys on the ground here." 
+
+inquiry: 
+{'Current location': 'sea', 'Front': '<Do not know>', 'Back': '<Do not know>', 'Right hand side': '<Do not know>', 'Left hand side': '<Do not know>', 'Items': ['Traps']}
+
+response by gpt3.5-turbo: 
+Sea
+
+You are making an effort to tread water to prevent yourself from sinking into the sea. sea. The sound of crashing waves fills the air as you gaze out into the horizon. The water stretches as far as the eye can see, with no land in sight. The sea is a deep blue color, with occasional whitecaps forming on the surface. 
+
+There are some traps scattered around here, perhaps left by previous adventurers. Be careful where you step.
+////////////////////////////////////////////////////
+[Wed Jan  3 15:31:47 2024]
+systemRole: 
+You are writing a description about current location player is at for a text-based adventure game program, you will receive a game details from game program like this "{Current location: End Of Road, Front: brick building, Back: Forest, Right hand side: Forest, Left hand side: Forest, Landscape Features: [flat ground, small stream], Items: [keyA, keyB, keyC]}". You should write a description in this style: "
+
+End Of Road
+
+You are standing at the end of a road before a small brick building. Around you is a forest. A small stream flows out of the building and down a gully. 
+There are some keys on the ground here." 
+
+inquiry: 
+{'Current location': 'land', 'Front': '<Do not know>', 'Back': '<Do not know>', 'Right hand side': '<Do not know>', 'Left hand side': '<Do not know>', 'Landscape Features': ['Stream'], 'Items': ['Bread']}
+
+response by gpt3.5-turbo: 
+Land
+
+You are standing in an open field. The surroundings are unknown, as you cannot see anything in front, back, right hand side, or left hand side. However, you notice a stream flowing nearby. On the ground, you find a piece of bread.
+////////////////////////////////////////////////////
+[Wed Jan  3 16:49:02 2024]
+systemRole: 
+You are writing a description about current location player is at for a text-based adventure game program, you will receive a game details from game program like this "{Current location: End Of Road, Front: brick building, Back: Forest, Right hand side: Forest, Left hand side: Forest, Landscape Features: [flat ground, small stream], Items: [keyA, keyB, keyC]}". You should write a description in this style: "
+
+End Of Road
+
+You are standing at the end of a road before a small brick building. Around you is a forest. A small stream flows out of the building and down a gully. 
+There are some keys on the ground here." 
+
+inquiry: 
+{'Current location': 'land', 'Front': 'land', 'Back': 'land', 'Right hand side': 'land', 'Left hand side': 'land', 'Items': ['Firewood']}
+
+response by gpt3.5-turbo: 
+Land
+
+You are standing on a vast expanse of land. There is nothing particularly remarkable about this area. The land stretches out in all directions, with no distinguishing features or landmarks. The ground beneath your feet is flat and solid. 
+
+There is a pile of firewood nearby, suggesting that someone may have been here recently. Other than that, there is nothing else of note in this area.
+////////////////////////////////////////////////////
+[Wed Jan  3 16:55:58 2024]
+systemRole: 
+You are writing a description about current location player is at for a text-based adventure game program, you will receive a game details from game program like this "{Current location: End Of Road, Front: brick building, Back: Forest, Right hand side: Forest, Left hand side: Forest, Landscape Features: [flat ground, small stream], Items: [keyA, keyB, keyC]}". You should write a description in this style: "
+
+End Of Road
+
+You are standing at the end of a road before a small brick building. Around you is a forest. A small stream flows out of the building and down a gully. 
+There are some keys on the ground here." 
+
+inquiry: 
+{'Current location': 'land', 'Front': 'land', 'Back': 'land', 'Right hand side': 'land', 'Left hand side': 'land', 'Items': ['Firewood']}
+
+response by gpt3.5-turbo: 
+Land
+
+You are standing in the middle of a vast expanse of land. There is no specific landmark or structure in sight. The land stretches out in all directions, with nothing but open space surrounding you. The ground is flat and barren, with no signs of vegetation. 
+
+You notice a pile of firewood lying on the ground nearby. It seems to have been left here by someone.
+////////////////////////////////////////////////////
+[Wed Jan  3 17:05:26 2024]
+systemRole: 
+You are writing a description about current location player is at for a text-based adventure game program, you will receive a game details from game program like this "{Current location: End Of Road, Front: brick building, Back: Forest, Right hand side: Forest, Left hand side: Forest, Landscape Features: [flat ground, small stream], Items: [keyA, keyB, keyC]}". You should write a description in this style: "
+
+End Of Road
+
+You are standing at the end of a road before a small brick building. Around you is a forest. A small stream flows out of the building and down a gully. 
+There are some keys on the ground here." 
+
+inquiry: 
+{'Current location': 'land', 'Front': 'land', 'Back': 'land', 'Right hand side': 'land', 'Left hand side': 'land', 'Items': ['Firewood', 'Traps']}
+
+response by gpt3.5-turbo: 
+Land
+
+You are standing in the middle of a vast, open land. There is no sign of civilization as far as the eye can see. The land stretches out in all directions, with no landmarks or distinguishing features. The ground beneath your feet is flat and barren, devoid of any vegetation or life.
+
+In the distance, you can see rolling hills and mountains, but they are too far away to reach on foot. The sky above is clear and blue, with a few fluffy white clouds drifting lazily by.
+
+As you look around, you notice some firewood and traps lying on the ground nearby. It seems someone may have left them here, but there is no indication of who or why.
+////////////////////////////////////////////////////
+[Sat Jan 27 16:25:33 2024]
+systemRole: 
+You are writing a description about current location player is at for a text-based adventure game program, you will receive a game details from game program like this "{Current location: End Of Road, Front: brick building, Back: Forest, Right hand side: Forest, Left hand side: Forest, Landscape Features: [flat ground, small stream], Items: [keyA, keyB, keyC]}". You should write a description in this style: "
+
+End Of Road
+
+You are standing at the end of a road before a small brick building. Around you is a forest. A small stream flows out of the building and down a gully. 
+There are some keys on the ground here." 
+
+inquiry: 
+{'Current location': 'land', 'Front': 'land', 'Back': 'land', 'Right hand side': 'land', 'Left hand side': 'land', 'Items': ['First Aid Kit']}
+
+response by gpt3.5-turbo: 
+Land
+
+You are standing on a vast expanse of land. In every direction, all you can see is more land. The landscape stretches out endlessly, with no distinguishing features or landmarks. The ground beneath your feet is flat and barren, devoid of any vegetation. 
+
+There is nothing of note here except for a lone item - a First Aid Kit - lying on the ground. It seems out of place in this desolate landscape.
+////////////////////////////////////////////////////
+[Sat Jan 27 16:33:24 2024]
+systemRole: 
+You are writing a description about current location player is at for a text-based adventure game program, you will receive a game details from game program like this "{Current location: End Of Road, Front: brick building, Back: Forest, Right hand side: Forest, Left hand side: Forest, Landscape Features: [flat ground, small stream], Items: [keyA, keyB, keyC]}". You should write a description in this style: "
+
+End Of Road
+
+You are standing at the end of a road before a small brick building. Around you is a forest. A small stream flows out of the building and down a gully. 
+There are some keys on the ground here." 
+
+inquiry: 
+{'Current location': 'land', 'Front': 'land', 'Back': 'land', 'Right hand side': 'land', 'Left hand side': 'land', 'Items': ['Weapon Crafting Bench', 'Traps'], 'Landscape Features': ['Rocks']}
+
+response by gpt3.5-turbo: 
+Land
+
+You are standing in a vast expanse of land. There is no specific landmark or structure in sight. The landscape is dominated by rocky terrain, with scattered rocks of various sizes. The land stretches out in all directions, with no discernible boundaries.
+
+As you explore, you notice a few landscape features that catch your attention. Large rocks jut out from the ground, creating a rugged and uneven surface. These rocks could potentially provide cover or serve as a vantage point.
+
+In addition to the natural formations, you also spot some items scattered on the ground. There is a Weapon Crafting Bench, suggesting that this area may have been used for weapon preparation or training. You also notice some Traps, hinting at a possible danger or the presence of hunters or adventurers.
+
+The land seems desolate and devoid of any significant activity. It is up to you to decide where to go or what to do next.
+////////////////////////////////////////////////////
+[Sat Jan 27 16:35:09 2024]
+systemRole: 
+You are writing a description about current location player is at for a text-based adventure game program, you will receive a game details from game program like this "{Current location: End Of Road, Front: brick building, Back: Forest, Right hand side: Forest, Left hand side: Forest, Landscape Features: [flat ground, small stream], Items: [keyA, keyB, keyC]}". You should write a description in this style: "
+
+End Of Road
+
+You are standing at the end of a road before a small brick building. Around you is a forest. A small stream flows out of the building and down a gully. 
+There are some keys on the ground here." 
+
+inquiry: 
+{'Current location': 'land', 'Front': 'land', 'Back': 'land', 'Right hand side': 'land', 'Left hand side': 'land', 'Landscape Features': ['Stream', 'Stream']}
+
+response by gpt3.5-turbo: 
+Land
+
+You are standing in the middle of vast land. There is nothing but open space in every direction. The landscape is flat and featureless, with no distinguishable landmarks or objects. The only thing that breaks the monotony is the presence of two small streams, running parallel to each other. The sound of running water adds a calming touch to the otherwise desolate surroundings.
+////////////////////////////////////////////////////
+[Sat Jan 27 16:42:01 2024]
+systemRole: 
+You are writing a description about current location player is at for a text-based adventure game program, you will receive a game details from game program like this "{Current location: End Of Road, Front: brick building, Back: Forest, Right hand side: Forest, Left hand side: Forest, Landscape Features: [flat ground, small stream], Items: [keyA, keyB, keyC]}". You should write a description in this style: "
+
+End Of Road
+
+You are standing at the end of a road before a small brick building. Around you is a forest. A small stream flows out of the building and down a gully. 
+There are some keys on the ground here." 
+
+inquiry: 
+{'Current location': 'land', 'Front': 'land', 'Back': 'land', 'Right hand side': 'land', 'Left hand side': 'land', 'Landscape Features': ['Stream']}
+
+response by gpt3.5-turbo: 
+Land
+
+You are standing in a vast expanse of land. All around you is nothing but open space. The landscape stretches as far as the eye can see, with no signs of civilization in sight. The only feature that breaks the monotony is a gentle stream that meanders through the land, providing a soothing sound and a touch of life to the otherwise barren surroundings.
+////////////////////////////////////////////////////
+[Sat Jan 27 16:48:37 2024]
+systemRole: 
+You are writing a description about current location player is at for a text-based adventure game program, you will receive a game details from game program like this "{Current location: End Of Road, Front: brick building, Back: Forest, Right hand side: Forest, Left hand side: Forest, Landscape Features: [flat ground, small stream], Items: [keyA, keyB, keyC]}". You should write a description in this style: "
+
+End Of Road
+
+You are standing at the end of a road before a small brick building. Around you is a forest. A small stream flows out of the building and down a gully. 
+There are some keys on the ground here." 
+
+inquiry: 
+{'Current location': 'land', 'Front': 'land', 'Back': 'land', 'Right hand side': 'land', 'Left hand side': 'land', 'Items': ['Weapon Crafting Bench', 'Weapon Crafting Bench']}
+
+response by gpt3.5-turbo: 
+Land
+
+You are standing in the middle of a vast, open land. There is no sign of civilization as far as the eye can see. The landscape stretches out in all directions, with no distinguishing features. The land is barren and devoid of any vegetation or structures. It is a desolate and lonely place. 
+
+There are a couple of weapon crafting benches scattered around the area. They seem to have been left here by someone, but there is no sign of who or why. These benches can be used to craft powerful weapons, if you have the necessary materials.
+////////////////////////////////////////////////////
+[Sat Jan 27 16:48:44 2024]
+systemRole: 
+You are creating a event for a text-based adventure game, you should create event in following form based on game information provided in later:
+{
+	"event_name": <event name here>,
+	"event_discription": <possible discription in third person and first person view>
+}, Here is an example:
+	game information:
+	{
+		"event type": "survival crisis",
+		"triggered reason": "low action point",
+		"Current location": "End Of Road",
+		"Current action": "moving",
+		"Tool(s) assist with moving": [],
+		"player current status": "Normal",
+		"description needed to be modified": "
+End Of Road
+
+You are standing at the end of a road before a small brick building. Around you is a forest. A small stream flows out of the building and down a gully. 
+There are some keys on the ground here."
+	}
+	
+	expected result:
+	{
+		"event_name": "starting feeling tired",
+		"event_discription": "
+End Of Road
+
+You stand at the end of a road before a small brick building. The dense forest surrounds you, its looming trees casting shadows. A weary sensation seeps through your limbs, accentuating the fatigue in your bones. A small stream trickles from the building, and amidst the weariness, you notice a glint��keys scattered on the ground, waiting to be claimed."
+	}
+
+inquiry: 
+{'event type': 'survival crisis', 'triggered reason': 'low action point', 'Current location': 'land', 'Current action': 'None', 'Tool(s) assist with moving': [], 'player current status': 'normal', 'description needed to be modified': 'Land\n\nYou are standing in the middle of a vast, open land. There is no sign of civilization as far as the eye can see. The landscape stretches out in all directions, with no distinguishing features. The land is barren and devoid of any vegetation or structures. It is a desolate and lonely place. \n\nThere are a couple of weapon crafting benches scattered around the area. They seem to have been left here by someone, but there is no sign of who or why. These benches can be used to craft powerful weapons, if you have the necessary materials.'}
+
+response by gpt3.5-turbo: 
+{
+	"event_name": "discovering an abandoned camp",
+	"event_discription": "Land\n\nYou find yourself standing in the middle of a vast, open land. The desolation of the surroundings weighs heavily on your spirit, as if the land itself is sapping away your strength. There is no sign of civilization as far as the eye can see, leaving you feeling isolated and vulnerable.\n\nAmidst the barren landscape, you spot a few weapon crafting benches scattered around. They stand as silent reminders of a presence that once inhabited this desolate place. The mystery of who left them behind and why lingers in the air, adding an eerie touch to the already somber atmosphere. These benches hold the potential to create formidable weapons, if you possess the necessary materials." 
+}
+////////////////////////////////////////////////////
+[Mon Jan 29 18:42:50 2024]
+systemRole: 
+You are writing a description about current location player is at for a text-based adventure game program, you will receive a game details from game program like this: 
+{
+	"Current location": "End Of Road", 
+	"Front": "brick building", 
+	"Back": "Forest", 
+	"Right hand side": "Forest", 
+	"Left hand side": "Forest", 
+	"Landscape Features": "[small stream]", 
+	"Items": "[keyA, keyB, keyC]"
+} 
+And the expected result would be: 
+{
+	"location name": "End Of Road",
+	"Description of current and surrounding locations": "You are standing at the end of a road before a small brick building. Around you is a forest.",
+	"Landscape Features description": "A small stream flows out of the building and down a gully.", 
+	"Items description": "There are some keys on the ground here."
+} 
+
+inquiry: 
+{'Current location': 'land', 'Front': 'land', 'Back': 'land', 'Right hand side': 'land', 'Left hand side': 'land', 'Items': ['Traps', 'First Aid Kit', 'Bread']}
+
+response by gpt3.5-turbo: 
+{
+	"location name": "land",
+	"Description of current and surrounding locations": "You are standing in an open land. There is land in front, behind, to the right, and to the left of you.",
+	"Landscape Features description": "There are no notable landscape features around.",
+	"Items description": "There are some items on the ground here, including traps, a first aid kit, and bread."
+}
+////////////////////////////////////////////////////
+[Mon Jan 29 18:43:10 2024]
+systemRole: 
+You are writing a description about current location player is at for a text-based adventure game program, you will receive a game details from game program like this: 
+{
+	"Current location": "End Of Road", 
+	"Front": "brick building", 
+	"Back": "Forest", 
+	"Right hand side": "Forest", 
+	"Left hand side": "Forest", 
+	"Landscape Features": "[small stream]", 
+	"Items": "[keyA, keyB, keyC]"
+} 
+And the expected result would be: 
+{
+	"location name": "End Of Road",
+	"Description of current and surrounding locations": "You are standing at the end of a road before a small brick building. Around you is a forest.",
+	"Landscape Features description": "A small stream flows out of the building and down a gully.", 
+	"Items description": "There are some keys on the ground here."
+} 
+
+inquiry: 
+{'Current location': 'land', 'Front': 'land', 'Back': 'land', 'Right hand side': 'land', 'Left hand side': 'land', 'Items': ['Weapon Crafting Bench', 'Firewood'], 'Landscape Features': ['Stream']}
+
+response by gpt3.5-turbo: 
+{
+	"location name": "land",
+	"Description of current and surrounding locations": "You are standing in the middle of a vast land. There is land in every direction.",
+	"Landscape Features description": "A stream flows through the land, adding a touch of serenity to the surroundings.",
+	"Items description": "There is a Weapon Crafting Bench and some Firewood here."
+}
+////////////////////////////////////////////////////
+[Mon Jan 29 18:43:41 2024]
+systemRole: 
+You are writing a description about current location player is at for a text-based adventure game program, you will receive a game details from game program like this: 
+{
+	"Current location": "End Of Road", 
+	"Front": "brick building", 
+	"Back": "Forest", 
+	"Right hand side": "Forest", 
+	"Left hand side": "Forest", 
+	"Landscape Features": "[small stream]", 
+	"Items": "[keyA, keyB, keyC]"
+} 
+And the expected result would be: 
+{
+	"location name": "End Of Road",
+	"Description of current and surrounding locations": "You are standing at the end of a road before a small brick building. Around you is a forest.",
+	"Landscape Features description": "A small stream flows out of the building and down a gully.", 
+	"Items description": "There are some keys on the ground here."
+} 
+
+inquiry: 
+{'Current location': 'land', 'Front': 'land', 'Back': 'land', 'Right hand side': 'land', 'Left hand side': 'land', 'Items': ['Edible Plants']}
+
+response by gpt3.5-turbo: 
+{
+	"location name": "land",
+	"Description of current and surrounding locations": "You are standing in an open land. The land stretches out in all directions.",
+	"Landscape Features description": "There are no distinct landscape features in this area.",
+	"Items description": "There are some edible plants growing here."
+}
+////////////////////////////////////////////////////
+[Mon Jan 29 18:47:41 2024]
+systemRole: 
+You are writing a description about current location player is at for a text-based adventure game program, you will receive a game details from game program like this: 
+{
+	"Current location": "End Of Road", 
+	"Front": "brick building", 
+	"Back": "Forest", 
+	"Right hand side": "Forest", 
+	"Left hand side": "Forest", 
+	"Landscape Features": "[small stream]", 
+	"Items": "[keyA, keyB, keyC]"
+} 
+And the expected result would be: 
+{
+	"location name": "End Of Road",
+	"Description of current and surrounding locations": "You are standing at the end of a road before a small brick building. Around you is a forest.",
+	"Landscape Features description": "A small stream flows out of the building and down a gully.", 
+	"Items description": "There are some keys on the ground."
+} 
+
+inquiry: 
+{'Current location': 'land', 'Front': 'land', 'Back': 'land', 'Right hand side': 'land', 'Left hand side': 'land', 'Items': ['Traps', 'Firewood'], 'Landscape Features': ['Stream']}
+
+response by gpt3.5-turbo: 
+{
+	"location name": "land",
+	"Description of current and surrounding locations": "You are standing in an open land. There is land in front, back, right hand side, and left hand side of you.",
+	"Landscape Features description": "There is a stream flowing through the land.",
+	"Items description": "There are some traps and firewood scattered on the ground."
+}
+////////////////////////////////////////////////////
+[Mon Jan 29 18:48:21 2024]
+systemRole: 
+You are writing a description about current location player is at for a text-based adventure game program, you will receive a game details from game program like this: 
+{
+	"Current location": "End Of Road", 
+	"Front": "brick building", 
+	"Back": "Forest", 
+	"Right hand side": "Forest", 
+	"Left hand side": "Forest", 
+	"Landscape Features": "[small stream]", 
+	"Items": "[keyA, keyB, keyC]"
+} 
+And the expected result would be: 
+{
+	"location name": "End Of Road",
+	"Description of current and surrounding locations": "You are standing at the end of a road before a small brick building. Around you is a forest.",
+	"Landscape Features description": "A small stream flows out of the building and down a gully.", 
+	"Items description": "There are some keys on the ground."
+} 
+
+inquiry: 
+{'Current location': 'land', 'Front': 'land', 'Back': 'land', 'Right hand side': 'land', 'Left hand side': 'land', 'Items': ['Firewood'], 'Landscape Features': ['Rocks']}
+
+response by gpt3.5-turbo: 
+{
+	"location name": "land",
+	"Description of current and surrounding locations": "You are standing in an open land. There is land in front of you, behind you, to your right, and to your left.",
+	"Landscape Features description": "There are some rocks scattered around the land.",
+	"Items description": "There is some firewood on the ground."
+}
+////////////////////////////////////////////////////
+[Mon Jan 29 18:51:05 2024]
+systemRole: 
+You are writing a description about current location player is at for a text-based adventure game program, you will receive a game details from game program like this: 
+{
+	"Current location": "End Of Road", 
+	"Front": "brick building", 
+	"Back": "Forest", 
+	"Right hand side": "Forest", 
+	"Left hand side": "Forest", 
+	"Landscape Features": "[small stream]", 
+	"Items": "[keyA, keyB, keyC]"
+} 
+And the expected result would be: 
+{
+	"location name": "End Of Road",
+	"Description of current and surrounding locations": "You are standing at the end of a road before a small brick building. Around you is a forest.",
+	"Landscape Features description": "A small stream flows out of the building and down a gully.", 
+	"Items description": "There are some keys on the ground."
+} 
+
+inquiry: 
+{'Current location': 'land', 'Front': 'land', 'Back': 'land', 'Right hand side': 'land', 'Left hand side': 'land', 'Items': ['Firewood', 'Edible Plants']}
+
+response by gpt3.5-turbo: 
+{
+	"location name": "land",
+	"Description of current and surrounding locations": "You are standing in the middle of a vast land. There is land in every direction.",
+	"Landscape Features description": "There are no specific landscape features in this area.",
+	"Items description": "You notice some firewood and edible plants scattered on the ground."
+}
+////////////////////////////////////////////////////
+[Mon Jan 29 18:51:11 2024]
+systemRole: 
+You are creating a event for a text-based adventure game, you should create an event name and refine the location description that triggers when the event occurs. Ensure the modified description aligns seamlessly with the current in-game circumstances, drawing on relevant game information. Use the following format: based on game information in following form:
+{
+	"event_name": <event name here>,
+	"Description_of_locations": <Description of current and surrounding locations>, 
+	"Landscape_description": <Description of any Landscape Features in original description>, 
+	"Items_description": <Description of any items in original description>,
+	"event_discription": <Additional description due to the event>
+}, Here is an example:
+	game information:
+	{
+		"event type": "survival crisis",
+		"triggered reason": "low action point",
+		"Current location": "End Of Road",
+		"Current action": "moving",
+		"Tool(s) assist with moving": [],
+		"player current status": "normal",
+		"Description of current and surrounding locations": "You are standing at the end of a road before a small brick building. Around you is a forest.",
+		"Landscape Features description": "A small stream flows out of the building and down a gully.", 
+		"Items description": "There are some keys on the ground here."
+	}
+	
+	expected result:
+	{
+		"event_name": "starting to feel tired",
+		"Description_of_locations": "You are standing at the end of a road before a small brick building. Around you is a forest.",
+		"Landscape_description": "A small stream flows out of the building and down a gully.", 
+		"Items_description": "There are some keys on the ground here."
+		"event_discription": "You feel a weariness settling in, your steps heavier than before. The journey has taken its toll on you."
+	}
+
+inquiry: 
+{'event type': 'survival crisis', 'triggered reason': 'low action point', 'Current location': 'land', 'Current action': 'None', 'Tool(s) assist with moving': [], 'player current status': 'normal', 'description needed to be modified': {'location name': 'land', 'Description of current and surrounding locations': 'You are standing in the middle of a vast land. There is land in every direction.', 'Landscape Features description': 'There are no specific landscape features in this area.', 'Items description': 'You notice some firewood and edible plants scattered on the ground.'}}
+
+response by gpt3.5-turbo: 
+{
+	"event_name": "feeling a storm approaching",
+	"Description_of_locations": "You are standing in the middle of a vast land. There is land in every direction.",
+	"Landscape_description": "There are no specific landscape features in this area.",
+	"Items_description": "You notice some firewood and edible plants scattered on the ground.",
+	"event_discription": "As you look up at the sky, you notice dark clouds gathering on the horizon. The air feels heavy and a strong wind picks up, causing the firewood and plants to sway. It seems like a storm is approaching, and you should find shelter soon."
+}
+////////////////////////////////////////////////////
+[Wed Jan 31 15:38:01 2024]
+systemRole: 
+You are writing a description about current location player is at for a text-based adventure game program, you will receive a game details from game program like this "{Current location: End Of Road, Front: brick building, Back: Forest, Right hand side: Forest, Left hand side: Forest, Landscape Features: [flat ground, small stream], Items: [keyA, keyB, keyC]}". You should write a description in this style: "
+End Of Road
+You are standing at the end of a road before a small brick building. Around you is a forest. A small stream flows out of the building and down a gully. 
+There are some keys on the ground here." 
+
+inquiry: 
+{'Current location': 'land', 'Front': 'land', 'Back': 'land', 'Right hand side': 'land', 'Left hand side': 'land', 'Landscape Features': ['Stream'], 'Items': ['Traps', 'Firewood']}
+
+response by gpt3.5-turbo: 
+Land
+You are standing in the middle of a vast expanse of land. In every direction, all you can see is more land stretching out as far as the eye can see. There are no distinguishing features or landmarks in sight. The only thing of note is a small stream that cuts through the land, meandering its way towards an unknown destination. 
+On the ground, you notice some traps scattered about, as well as a pile of firewood.
+////////////////////////////////////////////////////
+[Wed Jan 31 15:41:37 2024]
+systemRole: 
+You are writing a description about current location player is at for a text-based adventure game program, you will receive a game details from game program like this "{Current location: End Of Road, Front: brick building, Back: Forest, Right hand side: Forest, Left hand side: Forest, Landscape Features: [flat ground, small stream], Items: [keyA, keyB, keyC]}". You should write a description in this style: "
+End Of Road
+You are standing at the end of a road before a small brick building. Around you is a forest. A small stream flows out of the building and down a gully. 
+There are some keys on the ground here." 
+
+inquiry: 
+{'Current location': 'land', 'Front': 'land', 'Back': 'land', 'Right hand side': 'land', 'Left hand side': 'land', 'Items': ['Edible Plants', 'First Aid Kit'], 'Landscape Features': ['Stream']}
+
+response by gpt3.5-turbo: 
+Land
+You are standing in the middle of a vast expanse of land. There is nothing but land in every direction. The landscape is flat and featureless, with no distinguishing landmarks. 
+There are some edible plants and a first aid kit here.
+////////////////////////////////////////////////////
+[Wed Jan 31 15:41:43 2024]
+systemRole: 
+You are creating a event for a text-based adventure game, you should create event in following form based on game information(Mainly the triggered reason) provided in later:
+{
+	"event_name": <event name here>,
+	"event_discription": <possible discription in third person and first person view>
+}, Here is an example:
+	game information:
+	{
+		"event type": "survival crisis",
+		"triggered reason": "low action point",
+		"Current location": "End Of Road",
+		"Current action": "moving",
+		"Tool(s) assist with moving": [],
+		"player current status": "Normal",
+		"description needed to be modified": "
+End Of Road
+You are standing at the end of a road before a small brick building. Around you is a forest. A small stream flows out of the building and down a gully. 
+There are some keys on the ground here."
+	}
+	
+	expected result:
+	{
+		"event_name": "starting feeling tired",
+		"event_discription": "
+End Of Road
+You stand at the end of a road before a small brick building. The dense forest surrounds you, its looming trees casting shadows. A weary sensation seeps through your limbs, accentuating the fatigue in your bones. A small stream trickles from the building, and amidst the weariness, you notice a glint��keys scattered on the ground, waiting to be claimed."
+	}
+
+inquiry: 
+{'event type': 'survival crisis', 'triggered reason': 'low action point', 'Current location': 'land', 'Current action': 'None', 'Tool(s) assist with moving': [], 'player current status': 'normal', 'description needed to be modified': 'Land\nYou are standing in the middle of a vast expanse of land. There is nothing but land in every direction. The landscape is flat and featureless, with no distinguishing landmarks. \nThere are some edible plants and a first aid kit here.'}
+
+response by gpt3.5-turbo: 
+{
+	"event_name": "feeling weak",
+	"event_discription": "Land\nYou stand in the middle of a vast expanse of land. The desolate landscape stretches as far as the eye can see, devoid of any notable features. The monotony of the land weighs heavily on you, draining your energy and leaving you feeling weak. Amongst the barrenness, you spot some edible plants and a first aid kit, offering a glimmer of hope amidst the weariness."
+}
+////////////////////////////////////////////////////
+[Wed Jan 31 15:47:23 2024]
+systemRole: 
+You are writing a description about current location player is at for a text-based adventure game program, you will receive a game details from game program like this "{Current location: End Of Road, Front: brick building, Back: Forest, Right hand side: Forest, Left hand side: Forest, Landscape Features: [flat ground, small stream], Items: [keyA, keyB, keyC]}". Here is the example of expected result: "
+End Of Road
+You are standing at the end of a road before a small brick building. Around you is a forest. A small stream flows out of the building and down a gully. 
+There are some keys on the ground here." 
+
+inquiry: 
+{'Current location': 'land', 'Front': 'land', 'Back': 'land', 'Right hand side': 'land', 'Left hand side': 'land', 'Items': ['Weapon Crafting Bench'], 'Landscape Features': ['Rocks']}
+
+response by gpt3.5-turbo: 
+Land
+You are standing on a vast expanse of land. There is nothing remarkable in any direction. The landscape is dotted with rocks, giving it a rugged appearance. 
+There is a Weapon Crafting Bench here, ready for use.
+////////////////////////////////////////////////////
+[Wed Jan 31 15:47:27 2024]
+systemRole: 
+You are creating a event for a text-based adventure game, you should create event in following form based on game information(Mainly the triggered reason) provided in later:
+{
+	"event_name": <event name here>,
+	"event_discription": <possible discription in third person and first person view>
+}, Here is an example:
+	game information:
+	{
+		"event type": "survival crisis",
+		"triggered reason": "low action point",
+		"Current location": "End Of Road",
+		"Current action": "moving",
+		"Tool(s) assist with moving": [],
+		"player current status": "Normal",
+		"description needed to be modified": "
+End Of Road
+You are standing at the end of a road before a small brick building. Around you is a forest. A small stream flows out of the building and down a gully. 
+There are some keys on the ground here."
+	}
+	
+	expected result:
+	{
+		"event_name": "starting feeling tired",
+		"event_description": "
+End Of Road
+You stand at the end of a road before a small brick building. The dense forest surrounds you, its looming trees casting shadows. A weary sensation seeps through your limbs, accentuating the fatigue in your bones. A small stream trickles from the building, and amidst the weariness, you notice a glint��keys scattered on the ground, waiting to be claimed."
+	}
+
+inquiry: 
+{'event type': 'survival crisis', 'triggered reason': 'low action point', 'Current location': 'land', 'Current action': 'None', 'Tool(s) assist with moving': [], 'player current status': 'normal', 'description needed to be modified': 'Land\nYou are standing on a vast expanse of land. There is nothing remarkable in any direction. The landscape is dotted with rocks, giving it a rugged appearance. \nThere is a Weapon Crafting Bench here, ready for use.'}
+
+response by gpt3.5-turbo: 
+{
+	"event_name": "feeling exhausted",
+	"event_description": "Land\nYou stand on a vast expanse of land, surrounded by nothingness in every direction. The barren landscape stretches out before you, the rugged terrain making each step feel like a burden. As you take in your surroundings, you notice a Weapon Crafting Bench nearby, waiting to be utilized."
+}
+////////////////////////////////////////////////////
+[Wed Jan 31 17:33:28 2024]
+systemRole: 
+You are writing a description about current location player is at for a text-based adventure game program, you will receive a game details from game program like this "{Current location: End Of Road, Front: brick building, Back: Forest, Right hand side: Forest, Left hand side: Forest, Landscape Features: [flat ground, small stream], Items: [keyA, keyB, keyC]}". Here is the example of expected result: "
+End Of Road
+You are standing at the end of a road before a small brick building. Around you is a forest. A small stream flows out of the building and down a gully. 
+There are some keys on the ground here." 
+
+inquiry: 
+{'Current location': 'land', 'Front': 'land', 'Back': 'land', 'Right hand side': 'land', 'Left hand side': 'land', 'Landscape Features': ['Rocks'], 'Items': ['Bread']}
+
+response by gpt3.5-turbo: 
+Land
+You are standing on a vast expanse of land. There is land in every direction, as far as the eye can see. The landscape is adorned with rocks scattered throughout. 
+There is a piece of bread lying on the ground here.
+////////////////////////////////////////////////////
+[Wed Jan 31 17:33:30 2024]
+systemRole: 
+You are determine the development of an event in a text-based adventure game, you should tell the program the development in following form of event based on (Mainly based on the triggered reason and player information) the game information provided later:
+{
+	"successful": <True if succeed, False if not>,
+	"fail": <True if failed, False if not>,
+	"reward": <select the indices of zero or more of reward like a python list (You may make this with an empty list if you decide to choose no reward) from possible reward list in game information provided based on player action in game information>, 
+	"penalty": <select the indices of zero or more of penalty like a python list (You may make this with an empty list if you decide to choose no penalty) from possible penalty list in game information provided based on player action in game information>
+}, Here is an example(the event is not necessary be succeed or failed immediately, it won't failed as long as in the time limit, we will tell you if times up), the following example has select a penalty which is the third one in "possible penalty":
+	game information:
+	{
+		"event_name": "Venomous Encounter",
+		"event type": "poisoning potential",
+		"triggered reason": "attacked by snake",
+		"player current status": "normal",
+		"player action": "suck the attcked part",
+		"times up": False,
+		"possible reward": ["increase maximum hp", "increase maximum action point", "obtain a poison"],
+		"possible penalty": ["decrease hp", "decrease action point", "add poisoning status"]
+	}
+	
+	expected result:
+	{
+		"successful": False,
+		"fail": False,
+		"reward": [], 
+		"penalty": [2]
+}
+
+inquiry: 
+{'event type': 'survival crisis', 'triggered reason': 'low action point', 'Current location': 'land', 'Current action': 'None', 'Tool(s) assist with moving': [], 'player current status': 'normal', 'description needed to be modified': 'Land\nYou are standing on a vast expanse of land. There is land in every direction, as far as the eye can see. The landscape is adorned with rocks scattered throughout. \nThere is a piece of bread lying on the ground here.'}
+
+response by gpt3.5-turbo: 
+{
+	"successful": False,
+	"fail": False,
+	"reward": [], 
+	"penalty": []
+}
+////////////////////////////////////////////////////
+[Wed Jan 31 17:36:12 2024]
+systemRole: 
+You are writing a description about current location player is at for a text-based adventure game program, you will receive a game details from game program like this "{Current location: End Of Road, Front: brick building, Back: Forest, Right hand side: Forest, Left hand side: Forest, Landscape Features: [flat ground, small stream], Items: [keyA, keyB, keyC]}". Here is the example of expected result: "
+End Of Road
+You are standing at the end of a road before a small brick building. Around you is a forest. A small stream flows out of the building and down a gully. 
+There are some keys on the ground here." 
+
+inquiry: 
+{'Current location': 'land', 'Front': 'land', 'Back': 'land', 'Right hand side': 'land', 'Left hand side': 'land', 'Items': ['Weapon Crafting Bench', 'Edible Plants', 'Traps']}
+
+response by gpt3.5-turbo: 
+Land
+You are standing in the middle of a vast land. There is nothing but land in every direction. 
+You notice a Weapon Crafting Bench, some Edible Plants, and Traps scattered around here.
+////////////////////////////////////////////////////
+[Wed Jan 31 17:36:16 2024]
+systemRole: 
+You are creating a event for a text-based adventure game, you should create event in following form based on game information(Mainly the triggered reason) provided in later:
+{
+	"event_name": <event name here>,
+	"event_discription": <possible discription in third person and first person view>
+}, Here is an example:
+	game information:
+	{
+		"event type": "survival crisis",
+		"triggered reason": "low action point",
+		"Current location": "End Of Road",
+		"Current action": "moving",
+		"Tool(s) assist with moving": [],
+		"player current status": "Normal",
+		"description needed to be modified": "
+End Of Road
+You are standing at the end of a road before a small brick building. Around you is a forest. A small stream flows out of the building and down a gully. 
+There are some keys on the ground here."
+	}
+	
+	expected result:
+	{
+		"event_name": "starting feeling tired",
+		"event_description": "
+End Of Road
+You stand at the end of a road before a small brick building. The dense forest surrounds you, its looming trees casting shadows. A weary sensation seeps through your limbs, accentuating the fatigue in your bones. A small stream trickles from the building, and amidst the weariness, you notice a glint��keys scattered on the ground, waiting to be claimed."
+	}
+
+inquiry: 
+{'event type': 'survival crisis', 'triggered reason': 'low action point', 'Current location': 'land', 'Current action': 'None', 'Tool(s) assist with moving': [], 'player current status': 'normal', 'description needed to be modified': 'Land\nYou are standing in the middle of a vast land. There is nothing but land in every direction. \nYou notice a Weapon Crafting Bench, some Edible Plants, and Traps scattered around here.'}
+
+response by gpt3.5-turbo: 
+{
+	"event_name": "feeling weak",
+	"event_description": "Land\nYou stand in the middle of a vast land, surrounded by nothing but endless stretches of barren terrain. The desolation weighs heavily on your spirit, draining your energy with each passing moment. In this desolate landscape, you spot a Weapon Crafting Bench, some Edible Plants, and Traps scattered around, offering a glimmer of hope amidst the weariness."
+}
+////////////////////////////////////////////////////
+[Wed Jan 31 17:37:35 2024]
+systemRole: 
+You are writing a description about current location player is at for a text-based adventure game program, you will receive a game details from game program like this "{Current location: End Of Road, Front: brick building, Back: Forest, Right hand side: Forest, Left hand side: Forest, Landscape Features: [flat ground, small stream], Items: [keyA, keyB, keyC]}". Here is the example of expected result: "
+End Of Road
+You are standing at the end of a road before a small brick building. Around you is a forest. A small stream flows out of the building and down a gully. 
+There are some keys on the ground here." 
+
+inquiry: 
+{'Current location': 'land', 'Front': 'land', 'Back': 'land', 'Right hand side': 'land', 'Left hand side': 'land', 'Items': ['Edible Plants', 'Bread', 'First Aid Kit']}
+
+response by gpt3.5-turbo: 
+Land
+You are standing in the middle of a vast land. There is no specific landmark or building around you. The landscape is filled with open fields and rolling hills. The land stretches as far as the eye can see in all directions. 
+There are some items scattered on the ground here, including edible plants, a loaf of bread, and a first aid kit.
+////////////////////////////////////////////////////
+[Wed Jan 31 17:37:40 2024]
+systemRole: 
+You are creating a event for a text-based adventure game, you should create event in following form based on game information(Mainly the triggered reason) provided in later:
+{
+	"event_name": <event name here>,
+	"event_discription": <possible discription in third person and first person view>
+}, Here is an example:
+	game information:
+	{
+		"event type": "survival crisis",
+		"triggered reason": "low action point",
+		"Current location": "End Of Road",
+		"Current action": "moving",
+		"Tool(s) assist with moving": [],
+		"player current status": "Normal",
+		"description needed to be modified": "
+End Of Road
+You are standing at the end of a road before a small brick building. Around you is a forest. A small stream flows out of the building and down a gully. 
+There are some keys on the ground here."
+	}
+	
+	expected result:
+	{
+		"event_name": "starting feeling tired",
+		"event_description": "
+End Of Road
+You stand at the end of a road before a small brick building. The dense forest surrounds you, its looming trees casting shadows. A weary sensation seeps through your limbs, accentuating the fatigue in your bones. A small stream trickles from the building, and amidst the weariness, you notice a glint��keys scattered on the ground, waiting to be claimed."
+	}
+
+inquiry: 
+{'event type': 'survival crisis', 'triggered reason': 'low action point', 'Current location': 'land', 'Current action': 'None', 'Tool(s) assist with moving': [], 'player current status': 'normal', 'description needed to be modified': 'Land\nYou are standing in the middle of a vast land. There is no specific landmark or building around you. The landscape is filled with open fields and rolling hills. The land stretches as far as the eye can see in all directions. \nThere are some items scattered on the ground here, including edible plants, a loaf of bread, and a first aid kit.'}
+
+response by gpt3.5-turbo: 
+{
+	"event_name": "feeling weak",
+	"event_description": "Land\nYou stand in the middle of a vast land, surrounded by open fields and rolling hills. The landscape stretches endlessly, a seemingly infinite expanse of land. As you take in the surroundings, a wave of weakness washes over you, making your limbs feel heavy and your movements sluggish. Amongst the items scattered on the ground, you spot some edible plants, a loaf of bread, and a first aid kit."
+}
+////////////////////////////////////////////////////
+[Wed Jan 31 17:38:25 2024]
+systemRole: 
+You are determine the development of an event in a text-based adventure game, you should tell the program the development in following form of event based on (Mainly based on the triggered reason and player information) the game information provided later:
+{
+	"successful": <True if succeed, False if not>,
+	"fail": <True if failed, False if not>,
+	"reward": <select the indices of zero or more of reward like a python list (You may make this with an empty list if you decide to choose no reward) from possible reward list in game information provided based on player action in game information>, 
+	"penalty": <select the indices of zero or more of penalty like a python list (You may make this with an empty list if you decide to choose no penalty) from possible penalty list in game information provided based on player action in game information>
+}, Here is an example(the event is not necessary be succeed or failed immediately, it won't failed as long as in the time limit, we will tell you if times up), the following example has select a penalty which is the third one in "possible penalty":
+	game information:
+	{
+		"event_name": "Venomous Encounter",
+		"event type": "poisoning potential",
+		"triggered reason": "attacked by snake",
+		"player current status": "normal",
+		"player action": "suck the attcked part",
+		"times up": False,
+		"possible reward": ["increase maximum hp", "increase maximum action point", "obtain a poison"],
+		"possible penalty": ["decrease hp", "decrease action point", "add poisoning status"]
+	}
+	
+	expected result:
+	{
+		"successful": False,
+		"fail": False,
+		"reward": [], 
+		"penalty": [2]
+}
+
+inquiry: 
+{'event_name': 'feeling weak', 'event type': 'survival crisis', 'triggered reason': 'low action point', 'player current status': 'normal', 'player action': 'Move North', 'times up': True, 'possible reward': ['increase action point', 'increase maximum action point'], 'possible penalty': ['decrease action point', 'decrease maximum action point']}
+
+response by gpt3.5-turbo: 
+{
+	"successful": False,
+	"fail": True,
+	"reward": [], 
+	"penalty": [1]
+}
+////////////////////////////////////////////////////
+[Thu Feb  1 20:40:11 2024]
+systemRole: 
+You are writing a description about current location player is at for a text-based adventure game program, you will receive a game details from game program like this "{Current location: End Of Road, Front: brick building, Back: Forest, Right hand side: Forest, Left hand side: Forest, Landscape Features: [flat ground, small stream], Items: [keyA, keyB, keyC]}". Here is the example of expected result: "
+End Of Road
+You are standing at the end of a road before a small brick building. Around you is a forest. A small stream flows out of the building and down a gully. 
+There are some keys on the ground here." 
+
+inquiry: 
+{'Current location': 'land', 'Front': 'land', 'Back': 'land', 'Right hand side': 'land', 'Left hand side': 'land', 'Items': ['First Aid Kit', 'Bread', 'Firewood']}
+
+response by gpt3.5-turbo: 
+Land
+You are standing in the middle of a vast land. There is no specific landmark or building around you. The landscape stretches as far as the eye can see in all directions. 
+There are some items scattered on the ground here, including a First Aid Kit, Bread, and Firewood.
+////////////////////////////////////////////////////
+[Thu Feb  1 20:40:14 2024]
+systemRole: 
+You are creating a event for a text-based adventure game, you should create event in following form based on game information(Mainly the triggered reason) provided in later:
+{
+	"event_name": <event name here>,
+	"event_discription": <possible discription in third person and first person view>
+}, Here is an example:
+	game information:
+	{
+		"event type": "survival crisis",
+		"triggered reason": "low action point",
+		"Current location": "End Of Road",
+		"Current action": "moving",
+		"Tool(s) assist with moving": [],
+		"player current status": "Normal",
+		"description needed to be modified": "
+End Of Road
+You are standing at the end of a road before a small brick building. Around you is a forest. A small stream flows out of the building and down a gully. 
+There are some keys on the ground here."
+	}
+	
+	expected result:
+	{
+		"event_name": "starting feeling tired",
+		"event_description": "
+End Of Road
+You stand at the end of a road before a small brick building. The dense forest surrounds you, its looming trees casting shadows. A weary sensation seeps through your limbs, accentuating the fatigue in your bones. A small stream trickles from the building, and amidst the weariness, you notice a glint��keys scattered on the ground, waiting to be claimed."
+	}
+
+inquiry: 
+{'event type': 'survival crisis', 'triggered reason': 'low action point', 'Current location': 'land', 'Current action': 'None', 'Tool(s) assist with moving': [], 'player current status': 'normal', 'description needed to be modified': 'Land\nYou are standing in the middle of a vast land. There is no specific landmark or building around you. The landscape stretches as far as the eye can see in all directions. \nThere are some items scattered on the ground here, including a First Aid Kit, Bread, and Firewood.'}
+
+response by gpt3.5-turbo: 
+{
+	"event_name": "feeling weak",
+	"event_description": "Land\nYou find yourself in the middle of a vast land, surrounded by an endless expanse of terrain. The emptiness of the surroundings weighs heavily on your spirits, and a sense of weakness begins to creep into your body. As you scan the area, you notice various items scattered on the ground, including a First Aid Kit, Bread, and Firewood."
+}
+////////////////////////////////////////////////////
+[Thu Feb  1 20:40:45 2024]
+systemRole: 
+You are determine the development of an event in a text-based adventure game, you should tell the program the development in following form of event based on (Mainly based on the triggered reason and player information) the game information provided later:
+{
+	"successful": <True if succeed, False if not>,
+	"fail": <True if failed, False if not>,
+	"reward": <select the indices of zero or more of reward like a python list (You may make this with an empty list if you decide to choose no reward) from possible reward list in game information provided based on player action in game information>, 
+	"penalty": <select the indices of zero or more of penalty like a python list (You may make this with an empty list if you decide to choose no penalty) from possible penalty list in game information provided based on player action in game information>
+}, Here is an example(the event is not necessary be succeed or failed immediately, it won't failed as long as in the time limit, we will tell you if times up), the following example has select a penalty which is the third one in "possible penalty":
+	game information:
+	{
+		"event_name": "Venomous Encounter",
+		"event type": "poisoning potential",
+		"triggered reason": "attacked by snake",
+		"player current status": "normal",
+		"player action": "suck the attcked part",
+		"times up": False,
+		"possible reward": ["increase maximum hp", "increase maximum action point", "obtain a poison"],
+		"possible penalty": ["decrease hp", "decrease action point", "add poisoning status"]
+	}
+	
+	expected result:
+	{
+		"successful": "False",
+		"fail": "False",
+		"reward": [], 
+		"penalty": [2]
+}
+
+inquiry: 
+{'event_name': 'feeling weak', 'event type': 'survival crisis', 'triggered reason': 'low action point', 'player current status': 'normal', 'player action': 'Move West', 'times up': True, 'possible reward': ['increase action point', 'increase maximum action point'], 'possible penalty': ['decrease action point', 'decrease maximum action point']}
+
+response by gpt3.5-turbo: 
+{
+	"successful": false,
+	"fail": false,
+	"reward": [],
+	"penalty": [0, 1]
+}
+////////////////////////////////////////////////////
+[Thu Feb  1 20:40:47 2024]
+systemRole: 
+You are writing a description about current location player is at for a text-based adventure game program, you will receive a game details from game program like this "{Current location: End Of Road, Front: brick building, Back: Forest, Right hand side: Forest, Left hand side: Forest, Landscape Features: [flat ground, small stream], Items: [keyA, keyB, keyC]}". Here is the example of expected result: "
+End Of Road
+You are standing at the end of a road before a small brick building. Around you is a forest. A small stream flows out of the building and down a gully. 
+There are some keys on the ground here." 
+
+inquiry: 
+{'Current location': 'land', 'Front': 'land', 'Back': 'land', 'Right hand side': 'land', 'Left hand side': 'land', 'Items': ['Edible Plants', 'Bread', 'Traps']}
+
+response by gpt3.5-turbo: 
+Land
+You are standing in an open expanse of land. There are no distinct features or structures around you. The land stretches out in all directions, with no visible end in sight. 
+There are some items scattered on the ground here, including edible plants, bread, and traps.
+////////////////////////////////////////////////////
+[Thu Feb  1 20:40:52 2024]
+systemRole: 
+You are creating a event for a text-based adventure game, you should create event in following form based on game information(Mainly the triggered reason) provided in later:
+{
+	"event_name": <event name here>,
+	"event_discription": <possible discription in third person and first person view>
+}, Here is an example:
+	game information:
+	{
+		"event type": "survival crisis",
+		"triggered reason": "low action point",
+		"Current location": "End Of Road",
+		"Current action": "moving",
+		"Tool(s) assist with moving": [],
+		"player current status": "Normal",
+		"description needed to be modified": "
+End Of Road
+You are standing at the end of a road before a small brick building. Around you is a forest. A small stream flows out of the building and down a gully. 
+There are some keys on the ground here."
+	}
+	
+	expected result:
+	{
+		"event_name": "starting feeling tired",
+		"event_description": "
+End Of Road
+You stand at the end of a road before a small brick building. The dense forest surrounds you, its looming trees casting shadows. A weary sensation seeps through your limbs, accentuating the fatigue in your bones. A small stream trickles from the building, and amidst the weariness, you notice a glint��keys scattered on the ground, waiting to be claimed."
+	}
+
+inquiry: 
+{'event type': 'survival crisis', 'triggered reason': 'low action point', 'Current location': 'land', 'Current action': 'Move West', 'Tool(s) assist with moving': [], 'player current status': 'normal', 'description needed to be modified': 'Land\nYou are standing in an open expanse of land. There are no distinct features or structures around you. The land stretches out in all directions, with no visible end in sight. \nThere are some items scattered on the ground here, including edible plants, bread, and traps.'}
+
+response by gpt3.5-turbo: 
+{
+	"event_name": "feeling hungry",
+	"event_description": "Land\nYou find yourself standing in an open expanse of land. The vastness of the surroundings is both awe-inspiring and unsettling. As you continue to move, a gnawing sensation begins to grow in your stomach, reminding you of your hunger. Your eyes scan the ground, and you spot various items scattered around - edible plants, bread, and traps. The thought of nourishment becomes increasingly tempting as your hunger intensifies."
+}
+////////////////////////////////////////////////////

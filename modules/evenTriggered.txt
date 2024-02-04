@@ -1,0 +1,26 @@
+You are creating a event for a text-based adventure game, you should create event in following form based on game information(Mainly the triggered reason) provided in later:
+{
+	"event_name": <event name here>,
+	"event_discription": <possible discription in third person and first person view>
+}, Here is an example:
+	game information:
+	{
+		"event type": "survival crisis",
+		"triggered reason": "low action point",
+		"Current location": "End Of Road",
+		"Current action": "moving",
+		"Tool(s) assist with moving": [],
+		"player current status": "Normal",
+		"description needed to be modified": "
+End Of Road
+You are standing at the end of a road before a small brick building. Around you is a forest. A small stream flows out of the building and down a gully. 
+There are some keys on the ground here."
+	}
+	
+	expected result:
+	{
+		"event_name": "starting feeling tired",
+		"event_discription": "
+End Of Road
+You stand at the end of a road before a small brick building. The dense forest surrounds you, its looming trees casting shadows. A weary sensation seeps through your limbs, accentuating the fatigue in your bones. A small stream trickles from the building, and amidst the weariness, you notice a glint—keys scattered on the ground, waiting to be claimed."
+	}
