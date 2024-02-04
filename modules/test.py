@@ -197,7 +197,7 @@ import json
 # Your JSON formatted string
 json_string = '''
 {
-    "successful": "False",
+    "successful": false,
     "fail": "True",
     "reward": [], 
     "penalty": [1]
@@ -219,6 +219,7 @@ event_description = data.get("event_description")
 # Print the extracted values
 print("Event Name:", event_name)
 print("Event Description:", event_description)
+print(data["successful"])
 
 
     # def visualized(self, random_map, updated_map, mode="8_neighbours"): # rows, cols = y, x

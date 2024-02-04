@@ -86,6 +86,7 @@ class Player_status():
             `action_point:` energy bar of player
         """
         self.__currentLocation = currentLocation
+        self.__lastLocation = [None, None]
         self.__items = items
         self.__hp = hp
         self.__maximum_hp = maximum_hp
@@ -101,6 +102,13 @@ class Player_status():
     def set_currentLocation(self, x:int, y:int) -> None:
         self.__currentLocation[0] = x
         self.__currentLocation[1] = y
+        
+    def get_lastLocation(self) -> tuple[int]:
+        return (self.__lastLocation[0], self.__lastLocation[1])
+    
+    def set_lastLocation(self, x:int, y:int) -> None:
+        self.__lastLocation[0] = x
+        self.__lastLocation[1] = y
 
     def get_items(self) -> list[str]:
         return self.__items
@@ -204,6 +212,9 @@ class EventsTriggered():
         This class is used to record and process the effects caused by events
         """
         self.eventsTriggered: list[Events]= []
+        self.triggeredType = {
+            "survival crisis": {"action point": True}
+        }
         # self.__descriptionGenerator = descriptionGenerator
         
     # def get_current_events(self) -> list[Events]:

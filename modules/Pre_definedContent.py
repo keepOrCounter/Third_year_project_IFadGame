@@ -1,6 +1,6 @@
 from status_record import Player_status, Map_information, globalInfo, Items, Events, \
     Actions
-# import random
+import random
 
 
 
@@ -18,17 +18,14 @@ class Commands():
         """
         Move to specific direction or target place
         """
+        x, y = self.__player.get_currentLocation()
         if target == "North":
-            x, y = self.__player.get_currentLocation()
             self.__player.set_currentLocation(x, y+1)
         elif target == "South":
-            x, y = self.__player.get_currentLocation()
             self.__player.set_currentLocation(x, y-1)
         elif target == "East":
-            x, y = self.__player.get_currentLocation()
             self.__player.set_currentLocation(x+1, y)
         elif target == "West":
-            x, y = self.__player.get_currentLocation()
             self.__player.set_currentLocation(x-1, y)
         else:
             self.__player.set_currentLocation(*target)
@@ -39,24 +36,32 @@ class Commands():
         """
         Recovery action point
         """
+        if value == "random":
+            value = random.randint(0, 5)
         self.__player.set_action_point(self.__player.get_action_point() + value)
         
     def decrease_action_point(self, value: int) -> None:
         """
         consume action point
         """
+        if value == "random":
+            value = random.randint(0, 5)
         self.__player.set_action_point(self.__player.get_action_point() - value)
         
     def increase_hp(self, value: int) -> None:
         """
         Recovery health point
         """
+        if value == "random":
+            value = random.randint(0, 5)
         self.__player.set_hp(self.__player.get_hp() + value)
         
     def decrease_hp(self, value: int) -> None:
         """
         reduce health point
         """
+        if value == "random":
+            value = random.randint(0, 5)
         self.__player.set_hp(self.__player.get_hp() - value)
         
     def add_items(self, items: list[Items]) -> None:
@@ -76,12 +81,16 @@ class Commands():
         """
         Recovery action point
         """
+        if value == "random":
+            value = random.randint(0, 5)
         self.__player.set_maximum_action_point(self.__player.get_maximum_action_point() + value)
         
     def decrease_maximum_action_point(self, value: int) -> None:
         """
         consume action point
         """
+        if value == "random":
+            value = random.randint(0, 5)
         self.__player.set_maximum_action_point(self.__player.get_maximum_action_point() - value)
     # def equalTo(self, value, target) -> bool:
     #     return value == target
@@ -110,13 +119,13 @@ class character_effectSys():
         self.__preDefinedCommands = preDefinedCommands
         
     def hp_recovery(self, amount):
-        self.__preDefinedCommands.hp_adjust(amount)
+        self.__preDefinedCommands.increase_hp(amount)
         
     def more_hp(self, amount):
         self.__player.set_maximum_hp(self.__player.get_maximum_hp() + amount)
         
     def action_point_recovery(self, amount):
-        self.__preDefinedCommands.action_point_adjust(amount)
+        self.__preDefinedCommands.increase_action_point(amount)
         
     def more_ap(self, amount):
         self.__player.set_maximum_action_point(self.__player.get_maximum_action_point() + amount)

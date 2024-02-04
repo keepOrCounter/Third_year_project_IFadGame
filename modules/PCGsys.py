@@ -207,7 +207,8 @@ class eventGenerator():
     
     def event_triger(self) -> Events:
         triggered_event: Events = None
-        if self.__player.get_action_point() < 40:
+        if self.__player.get_action_point() < 40 and self.__currentEvents.triggeredType["survival crisis"]["action point"]:
+            self.__currentEvents.triggeredType["survival crisis"]["action point"] = False
             triggered_event = copy.deepcopy(self.__defininedContent.get_events_frameWork()["survival crisis"]["action point"])
             
             triggered_event.current_location = self.__map_info.currentLocation.location_name
@@ -223,6 +224,9 @@ class eventGenerator():
             triggered_event.play_current_status = state
             triggered_event.description = self.__map_info.currentLocation.description
 
+        if self.__player.get_action_point() >= 40:
+            self.__currentEvents.triggeredType["survival crisis"]["action point"] = True
+            
         if triggered_event != None:
             self.__currentEvents.eventsTriggered.append(triggered_event)
         return triggered_event
@@ -245,13 +249,13 @@ class eventGenerator():
             
                 
             for y in range(len(result["reward"])):
-                strCommand = self.__currentEvents.eventsTriggered[y].possible_reward[result["reward"][y]]
+                strCommand = self.__currentEvents.eventsTriggered[x].possible_reward[result["reward"][y]]
                 
                 func, arg = self.__defininedContent.get_eventCommandMap()[strCommand]
                 self.__defininedContent.get_commandTranslate()[func](arg)
                 
             for y in range(len(result["penalty"])):
-                strCommand = self.__currentEvents.eventsTriggered[y].possible_penalty[result["penalty"][y]]
+                strCommand = self.__currentEvents.eventsTriggered[x].possible_penalty[result["penalty"][y]]
                 
                 func, arg = self.__defininedContent.get_eventCommandMap()[strCommand]
                 self.__defininedContent.get_commandTranslate()[func](arg)
@@ -265,15 +269,17 @@ class eventGenerator():
 
 class PCGController():
     def __init__(self, defininedContent: DefininedSys, player : Player_status, \
-        map_info: Map_information, descriptionGenerator: OutputGenerator) -> None:
+        map_info: Map_information, descriptionGenerator: OutputGenerator, \
+            eventController: EventsTriggered) -> None:
         self.__mapPCG = MapGenerator(player, map_info)
         self.__objectsPCG = objectsGenerator(defininedContent)
-        self.__eventPCG = eventGenerator(defininedContent, player, map_info)
+        self.__eventPCG = eventGenerator(defininedContent, player, map_info, eventController, \
+            descriptionGenerator)
         self.__player = player
         self.__map_info = map_info
         self.__new_class = True
         self.__descriptionGenerator = descriptionGenerator
-        # self.__eventController = eventController
+        self.__eventController = eventController
         
     def locationPCG_each_turn(self) -> dict[str, Location]:
         """
@@ -286,7 +292,6 @@ class PCGController():
         
         self.__eventPCG.event_handler() # determine the effects caused by any events
         
-        print("player action:", self.__player.get_currentAction())
         if self.__new_class or not (current_area[0] <= playerCoord[0] < current_area[0]+map_size[0] \
             and current_area[1] <= playerCoord[1] < current_area[1]+map_size[1]):
             # enetering into a new area
@@ -314,8 +319,8 @@ class PCGController():
                         current_location_name = self.__map_info.get_currentMap()\
                             [abs(placement_coord[0] - current_area[0]), \
                             abs(placement_coord[1] - current_area[1])]
-                        print("relative coord:", abs(placement_coord[0] - current_area[0]), \
-                            abs(placement_coord[1] - current_area[1]))
+                        # print("relative coord:", abs(placement_coord[0] - current_area[0]), \
+                        #     abs(placement_coord[1] - current_area[1]))
                         
                         objects_in_current_location = self.__objectsPCG.objectGeneration(1, 3) # TODO edit to change object amount
                         current_location = Location(current_location_name, \
@@ -330,27 +335,27 @@ class PCGController():
                         self.__map_info.currentLocation = current_location
                         
         self.__map_info.set_visitedPlace(visted_place)
-        print(visted_place)
         
         # player_arounding = {"Current location": current_location, \
         #     "Front": Location("<Do not know>", 0, 0), "Back": Location("<Do not know>", 0, 0), \
         #         "Right hand side": Location("<Do not know>", 0, 0), "Left hand side": Location("<Do not know>", 0, 0)}
-        if player_arounding["Current location"].description == "":
+        if self.__player.get_lastLocation() != self.__player.get_currentLocation():
+            self.__player.set_lastLocation(*self.__player.get_currentLocation())
             self.__descriptionGenerator.locationDescription(player_arounding)
             # print("\n{}\n\n{}\n\n{}\n\n{}".format(output["location name"], \
             #     output["Description of current and surrounding locations"], output["Landscape Features description"], \
             #         output["Items description"]))
         
-        triggered_event = self.__eventPCG.event_triger()
-        if triggered_event != None:
-            # TODO change the eventDescription to make it description all current events
-            self.__descriptionGenerator.eventDescription(triggered_event)
-            output = triggered_event.description
-            # self.__eventController.add_new_event(triggered_event)
-        else:
-            output = self.__map_info.currentLocation.description
+            triggered_event = self.__eventPCG.event_triger()
+            if triggered_event != None:
+                # TODO change the eventDescription to make it description all current events
+                self.__descriptionGenerator.eventDescription(triggered_event)
+                output = triggered_event.description
+                # self.__eventController.add_new_event(triggered_event)
+            else:
+                output = self.__map_info.currentLocation.description
         
-        print(output)
+            print(output)
     
 
 

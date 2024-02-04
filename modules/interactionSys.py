@@ -89,8 +89,8 @@ You stand at the end of a road before a small brick building. The dense forest s
         
         self.__eventDevelopmentSysRole = """You are determine the development of an event in a text-based adventure game, you should tell the program the development in following form of event based on (Mainly based on the triggered reason and player information) the game information provided later:
 {
-	"successful": <True if succeed, False if not>,
-	"fail": <True if failed, False if not>,
+	"successful": <true if succeed, false if not>,
+	"fail": <true if failed, false if not>,
 	"reward": <select the indices of zero or more of reward like a python list (You may make this with an empty list if you decide to choose no reward) from possible reward list in game information provided based on player action in game information>, 
 	"penalty": <select the indices of zero or more of penalty like a python list (You may make this with an empty list if you decide to choose no penalty) from possible penalty list in game information provided based on player action in game information>
 }, Here is an example(the event is not necessary be succeed or failed immediately, it won't failed as long as in the time limit, we will tell you if times up), the following example has select a penalty which is the third one in "possible penalty":
@@ -108,8 +108,8 @@ You stand at the end of a road before a small brick building. The dense forest s
 	
 	expected result:
 	{
-		"successful": "False",
-		"fail": "False",
+		"successful": false,
+		"fail": false,
 		"reward": [], 
 		"penalty": [2]
 }"""
