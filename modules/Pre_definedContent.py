@@ -205,6 +205,9 @@ class DefininedSys(): #
             "decrease maximum action point": preDefinedCommands.decrease_maximum_action_point,
         }
         
+        self.__terrain_type = ["sea", "land"]
+        self.__move_dLevel = [4, 1]
+        
     def get_items(self) -> list[Items]:
         return self.__def_items
     
@@ -234,3 +237,14 @@ class DefininedSys(): #
     
     def get_commandTranslate(self) -> dict:
         return self.__commandTranslate
+    
+    def get_terrain_type(self) -> list[str]:
+        return self.__terrain_type
+    
+    def get_move_dLevel(self) -> list[int]:
+        return self.__move_dLevel
+    
+    # Setter method for def_items
+    def set_terrain(self, new_terrain: str, new_move_dLevel: int):
+        self.__terrain_type.append(new_terrain)
+        self.__move_dLevel.append(new_move_dLevel)

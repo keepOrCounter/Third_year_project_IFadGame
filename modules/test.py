@@ -193,7 +193,9 @@
 # v(*b)
 
 import json
-
+# import numpy as np
+# terrain_type = np.array([1,2,3])
+# print(np.shape(terrain_type)[0])
 # Your JSON formatted string
 json_string = '''
 {

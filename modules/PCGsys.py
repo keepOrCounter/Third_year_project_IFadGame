@@ -8,7 +8,7 @@ import random
 import copy
 
 class MapGenerator():
-    def __init__(self, player : Player_status, map_info: Map_information) -> None:
+    def __init__(self, player : Player_status, map_info: Map_information, defininedContent: DefininedSys) -> None:
         """
         Generate game map, just call `map_info_update()` to update any new information and \
             call `game_map_generation()` method to Generate a map, the map will be automaticly \
@@ -17,10 +17,11 @@ class MapGenerator():
         # self.textual_map = {}  # {x_coordinate : [Location_names(whose indices are y cordinate)]}
         # self.current_coord = {"x" : player.get_currentLocation()[0], "y" : player.get_currentLocation()[1]} # a copy of coord
         # self.current_main_terrain = 0 # land pattern, main terrain would be land mass
-        self.terrain_type = np.array(["sea", "land"])
+        self.__terrain_type = np.array(defininedContent.get_terrain_type())
         self.__player = player
         self.__map_info = map_info
         self.__generated_map = dict()
+        self.__defininedContent = defininedContent
         
         init_start_point = np.random.randint(0,2**31) # generate init place
         init_start_point -= init_start_point % 100
@@ -110,7 +111,7 @@ class MapGenerator():
         # print(random_map)
         # print(updated_map[-1])
 
-        self.__map_info.set_currentMap(self.terrain_type[updated_map[-1]])
+        self.__map_info.set_currentMap(self.__terrain_type[updated_map[-1]])
         
         return random_map, updated_map[-1] # for debug use
         # return updated_map[-1]
@@ -124,7 +125,7 @@ class MapGenerator():
         # print(updated_map)
         print(random_map)
         print(updated_map)
-        print(self.terrain_type[updated_map].tolist())
+        print(self.__terrain_type[updated_map].tolist())
 
         array = random_map
 
@@ -162,6 +163,8 @@ class MapGenerator():
         cv2.destroyAllWindows()
         
     def map_info_update(self) -> None:
+        if len(self.__defininedContent.get_terrain_type()) > np.shape(self.__terrain_type)[0]:
+            self.__terrain_type = np.array(self.__defininedContent.get_terrain_type())
         x, y = self.__player.get_currentLocation()
         rows, cols = self.__map_info.get_map_size() # row, cols = y, x
 
