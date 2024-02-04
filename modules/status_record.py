@@ -95,6 +95,7 @@ class Player_status():
         self.__currentAction = currentAction
         self.__cash = cash
         self.__buff = buff
+        self.__APrecovery = 10
     
     def get_currentLocation(self) -> tuple[int]:
         return (self.__currentLocation[0], self.__currentLocation[1])
@@ -157,6 +158,12 @@ class Player_status():
     
     def set_buffs(self, newBuffs: list[Buff]) -> None:
         self.__buff = newBuffs
+        
+    def get_APrecovery(self) -> int:
+        return self.__buff
+    
+    def set_APrecovery(self, newAPrecovery: int) -> None:
+        self.__newAPrecovery = newAPrecovery
 
         
 class Map_information():

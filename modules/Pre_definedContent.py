@@ -103,6 +103,22 @@ class Commands():
         if value == "random":
             value = random.randint(0, 5)
         self.__player.set_maximum_action_point(self.__player.get_maximum_action_point() - value)
+    
+    def valueRetrieval(self, *value):
+        valueProcessed = []
+        for x in value:
+            if x == "random":
+                valueProcessed.append(random.randint(0, 5))
+            else:
+                valueProcessed.append(x)
+    
+    def rest(self):
+        if self.__worldStatus.restPlace:
+            self.increase_action_point(int(self.__player.get_APrecovery() / \
+                self.__worldStatus.move_dLevel))
+        else:
+            print("You cannot have a rest now.")
+    
     # def equalTo(self, value, target) -> bool:
     #     return value == target
     
@@ -199,7 +215,8 @@ class DefininedSys(): #
             "Move North": Actions("Move North", [(preDefinedCommands.move, ("North",))]),
             "Move South": Actions("Move South", [(preDefinedCommands.move, ("South",))]),
             "Move East": Actions("Move East", [(preDefinedCommands.move, ("East",))]),
-            "Move West": Actions("Move West", [(preDefinedCommands.move, ("West",))])
+            "Move West": Actions("Move West", [(preDefinedCommands.move, ("West",))]),
+            "Have a rest": Actions("Have a rest", [(preDefinedCommands.rest, tuple())])
         }
         
         self.__eventCommandMap = {
