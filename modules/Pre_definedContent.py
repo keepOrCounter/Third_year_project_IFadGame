@@ -1,6 +1,7 @@
 from status_record import Player_status, Map_information, globalInfo, Items, Events, \
     Actions
 import random
+import copy
 
 
 
@@ -29,8 +30,9 @@ class Commands():
             self.__player.set_currentLocation(x-1, y)
         else:
             self.__player.set_currentLocation(*target)
+            
         self.__player.set_action_point(self.__player.get_action_point() -\
-            self.__worldStatus.move_APCost)
+            self.__worldStatus.move_APCost * self.__worldStatus.move_dLevel)
         
     def increase_action_point(self, value: int) -> None:
         """
@@ -68,14 +70,23 @@ class Commands():
         """
         Add one or more items to player's package
         """
-        self.__player.set_items(self.__player.get_items() + items)
+        currentItems = self.__player.get_items()
+        for x in items:
+            if x.item_name not in currentItems.keys():
+                currentItems[x.item_name] = [copy.deepcopy(x)]
+            else:
+                currentItems[x.item_name].append(copy.deepcopy(x))
+        self.__player.set_items(currentItems)
         
-    def remove_items(self, items: list[Items]) -> None:
+    def remove_items(self, items: dict[str, int]) -> None:
         """
         Remove one or more items to player's package
         """
-        
-        self.__player.set_items(self.__player.get_items() + items)
+        currentItems = self.__player.get_items()
+        for x in items.keys():
+            for y in range(items[x]):
+                currentItems[x].pop()
+        self.__player.set_items(currentItems)
         
     def increase_maximum_action_point(self, value: int) -> None:
         """

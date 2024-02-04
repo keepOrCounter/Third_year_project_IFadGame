@@ -77,7 +77,7 @@ class Buff():
 
 
 class Player_status():
-    def __init__(self, currentLocation:list[int,int] = [0,0], items:list[str] = [], \
+    def __init__(self, currentLocation:list[int,int] = [0,0], items:dict[str, list[Items]] = dict(), \
         hp: int = 100, maximum_hp: int = 100, maximum_action_point: int = 100, \
             action_point: int = 100, currentAction: Actions = None, cash:int = 0, \
                 buff:list[Buff] = []) -> None:
@@ -110,10 +110,10 @@ class Player_status():
         self.__lastLocation[0] = x
         self.__lastLocation[1] = y
 
-    def get_items(self) -> list[str]:
+    def get_items(self) -> dict[str, list[Items]]:
         return self.__items
     
-    def set_items(self, items: list[str]) -> None:
+    def set_items(self, items: dict[str, list[Items]]) -> None:
         self.__items = items
 
     def get_hp(self) -> int:
@@ -232,7 +232,9 @@ class globalInfo():
         `move_APCost`: Action point cost of every move
         `directionKnown`: Whether player know about direction
         `move_dLevel`: Difficulty of player move
+        `restPlace`: Whether player can have a rest currently
         """
         self.move_APCost = 5
         self.directionKnown = False
         self.move_dLevel = 1
+        self.restPlace = True
