@@ -369,7 +369,7 @@ There are some keys on the ground here."
 		"event_discription": "
 End Of Road
 
-You stand at the end of a road before a small brick building. The dense forest surrounds you, its looming trees casting shadows. A weary sensation seeps through your limbs, accentuating the fatigue in your bones. A small stream trickles from the building, and amidst the weariness, you notice a glint¡ªkeys scattered on the ground, waiting to be claimed."
+You stand at the end of a road before a small brick building. The dense forest surrounds you, its looming trees casting shadows. A weary sensation seeps through your limbs, accentuating the fatigue in your bones. A small stream trickles from the building, and amidst the weariness, you notice a glintï¿½ï¿½keys scattered on the ground, waiting to be claimed."
 	}
 
 inquiry: 
@@ -667,7 +667,7 @@ There are some keys on the ground here."
 		"event_name": "starting feeling tired",
 		"event_discription": "
 End Of Road
-You stand at the end of a road before a small brick building. The dense forest surrounds you, its looming trees casting shadows. A weary sensation seeps through your limbs, accentuating the fatigue in your bones. A small stream trickles from the building, and amidst the weariness, you notice a glint¡ªkeys scattered on the ground, waiting to be claimed."
+You stand at the end of a road before a small brick building. The dense forest surrounds you, its looming trees casting shadows. A weary sensation seeps through your limbs, accentuating the fatigue in your bones. A small stream trickles from the building, and amidst the weariness, you notice a glintï¿½ï¿½keys scattered on the ground, waiting to be claimed."
 	}
 
 inquiry: 
@@ -720,7 +720,7 @@ There are some keys on the ground here."
 		"event_name": "starting feeling tired",
 		"event_description": "
 End Of Road
-You stand at the end of a road before a small brick building. The dense forest surrounds you, its looming trees casting shadows. A weary sensation seeps through your limbs, accentuating the fatigue in your bones. A small stream trickles from the building, and amidst the weariness, you notice a glint¡ªkeys scattered on the ground, waiting to be claimed."
+You stand at the end of a road before a small brick building. The dense forest surrounds you, its looming trees casting shadows. A weary sensation seeps through your limbs, accentuating the fatigue in your bones. A small stream trickles from the building, and amidst the weariness, you notice a glintï¿½ï¿½keys scattered on the ground, waiting to be claimed."
 	}
 
 inquiry: 
@@ -828,7 +828,7 @@ There are some keys on the ground here."
 		"event_name": "starting feeling tired",
 		"event_description": "
 End Of Road
-You stand at the end of a road before a small brick building. The dense forest surrounds you, its looming trees casting shadows. A weary sensation seeps through your limbs, accentuating the fatigue in your bones. A small stream trickles from the building, and amidst the weariness, you notice a glint¡ªkeys scattered on the ground, waiting to be claimed."
+You stand at the end of a road before a small brick building. The dense forest surrounds you, its looming trees casting shadows. A weary sensation seeps through your limbs, accentuating the fatigue in your bones. A small stream trickles from the building, and amidst the weariness, you notice a glintï¿½ï¿½keys scattered on the ground, waiting to be claimed."
 	}
 
 inquiry: 
@@ -881,7 +881,7 @@ There are some keys on the ground here."
 		"event_name": "starting feeling tired",
 		"event_description": "
 End Of Road
-You stand at the end of a road before a small brick building. The dense forest surrounds you, its looming trees casting shadows. A weary sensation seeps through your limbs, accentuating the fatigue in your bones. A small stream trickles from the building, and amidst the weariness, you notice a glint¡ªkeys scattered on the ground, waiting to be claimed."
+You stand at the end of a road before a small brick building. The dense forest surrounds you, its looming trees casting shadows. A weary sensation seeps through your limbs, accentuating the fatigue in your bones. A small stream trickles from the building, and amidst the weariness, you notice a glintï¿½ï¿½keys scattered on the ground, waiting to be claimed."
 	}
 
 inquiry: 
@@ -974,7 +974,7 @@ There are some keys on the ground here."
 		"event_name": "starting feeling tired",
 		"event_description": "
 End Of Road
-You stand at the end of a road before a small brick building. The dense forest surrounds you, its looming trees casting shadows. A weary sensation seeps through your limbs, accentuating the fatigue in your bones. A small stream trickles from the building, and amidst the weariness, you notice a glint¡ªkeys scattered on the ground, waiting to be claimed."
+You stand at the end of a road before a small brick building. The dense forest surrounds you, its looming trees casting shadows. A weary sensation seeps through your limbs, accentuating the fatigue in your bones. A small stream trickles from the building, and amidst the weariness, you notice a glintï¿½ï¿½keys scattered on the ground, waiting to be claimed."
 	}
 
 inquiry: 
@@ -1067,7 +1067,7 @@ There are some keys on the ground here."
 		"event_name": "starting feeling tired",
 		"event_description": "
 End Of Road
-You stand at the end of a road before a small brick building. The dense forest surrounds you, its looming trees casting shadows. A weary sensation seeps through your limbs, accentuating the fatigue in your bones. A small stream trickles from the building, and amidst the weariness, you notice a glint¡ªkeys scattered on the ground, waiting to be claimed."
+You stand at the end of a road before a small brick building. The dense forest surrounds you, its looming trees casting shadows. A weary sensation seeps through your limbs, accentuating the fatigue in your bones. A small stream trickles from the building, and amidst the weariness, you notice a glintï¿½ï¿½keys scattered on the ground, waiting to be claimed."
 	}
 
 inquiry: 
