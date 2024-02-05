@@ -274,7 +274,7 @@ class PCGController():
     def __init__(self, defininedContent: DefininedSys, player : Player_status, \
         map_info: Map_information, descriptionGenerator: OutputGenerator, \
             eventController: EventsTriggered) -> None:
-        self.__mapPCG = MapGenerator(player, map_info)
+        self.__mapPCG = MapGenerator(player, map_info, defininedContent)
         self.__objectsPCG = objectsGenerator(defininedContent)
         self.__eventPCG = eventGenerator(defininedContent, player, map_info, eventController, \
             descriptionGenerator)

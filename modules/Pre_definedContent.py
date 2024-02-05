@@ -15,21 +15,35 @@ class Commands():
         self.__worldStatus = worldStatus
         # self.__executionTranslator
         
+    def valueRetrieval(self, *value):
+        valueProcessed = []
+        for x in value:
+            if x == "<random>":
+                valueProcessed.append(random.randint(0, 5))
+            else:
+                valueProcessed.append(x)
+        
+        if len(valueProcessed) > 1:
+            return valueProcessed
+        else:
+            return valueProcessed[0]
+        
     def move(self, target) -> None:
         """
         Move to specific direction or target place
         """
+        newTarget = self.valueRetrieval(target)
         x, y = self.__player.get_currentLocation()
-        if target == "North":
+        if newTarget == "North":
             self.__player.set_currentLocation(x, y+1)
-        elif target == "South":
+        elif newTarget == "South":
             self.__player.set_currentLocation(x, y-1)
-        elif target == "East":
+        elif newTarget == "East":
             self.__player.set_currentLocation(x+1, y)
-        elif target == "West":
+        elif newTarget == "West":
             self.__player.set_currentLocation(x-1, y)
         else:
-            self.__player.set_currentLocation(*target)
+            self.__player.set_currentLocation(*newTarget)
             
         self.__player.set_action_point(self.__player.get_action_point() -\
             self.__worldStatus.move_APCost * self.__worldStatus.move_dLevel)
@@ -38,33 +52,37 @@ class Commands():
         """
         Recovery action point
         """
-        if value == "random":
-            value = random.randint(0, 5)
-        self.__player.set_action_point(self.__player.get_action_point() + value)
+        # if value == "<random>":
+        #     value = random.randint(0, 5)
+        newValue = self.valueRetrieval(value)
+        self.__player.set_action_point(self.__player.get_action_point() + newValue)
         
     def decrease_action_point(self, value: int) -> None:
         """
         consume action point
         """
-        if value == "random":
-            value = random.randint(0, 5)
-        self.__player.set_action_point(self.__player.get_action_point() - value)
+        # if value == "<random>":
+        #     value = random.randint(0, 5)
+        newValue = self.valueRetrieval(value)
+        self.__player.set_action_point(self.__player.get_action_point() - newValue)
         
     def increase_hp(self, value: int) -> None:
         """
         Recovery health point
         """
-        if value == "random":
-            value = random.randint(0, 5)
-        self.__player.set_hp(self.__player.get_hp() + value)
+        # if value == "<random>":
+        #     value = random.randint(0, 5)
+        newValue = self.valueRetrieval(value)
+        self.__player.set_hp(self.__player.get_hp() + newValue)
         
     def decrease_hp(self, value: int) -> None:
         """
         reduce health point
         """
-        if value == "random":
-            value = random.randint(0, 5)
-        self.__player.set_hp(self.__player.get_hp() - value)
+        # if value == "<random>":
+        #     value = random.randint(0, 5)
+        newValue = self.valueRetrieval(value)
+        self.__player.set_hp(self.__player.get_hp() - newValue)
         
     def add_items(self, items: list[Items]) -> None:
         """
@@ -92,30 +110,26 @@ class Commands():
         """
         Recovery action point
         """
-        if value == "random":
-            value = random.randint(0, 5)
-        self.__player.set_maximum_action_point(self.__player.get_maximum_action_point() + value)
+        # if value == "<random>":
+        #     value = random.randint(0, 5)
+        newValue = self.valueRetrieval(newValue)
+        self.__player.set_maximum_action_point(self.__player.get_maximum_action_point() + newValue)
         
     def decrease_maximum_action_point(self, value: int) -> None:
         """
         consume action point
         """
-        if value == "random":
-            value = random.randint(0, 5)
-        self.__player.set_maximum_action_point(self.__player.get_maximum_action_point() - value)
+        # if value == "<random>":
+        #     value = random.randint(0, 5)
+        newValue = self.valueRetrieval(value)
+        self.__player.set_maximum_action_point(self.__player.get_maximum_action_point() - newValue)
     
-    def valueRetrieval(self, *value):
-        valueProcessed = []
-        for x in value:
-            if x == "random":
-                valueProcessed.append(random.randint(0, 5))
-            else:
-                valueProcessed.append(x)
     
     def rest(self):
         if self.__worldStatus.restPlace:
             self.increase_action_point(int(self.__player.get_APrecovery() / \
                 self.__worldStatus.move_dLevel))
+            print("You seat down, and have a short nap")
         else:
             print("You cannot have a rest now.")
     
@@ -220,10 +234,10 @@ class DefininedSys(): #
         }
         
         self.__eventCommandMap = {
-            "increase action point": ("increase action point", "random"),
-            "decrease action point": ("decrease action point", "random"),
-            "increase maximum action point": ("increase maximum action point", "random"),
-            "decrease maximum action point": ("decrease maximum action point", "random")
+            "increase action point": ("increase action point", "<random>"),
+            "decrease action point": ("decrease action point", "<random>"),
+            "increase maximum action point": ("increase maximum action point", "<random>"),
+            "decrease maximum action point": ("decrease maximum action point", "<random>")
         }
         
         self.__commandTranslate = {

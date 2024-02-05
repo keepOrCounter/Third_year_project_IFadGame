@@ -169,7 +169,8 @@ You stand at the end of a road before a small brick building. The dense forest s
         # TODO
         inputDictionary = {"event_name": event.eventName, "event type": event.eventType, \
             "triggered reason": event.triggered_reason, "player current status": event.play_current_status,\
-                "player action": event.currentAction, "times up": event.triggered_time > event.time_limit, \
+                "player action": event.currentAction, "times up": (event.triggered_time \
+                    > event.time_limit and event.time_limit >= 0), \
                     "possible reward": event.possible_reward, "possible penalty": event.possible_penalty
                 }
         

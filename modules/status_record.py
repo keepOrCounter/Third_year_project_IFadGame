@@ -160,10 +160,10 @@ class Player_status():
         self.__buff = newBuffs
         
     def get_APrecovery(self) -> int:
-        return self.__buff
+        return self.__APrecovery
     
     def set_APrecovery(self, newAPrecovery: int) -> None:
-        self.__newAPrecovery = newAPrecovery
+        self.__APrecovery = newAPrecovery
 
         
 class Map_information():

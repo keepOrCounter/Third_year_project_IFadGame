@@ -1832,3 +1832,202 @@ response by gpt3.5-turbo:
 	"penalty": [0, 1]
 }
 ////////////////////////////////////////////////////
+[Mon Feb  5 12:19:44 2024]
+systemRole: 
+You are writing a description about current location player is at for a text-based adventure game program, you will receive a game details from game program like this "{Current location: End Of Road, Front: brick building, Back: Forest, Right hand side: Forest, Left hand side: Forest, Landscape Features: [flat ground, small stream], Items: [keyA, keyB, keyC]}". Here is the example of expected result: "
+End Of Road
+You are standing at the end of a road before a small brick building. Around you is a forest. A small stream flows out of the building and down a gully. 
+There are some keys on the ground here." 
+
+inquiry: 
+{'Current location': 'land', 'Front': 'land', 'Back': 'land', 'Right hand side': 'land', 'Left hand side': 'land', 'Items': ['First Aid Kit', 'First Aid Kit'], 'Landscape Features': ['Stream']}
+
+response by gpt3.5-turbo: 
+Land
+You are standing in the middle of a vast land. There is land in every direction. 
+A stream flows nearby, providing a soothing sound. 
+There are some first aid kits lying on the ground here.
+////////////////////////////////////////////////////
+[Mon Feb  5 12:19:49 2024]
+systemRole: 
+You are creating a event for a text-based adventure game, you should create event in following form based on game information(Mainly the triggered reason) provided in later:
+{
+	"event_name": <event name here>,
+	"event_discription": <possible discription in third person and first person view>
+}, Here is an example:
+	game information:
+	{
+		"event type": "survival crisis",
+		"triggered reason": "low action point",
+		"Current location": "End Of Road",
+		"Current action": "moving",
+		"Tool(s) assist with moving": [],
+		"player current status": "Normal",
+		"description needed to be modified": "
+End Of Road
+You are standing at the end of a road before a small brick building. Around you is a forest. A small stream flows out of the building and down a gully. 
+There are some keys on the ground here."
+	}
+	
+	expected result:
+	{
+		"event_name": "starting feeling tired",
+		"event_description": "
+End Of Road
+You stand at the end of a road before a small brick building. The dense forest surrounds you, its looming trees casting shadows. A weary sensation seeps through your limbs, accentuating the fatigue in your bones. A small stream trickles from the building, and amidst the weariness, you notice a glint！keys scattered on the ground, waiting to be claimed."
+	}
+
+inquiry: 
+{'event type': 'survival crisis', 'triggered reason': 'low action point', 'Current location': 'land', 'Current action': 'None', 'Tool(s) assist with moving': [], 'player current status': 'normal', 'description needed to be modified': 'Land\nYou are standing in the middle of a vast land. There is land in every direction. \nA stream flows nearby, providing a soothing sound. \nThere are some first aid kits lying on the ground here.'}
+
+response by gpt3.5-turbo: 
+{
+	"event_name": "feeling weak",
+	"event_description": "Land\nYou stand in the middle of a vast land, surrounded by endless stretches of terrain. The air feels heavy, and every step you take seems to require more effort than before. The sound of a gentle stream nearby provides a brief respite from the weariness that engulfs you. As your energy wanes, you notice a glimmer on the ground！first aid kits scattered, offering a glimmer of hope amidst the fatigue."
+}
+////////////////////////////////////////////////////
+[Mon Feb  5 12:22:52 2024]
+systemRole: 
+You are writing a description about current location player is at for a text-based adventure game program, you will receive a game details from game program like this "{Current location: End Of Road, Front: brick building, Back: Forest, Right hand side: Forest, Left hand side: Forest, Landscape Features: [flat ground, small stream], Items: [keyA, keyB, keyC]}". Here is the example of expected result: "
+End Of Road
+You are standing at the end of a road before a small brick building. Around you is a forest. A small stream flows out of the building and down a gully. 
+There are some keys on the ground here." 
+
+inquiry: 
+{'Current location': 'land', 'Front': 'land', 'Back': 'land', 'Right hand side': 'land', 'Left hand side': 'land', 'Items': ['Weapon Crafting Bench', 'Traps']}
+
+response by gpt3.5-turbo: 
+Land
+You are standing in an open field, surrounded by more land in all directions. The landscape is flat and vast, stretching out as far as the eye can see. There are no distinct features or landmarks in sight. 
+On the ground here, you notice a Weapon Crafting Bench and some Traps.
+////////////////////////////////////////////////////
+[Mon Feb  5 12:22:57 2024]
+systemRole: 
+You are creating a event for a text-based adventure game, you should create event in following form based on game information(Mainly the triggered reason) provided in later:
+{
+	"event_name": <event name here>,
+	"event_discription": <possible discription in third person and first person view>
+}, Here is an example:
+	game information:
+	{
+		"event type": "survival crisis",
+		"triggered reason": "low action point",
+		"Current location": "End Of Road",
+		"Current action": "moving",
+		"Tool(s) assist with moving": [],
+		"player current status": "Normal",
+		"description needed to be modified": "
+End Of Road
+You are standing at the end of a road before a small brick building. Around you is a forest. A small stream flows out of the building and down a gully. 
+There are some keys on the ground here."
+	}
+	
+	expected result:
+	{
+		"event_name": "starting feeling tired",
+		"event_description": "
+End Of Road
+You stand at the end of a road before a small brick building. The dense forest surrounds you, its looming trees casting shadows. A weary sensation seeps through your limbs, accentuating the fatigue in your bones. A small stream trickles from the building, and amidst the weariness, you notice a glint！keys scattered on the ground, waiting to be claimed."
+	}
+
+inquiry: 
+{'event type': 'survival crisis', 'triggered reason': 'low action point', 'Current location': 'land', 'Current action': 'None', 'Tool(s) assist with moving': [], 'player current status': 'normal', 'description needed to be modified': 'Land\nYou are standing in an open field, surrounded by more land in all directions. The landscape is flat and vast, stretching out as far as the eye can see. There are no distinct features or landmarks in sight. \nOn the ground here, you notice a Weapon Crafting Bench and some Traps.'}
+
+response by gpt3.5-turbo: 
+{
+	"event_name": "feeling exhausted",
+	"event_description": "Land\nYou stand in an open field, surrounded by endless land stretching in all directions. The landscape is monotonous, with no discernible features or landmarks to break the monotony. The vastness of the land weighs heavily on your weary shoulders, and a sense of exhaustion settles in. Amongst the weariness, you spot a Weapon Crafting Bench and a collection of Traps on the ground, waiting to be utilized."
+}
+////////////////////////////////////////////////////
+[Mon Feb  5 12:23:56 2024]
+systemRole: 
+You are writing a description about current location player is at for a text-based adventure game program, you will receive a game details from game program like this "{Current location: End Of Road, Front: brick building, Back: Forest, Right hand side: Forest, Left hand side: Forest, Landscape Features: [flat ground, small stream], Items: [keyA, keyB, keyC]}". Here is the example of expected result: "
+End Of Road
+You are standing at the end of a road before a small brick building. Around you is a forest. A small stream flows out of the building and down a gully. 
+There are some keys on the ground here." 
+
+inquiry: 
+{'Current location': 'land', 'Front': 'land', 'Back': 'land', 'Right hand side': 'land', 'Left hand side': 'land', 'Landscape Features': ['Rocks', 'Rocks']}
+
+response by gpt3.5-turbo: 
+Land
+You are standing on a vast expanse of land. There is land in front of you, behind you, to your right hand side, and to your left hand side. The landscape is filled with rocks scattered around.
+////////////////////////////////////////////////////
+[Mon Feb  5 12:24:01 2024]
+systemRole: 
+You are creating a event for a text-based adventure game, you should create event in following form based on game information(Mainly the triggered reason) provided in later:
+{
+	"event_name": <event name here>,
+	"event_discription": <possible discription in third person and first person view>
+}, Here is an example:
+	game information:
+	{
+		"event type": "survival crisis",
+		"triggered reason": "low action point",
+		"Current location": "End Of Road",
+		"Current action": "moving",
+		"Tool(s) assist with moving": [],
+		"player current status": "Normal",
+		"description needed to be modified": "
+End Of Road
+You are standing at the end of a road before a small brick building. Around you is a forest. A small stream flows out of the building and down a gully. 
+There are some keys on the ground here."
+	}
+	
+	expected result:
+	{
+		"event_name": "starting feeling tired",
+		"event_description": "
+End Of Road
+You stand at the end of a road before a small brick building. The dense forest surrounds you, its looming trees casting shadows. A weary sensation seeps through your limbs, accentuating the fatigue in your bones. A small stream trickles from the building, and amidst the weariness, you notice a glint！keys scattered on the ground, waiting to be claimed."
+	}
+
+inquiry: 
+{'event type': 'survival crisis', 'triggered reason': 'low action point', 'Current location': 'land', 'Current action': 'None', 'Tool(s) assist with moving': [], 'player current status': 'normal', 'description needed to be modified': 'Land\nYou are standing on a vast expanse of land. There is land in front of you, behind you, to your right hand side, and to your left hand side. The landscape is filled with rocks scattered around.'}
+
+response by gpt3.5-turbo: 
+{
+	"event_name": "feeling exhausted",
+	"event_description": "Land\nYou stand on a vast expanse of land, surrounded by endless stretches of earth in every direction. The landscape is dotted with scattered rocks, creating a rugged and desolate atmosphere. As you survey your surroundings, a wave of exhaustion washes over you, weighing down your every step. The physical strain of your journey begins to take its toll, leaving you yearning for a moment of respite."
+}
+////////////////////////////////////////////////////
+[Mon Feb  5 12:24:04 2024]
+systemRole: 
+You are determine the development of an event in a text-based adventure game, you should tell the program the development in following form of event based on (Mainly based on the triggered reason and player information) the game information provided later:
+{
+	"successful": <true if succeed, false if not>,
+	"fail": <true if failed, false if not>,
+	"reward": <select the indices of zero or more of reward like a python list (You may make this with an empty list if you decide to choose no reward) from possible reward list in game information provided based on player action in game information>, 
+	"penalty": <select the indices of zero or more of penalty like a python list (You may make this with an empty list if you decide to choose no penalty) from possible penalty list in game information provided based on player action in game information>
+}, Here is an example(the event is not necessary be succeed or failed immediately, it won't failed as long as in the time limit, we will tell you if times up), the following example has select a penalty which is the third one in "possible penalty":
+	game information:
+	{
+		"event_name": "Venomous Encounter",
+		"event type": "poisoning potential",
+		"triggered reason": "attacked by snake",
+		"player current status": "normal",
+		"player action": "suck the attcked part",
+		"times up": False,
+		"possible reward": ["increase maximum hp", "increase maximum action point", "obtain a poison"],
+		"possible penalty": ["decrease hp", "decrease action point", "add poisoning status"]
+	}
+	
+	expected result:
+	{
+		"successful": false,
+		"fail": false,
+		"reward": [], 
+		"penalty": [2]
+}
+
+inquiry: 
+{'event_name': 'feeling exhausted', 'event type': 'survival crisis', 'triggered reason': 'low action point', 'player current status': 'normal', 'player action': 'Have a rest', 'times up': False, 'possible reward': ['increase action point', 'increase maximum action point'], 'possible penalty': ['decrease action point', 'decrease maximum action point']}
+
+response by gpt3.5-turbo: 
+{
+	"successful": true,
+	"fail": false,
+	"reward": [0], 
+	"penalty": []
+}
+////////////////////////////////////////////////////
