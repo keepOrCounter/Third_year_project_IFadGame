@@ -222,7 +222,7 @@ event_description = data.get("event_description")
 print("Event Name:", event_name)
 print("Event Description:", event_description)
 print(data["successful"])
-
+# print(int(-0.1))
 
     # def visualized(self, random_map, updated_map, mode="8_neighbours"): # rows, cols = y, x
 
@@ -268,3 +268,5 @@ print(data["successful"])
     #     cv2.imshow('Visualized Image', scaled_image)
     #     cv2.waitKey(0)
     #     cv2.destroyAllWindows()
+for y in range(1, -2, -1):
+    print(y)

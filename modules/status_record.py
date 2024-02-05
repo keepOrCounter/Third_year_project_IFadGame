@@ -181,6 +181,7 @@ class Map_information():
         self.__map_size = map_size # rows, cols = y, x, never update!!!
         self.__init_map_coordinate = (0 - int(map_size[1]/2), 0 + int(map_size[0]/2)) # never update!!!
         self.__current_map_coordinate = (0 - int(map_size[1]/2), 0 + int(map_size[0]/2)) # update when entering new area
+        self.__current_map_coordinate_Normalised = (0, 0)
         self.currentLocation: Location = None
 
     def get_current_area_type(self) -> int:
@@ -212,6 +213,12 @@ class Map_information():
     
     def set_current_map_coordinate(self, map_ccord: tuple[int]):
         self.__current_map_coordinate = map_ccord
+        
+    def get_current_map_coordinate_Normalised(self) ->tuple[int]:
+        return self.__current_map_coordinate_Normalised
+    
+    def set_current_map_coordinate_Normalised(self, map_ccord_Normalised: tuple[int]):
+        self.__current_map_coordinate_Normalised = map_ccord_Normalised
 
 class EventsTriggered():
     def __init__(self) -> None:

@@ -14,6 +14,9 @@ class rule_system():
     def eachTurn_handler(self):
         """Need to be called each turn
         """
+        if not self.player_active():
+            self.__player.set_hp(self.__player.get_hp() + self.__player.get_action_point())
+            self.__player.set_action_point(0)
         if not self.player_alive():
             print("Game over.")
             sys.exit(0)
@@ -39,13 +42,14 @@ class rule_system():
         print("current maximum action_point:", self.__player.get_maximum_action_point())
         print("Current action:", self.__player.get_currentAction())
         print("visited place:", self.__map_info.get_visitedPlace())
+        print("player hp:", self.__player.get_hp())
     
     # def 
 
 if __name__ == "__main__":
     worldStatus = globalInfo()
-    player_info = Player_status(action_point = 30)
-    # player_info = Player_status()
+    # player_info = Player_status(action_point = 30)
+    player_info = Player_status()
     map_record = Map_information(current_area_type = 1, map_size=(20, 20)) # land type
     # mapPCG = MapGenerator(player_info, map_record)
     defined_command = Commands(player_info, map_record, worldStatus)
@@ -66,7 +70,7 @@ if __name__ == "__main__":
     begin = True
     while begin:
         game_rule.eachTurn_handler()
-        game_rule.debug_information()
+        # game_rule.debug_information()
         pcgSystem.locationPCG_each_turn()
         # print(map_record.get_currentMap())
 

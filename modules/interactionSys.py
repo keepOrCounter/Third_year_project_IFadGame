@@ -136,7 +136,7 @@ You stand at the end of a road before a small brick building. The dense forest s
                 inputDictionary[current_object.category].append(current_object.item_name)
         
         inquiry = str(inputDictionary)
-        print(inquiry)
+        # print(inquiry)
         print("=======================================\n")
         gpt_response = self.__gptAPI.inquiry(inquiry, self.__locationDiscriptionSysRole)
         # print(gpt_response)
@@ -154,7 +154,7 @@ You stand at the end of a road before a small brick building. The dense forest s
                     "description needed to be modified": event.description}
         
         inquiry = str(inputDictionary)
-        print(inquiry)
+        # print(inquiry)
         print("=======================================\n")
         gpt_response = self.__gptAPI.inquiry(inquiry, self.__eventDescriptionSysRole)
         # print(gpt_response)
@@ -180,7 +180,7 @@ You stand at the end of a road before a small brick building. The dense forest s
                 }
         
         inquiry = str(inputDictionary)
-        print(inquiry)
+        # print(inquiry)
         print("=======================================\n")
         gpt_response = self.__gptAPI.inquiry(inquiry, self.__eventDevelopmentSysRole)
         # print(gpt_response)
@@ -188,7 +188,7 @@ You stand at the end of a road before a small brick building. The dense forest s
         
         result = json.loads(gpt_response, strict=False)
 
-        print(result)
+        # print(result)
         return result
     
 class InputTranslator():
