@@ -6,6 +6,7 @@ from status_record import *
 from Pre_definedContent import *
 import json
 from autocorrect import Speller
+from numpy import inf
 
 class IOSys():
     def __init__(self) -> None:
@@ -197,6 +198,30 @@ class InputTranslator():
         self.__playerStatus = playerStatus
         self.__mapInfo = mapInfo
         self.__defined_content = defined_content
+
+    def frequent_command (common_list:str) -> list:
+        frequent_words_in_commands = []
+        common_list.pop(-1)
+
+        for i in range(len(common_list)):
+            common_words = common_list[i].split()
+            for i in range(len(common_words)):
+                frequent_words_in_commands.append(common_words[i])
+
+        clear_word_list = list(dict.fromkeys(frequent_words_in_commands))
+
+        return clear_word_list
+
+    def all_case_word_list (word_list:str) -> list:
+        all_case_word_list = []
+
+        for i in range(len(word_list)):
+            all_case_word_list.append(word_list[i].lower())
+
+        for i in range(len(word_list)):
+            all_case_word_list.append(word_list[i].upper())
+
+        return all_case_word_list
         
     def command_translator(self, user_input:str):
         move_commands = list(self.__defined_content.get_Actions().keys())
@@ -206,10 +231,16 @@ from player to the command of text-based adventure game \
 system, the game command are listed below: " + str(move_commands[:-1]) + "\nPlease do \
 not reply something more than the command given above(Even if punctuation mark). If the player command is less likely to \
 be any of the game command above, just reply a '<Rejected>'."
+
+        clear_word_list_in_move_commands = InputTranslator.frequent_command(move_commands)
+        all_case_word_list = InputTranslator.all_case_word_list(clear_word_list_in_move_commands)
         
         spell = Speller(lang = 'en')
+
+        for i in range(len(all_case_word_list)):
+            spell.nlp_data.update({all_case_word_list[i]:inf})
+
         corrected_user_input = spell(user_input)
-        print(corrected_user_input)
 
         if (corrected_user_input != user_input):
             print("Wait, why I have that mind, is it\"", corrected_user_input, "\"?")
