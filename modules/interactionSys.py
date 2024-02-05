@@ -93,7 +93,7 @@ You stand at the end of a road before a small brick building. The dense forest s
 	"fail": <true if failed, false if not>,
 	"reward": <select the indices of zero or more of reward like a python list (You may make this with an empty list if you decide to choose no reward) from possible reward list in game information provided based on player action in game information>, 
 	"penalty": <select the indices of zero or more of penalty like a python list (You may make this with an empty list if you decide to choose no penalty) from possible penalty list in game information provided based on player action in game information>,
-	"development description": <A description to tell how the event developed>
+	"development description": <A description to tell how the event developed, please describe implicitly like following example>
 }, Here is an example(the event is not necessary be succeed or failed immediately, it won't failed as long as in the time limit, we will tell you if times up), the following example has select a penalty which is the third one in "possible penalty":
 	game information:
 	{
