@@ -179,3 +179,5 @@ There are some traps scattered around here, perhaps left by previous adventurers
 	"possible reward": ["increase action point", "increase maximum action point"],
 	"possible penalty": ["decrease action point", "decrease maximum action point"]
 }
+
+{'event_name': 'feeling exhausted', 'event type': 'survival crisis', 'triggered reason': 'low action point', 'player current status': 'normal', 'player action': 'Have a rest', 'times up': False, 'possible reward': ['increase action point', 'increase maximum action point'], 'possible penalty': ['decrease action point', 'decrease maximum action point'], 'event description': 'You stand on a vast expanse of land, surrounded by endless stretches of earth in every direction. The landscape is dotted with scattered rocks, creating a rugged and desolate atmosphere. As you survey your surroundings, a wave of exhaustion washes over you, weighing down your every step. The physical strain of your journey begins to take its toll, leaving you yearning for a moment of respite.'}

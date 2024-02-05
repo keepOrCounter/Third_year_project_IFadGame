@@ -92,7 +92,8 @@ You stand at the end of a road before a small brick building. The dense forest s
 	"successful": <true if succeed, false if not>,
 	"fail": <true if failed, false if not>,
 	"reward": <select the indices of zero or more of reward like a python list (You may make this with an empty list if you decide to choose no reward) from possible reward list in game information provided based on player action in game information>, 
-	"penalty": <select the indices of zero or more of penalty like a python list (You may make this with an empty list if you decide to choose no penalty) from possible penalty list in game information provided based on player action in game information>
+	"penalty": <select the indices of zero or more of penalty like a python list (You may make this with an empty list if you decide to choose no penalty) from possible penalty list in game information provided based on player action in game information>,
+	"development description": <A description to tell how the event developed>
 }, Here is an example(the event is not necessary be succeed or failed immediately, it won't failed as long as in the time limit, we will tell you if times up), the following example has select a penalty which is the third one in "possible penalty":
 	game information:
 	{
@@ -103,7 +104,8 @@ You stand at the end of a road before a small brick building. The dense forest s
 		"player action": "suck the attcked part",
 		"times up": False,
 		"possible reward": ["increase maximum hp", "increase maximum action point", "obtain a poison"],
-		"possible penalty": ["decrease hp", "decrease action point", "add poisoning status"]
+		"possible penalty": ["decrease hp", "decrease action point", "add poisoning status"],
+		"event description": "You find yourself deep in the wilderness, navigating through dense foliage and treacherous terrain. Suddenly, without warning, a venomous snake lunges at you, its fangs sinking into your flesh."
 	}
 	
 	expected result:
@@ -111,7 +113,8 @@ You stand at the end of a road before a small brick building. The dense forest s
 		"successful": false,
 		"fail": false,
 		"reward": [], 
-		"penalty": [2]
+		"penalty": [2],
+		"development description": "You decide to suck the wound, hoping to extract the poison. Unfortunately, your efforts prove in vain. The venom takes hold. Nausea and weakness grip you, making the journey ahead more challenging."
 }"""
     
     def locationDescription(self, locationList: dict[str, Location]) -> None:
@@ -171,7 +174,8 @@ You stand at the end of a road before a small brick building. The dense forest s
             "triggered reason": event.triggered_reason, "player current status": event.play_current_status,\
                 "player action": event.currentAction, "times up": (event.triggered_time \
                     > event.time_limit and event.time_limit >= 0), \
-                    "possible reward": event.possible_reward, "possible penalty": event.possible_penalty
+                    "possible reward": event.possible_reward, "possible penalty": event.possible_penalty, \
+                        "event description": event.description
                 }
         
         inquiry = str(inputDictionary)
