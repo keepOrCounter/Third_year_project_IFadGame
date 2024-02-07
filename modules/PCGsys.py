@@ -28,9 +28,12 @@ class MapGenerator():
         self.__random_seeds: np.ndarray = np.arange(init_start_point, init_start_point + 100)
         self.__used_seed = {init_start_point}
         
+        self.player_surrounding = ["Front", "Left hand side", "Current location", "Right hand side", "Back"]
+        
 
-    def generate_random_map(self, rows: int, cols: int, land_prob: float=0.65): # rows, cols = y, x
-        if self.__map_info.get_current_map_coordinate() not in self.__generated_map.keys():
+    def generate_random_map(self, rows: int, cols: int, land_prob: float=0.65, \
+        area: tuple[int]= (0, 0))-> np.ndarray: # rows, cols = y, x
+        if area not in self.__generated_map.keys():
             if self.__random_seeds.shape[0] == 0:
                 init_start_point = None
                 while init_start_point == None or init_start_point in self.__used_seed:
@@ -79,12 +82,12 @@ class MapGenerator():
             return self.random_map_update_8n_rule(grid, threshold)
         
     def game_map_generation(self, cellular_timesteps: int, convert_threshold: int, \
-        mode="8_neighbours"): # rows, cols = y, x
+        mode="8_neighbours", area: tuple[int]= (0, 0)): # rows, cols = y, x
 
-        self.map_info_update()
+        # self.map_info_update()
         rows, cols = self.__map_info.get_map_size()
         if self.__map_info.get_current_area_type() == 1:
-            random_map = self.generate_random_map(rows, cols, land_prob=0.65)
+            random_map = self.generate_random_map(rows, cols, land_prob=0.65, area=area)
             random_map[0, :] = np.zeros((cols,))
             random_map[rows - 1, :] = np.zeros((cols,))
             
@@ -111,7 +114,6 @@ class MapGenerator():
         # print(random_map)
         # print(updated_map[-1])
 
-        self.__map_info.set_currentMap(self.__terrain_type[updated_map[-1]])
         
         return random_map, updated_map[-1] # for debug use
         # return updated_map[-1]
@@ -162,18 +164,111 @@ class MapGenerator():
         cv2.waitKey(0)
         cv2.destroyAllWindows()
         
+    def mapArea_And_RelativeCoordinate(self, coord: tuple[int]= (0, 0)):
+        """Used to calculate what area the location is at(in coordinate of the left coner of current map), 
+        and the relative coordinate(index) of this location in current map
+        Args:
+            `coord` (tuple[int]): coordinate in form (x, y). 
+            Defaults to (0, 0).
+        
+        Returns:
+        Two coordinates in form (x, y): map coordinate(Area), and relative coordinate of this location in that map
+        """
+        init_area = self.__map_info.get_init_map_coordinate()
+        map_size = self.__map_info.get_map_size()
+        
+        normalized_coord = (int((coord[0] - abs(init_area[0]))/map_size[1]) - int((coord[0] - abs(init_area[0]))/map_size[1]<0), 
+            int((coord[1] + abs(init_area[1]))/map_size[0]) + 1 - int((coord[1] + abs(init_area[1]))/map_size[0]<0))
+        # transform player coordinate into the number of area, (-1, 1) \
+            # means the number 1 in both x,y coordinates, (0, 1) means the number 2 in x coord and 1 in y coord
+        
+        new_area_coord = (normalized_coord[0]*map_size[1] + abs(init_area[0]), \
+            normalized_coord[1]*map_size[0] - abs(init_area[1])) # !!! Bug Potential TODO need to testing
+        
+        relative_coord = (abs(coord[0] - new_area_coord[0]), \
+                            abs(coord[1] - new_area_coord[1]))
+        return new_area_coord, relative_coord
+        
+        
     def map_info_update(self) -> None:
+        """This method would update any changes on map system, i.e. generates new map when player
+        entering a new area
+        
+        `This method should be called each move`
+        """
+        map_size = self.__map_info.get_map_size()
+        playerCoord = self.__player.get_currentLocation()
+        current_area = self.__map_info.get_current_map_coordinate()
         if len(self.__defininedContent.get_terrain_type()) > np.shape(self.__terrain_type)[0]:
             self.__terrain_type = np.array(self.__defininedContent.get_terrain_type())
-        x, y = self.__player.get_currentLocation()
-        rows, cols = self.__map_info.get_map_size() # row, cols = y, x
+            
+        if not (current_area[0] <= playerCoord[0] < current_area[0]+map_size[0] \
+            and current_area[1] >= playerCoord[1] > current_area[1]-map_size[1]):
+            # enetering into a new area
+            new_area_coord, _ = self.mapArea_And_RelativeCoordinate(playerCoord)
+            self.__map_info.set_current_map_coordinate(new_area_coord)
+            # update current map coordination
+            
+            # self.__mapPCG.game_map_generation(5, 4) 
 
-        x_areaType = (x + int(cols/2)) /cols
-        y_areaType = (y + int(rows/2)) /rows
-        if x_areaType == y_areaType:
-            self.__map_info.set_current_area_type(1)
-        else:
-            self.__map_info.set_current_area_type(0)
+            
+            # x, y = self.__player.get_currentLocation()
+            # rows, cols = self.__map_info.get_map_size() # row, cols = y, x
+
+            # x_areaType = (x + int(cols/2)) /cols
+            # y_areaType = (y + int(rows/2)) /rows
+            
+            if new_area_coord[0] % 2 != 0 and new_area_coord[1] % 2 != 0:
+                self.__map_info.set_current_area_type(1)
+            else:
+                self.__map_info.set_current_area_type(0)
+            
+            _, updated_map = self.game_map_generation(5, 4, area=new_area_coord) # generate map for new area
+            # TODO edit arguments to get potential better map
+            
+            self.__map_info.set_currentMap(self.__terrain_type[updated_map])
+            
+    def surroundingLocation(self, playerCoord: tuple[int]) -> dict[str, Location]:
+        surrounding = copy.copy(self.player_surrounding)
+        player_surrounding = dict()
+        current_area = self.__map_info.get_current_map_coordinate()
+        # print("player's location",(playerCoord[0], playerCoord[1]))
+        # print(current_area)
+        
+        for y in range(1, -2, -1):
+            for x in range(-1, 2):
+                if x == 0 or y == 0:
+                    placement_coord = (playerCoord[0] + x, playerCoord[1] + y)
+                    # if placement_coord in visted_place.keys():
+                    #     current_location = visted_place[placement_coord]
+                    # else:
+                    mapArea, relaCoord = self.mapArea_And_RelativeCoordinate(placement_coord)
+                    if current_area == mapArea:
+                        current_location_name = self.__map_info.get_currentMap()\
+                            [relaCoord[0], relaCoord[1]]
+                    else:
+                        _, updated_map = self.game_map_generation(5, 4, area=mapArea)
+                        # generate map for new area
+                        current_location_name = self.__terrain_type[updated_map]\
+                            [relaCoord[0], relaCoord[1]]
+                    
+                    # objects_in_current_location = self.__objectsPCG.objectGeneration(1, 3) # TODO edit to change object amount
+                    current_location = Location(current_location_name, \
+                        placement_coord[0], placement_coord[1])
+
+                    
+                    player_surrounding[surrounding[0]] = current_location
+                    # print("relative coord:", abs(placement_coord[0] - current_area[0]), \
+                    #     abs(placement_coord[1] - current_area[1]))
+                    # print(arounding[0])
+                    surrounding.pop(0)
+                    # if x == 0 and y == 0:
+                    #     visted_place[placement_coord] = current_location
+                    #     # print("player's relative coord:", abs(placement_coord[0] - current_area[0]), \
+                    #     #     abs(placement_coord[1] - current_area[1]))
+                    #     self.__map_info.currentLocation = current_location
+                        
+        return player_surrounding
 
 
 class objectsGenerator():
@@ -281,7 +376,6 @@ class PCGController():
             descriptionGenerator)
         self.__player = player
         self.__map_info = map_info
-        self.__new_class = True
         self.__descriptionGenerator = descriptionGenerator
         self.__eventController = eventController
         
@@ -289,88 +383,37 @@ class PCGController():
         """
         Should be called each turn to generat objects and other things in current location
         """
-        init_area = self.__map_info.get_init_map_coordinate()
-        current_area = self.__map_info.get_current_map_coordinate()
         playerCoord = self.__player.get_currentLocation()
-        map_size = self.__map_info.get_map_size()
         
+        
+
+        self.__mapPCG.map_info_update()
+        current_area = self.__map_info.get_current_map_coordinate()
+        visted_place = self.__map_info.get_visitedPlace()
         self.__eventPCG.event_handler() # determine the effects caused by any events
         
-        if self.__new_class or not (current_area[0] <= playerCoord[0] < current_area[0]+map_size[0] \
-            and current_area[1] >= playerCoord[1] > current_area[1]-map_size[1]):
-            # enetering into a new area
-            self.__new_class = False
-            normalized_coord = (int((playerCoord[0] - abs(init_area[0]))/map_size[1]) - int((playerCoord[0] - abs(init_area[0]))/map_size[1]<0), 
-                int((playerCoord[1] + abs(init_area[1]))/map_size[0]) + 1 - int((playerCoord[1] + abs(init_area[1]))/map_size[0]<0))
-            
-            # print("normalized_coord", normalized_coord)
-            new_area_coord = (normalized_coord[0]*map_size[1] + abs(init_area[0]), \
-                normalized_coord[1]*map_size[0] - abs(init_area[1])) # !!! Bug Potential TODO need to testing
-            # print("new area",new_area_coord)
-            self.__map_info.set_current_map_coordinate(new_area_coord)
-            
-            # self.__mapPCG.map_info_update()
-            self.__mapPCG.game_map_generation(5, 4) # TODO edit arguments to get potential better map
-            # print(self.__map_info.get_currentMap())
-            # update current map coordination
-        
-        visted_place = self.__map_info.get_visitedPlace()
-        arounding = ["Front", "Left hand side", "Current location", "Right hand side", "Back"]
-        player_arounding = dict()
-        # print("player's location",(playerCoord[0], playerCoord[1]))
-        # print(current_area)
-        
-        whetherVisited = (playerCoord in visted_place.keys())
-        for y in range(1, -2, -1):
-            for x in range(-1, 2):
-                if x == 0 or y == 0:
-                    placement_coord = (playerCoord[0] + x, playerCoord[1] + y)
-                    if placement_coord in visted_place.keys():
-                        current_location = visted_place[placement_coord]
-                    else:
-                        if abs(placement_coord[0] - current_area[0]) >= 20 or \
-                            abs(placement_coord[1] - current_area[1]) >= 20:
-                            #BUG map size bug
-                            current_location_name = "Sea"
-                        else:
-                            current_location_name = self.__map_info.get_currentMap()\
-                                [abs(placement_coord[0] - current_area[0]), \
-                                abs(placement_coord[1] - current_area[1])]
-                        
-                        objects_in_current_location = self.__objectsPCG.objectGeneration(1, 3) # TODO edit to change object amount
-                        current_location = Location(current_location_name, \
-                            placement_coord[0], placement_coord[1], \
-                            objects_in_current_location)
-
-                    
-                    player_arounding[arounding[0]] = current_location
-                    # print("relative coord:", abs(placement_coord[0] - current_area[0]), \
-                    #     abs(placement_coord[1] - current_area[1]))
-                    # print(arounding[0])
-                    arounding.pop(0)
-                    if x == 0 and y == 0:
-                        visted_place[placement_coord] = current_location
-                        # print("player's relative coord:", abs(placement_coord[0] - current_area[0]), \
-                        #     abs(placement_coord[1] - current_area[1]))
-                        self.__map_info.currentLocation = current_location
-                        
-        self.__map_info.set_visitedPlace(visted_place)
-        
-        # player_arounding = {"Current location": current_location, \
-        #     "Front": Location("<Do not know>", 0, 0), "Back": Location("<Do not know>", 0, 0), \
-        #         "Right hand side": Location("<Do not know>", 0, 0), "Left hand side": Location("<Do not know>", 0, 0)}
-        if whetherVisited:
+        player_surrounding = self.__mapPCG.surroundingLocation(playerCoord)
+        if playerCoord in visted_place.keys():
+            current_location = visted_place[playerCoord]
+            player_surrounding["Current location"] = current_location
+            self.__map_info.currentLocation = current_location
             
             triggered_event = self.__eventPCG.event_triger()
             if triggered_event != None:
                 # TODO change the eventDescription to make it description all current events
-                output = visted_place[playerCoord].description
+                self.__descriptionGenerator.eventDescription(triggered_event)
+                output = triggered_event.description
                 # self.__eventController.add_new_event(triggered_event)
-            else:
+            elif self.__player.get_lastLocation() != playerCoord:
                 output = self.__map_info.currentLocation.description
-        elif self.__player.get_lastLocation() != playerCoord:
-            self.__player.set_lastLocation(*playerCoord)
-            self.__descriptionGenerator.locationDescription(player_arounding)
+        else:
+            objects_in_current_location = self.__objectsPCG.objectGeneration(1, 3) # TODO edit to change object amount
+
+            player_surrounding["Current location"].objects = objects_in_current_location
+            visted_place[playerCoord] = player_surrounding["Current location"]
+            self.__map_info.currentLocation = player_surrounding["Current location"]
+            
+            
             # print("\n{}\n\n{}\n\n{}\n\n{}".format(output["location name"], \
             #     output["Description of current and surrounding locations"], output["Landscape Features description"], \
             #         output["Items description"]))
@@ -378,12 +421,23 @@ class PCGController():
             triggered_event = self.__eventPCG.event_triger()
             if triggered_event != None:
                 # TODO change the eventDescription to make it description all current events
+                self.__descriptionGenerator.locationDescription(player_surrounding)
                 self.__descriptionGenerator.eventDescription(triggered_event)
                 output = triggered_event.description
                 # self.__eventController.add_new_event(triggered_event)
-            else:
+            elif self.__player.get_lastLocation() != playerCoord:
                 output = self.__map_info.currentLocation.description
+
+        self.__map_info.set_visitedPlace(visted_place)
+        # player_arounding = {"Current location": current_location, \
+        #     "Front": Location("<Do not know>", 0, 0), "Back": Location("<Do not know>", 0, 0), \
+        #         "Right hand side": Location("<Do not know>", 0, 0), "Left hand side": Location("<Do not know>", 0, 0)}
+        # if playerCoord in visted_place.keys():
+            
+
+        # elif self.__player.get_lastLocation() != playerCoord:
         
+        self.__player.set_lastLocation(*playerCoord)
         print(output)
     
 
