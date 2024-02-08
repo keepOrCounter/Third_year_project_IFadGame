@@ -6,6 +6,7 @@ from interactionSys import OutputGenerator
 import cv2
 import random
 import copy
+import math
 
 class MapGenerator():
     def __init__(self, player : Player_status, map_info: Map_information, defininedContent: DefininedSys) -> None:
@@ -177,24 +178,29 @@ class MapGenerator():
         init_area = self.__map_info.get_init_map_coordinate()
         map_size = self.__map_info.get_map_size()
         
-        normalized_coord = (int((coord[0] - abs(init_area[0]))/map_size[1]) - int((coord[0] - abs(init_area[0]))/map_size[1]<0), 
-            int((coord[1] + abs(init_area[1]))/map_size[0]) + 1 - int((coord[1] + abs(init_area[1]))/map_size[0]<0))
+        # normalized_coord = (int((coord[0] - abs(init_area[0]))/map_size[1]) - int((coord[0] - abs(init_area[0]))/map_size[1]<0), 
+        #     int((coord[1] + abs(init_area[1]))/map_size[0]) + 1 - int((coord[1] + abs(init_area[1]))/map_size[0]<0))
+        normalized_coord = (math.floor((coord[0] - abs(init_area[0]))/map_size[1]), 
+            math.ceil((coord[1] + abs(init_area[1]))/map_size[0]))
         # transform player coordinate into the number of area, (-1, 1) \
             # means the number 1 in both x,y coordinates, (0, 1) means the number 2 in x coord and 1 in y coord
         
         new_area_coord = (normalized_coord[0]*map_size[1] + abs(init_area[0]), \
-            normalized_coord[1]*map_size[0] - abs(init_area[1])) # !!! Bug Potential TODO need to testing
+            normalized_coord[1]*map_size[0] - abs(init_area[1]))
         
         relative_coord = (abs(coord[0] - new_area_coord[0]), \
                             abs(coord[1] - new_area_coord[1]))
         return new_area_coord, relative_coord
         
         
-    def map_info_update(self) -> None:
+    def map_info_update(self, firstGenerate = False) -> None:
         """This method would update any changes on map system, i.e. generates new map when player
         entering a new area
         
         `This method should be called each move`
+        
+        args:
+            `firstGenerate`: whether you are calling the method first time in the game
         """
         map_size = self.__map_info.get_map_size()
         playerCoord = self.__player.get_currentLocation()
@@ -202,7 +208,7 @@ class MapGenerator():
         if len(self.__defininedContent.get_terrain_type()) > np.shape(self.__terrain_type)[0]:
             self.__terrain_type = np.array(self.__defininedContent.get_terrain_type())
             
-        if not (current_area[0] <= playerCoord[0] < current_area[0]+map_size[0] \
+        if firstGenerate or not (current_area[0] <= playerCoord[0] < current_area[0]+map_size[0] \
             and current_area[1] >= playerCoord[1] > current_area[1]-map_size[1]):
             # enetering into a new area
             new_area_coord, _ = self.mapArea_And_RelativeCoordinate(playerCoord)
@@ -243,7 +249,11 @@ class MapGenerator():
                     #     current_location = visted_place[placement_coord]
                     # else:
                     mapArea, relaCoord = self.mapArea_And_RelativeCoordinate(placement_coord)
+                    print(relaCoord)
+                    print(type(relaCoord[0]))
                     if current_area == mapArea:
+                        # print(self.__map_info.get_currentMap())
+                        # print(type(self.__map_info.get_currentMap()))
                         current_location_name = self.__map_info.get_currentMap()\
                             [relaCoord[0], relaCoord[1]]
                     else:
@@ -379,6 +389,8 @@ class PCGController():
         self.__descriptionGenerator = descriptionGenerator
         self.__eventController = eventController
         
+        self.__first_turn = True
+        
     def locationPCG_each_turn(self) -> dict[str, Location]:
         """
         Should be called each turn to generat objects and other things in current location
@@ -387,7 +399,8 @@ class PCGController():
         
         
 
-        self.__mapPCG.map_info_update()
+        self.__mapPCG.map_info_update(self.__first_turn)
+        self.__first_turn = False
         current_area = self.__map_info.get_current_map_coordinate()
         visted_place = self.__map_info.get_visitedPlace()
         self.__eventPCG.event_handler() # determine the effects caused by any events
@@ -445,5 +458,17 @@ class PCGController():
 if __name__ == "__main__":
     # test = MapGenerator(Player_status(), Map_information(1))
     # test.debug(5, 4)
-    test = objectsGenerator(DefininedSys())
-    test.objectGeneration(1, 6)
+    # test = objectsGenerator(DefininedSys())
+    # test.objectGeneration(1, 6)
+    player_info = Player_status()
+    map_record = Map_information(current_area_type = 1, map_size=(20, 20)) # land type
+    worldStatus = globalInfo()
+    
+    defined_command = Commands(player_info, map_record, worldStatus)
+    game_content = DefininedSys(defined_command)
+    test = MapGenerator(player_info, map_record, game_content)
+    test.map_info_update(True)
+    print(test.mapArea_And_RelativeCoordinate((0, -10)))
+    print(test.surroundingLocation((0, -10)))
+    
+    test.visualized(*test.game_map_generation(5, 4))

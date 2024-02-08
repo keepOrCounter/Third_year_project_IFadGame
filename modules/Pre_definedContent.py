@@ -182,20 +182,14 @@ class DefininedSys(): #
         self.__def_items = [
             # Items("Campfire", 20, "Items"),
             Items("Stream", 10, "Landscape Features"),
-            # Items("Shelter", 30, "Items"),
             Items("Bread", 15, "Items"),
             Items("Traps", 10, "Items"),
             Items("First Aid Kit", 25, "Items"),
             # Items("Toolkits", 15),
             # Items("Maps", 5),
             Items("Edible Plants", 10, "Items"),
-            # Items("Animal Tracks", 5),
             Items("Firewood", 0, "Items"),
             Items("Rocks", 0, "Landscape Features"),
-            # Items("Wildlife", 20),
-            # Items("Weather Conditions", 0),
-            # Items("Hidden Stashes", 15),
-            # Items("Footprints", 0),
             Items("Weapon Crafting Bench", 0, "Items")
         ]
         # """
@@ -230,7 +224,7 @@ class DefininedSys(): #
             "Move South": Actions("Move South", [(preDefinedCommands.move, ("South",))]),
             "Move East": Actions("Move East", [(preDefinedCommands.move, ("East",))]),
             "Move West": Actions("Move West", [(preDefinedCommands.move, ("West",))]),
-            "Have a rest": Actions("Have a rest", [(preDefinedCommands.rest, tuple())])
+            "Rest": Actions("Rest", [(preDefinedCommands.rest, tuple())])
         }
         
         self.__eventCommandMap = {
