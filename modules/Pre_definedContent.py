@@ -1,7 +1,8 @@
 from status_record import Player_status, Map_information, globalInfo, Items, Events, \
-    Actions
+    Actions, Terrain_type
 import random
 import copy
+import numpy as np
 
 
 
@@ -151,6 +152,54 @@ class Commands():
     # def callableExecution(self, callablePosition, itsArguemts):
     #     pass
     
+    
+class MapPcgRule():
+    def __init__(self) -> None:
+        pass
+    
+    def random_map_update_SIslands(self, cell_grid: np.ndarray, cellT, time_step, \
+        death_limit = 4, birth_limit = 4, currentId = 0):
+        
+        rows, cols = cell_grid.shape
+        cell = cell_grid[int(rows/2), int(cols/2)]
+        oneD = cell_grid.copy().flatten()
+        number_of_1 = np.where(oneD == 1)[0].shape[0]
+        number_of_0 = oneD.shape[0] - number_of_1
+
+        if cell == 1:
+            number_of_1 -= 1
+        else:
+            number_of_0 -= 1
+            
+        if number_of_1 > birth_limit:
+            cell = 1
+        elif number_of_1 < death_limit:
+            cell = 0
+
+        return cell
+    
+    def random_map_update_forests(self, cell_grid: np.ndarray, cellT, time_step, \
+        death_limit = 4, birth_limit = 4, currentId = 0):
+        
+        rows, cols = cell_grid.shape
+        cell = cell_grid[int(rows/2), int(cols/2)]
+        oneD = cell_grid.copy().flatten()
+        number_of_target = np.where(oneD == currentId)[0].shape[0]
+        number_of_0 = oneD.shape[0] - number_of_target
+
+        if cell == currentId:
+            number_of_target -= 1
+        else:
+            number_of_0 -= 1
+            
+        if number_of_target > birth_limit:
+            cell = copy.copy(currentId)
+            print("Changed!")
+        elif number_of_target < death_limit:
+            cell = -1
+
+        return cell
+    
 class character_effectSys():
     def __init__(self, player: Player_status, preDefinedCommands: Commands) -> None:
         """
@@ -241,8 +290,16 @@ class DefininedSys(): #
             "decrease maximum action point": preDefinedCommands.decrease_maximum_action_point,
         }
         
-        self.__terrain_type = ["sea", "land"]
-        self.__move_dLevel = [4, 1]
+        mapRule = MapPcgRule()
+        
+        self.__terrain_type= {
+            "sea": Terrain_type("sea", 0, 1, 4, mapRule.random_map_update_SIslands, tuple(), [], [255, 0, 0]), 
+            "land": Terrain_type("land", 1, 0.65, 1, mapRule.random_map_update_SIslands, tuple(), [0], [0, 255, 0]), 
+            "forest": Terrain_type("forest", 2, 0.4, 1, mapRule.random_map_update_forests, tuple(), [1], [52, 137, 52])
+            }
+        
+        # self.__terrain_type = ["sea", "land"]
+        # self.__move_dLevel = [4, 1]
         
     def get_items(self) -> list[Items]:
         return self.__def_items
@@ -274,13 +331,11 @@ class DefininedSys(): #
     def get_commandTranslate(self) -> dict:
         return self.__commandTranslate
     
-    def get_terrain_type(self) -> list[str]:
+    def get_terrain_type(self) -> dict[str, Terrain_type]:
         return self.__terrain_type
     
-    def get_move_dLevel(self) -> list[int]:
-        return self.__move_dLevel
     
     # Setter method for def_items
-    def set_terrain(self, new_terrain: str, new_move_dLevel: int):
-        self.__terrain_type.append(new_terrain)
-        self.__move_dLevel.append(new_move_dLevel)
+    def set_terrain(self, new_terrain_name: str, new_terrain: Terrain_type):
+        self.__terrain_type[new_terrain_name] = new_terrain
+        self.__terrain_type[new_terrain_name].terrain_ID = len(self.__terrain_type.keys())

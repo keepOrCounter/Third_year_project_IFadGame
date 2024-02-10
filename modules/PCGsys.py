@@ -18,7 +18,7 @@ class MapGenerator():
         # self.textual_map = {}  # {x_coordinate : [Location_names(whose indices are y cordinate)]}
         # self.current_coord = {"x" : player.get_currentLocation()[0], "y" : player.get_currentLocation()[1]} # a copy of coord
         # self.current_main_terrain = 0 # land pattern, main terrain would be land mass
-        self.__terrain_type = np.array(defininedContent.get_terrain_type())
+        self.__terrain_type = np.array(list(defininedContent.get_terrain_type().keys()))
         self.__player = player
         self.__map_info = map_info
         self.__generated_map = dict()
@@ -54,41 +54,42 @@ class MapGenerator():
         return np.random.choice([0, 1], size=(rows, cols), p=[1-land_prob, land_prob])
 
 
-    def random_map_update_8n_rule(self, cell_grid: np.ndarray, threshold: int):
-        rows, cols = cell_grid.shape
-        cell = cell_grid[int(rows/2), int(cols/2)]
-        oneD = cell_grid.copy().flatten()
-        number_of_1 = np.where(oneD == 1)[0].shape[0]
-        number_of_0 = oneD.shape[0] - number_of_1
+    def random_replace(self, arr: np.ndarray, replace_prob: float, cellAllowedReplaced: list[int], \
+        targetID: int):
+        """
+        Randomly replaces some of the cell in a 2D numpy array with target cell.
 
-        if cell == 1:
-            number_of_1 -= 1
-        else:
-            number_of_0 -= 1
-        # print(cell_grid)
-        # print(number_of_1)
-        # print(number_of_0)
-        # print(cell)
-        # print("-------------------")
-        if number_of_1 > threshold:
-            cell = 1
-        elif number_of_1 < threshold:
-            cell = 0
+        Parameters:
+            arr (numpy.ndarray): Input 2D numpy array.
+            replace_prob (float): Probability of replacing a cell with target type of cell.
 
-        return cell
-    
-    def rule(self, grid, cell, time_step, mode="8_neighbours", threshold = 4):
-        # print(grid, c, t)
-        if mode == "8_neighbours":
-            return self.random_map_update_8n_rule(grid, threshold)
+        Returns:
+            numpy.ndarray: New array with replacements.
+        """
+        replaced_arr = np.copy(arr)  # Create a copy of the input array
+        mask = np.random.rand(*arr.shape) < replace_prob  # Create a mask of True/False values based on probability
+        # print(mask)
+        # replaced_arr[arr == 1] = np.where(mask[arr == 1], 3, 1)  # Replace occured where the mask is True
+        for x in cellAllowedReplaced:
+            replaced_arr[np.logical_and(arr == x, mask)] = targetID  # Replace with target id where the mask is True
         
-    def game_map_generation(self, cellular_timesteps: int, convert_threshold: int, \
-        mode="8_neighbours", area: tuple[int]= (0, 0)): # rows, cols = y, x
+        return replaced_arr
+    
+    # def rule(self, grid, cell, time_step, mode="Sea_and_islands", death_limit = 4, birth_limit = 4):
+    #     # print(grid, c, t)
+    #     if mode == "Sea_and_islands":
+    #         return self.random_map_update_SIslands(grid, death_limit, birth_limit)
+        
+    def game_map_generation(self, cellular_timesteps: int, death_limit: int, birth_limit: int, \
+        mode="Sea_and_islands", area: tuple[int]= (0, 0)): # rows, cols = y, x
 
         # self.map_info_update()
+        terrains = self.__defininedContent.get_terrain_type()
+        terrain_name = list(terrains.keys())
         rows, cols = self.__map_info.get_map_size()
         if self.__map_info.get_current_area_type() == 1:
-            random_map = self.generate_random_map(rows, cols, land_prob=0.65, area=area)
+            random_map = self.generate_random_map(rows, cols, land_prob=terrains["land"].possibilityOfGenerate, \
+                area=area)
             random_map[0, :] = np.zeros((cols,))
             random_map[rows - 1, :] = np.zeros((cols,))
             
@@ -96,7 +97,8 @@ class MapGenerator():
             random_map[:, cols - 1] = np.zeros((rows,))
             
         else:
-            random_map = self.generate_random_map(rows, cols, land_prob=0.35)
+            random_map = self.generate_random_map(rows, cols, land_prob=1 - \
+                terrains["land"].possibilityOfGenerate, area=area)
             
         cellular_automaton = cpl.init_simple2d(rows, cols)
         cellular_automaton[0] = random_map
@@ -109,7 +111,22 @@ class MapGenerator():
         # print(cpl.nks_rule(np.array([[0, 0, 0],[0, 1, 0],[0, 0, 0]]), 30))
         updated_map = cpl.evolve2d(cellular_automaton, timesteps=cellular_timesteps, \
             apply_rule=lambda grid, cell, time_step: \
-                self.rule(grid, cell, time_step, mode, convert_threshold))
+                terrains["land"].rules(grid, cell, time_step, death_limit, birth_limit, \
+                    1, *terrains["land"].extraArgs))
+        
+        for x in range(2, len(terrain_name)):
+            newTarrain = terrains[terrain_name[x]]
+            lastMap = np.copy(updated_map[-1])
+            updated_map[-1] = self.random_replace(updated_map[-1], newTarrain.possibilityOfGenerate, \
+                newTarrain.allowedAppearUpon, newTarrain.terrain_ID)
+            
+            updated_map = cpl.evolve2d(updated_map, timesteps=cellular_timesteps, \
+            apply_rule=lambda grid, cell, time_step: \
+                newTarrain.rules(grid, cell, time_step, death_limit, birth_limit, \
+                    newTarrain.terrain_ID, *newTarrain.extraArgs))
+            
+            unchangedCells = np.where(updated_map[-1] == -1)
+            updated_map[-1][unchangedCells] = lastMap[unchangedCells]
 
         # print(updated_map)
         # print(random_map)
@@ -120,41 +137,24 @@ class MapGenerator():
         # return updated_map[-1]
         
         
-    def visualized(self, random_map, updated_map, mode="8_neighbours"): # rows, cols = y, x
+    def visualized(self, updated_map): # rows, cols = y, x
 
         # random_map, updated_map = self.game_map_generation(cellular_timesteps, \
         #     convert_threshold, mode)
 
         # print(updated_map)
-        print(random_map)
         print(updated_map)
         print(self.__terrain_type[updated_map].tolist())
 
-        array = random_map
-
-        # Convert the array to a grayscale image
-        # image = np.uint8(array * 255)
-        colored_image = np.zeros((array.shape[0], array.shape[1], 3), dtype=np.uint8)
-        colored_image[array == 0] = [255, 0, 0]  # Blue for 0s
-        colored_image[array == 1] = [0, 255, 0]  # Green for 1s
-
-        # Optionally, scale the image to make it visually better
-        scale_factor = 5
-        scaled_image = cv2.resize(colored_image, None, fx=scale_factor, fy=scale_factor, interpolation=cv2.INTER_NEAREST)
-
-        # Display the image
-        cv2.imshow('Visualized Image', scaled_image)
-        cv2.waitKey(0)
-        cv2.destroyAllWindows()
-
-
+        terrains = self.__defininedContent.get_terrain_type()
         array = updated_map
 
         # Convert the array to a grayscale image
         # image = np.uint8(array * 255)
         colored_image = np.zeros((array.shape[0], array.shape[1], 3), dtype=np.uint8)
-        colored_image[array == 0] = [255, 0, 0]  # Blue for 0s
-        colored_image[array == 1] = [0, 255, 0]  # Green for 1s
+        for x in terrains.keys():
+            colored_image[array == terrains[x].terrain_ID] = terrains[x].visualizedColor
+            
 
         # Optionally, scale the image to make it visually better
         scale_factor = 5
@@ -203,10 +203,11 @@ class MapGenerator():
             `firstGenerate`: whether you are calling the method first time in the game
         """
         map_size = self.__map_info.get_map_size()
+        init_area = self.__map_info.get_init_map_coordinate()
         playerCoord = self.__player.get_currentLocation()
         current_area = self.__map_info.get_current_map_coordinate()
-        if len(self.__defininedContent.get_terrain_type()) > np.shape(self.__terrain_type)[0]:
-            self.__terrain_type = np.array(self.__defininedContent.get_terrain_type())
+        if len(self.__defininedContent.get_terrain_type().keys()) > np.shape(self.__terrain_type)[0]:
+            self.__terrain_type = np.array(list(self.__defininedContent.get_terrain_type().keys()))
             
         if firstGenerate or not (current_area[0] <= playerCoord[0] < current_area[0]+map_size[0] \
             and current_area[1] >= playerCoord[1] > current_area[1]-map_size[1]):
@@ -223,13 +224,15 @@ class MapGenerator():
 
             # x_areaType = (x + int(cols/2)) /cols
             # y_areaType = (y + int(rows/2)) /rows
+            normalized_coord = (math.floor((playerCoord[0] - abs(init_area[0]))/map_size[1]), 
+                math.ceil((playerCoord[1] + abs(init_area[1]))/map_size[0]))
             
-            if new_area_coord[0] % 2 != 0 and new_area_coord[1] % 2 != 0:
+            if normalized_coord[0] % 2 != 0 and normalized_coord[1] % 2 != 0:
                 self.__map_info.set_current_area_type(1)
             else:
                 self.__map_info.set_current_area_type(0)
             
-            _, updated_map = self.game_map_generation(5, 4, area=new_area_coord) # generate map for new area
+            _, updated_map = self.game_map_generation(5, 4, 4, area=new_area_coord) # generate map for new area
             # TODO edit arguments to get potential better map
             
             self.__map_info.set_currentMap(self.__terrain_type[updated_map])
@@ -257,7 +260,7 @@ class MapGenerator():
                         current_location_name = self.__map_info.get_currentMap()\
                             [relaCoord[0], relaCoord[1]]
                     else:
-                        _, updated_map = self.game_map_generation(5, 4, area=mapArea)
+                        _, updated_map = self.game_map_generation(5, 4, 4, area=mapArea)
                         # generate map for new area
                         current_location_name = self.__terrain_type[updated_map]\
                             [relaCoord[0], relaCoord[1]]
@@ -468,7 +471,8 @@ if __name__ == "__main__":
     game_content = DefininedSys(defined_command)
     test = MapGenerator(player_info, map_record, game_content)
     test.map_info_update(True)
-    print(test.mapArea_And_RelativeCoordinate((0, -10)))
-    print(test.surroundingLocation((0, -10)))
+    print(test.mapArea_And_RelativeCoordinate((0, 0)))
+    print(test.surroundingLocation((0, 0)))
+    print(map_record.get_current_area_type())
     
-    test.visualized(*test.game_map_generation(5, 4))
+    test.visualized(test.game_map_generation(10, 4, 4)[-1])

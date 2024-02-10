@@ -192,36 +192,36 @@
 # print(type(b))
 # v(*b)
 
-import json
-# import numpy as np
-# terrain_type = np.array([1,2,3])
-# print(np.shape(terrain_type)[0])
-# Your JSON formatted string
-json_string = '''
-{
-    "successful": false,
-    "fail": "True",
-    "reward": [], 
-    "penalty": [1]
-}
-'''
+# import json
+# # import numpy as np
+# # terrain_type = np.array([1,2,3])
+# # print(np.shape(terrain_type)[0])
+# # Your JSON formatted string
+# json_string = '''
+# {
+#     "successful": false,
+#     "fail": "True",
+#     "reward": [], 
+#     "penalty": [1]
+# }
+# '''
 
-# Parse the JSON string
-data = json.loads(json_string, strict=False)
-print(type(data))
-a = dict()
-print(type(a))
+# # Parse the JSON string
+# data = json.loads(json_string, strict=False)
+# print(type(data))
+# a = dict()
+# print(type(a))
 
-# Extract the value of the "event_name" key
-event_name = data.get("event_name")
+# # Extract the value of the "event_name" key
+# event_name = data.get("event_name")
 
-# Extract the value of the "event_description" key
-event_description = data.get("event_description")
+# # Extract the value of the "event_description" key
+# event_description = data.get("event_description")
 
-# Print the extracted values
-print("Event Name:", event_name)
-print("Event Description:", event_description)
-print(data["successful"])
+# # Print the extracted values
+# print("Event Name:", event_name)
+# print("Event Description:", event_description)
+# print(data["successful"])
 # print(int(-0.1))
 
     # def visualized(self, random_map, updated_map, mode="8_neighbours"): # rows, cols = y, x
@@ -268,5 +268,42 @@ print(data["successful"])
     #     cv2.imshow('Visualized Image', scaled_image)
     #     cv2.waitKey(0)
     #     cv2.destroyAllWindows()
-for y in range(1, -2, -1):
-    print(y)
+# for y in range(1, -2, -1):
+#     print(y)
+import numpy as np
+
+def random_replace(arr, replace_prob):
+    """
+    Randomly replaces some of the 1s in a 2D numpy array with 3s.
+
+    Parameters:
+        arr (numpy.ndarray): Input 2D numpy array.
+        replace_prob (float): Probability of replacing a 1 with a 3.
+
+    Returns:
+        numpy.ndarray: New array with replacements.
+    """
+    replaced_arr = np.copy(arr)  # Create a copy of the input array
+    mask = np.random.rand(*arr.shape) < replace_prob  # Create a mask of True/False values based on probability
+    print(mask)
+    # replaced_arr[arr == 1] = np.where(mask[arr == 1], 3, 1)  # Replace 1s with 3s where the mask is True
+    replaced_arr[np.logical_and(arr == 1, mask)] = 3  # Replace 1s with 3s where the mask is True
+    return replaced_arr
+
+# Example usage:
+# Create a 2D numpy array
+original_array = np.array([[1, 0, 1, 1],
+                           [1, 1, 1, 1],
+                           [1, 1, 5, 1]])
+
+# Probability of replacing 1s with 3s
+replace_probability = 0.3
+
+# Perform random replacements
+modified_array = random_replace(original_array, replace_probability)
+
+print("Original Array:")
+print(original_array)
+print("\nModified Array:")
+print(modified_array)
+print(modified_array[(0,1)])

@@ -76,6 +76,20 @@ class Buff():
         self.exe_args = exe_args
 
 
+class Terrain_type():
+    def __init__(self, terrain_name: str, terrain_ID: int, possibilityOfGenerate: float, \
+        move_dLevel: int, rules, extraArgs, allowedAppearUpon: int, visualizedColor: list[int] = [0, 0, 0]) -> None:
+        
+        self.terrain_name = terrain_name
+        self.possibilityOfGenerate = possibilityOfGenerate
+        self.rules = rules
+        self.move_dLevel = move_dLevel
+        self.extraArgs = extraArgs
+        self.terrain_ID = terrain_ID
+        self.allowedAppearUpon = allowedAppearUpon
+        self.visualizedColor = visualizedColor
+
+
 class Player_status():
     def __init__(self, currentLocation:list[int,int] = [0,0], items:dict[str, list[Items]] = dict(), \
         hp: int = 100, maximum_hp: int = 100, maximum_action_point: int = 100, \
