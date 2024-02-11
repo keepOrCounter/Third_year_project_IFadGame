@@ -284,11 +284,15 @@ def random_replace(arr, replace_prob):
         numpy.ndarray: New array with replacements.
     """
     replaced_arr = np.copy(arr)  # Create a copy of the input array
-    mask = np.random.rand(*arr.shape) < replace_prob  # Create a mask of True/False values based on probability
+    np.random.seed(100)
+    a = np.random.randint(0, 100, arr.shape)
+    print(a)
+    np.random.seed(100)
+    mask = np.random.rand(*arr.shape)  # Create a mask of True/False values based on probability
     print(mask)
     # replaced_arr[arr == 1] = np.where(mask[arr == 1], 3, 1)  # Replace 1s with 3s where the mask is True
-    replaced_arr[np.logical_and(arr == 1, mask)] = 3  # Replace 1s with 3s where the mask is True
-    return replaced_arr
+    # replaced_arr[np.logical_and(arr == 1, mask)] = 3  # Replace 1s with 3s where the mask is True
+    # return replaced_arr
 
 # Example usage:
 # Create a 2D numpy array
@@ -302,8 +306,8 @@ replace_probability = 0.3
 # Perform random replacements
 modified_array = random_replace(original_array, replace_probability)
 
-print("Original Array:")
-print(original_array)
-print("\nModified Array:")
-print(modified_array)
-print(modified_array[(0,1)])
+# print("Original Array:")
+# print(original_array)
+# print("\nModified Array:")
+# print(modified_array)
+# print(modified_array[(0,1)])

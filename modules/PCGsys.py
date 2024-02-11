@@ -31,9 +31,13 @@ class MapGenerator():
         
         self.player_surrounding = ["Front", "Left hand side", "Current location", "Right hand side", "Back"]
         
+        
+    def map_Seed(self, area: tuple[int]= (0, 0)):
+        """Used to make sure same map would be given in a visited area
 
-    def generate_random_map(self, rows: int, cols: int, land_prob: float=0.65, \
-        area: tuple[int]= (0, 0))-> np.ndarray: # rows, cols = y, x
+        Args:
+            area (tuple[int], optional): which area player is at. Defaults to (0, 0).
+        """
         if area not in self.__generated_map.keys():
             if self.__random_seeds.shape[0] == 0:
                 init_start_point = None
@@ -49,13 +53,20 @@ class MapGenerator():
             self.__random_seeds = np.delete(self.__random_seeds, index_random)
         else:
             map_seed = self.__generated_map[self.__map_info.get_current_map_coordinate()]
-        
+            
+        return map_seed
+
+    def generate_random_map(self, rows: int, cols: int, land_prob: float=0.65, \
+        area: tuple[int]= (0, 0))-> np.ndarray: # rows, cols = y, x
+
+        map_seed = self.map_Seed(area)
+
         np.random.seed(map_seed) # use seed to get the same map for visited place
         return np.random.choice([0, 1], size=(rows, cols), p=[1-land_prob, land_prob])
 
 
     def random_replace(self, arr: np.ndarray, replace_prob: float, cellAllowedReplaced: list[int], \
-        targetID: int):
+        targetID: int, area: tuple[int]= (0, 0)):
         """
         Randomly replaces some of the cell in a 2D numpy array with target cell.
 
@@ -66,7 +77,9 @@ class MapGenerator():
         Returns:
             numpy.ndarray: New array with replacements.
         """
+        map_seed = self.map_Seed(area)
         replaced_arr = np.copy(arr)  # Create a copy of the input array
+        np.random.seed(map_seed) # use seed to get the same map for visited place
         mask = np.random.rand(*arr.shape) < replace_prob  # Create a mask of True/False values based on probability
         # print(mask)
         # replaced_arr[arr == 1] = np.where(mask[arr == 1], 3, 1)  # Replace occured where the mask is True
@@ -84,21 +97,26 @@ class MapGenerator():
         mode="Sea_and_islands", area: tuple[int]= (0, 0)): # rows, cols = y, x
 
         # self.map_info_update()
+        seed = self.map_Seed(area)
+        # np.random.seed(seed)
+        # pTable = np.random.randint(0, 100, self.__map_info.get_map_size())
+        # print(pTable)
+        
         terrains = self.__defininedContent.get_terrain_type()
         terrain_name = list(terrains.keys())
         rows, cols = self.__map_info.get_map_size()
         if self.__map_info.get_current_area_type() == 1:
             random_map = self.generate_random_map(rows, cols, land_prob=terrains["land"].possibilityOfGenerate, \
                 area=area)
-            random_map[0, :] = np.zeros((cols,))
-            random_map[rows - 1, :] = np.zeros((cols,))
+            # random_map[0, :] = np.zeros((cols,))
+            # random_map[rows - 1, :] = np.zeros((cols,))
             
-            random_map[:, 0] = np.zeros((rows,))
-            random_map[:, cols - 1] = np.zeros((rows,))
+            # random_map[:, 0] = np.zeros((rows,))
+            # random_map[:, cols - 1] = np.zeros((rows,))
             
         else:
             random_map = self.generate_random_map(rows, cols, land_prob=1 - \
-                terrains["land"].possibilityOfGenerate, area=area)
+                terrains["sea"].possibilityOfGenerate, area=area)
             
         cellular_automaton = cpl.init_simple2d(rows, cols)
         cellular_automaton[0] = random_map
@@ -112,18 +130,18 @@ class MapGenerator():
         updated_map = cpl.evolve2d(cellular_automaton, timesteps=cellular_timesteps, \
             apply_rule=lambda grid, cell, time_step: \
                 terrains["land"].rules(grid, cell, time_step, death_limit, birth_limit, \
-                    1, *terrains["land"].extraArgs))
+                    1, seed, *terrains["land"].extraArgs))
         
         for x in range(2, len(terrain_name)):
             newTarrain = terrains[terrain_name[x]]
             lastMap = np.copy(updated_map[-1])
             updated_map[-1] = self.random_replace(updated_map[-1], newTarrain.possibilityOfGenerate, \
-                newTarrain.allowedAppearUpon, newTarrain.terrain_ID)
+                newTarrain.allowedAppearUpon, newTarrain.terrain_ID, area)
             
             updated_map = cpl.evolve2d(updated_map, timesteps=cellular_timesteps, \
             apply_rule=lambda grid, cell, time_step: \
                 newTarrain.rules(grid, cell, time_step, death_limit, birth_limit, \
-                    newTarrain.terrain_ID, *newTarrain.extraArgs))
+                    newTarrain.terrain_ID, seed, *newTarrain.extraArgs))
             
             unchangedCells = np.where(updated_map[-1] == -1)
             updated_map[-1][unchangedCells] = lastMap[unchangedCells]
@@ -463,16 +481,16 @@ if __name__ == "__main__":
     # test.debug(5, 4)
     # test = objectsGenerator(DefininedSys())
     # test.objectGeneration(1, 6)
-    player_info = Player_status()
+    player_info = Player_status(currentLocation = [0, 20])
     map_record = Map_information(current_area_type = 1, map_size=(20, 20)) # land type
     worldStatus = globalInfo()
     
     defined_command = Commands(player_info, map_record, worldStatus)
-    game_content = DefininedSys(defined_command)
+    game_content = DefininedSys(defined_command, map_record)
     test = MapGenerator(player_info, map_record, game_content)
     test.map_info_update(True)
     print(test.mapArea_And_RelativeCoordinate((0, 0)))
-    print(test.surroundingLocation((0, 0)))
-    print(map_record.get_current_area_type())
+    # print(test.surroundingLocation((0, 20)))
+    # print(map_record.get_current_area_type())
     
-    test.visualized(test.game_map_generation(10, 4, 4)[-1])
+    test.visualized(test.game_map_generation(10, 3, 4)[-1])

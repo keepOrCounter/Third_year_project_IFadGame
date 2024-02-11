@@ -154,11 +154,11 @@ class Commands():
     
     
 class MapPcgRule():
-    def __init__(self) -> None:
-        pass
+    def __init__(self, map: Map_information) -> None:
+        self.__map = map
     
     def random_map_update_SIslands(self, cell_grid: np.ndarray, cellT, time_step, \
-        death_limit = 4, birth_limit = 4, currentId = 0):
+        death_limit = 4, birth_limit = 4, currentId = 0, seed: int= None):
         
         rows, cols = cell_grid.shape
         cell = cell_grid[int(rows/2), int(cols/2)]
@@ -178,15 +178,15 @@ class MapPcgRule():
 
         return cell
     
-    def random_map_update_forests(self, cell_grid: np.ndarray, cellT, time_step, \
-        death_limit = 4, birth_limit = 4, currentId = 0):
+    def random_map_update_defult(self, cell_grid: np.ndarray, cellT, time_step, \
+        death_limit = 4, birth_limit = 4, currentId = 0, seed: int= None):
         
         rows, cols = cell_grid.shape
         cell = cell_grid[int(rows/2), int(cols/2)]
         oneD = cell_grid.copy().flatten()
         number_of_target = np.where(oneD == currentId)[0].shape[0]
         number_of_0 = oneD.shape[0] - number_of_target
-
+        # print(cellT)
         if cell == currentId:
             number_of_target -= 1
         else:
@@ -194,9 +194,46 @@ class MapPcgRule():
             
         if number_of_target > birth_limit:
             cell = copy.copy(currentId)
-            print("Changed!")
+            # print("Changed!")
         elif number_of_target < death_limit:
             cell = -1
+
+        return cell
+    
+    def random_map_update_sand(self, cell_grid: np.ndarray, cellT, time_step, \
+        death_limit = 4, birth_limit = 4, currentId = 0, seed: int= None, \
+            possibility: int= 0.5):
+        
+        rows, cols = cell_grid.shape
+        cell = cell_grid[int(rows/2), int(cols/2)]
+        oneD = cell_grid.copy().flatten()
+        number_of_sea = np.where(oneD == 0)[0].shape[0]
+        number_of_target = np.where(oneD == currentId)[0].shape[0]
+        
+        np.random.seed(seed)
+        pTable = np.random.randint(0, 100, self.__map.get_map_size())
+        # print(pTable)
+        # print(seed)
+        tranferP = possibility * 100
+
+        if cell == 0:
+            number_of_sea -= 1
+        elif cell == currentId:
+            number_of_target -= 1
+
+            
+        if number_of_sea > 0 or number_of_target > birth_limit:
+            tranferP *= 2
+        elif number_of_target < death_limit:
+            tranferP = 0
+            
+        tranferP = int(tranferP)
+        if cell!= 0 and cell != 2 and tranferP > pTable[cellT] and cell != -1:
+            # print(cell)
+            cell = copy.copy(currentId)
+            # print("Changed!")
+        # else:
+        #     cell = -1
 
         return cell
     
@@ -221,13 +258,14 @@ class character_effectSys():
         self.__player.set_maximum_action_point(self.__player.get_maximum_action_point() + amount)
 
 class DefininedSys(): # 
-    def __init__(self, preDefinedCommands: Commands) -> None:
+    def __init__(self, preDefinedCommands: Commands, map_record: Map_information) -> None:
         """
         All the defined content stored here\n\n
         `__def_items:` All the objects with same or differnt type here\n
         `__def_actions:` Defined player action, contains the name of action and the command will be executed in method form,
         usage example>>> <method stored in Actions>(*<arguments of method>), this would call the method\n
         """
+        self.__map_record = map_record
         self.__def_items = [
             # Items("Campfire", 20, "Items"),
             Items("Stream", 10, "Landscape Features"),
@@ -290,12 +328,13 @@ class DefininedSys(): #
             "decrease maximum action point": preDefinedCommands.decrease_maximum_action_point,
         }
         
-        mapRule = MapPcgRule()
+        mapRule = MapPcgRule(map_record)
         
         self.__terrain_type= {
-            "sea": Terrain_type("sea", 0, 1, 4, mapRule.random_map_update_SIslands, tuple(), [], [255, 0, 0]), 
-            "land": Terrain_type("land", 1, 0.65, 1, mapRule.random_map_update_SIslands, tuple(), [0], [0, 255, 0]), 
-            "forest": Terrain_type("forest", 2, 0.4, 1, mapRule.random_map_update_forests, tuple(), [1], [52, 137, 52])
+            "sea": Terrain_type("sea", 0, 0.7, 4, mapRule.random_map_update_SIslands, tuple(), [], [255, 0, 0]), 
+            "land": Terrain_type("land", 1, 0.5, 1, mapRule.random_map_update_SIslands, tuple(), [0], [0, 255, 0]), 
+            "forest": Terrain_type("forest", 2, 0.4, 1, mapRule.random_map_update_defult, tuple(), [1], [52, 137, 52]),
+            "beach": Terrain_type("beach", 3, 0, 2, mapRule.random_map_update_sand, (0.3,), [1], [0, 255, 255])
             }
         
         # self.__terrain_type = ["sea", "land"]
