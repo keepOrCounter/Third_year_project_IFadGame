@@ -6,10 +6,11 @@ class Items():
     def __init__(self, item_name: str, possibleWeight = {}, use=None, weight = 1):
         """
             `item_name (str)`: name for player or gpt to recognized
-            `item_energy_recovery (int)`: the amount of action point player can recovery when \
-                making some actions
-            `category (str)`: Type of object, current types are "items", "landscape Features", and \
-                "environment" this would be improve later
+            `possibleWeight (dict)`: possibility of showing up in different location, \
+                from 0 to 20
+            `use (method)`: command should be called after use this item
+            `weight (int)`: the weight of this item, from 1 to infinite, initial player \
+                could carry 20 weight of items
         """
         self.item_name = item_name
         # self.category = category
@@ -21,20 +22,28 @@ class Items():
 class Food(Items):
     def __init__(self, item_name: str, possibleWeight: dict[str, int], use, weight : int, \
         item_energy_recovery: int, eatable=False):
+        """
+            `item_energy_recovery (int)`: the amount of action point player can recovery when \
+                making consume this food
+            `eatable (bool)`: Whether this food is safe for eat
+        """
         super().__init__(item_name, possibleWeight, use, weight)
         
         self.item_energy_recovery = item_energy_recovery
         self.eatable = eatable
         
 class Tool(Items):
-    def __init__(self, item_name: str, possibleWeight={}, use=None, weight=1, \
-        durability = 0):
+    def __init__(self, item_name: str, possibleWeight=dict(), use=None, weight=1, \
+        durability = 1):
+        """
+            `durability (int)`: the turns number this tool can be used
+        """
         super().__init__(item_name, possibleWeight, use, weight)
         
         self.durability = durability
         
 class LandscapeFeature(Items):
-    def __init__(self, item_name: str, possibleWeight={}, use=None, weight=1, \
+    def __init__(self, item_name: str, possibleWeight=dict(), use=None, weight=2**10, \
         item_energy_recovery = 0, eatable=False):
         super().__init__(item_name, possibleWeight, use, weight)
         
@@ -42,7 +51,7 @@ class LandscapeFeature(Items):
         self.eatable = eatable
         
 class EnvironmentElement(Items):
-    def __init__(self, item_name: str, possibleWeight={}, use=None, weight=1, \
+    def __init__(self, item_name: str, possibleWeight=dict(), use=None, weight=2**10, \
         item_energy_recovery = 0, eatable=False):
         super().__init__(item_name, possibleWeight, use, weight)
         
@@ -50,20 +59,40 @@ class EnvironmentElement(Items):
         self.eatable = eatable
         
 class Transportation(Items):
-    def __init__(self, item_name: str, possibleWeight={}, use=None, weight=1, \
-        suitablePlace = {}, APReduce = 1):
+    def __init__(self, item_name: str, possibleWeight=dict(), use=None, weight=2**10, \
+        suitablePlace = set(), APReduce = 1):
+        """
+            `suitablePlace (set)`: the place this transportation can be rod
+            `APReduce (int)`: to what precentage of action point would be reduce \
+                when moving on a place, from 0 to 1
+        """
         super().__init__(item_name, possibleWeight, use, weight)
         
         self.suitablePlace = suitablePlace
         self.APReduce = APReduce
         
 class Weapon(Items):
-    def __init__(self, item_name: str, possibleWeight={}, use=None, weight=1, \
-        attack = 0, durability = 0):
+    def __init__(self, item_name: str, possibleWeight=dict(), use=None, weight=1, \
+        attack = 0, durability = 1):
+        """
+            `durability (int)`: the turns number this tool can be used
+            `attack (int)`: the hp value would reduce on target when player use this weapon
+        """
         super().__init__(item_name, possibleWeight, use, weight)
         
         self.durability = durability
         self.attack = attack
+        
+
+class Container(Items):
+    def __init__(self, item_name: str, possibleWeight=dict(), use=None, weight=1, \
+        capacity = 1):
+        """
+            `capacity (int)`: the turn number the liquide inside can be used
+        """
+        super().__init__(item_name, possibleWeight, use, weight)
+        
+        self.capacity = capacity
 
 
 class Events():
