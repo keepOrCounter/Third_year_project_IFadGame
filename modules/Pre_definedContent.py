@@ -290,10 +290,11 @@ class DefininedSys(): #
                 capacity = 5),
             Transportation("boat", {"sea": 2, "land": 0, "forest": 0, "beach": 8}, \
                 suitablePlace = {"sea"}, APReduce = 0.5),
-            Items("grass", 2, "landscape features"),
             LandscapeFeature("grass", {"sea": 0, "land": 12, "forest": 15, "beach": 0}, \
-                item_energy_recovery = 2, eatable = False), 
+                item_energy_recovery = 2, eatable = False),
             Items("aloe vera", 5, "landscape features"),
+            LandscapeFeature("aloe vera", {"sea": 0, "land": 12, "forest": 5, "beach": 4}, \
+                item_energy_recovery = 2, eatable = True),
         ]
         # """
         # fun1
