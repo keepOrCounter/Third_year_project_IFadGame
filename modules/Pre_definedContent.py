@@ -1,5 +1,6 @@
 from status_record import Player_status, Map_information, globalInfo, Items, Events, \
-    Actions, Terrain_type
+    Actions, Terrain_type, LandscapeFeature, EnvironmentElement, Tool, Food, \
+        Transportation, Weapon, Container
 import random
 import copy
 import numpy as np
@@ -268,16 +269,31 @@ class DefininedSys(): #
         self.__map_record = map_record
         self.__def_items = [
             # Items("Campfire", 20, "Items"),
-            Items("Stream", 10, "Landscape Features"),
-            Items("Bread", 15, "Items"),
-            Items("Traps", 10, "Items"),
-            Items("First Aid Kit", 25, "Items"),
+            LandscapeFeature("stream", {"sea": 0, "land": 12, "forest": 15, "beach": 0}, \
+                item_energy_recovery = 10, eatable = True), 
+            Food("bread", {"sea": 0, "land": 7, "forest": 6, "beach": 2}, weight = 1, \
+                item_energy_recovery = 15, eatable = True),
+            Tool("traps", {"sea": 0, "land": 8, "forest": 8, "beach": 2}),
+            # Items("first aid kit", 25, "Items"),
             # Items("Toolkits", 15),
             # Items("Maps", 5),
-            Items("Edible Plants", 10, "Items"),
-            Items("Firewood", 0, "Items"),
-            Items("Rocks", 0, "Landscape Features"),
-            Items("Weapon Crafting Bench", 0, "Items")
+            # Items("Edible Plants", 10, "Items"),
+            Items("firewood", {"sea": 0, "land": 10, "forest": 10, "beach": 2}, weight = 4),
+            LandscapeFeature("rocks", {"sea": 10, "land": 12, "forest": 12, "beach": 10}, \
+                item_energy_recovery = 10, eatable = True), 
+            Tool("weapon crafting bench", {"sea": 0, "land": 5, "forest": 5, "beach": 1}, \
+                weight = 6, durability = 10),
+            Food("fish", {"sea": 18, "land": 1, "forest": 1, "beach": 10}, weight = 2, \
+                item_energy_recovery = 5, eatable = False),
+            Tool("fish rod", {"sea": 4, "land": 1, "forest": 1, "beach": 6}),
+            Container("glass water bottle", {"sea": 2, "land": 1, "forest": 1, "beach": 3}, \
+                capacity = 5),
+            Transportation("boat", {"sea": 2, "land": 0, "forest": 0, "beach": 8}, \
+                suitablePlace = {"sea"}, APReduce = 0.5),
+            Items("grass", 2, "landscape features"),
+            LandscapeFeature("grass", {"sea": 0, "land": 12, "forest": 15, "beach": 0}, \
+                item_energy_recovery = 2, eatable = False), 
+            Items("aloe vera", 5, "landscape features"),
         ]
         # """
         # fun1
@@ -330,12 +346,61 @@ class DefininedSys(): #
         
         mapRule = MapPcgRule(map_record)
         
-        self.__terrain_type= {
-            "sea": Terrain_type("sea", 0, 0.7, 4, mapRule.random_map_update_SIslands, tuple(), [], [255, 0, 0]), 
-            "land": Terrain_type("land", 1, 0.5, 1, mapRule.random_map_update_SIslands, tuple(), [0], [0, 255, 0]), 
-            "forest": Terrain_type("forest", 2, 0.4, 1, mapRule.random_map_update_defult, tuple(), [1], [52, 137, 52]),
-            "beach": Terrain_type("beach", 3, 0, 2, mapRule.random_map_update_sand, (0.3,), [1], [0, 255, 255])
+        self.__terrain_type = {
+            "sea": Terrain_type(terrain_name = "sea", terrain_ID = 0, possibilityOfGenerate = 0.7, \
+                move_dLevel = 4, rules = mapRule.random_map_update_SIslands, extraArgs =  tuple(), \
+                    allowedAppearUpon = [], visualizedColor = [255, 0, 0]), 
+            "land": Terrain_type(terrain_name = "land", terrain_ID = 1, possibilityOfGenerate = 0.5, \
+                move_dLevel = 1, rules = mapRule.random_map_update_SIslands, extraArgs =  tuple(), \
+                    allowedAppearUpon = [0], visualizedColor = [0, 255, 0]), 
+            "forest": Terrain_type(terrain_name = "forest", terrain_ID = 2, possibilityOfGenerate = 0.4, \
+                move_dLevel = 1, rules = mapRule.random_map_update_defult, extraArgs =  tuple(), \
+                    allowedAppearUpon = [1], visualizedColor = [52, 137, 52]),
+            "beach": Terrain_type(terrain_name = "beach", terrain_ID = 3, possibilityOfGenerate = 0, \
+                move_dLevel = 2, rules = mapRule.random_map_update_sand, extraArgs = (0.3,), \
+                    allowedAppearUpon = [1], visualizedColor = [0, 255, 255])
             }
+        
+        # self.__terrain_type["sea"].definitely_Object = [
+        #     Items("plenty of salt water", 5, "environment")
+        # ]
+        
+        # self.__terrain_type["sea"].possible_Object = np.array([
+        #     Items("fish", 5, "food"),
+        #     Items("fish rod", 0, "tool"),
+        #     Items("water bottle", 0, "tool"),
+        #     Items("fishing net", 0, "tool"),
+        #     Items("boat", 0, "cargo tool")
+        # ])
+        
+        # self.__terrain_type["sea"].possible_Object_Weight = np.array([
+        #     19,
+        #     12,
+        #     15,
+        #     12,
+        #     10
+        # ])
+        
+        
+        # self.__terrain_type["land"].definitely_Object = [
+        #     Items("plenty of soil", 0, "environment")
+        # ]
+        
+        # self.__terrain_type["land"].possible_Object = np.array([
+        #     Items("grass", 2, "landscape features"),
+        #     Items("aloe vera", 5, "landscape features"),
+        #     Items("water bottle", 0, "tool"),
+        #     Items("fishing net", 0, "tool"),
+        #     Items("boat", 0, "cargo tool")
+        # ])
+        
+        # self.__terrain_type["land"].possible_Object_Weight = np.array([
+        #     19,
+        #     12,
+        #     15,
+        #     12,
+        #     10
+        # ])
         
         # self.__terrain_type = ["sea", "land"]
         # self.__move_dLevel = [4, 1]
