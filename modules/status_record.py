@@ -3,16 +3,67 @@ import numpy as np
 # from interactionSys import OutputGenerator
 
 class Items():
-    def __init__(self, item_name: str, item_energy_recovery: int, category: str):
+    def __init__(self, item_name: str, possibleWeight = {}, use=None, weight = 1):
         """
             `item_name (str)`: name for player or gpt to recognized
             `item_energy_recovery (int)`: the amount of action point player can recovery when \
                 making some actions
-            `category (str)`: Type of object, current types are "items", "Landscape Features", this would be improve later
+            `category (str)`: Type of object, current types are "items", "landscape Features", and \
+                "environment" this would be improve later
         """
         self.item_name = item_name
+        # self.category = category
+        
+        self.possibleWeight = possibleWeight
+        self.use = use
+        self.weight = weight
+        
+class Food(Items):
+    def __init__(self, item_name: str, possibleWeight: dict[str, int], use, weight : int, \
+        item_energy_recovery: int, eatable=False):
+        super().__init__(item_name, possibleWeight, use, weight)
+        
         self.item_energy_recovery = item_energy_recovery
-        self.category = category
+        self.eatable = eatable
+        
+class Tool(Items):
+    def __init__(self, item_name: str, possibleWeight={}, use=None, weight=1, \
+        durability = 0):
+        super().__init__(item_name, possibleWeight, use, weight)
+        
+        self.durability = durability
+        
+class LandscapeFeature(Items):
+    def __init__(self, item_name: str, possibleWeight={}, use=None, weight=1, \
+        item_energy_recovery = 0, eatable=False):
+        super().__init__(item_name, possibleWeight, use, weight)
+        
+        self.item_energy_recovery = item_energy_recovery
+        self.eatable = eatable
+        
+class EnvironmentElement(Items):
+    def __init__(self, item_name: str, possibleWeight={}, use=None, weight=1, \
+        item_energy_recovery = 0, eatable=False):
+        super().__init__(item_name, possibleWeight, use, weight)
+        
+        self.item_energy_recovery = item_energy_recovery
+        self.eatable = eatable
+        
+class Transportation(Items):
+    def __init__(self, item_name: str, possibleWeight={}, use=None, weight=1, \
+        suitablePlace = {}, APReduce = 1):
+        super().__init__(item_name, possibleWeight, use, weight)
+        
+        self.suitablePlace = suitablePlace
+        self.APReduce = APReduce
+        
+class Weapon(Items):
+    def __init__(self, item_name: str, possibleWeight={}, use=None, weight=1, \
+        attack = 0, durability = 0):
+        super().__init__(item_name, possibleWeight, use, weight)
+        
+        self.durability = durability
+        self.attack = attack
 
 
 class Events():
@@ -88,6 +139,10 @@ class Terrain_type():
         self.terrain_ID = terrain_ID
         self.allowedAppearUpon = allowedAppearUpon
         self.visualizedColor = visualizedColor
+        
+        self.definitely_Object = list()
+        self.possible_Object = list()
+        self.possible_Object_Weight = list()
 
 
 class Player_status():
