@@ -28,7 +28,7 @@ class Gpt3():
         # Set up the OpenAI API client
         openai.api_key = api_key
 
-    def inquiry(self, prompt:str, systemRole: str) -> str:
+    def inquiry(self, prompt:str, systemRole: str, temperature = 0.5) -> str:
         # Generate a response
         response = openai.ChatCompletion.create(
         model="gpt-3.5-turbo",#gpt-3.5-turbo-0301
@@ -36,7 +36,7 @@ class Gpt3():
         {"role": "system", "content": systemRole},
         {"role": "user", "content": prompt}
         ],
-        temperature=0.5,
+        temperature=temperature,
         max_tokens=1000,
         top_p=1,
         frequency_penalty=0,
@@ -118,6 +118,12 @@ You stand at the end of a road before a small brick building. The dense forest s
 		"development description": "You decide to suck the wound, hoping to extract the poison. Unfortunately, your efforts prove in vain. The venom takes hold. Nausea and weakness grip you, making the journey ahead more challenging."
 }"""
     
+        self.__itemGenerateSystemRole = "You are an item generator for an RPG \
+game and need to generate items according to the input format and requirements. \
+Please note that the production of items must be logical. Please just generate \
+item, without any explaination and description."
+    
+    
     def locationDescription(self, locationList: dict[str, Location]) -> None:
         """
         Args:
@@ -190,6 +196,9 @@ You stand at the end of a road before a small brick building. The dense forest s
 
         # print(result)
         return result
+    
+    def itemsGenerate(self):
+        pass
     
 class InputTranslator():
     def __init__(self, gptAPI: Gpt3, playerStatus: Player_status, mapInfo: Map_information, \
