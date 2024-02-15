@@ -21,7 +21,7 @@ class Items():
         
 class Food(Items):
     def __init__(self, item_name: str, possibleWeight: dict[str, int], use, weight : int, \
-        item_energy_recovery: int, eatable=False):
+        item_energy_recovery: int, eatable=False, state = 0, freshness = -1, thirst = 0):
         """
             `item_energy_recovery (int)`: the amount of action point player can recovery when \
                 making consume this food
@@ -31,6 +31,9 @@ class Food(Items):
         
         self.item_energy_recovery = item_energy_recovery
         self.eatable = eatable
+        self.state = state
+        self.freshness = freshness
+        self.thirst = thirst
         
 class Tool(Items):
     def __init__(self, item_name: str, possibleWeight=dict(), use=None, weight=1, \

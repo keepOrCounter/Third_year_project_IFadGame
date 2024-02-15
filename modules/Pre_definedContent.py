@@ -270,7 +270,7 @@ class DefininedSys(): #
         self.__def_items = [
             # Items("Campfire", 20, "Items"),
             LandscapeFeature("stream", {"sea": 0, "land": 12, "forest": 15, "beach": 0}, \
-                item_energy_recovery = 10, eatable = True, freshness = None), 
+                item_energy_recovery = 10, eatable = True, freshness = -1), 
             # Food("bread", {"sea": 0, "land": 7, "forest": 6, "beach": 2}, weight = 1, \
             #     item_energy_recovery = 15, eatable = True, freshness = 72),
             Tool("traps", {"sea": 0, "land": 8, "forest": 8, "beach": 2}),
@@ -280,7 +280,7 @@ class DefininedSys(): #
             # Items("Edible Plants", 10, "Items"),
             # Items("firewood", {"sea": 0, "land": 10, "forest": 10, "beach": 2}, weight = 4),
             LandscapeFeature("rocks", {"sea": 10, "land": 12, "forest": 12, "beach": 10}, \
-                item_energy_recovery = 10, eatable = True, freshness = None), 
+                item_energy_recovery = 10, eatable = True, freshness = -1), 
             Tool("weapon crafting bench", {"sea": 0, "land": 5, "forest": 5, "beach": 1}, \
                 weight = 6, durability = 10),
             # Food("fish", {"sea": 18, "land": 1, "forest": 1, "beach": 10}, weight = 2, \
@@ -322,16 +322,16 @@ class DefininedSys(): #
 
             #Item
             #Item("", {"sea": , "land": , "forest": , "beach": }, weight = ),
-            Item("wood", {"sea": 1, "land": 3, "forest": 20, "beach": 1}, weight = 5),
-            Item("rock", {"sea": 50, "land": 4, "forest": 10, "beach": 5}, weight = 5),
-            Item("stick", {"sea": 0, "land": 1, "forest": 20, "beach": 0}, weight = 2),
-            Item("palm leave", {"sea": 1, "land": 0, "forest": 0, "beach": 20}, weight = 1),
-            Item("seed", {"sea": 1, "land": 10, "forest": 10, "beach": 1}, weight = 1),
-            Item("coal", {"sea": 0, "land": 0, "forest": 0, "beach": 0}, weight = 2),
-            Item("cloth", {"sea": 0, "land": 0, "forest": 0, "beach": 0}, weight = 1),
-            Item("glass bottle", {"sea": 0, "land": 0, "forest": 0, "beach": 0}, weight = 1),
-            Item("handful of sand", {"sea": 50, "land": 0, "forest": 0, "beach": 99}, weight = 1),
-            Item("a bottle of sand", {"sea": 0, "land": 0, "forest": 0, "beach": 0}, weight = 3),
+            Items("wood", {"sea": 1, "land": 3, "forest": 20, "beach": 1}, weight = 5),
+            Items("rock", {"sea": 50, "land": 4, "forest": 10, "beach": 5}, weight = 5),
+            Items("stick", {"sea": 0, "land": 1, "forest": 20, "beach": 0}, weight = 2),
+            Items("palm leave", {"sea": 1, "land": 0, "forest": 0, "beach": 20}, weight = 1),
+            Items("seed", {"sea": 1, "land": 10, "forest": 10, "beach": 1}, weight = 1),
+            Items("coal", {"sea": 0, "land": 0, "forest": 0, "beach": 0}, weight = 2),
+            Items("cloth", {"sea": 0, "land": 0, "forest": 0, "beach": 0}, weight = 1),
+            Items("glass bottle", {"sea": 0, "land": 0, "forest": 0, "beach": 0}, weight = 1),
+            Items("handful of sand", {"sea": 50, "land": 0, "forest": 0, "beach": 99}, weight = 1),
+            Items("a bottle of sand", {"sea": 0, "land": 0, "forest": 0, "beach": 0}, weight = 3),
 
         ]
         # """
