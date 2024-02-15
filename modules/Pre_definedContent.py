@@ -301,17 +301,17 @@ class DefininedSys(): #
             #Food state: 0: inedible, 1: raw, 2: edible, 3: rot
             Food("bread", {"sea": 0, "land": 0, "forest": 0, "beach": 0}, weight = 1, \
                 item_energy_recovery = 15, state = 2, freshness = 72, satiety = 30, thirst = -20),
-            Food("raw fish", {"sea": 18, "land": 0, "forest": 0, "beach": 10}, weight = 2, \
+            Food("raw fish", {"sea": 15, "land": 0, "forest": 0, "beach": 1}, weight = 2, \
                 item_energy_recovery = 5, state = 1, freshness = 24, satiety = 15, thirst = 20),
             Food("grilled fish", {"sea": 0, "land": 0, "forest": 0, "beach": 0}, weight = 2, \
                 item_energy_recovery = 15, state = 2, freshness = 24, satiety = 15, thirst = 10),
-            Food("berry", {"sea": 0, "land": 5, "forest": 20, "beach": 0}, weight = 1, \
+            Food("berry", {"sea": 0, "land": 5, "forest": 10, "beach": 0}, weight = 1, \
                 item_energy_recovery = 5, state = 2, freshness = 72, satiety = 5, thirst = 10),
-            Food("potato", {"sea": 0, "land": 15, "forest": 10, "beach": 0}, weight = 1, \
+            Food("potato", {"sea": 0, "land": 5, "forest": 2, "beach": 0}, weight = 1, \
                 item_energy_recovery = 10, state = 1, freshness = 120, satiety = 10, thirst = -5),
             Food("grilled potato", {"sea": 0, "land": 0, "forest": 0, "beach": 0}, weight = 1, \
                 item_energy_recovery = 10, state = 2, freshness = 72, satiety = 10, thirst = -10),
-            Food("raw venison", {"sea": 0, "land": 5, "forest": 10, "beach": 0}, weight = 5, \
+            Food("raw venison", {"sea": 0, "land": 1, "forest": 2, "beach": 0}, weight = 5, \
                 item_energy_recovery = 20, state = 1, freshness = 36, satiety = 80, thirst = 50),
             Food("grilled venison", {"sea": 0, "land": 0, "forest": 0, "beach": 0}, weight = 5, \
                 item_energy_recovery = 30, state = 2, freshness = 48, satiety = 80, thirst = 20),
@@ -322,11 +322,11 @@ class DefininedSys(): #
 
             #Item
             #Item("", {"sea": , "land": , "forest": , "beach": }, weight = ),
-            Item("wood", {"sea": 1, "land": 5, "forest": 99, "beach": 1}, weight = 5),
-            Item("rock", {"sea": 50, "land": 20, "forest": 50, "beach": 5}, weight = 5),
-            Item("stick", {"sea": 0, "land": 5, "forest": 99, "beach": 0}, weight = 2),
+            Item("wood", {"sea": 1, "land": 3, "forest": 20, "beach": 1}, weight = 5),
+            Item("rock", {"sea": 50, "land": 4, "forest": 10, "beach": 5}, weight = 5),
+            Item("stick", {"sea": 0, "land": 1, "forest": 20, "beach": 0}, weight = 2),
             Item("palm leave", {"sea": 1, "land": 0, "forest": 0, "beach": 20}, weight = 1),
-            Item("seed", {"sea": 1, "land": 50, "forest": 50, "beach": 5}, weight = 1),
+            Item("seed", {"sea": 1, "land": 10, "forest": 10, "beach": 1}, weight = 1),
             Item("coal", {"sea": 0, "land": 0, "forest": 0, "beach": 0}, weight = 2),
             Item("cloth", {"sea": 0, "land": 0, "forest": 0, "beach": 0}, weight = 1),
             Item("glass bottle", {"sea": 0, "land": 0, "forest": 0, "beach": 0}, weight = 1),
