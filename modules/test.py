@@ -270,44 +270,123 @@
     #     cv2.destroyAllWindows()
 # for y in range(1, -2, -1):
 #     print(y)
-import numpy as np
+# import numpy as np
 
-def random_replace(arr, replace_prob):
-    """
-    Randomly replaces some of the 1s in a 2D numpy array with 3s.
+# def random_replace(arr, replace_prob):
+#     """
+#     Randomly replaces some of the 1s in a 2D numpy array with 3s.
 
-    Parameters:
-        arr (numpy.ndarray): Input 2D numpy array.
-        replace_prob (float): Probability of replacing a 1 with a 3.
+#     Parameters:
+#         arr (numpy.ndarray): Input 2D numpy array.
+#         replace_prob (float): Probability of replacing a 1 with a 3.
 
-    Returns:
-        numpy.ndarray: New array with replacements.
-    """
-    replaced_arr = np.copy(arr)  # Create a copy of the input array
-    np.random.seed(100)
-    a = np.random.randint(0, 100, arr.shape)
-    print(a)
-    np.random.seed(100)
-    mask = np.random.rand(*arr.shape)  # Create a mask of True/False values based on probability
-    print(mask)
-    # replaced_arr[arr == 1] = np.where(mask[arr == 1], 3, 1)  # Replace 1s with 3s where the mask is True
-    # replaced_arr[np.logical_and(arr == 1, mask)] = 3  # Replace 1s with 3s where the mask is True
-    # return replaced_arr
+#     Returns:
+#         numpy.ndarray: New array with replacements.
+#     """
+#     replaced_arr = np.copy(arr)  # Create a copy of the input array
+#     np.random.seed(100)
+#     a = np.random.randint(0, 100, arr.shape)
+#     print(a)
+#     np.random.seed(100)
+#     mask = np.random.rand(*arr.shape)  # Create a mask of True/False values based on probability
+#     print(mask)
+#     # replaced_arr[arr == 1] = np.where(mask[arr == 1], 3, 1)  # Replace 1s with 3s where the mask is True
+#     # replaced_arr[np.logical_and(arr == 1, mask)] = 3  # Replace 1s with 3s where the mask is True
+#     # return replaced_arr
 
-# Example usage:
-# Create a 2D numpy array
-original_array = np.array([[1, 0, 1, 1],
-                           [1, 1, 1, 1],
-                           [1, 1, 5, 1]])
+# # Example usage:
+# # Create a 2D numpy array
+# original_array = np.array([[1, 0, 1, 1],
+#                            [1, 1, 1, 1],
+#                            [1, 1, 5, 1]])
 
-# Probability of replacing 1s with 3s
-replace_probability = 0.3
+# # Probability of replacing 1s with 3s
+# replace_probability = 0.3
 
-# Perform random replacements
-modified_array = random_replace(original_array, replace_probability)
+# # Perform random replacements
+# modified_array = random_replace(original_array, replace_probability)
 
 # print("Original Array:")
 # print(original_array)
 # print("\nModified Array:")
 # print(modified_array)
 # print(modified_array[(0,1)])
+import nltk
+from nltk.corpus import wordnet
+from nltk.tokenize import word_tokenize
+from nltk.tag import pos_tag
+
+def get_word_meaning_in_phrase(phrase, word):
+    tokens = word_tokenize(phrase)
+    tagged_tokens = pos_tag(tokens)
+    
+    # 找到目标单词在短语中的词性标签
+    word_pos = None
+    for token, pos in tagged_tokens:
+        if token.lower() == word.lower():
+            word_pos = pos
+            break
+    
+    if word_pos:
+        # 根据词性标签在WordNet中找到对应的含义
+        synsets = wordnet.synsets(word, pos=word_pos[0].lower())
+        print(synsets)
+        if synsets:
+            # 获取短语中其他单词的同义词集合
+            other_words_synsets = []
+            for token, pos in tagged_tokens:
+                if token.lower() != word.lower():
+                    synsets2 = wordnet.synsets(token, pos=pos[0].lower())
+                    other_words_synsets.extend(synsets2)
+            
+            meanings = [synset.definition() for synset in synsets]
+            return meanings, synsets, other_words_synsets
+        else:
+            return None, None, None
+    else:
+        return None, None, None
+
+# 示例短语和目标单词
+phrase = "move forward"
+word = "move"
+
+# 获取目标单词在短语中的意思和相应的同义词集合
+meanings, synsets, other_words_synsets = get_word_meaning_in_phrase(phrase, word)
+if meanings:
+    print(f"Meanings of '{word}' in the context of the phrase:")
+    for i, meaning in enumerate(meanings, 1):
+        print(f"{i}. {meaning}")
+
+    # 显示与给定含义相关的同义词集合
+    for synset in synsets:
+        print(f"\nSynonyms for '{word}' in the context of the phrase (Synset: {synset.name()}):")
+        for lemma in synset.lemmas():
+            print(lemma.name())
+    
+    # 显示短语中其他单词的同义词集合
+    print("\nOther words' synonyms in the context of the phrase:")
+    for other_word_synsets in other_words_synsets:
+        for lemma in other_word_synsets.lemmas():
+            print(lemma.name())
+else:
+    print(f"No meanings found for '{word}' in the context of the phrase")
+
+
+# import nltk
+# from nltk.tokenize import word_tokenize
+
+def get_word_meaning_in_context(phrase, target_word):
+    tokens = word_tokenize(phrase)
+    tagged_tokens = nltk.pos_tag(tokens)  # 进行词性标注
+    print(tagged_tokens)
+    for token, tag in tagged_tokens:
+        if token == target_word:
+            return tag
+
+print("--------------------------------------")
+phrase = "play game"
+target_word = "play"
+meaning = get_word_meaning_in_context(phrase, target_word)
+print(f"Part of speech of '{target_word}' in '{phrase}': {meaning}")
+
+print(meaning)
