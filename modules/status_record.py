@@ -3,7 +3,7 @@ import numpy as np
 # from interactionSys import OutputGenerator
 
 class Items():
-    def __init__(self, item_name: str, possibleWeight = {}, use=None, weight = 1):
+    def __init__(self, item_name: str, possibleWeight = {}, weight = 1):
         """
             `item_name (str)`: name for player or gpt to recognized
             `possibleWeight (dict)`: possibility of showing up in different location, \
@@ -16,7 +16,6 @@ class Items():
         # self.category = category
         
         self.possibleWeight = possibleWeight
-        self.use = use
         self.weight = weight
         
 class Food(Items):
@@ -27,7 +26,7 @@ class Food(Items):
                 making consume this food
             `eatable (bool)`: Whether this food is safe for eat
         """
-        super().__init__(item_name, possibleWeight, use, weight)
+        super().__init__(item_name, possibleWeight, weight)
         
         self.item_energy_recovery = item_energy_recovery
         # self.eatable = eatable
@@ -36,79 +35,76 @@ class Food(Items):
         self.thirst = thirst
         
 class Tool(Items):
-    def __init__(self, item_name: str, possibleWeight=dict(), use=None, weight=1, \
+    def __init__(self, item_name: str, possibleWeight=dict(), weight=1, \
         durability = 1):
         """
             `durability (int)`: the turns number this tool can be used
         """
-        super().__init__(item_name, possibleWeight, use, weight)
+        super().__init__(item_name, possibleWeight, weight)
         
         self.durability = durability
         
 class LandscapeFeature(Items):
-    def __init__(self, item_name: str, possibleWeight=dict(), use=None, weight=2**10, \
+    def __init__(self, item_name: str, possibleWeight=dict(), weight=2**10, \
         item_energy_recovery = 0, eatable=False):
-        super().__init__(item_name, possibleWeight, use, weight)
+        super().__init__(item_name, possibleWeight, weight)
         
         self.item_energy_recovery = item_energy_recovery
         self.eatable = eatable
         
 class EnvironmentElement(Items):
-    def __init__(self, item_name: str, possibleWeight=dict(), use=None, weight=2**10, \
+    def __init__(self, item_name: str, possibleWeight=dict(), weight=2**10, \
         item_energy_recovery = 0, eatable=False):
-        super().__init__(item_name, possibleWeight, use, weight)
+        super().__init__(item_name, possibleWeight, weight)
         
         self.item_energy_recovery = item_energy_recovery
         self.eatable = eatable
         
 class Transportation(Items):
-    def __init__(self, item_name: str, possibleWeight=dict(), use=None, weight=2**10, \
+    def __init__(self, item_name: str, possibleWeight=dict(), weight=2**10, \
         suitablePlace = set(), APReduce = 1):
         """
             `suitablePlace (set)`: the place this transportation can be rod
             `APReduce (int)`: to what precentage of action point would be reduce \
                 when moving on a place, from 0 to 1
         """
-        super().__init__(item_name, possibleWeight, use, weight)
+        super().__init__(item_name, possibleWeight, weight)
         
         self.suitablePlace = suitablePlace
         self.APReduce = APReduce
         
 class Weapon(Items):
-    def __init__(self, item_name: str, possibleWeight=dict(), use=None, weight=1, \
+    def __init__(self, item_name: str, possibleWeight=dict(), weight=1, \
         attack = 0, durability = 1):
         """
             `durability (int)`: the turns number this tool can be used
             `attack (int)`: the hp value would reduce on target when player use this weapon
         """
-        super().__init__(item_name, possibleWeight, use, weight)
+        super().__init__(item_name, possibleWeight, weight)
         
         self.durability = durability
         self.attack = attack
         
 
 class Container(Items):
-    def __init__(self, item_name: str, possibleWeight=dict(), use=None, weight=1, \
+    def __init__(self, item_name: str, possibleWeight=dict(), weight=1, \
         capacity = 1):
         """
             `capacity (int)`: the turn number the liquide inside can be used
         """
-        super().__init__(item_name, possibleWeight, use, weight)
+        super().__init__(item_name, possibleWeight, weight)
         
         self.capacity = capacity
 
 
 class Events():
     # TODO Change event description format
-    def __init__(self, eventName: str, eventType: str, triggered_reason: str, \
-        possible_reward: list, possible_penalty: list, time_limit: int, description: str) -> None:
+    def __init__(self, eventName: str, eventType: str, time_limit: int, \
+        description: str) -> None:
         
         self.eventName = eventName
         self.eventType = eventType
         # self.succeedCondition = succeedCondition
-        self.triggered_reason = triggered_reason
-        self.possible_reward = possible_reward
-        self.possible_penalty = possible_penalty
         self.time_limit = time_limit
         
         self.description = description
@@ -121,6 +117,14 @@ class Events():
         self.triggered_time = 0
         # self.gpt_required = gpt_required
         
+class PassivityEvents(Events):
+    def __init__(self, eventName: str, eventType: str, triggered_reason: str, \
+        possible_reward: list, possible_penalty: list, time_limit: int, description: str) -> None:
+        super().__init__(eventName, eventType, time_limit, description)
+        
+        self.triggered_reason = triggered_reason
+        self.possible_reward = possible_reward
+        self.possible_penalty = possible_penalty
 
 class Actions():
     def __init__(self, actionName: str, command_executed: list[tuple]) -> None:

@@ -153,7 +153,7 @@ item, without any explaination and description."
         locationList["Current location"].description = gpt_response
     
     
-    def eventDescription(self, event: Events) -> None:
+    def eventDescription(self, event: PassivityEvents) -> None:
         inputDictionary = {"event type": event.eventType, "triggered reason": event.triggered_reason, \
             "Current location": event.current_location, "Current action": event.currentAction, \
                 "Tool(s) assist with moving": event.moving_tool, "player current status": event.play_current_status, \
@@ -175,7 +175,7 @@ item, without any explaination and description."
 
         # return result
         
-    def eventDevelopment(self, event: Events) -> dict:
+    def eventDevelopment(self, event: PassivityEvents) -> dict:
         # TODO
         inputDictionary = {"event_name": event.eventName, "event type": event.eventType, \
             "triggered reason": event.triggered_reason, "player current status": event.play_current_status,\

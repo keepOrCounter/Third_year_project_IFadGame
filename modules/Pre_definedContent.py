@@ -1,6 +1,6 @@
 from status_record import Player_status, Map_information, globalInfo, Items, Events, \
     Actions, Terrain_type, LandscapeFeature, EnvironmentElement, Tool, Food, \
-        Transportation, Weapon, Container
+        Transportation, Weapon, Container, PassivityEvents
 import random
 import copy
 import numpy as np
@@ -344,18 +344,18 @@ class DefininedSys(): #
         # ]
         
         # self.__def_events = [
-        #     Events("init_reward", [(preDefinedCommands.equalTo, (player.get_currentLocation(), (0,0)))], \
+        #     PassivityEvents("init_reward", [(preDefinedCommands.equalTo, (player.get_currentLocation(), (0,0)))], \
         #         [(preDefinedCommands.add_items, (None, random.choice, (self.__def_items, )))])
         # ]
         
         self.__pre_def_events_frameWork = {
-            "survival crisis": {"action point": Events("", "survival crisis", \
+            "survival crisis": {"action point": PassivityEvents("", "survival crisis", \
                 "low action point", ["increase action point", "increase maximum action point"], \
                     ["decrease action point", "decrease maximum action point"], -1, "")}
         }
         
         self.__pre_def_events = {
-            "survival crisis": {"action point": Events("Exhausted","survival crisis", \
+            "survival crisis": {"action point": PassivityEvents("Exhausted","survival crisis", \
                 "low action point in anywhere", ["increase action point", \
                     "increase maximum action point"], ["decrease action point", \
                     "decrease maximum action point"], 3, "I'm so tired, I need have a rest!")}

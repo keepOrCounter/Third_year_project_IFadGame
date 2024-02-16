@@ -372,21 +372,36 @@ else:
     print(f"No meanings found for '{word}' in the context of the phrase")
 
 
-# import nltk
-# from nltk.tokenize import word_tokenize
+# # import nltk
+# # from nltk.tokenize import word_tokenize
 
-def get_word_meaning_in_context(phrase, target_word):
-    tokens = word_tokenize(phrase)
-    tagged_tokens = nltk.pos_tag(tokens)  # 进行词性标注
-    print(tagged_tokens)
-    for token, tag in tagged_tokens:
-        if token == target_word:
-            return tag
+# def get_word_meaning_in_context(phrase, target_word):
+#     tokens = word_tokenize(phrase)
+#     tagged_tokens = nltk.pos_tag(tokens)  # 进行词性标注
+#     print(tagged_tokens)
+#     for token, tag in tagged_tokens:
+#         if token == target_word:
+#             return tag
 
-print("--------------------------------------")
-phrase = "play game"
-target_word = "play"
-meaning = get_word_meaning_in_context(phrase, target_word)
-print(f"Part of speech of '{target_word}' in '{phrase}': {meaning}")
+# print("--------------------------------------")
+# phrase = "play game"
+# target_word = "play"
+# meaning = get_word_meaning_in_context(phrase, target_word)
+# print(f"Part of speech of '{target_word}' in '{phrase}': {meaning}")
 
-print(meaning)
+# print(meaning)
+import nltk
+import time
+# import sys
+from os.path import expanduser
+begin = time.time()
+home = expanduser("~")
+from nltk.tag.hunpos import HunposTagger
+_path_to_bin = home + '\\hunpos-1.0-win\\hunpos-tag.exe'
+_path_to_model = home + '\\hunpos-1.0-win\\english.model'
+ht = HunposTagger(path_to_model=_path_to_model, path_to_bin=_path_to_bin)
+text = "move forward"
+print(ht.tag(text.split()))
+print(time.time()-begin)
+ht.close()
+# sys.exit(0)
