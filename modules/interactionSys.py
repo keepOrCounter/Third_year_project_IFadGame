@@ -118,10 +118,38 @@ You stand at the end of a road before a small brick building. The dense forest s
 		"development description": "You decide to suck the wound, hoping to extract the poison. Unfortunately, your efforts prove in vain. The venom takes hold. Nausea and weakness grip you, making the journey ahead more challenging."
 }"""
     
-        self.__itemGenerateSystemRole = "You are an item generator for an RPG \
-game and need to generate items according to the input format and requirements. \
-Please note that the production of items must be logical. Please just generate \
-item, without any explaination and description."
+        self.__foodGenerateSystemRole = """You are an item generator for an RPG game and need to generate some food according to the json format and following requirements. Here is the reqirement form:
+{
+	"name": <name of the food>,
+	"category": "food",
+	"appear_possibility": <the possibility of this food can be picked up(if the food is human processed, please set all the possibility into 0 or 1 like the bread in following examples): sea, land, forest and beach, in dictionary form, each possibility is between 0-20>,
+	"weight": <The weight of the food, player can take totally 20 units weight items>,
+	"item_energy_recovery": <how many action point player can recovery after eat this food>,
+	"edible": <true or false, whether food is edible, the food like "rotten apple" or "raw kidney bean" are not edible>,
+	"freshness": <How many turns the food can be store in general case>,
+	"thirst": <the sense of thirst player will change after eat this food>
+}
+Please note that the production of food must be logical. Here are some expected results:
+{
+	"name": "apple",
+	"category": "food",
+	"appear_possibility": {"sea": 0, "land": 1, "forest": 10, "beach": 0},
+	"weight": 2,
+	"item_energy_recovery": 5,
+	"edible": true,
+	"freshness": 72,
+	"thirst": 5
+},
+{
+	"name": "bread",
+	"category": "food",
+	"appear_possibility": {"sea": 0, "land": 0, "forest": 0, "beach": 0},
+	"weight": 1,
+	"item_energy_recovery": 25,
+	"edible": true,
+	"freshness": 50,
+	"thirst": -10
+}"""
     
     
     def locationDescription(self, locationList: dict[str, Location]) -> None:
@@ -197,8 +225,18 @@ item, without any explaination and description."
         # print(result)
         return result
     
-    def itemsGenerate(self):
-        pass
+    def foodGenerate(self) -> Food:
+        inquiry = "Please generate a food please."
+        gpt_response = self.__gptAPI.inquiry(inquiry, self.__foodGenerateSystemRole)
+        self.__OuterData.inquery_response_log_recorder(self.__eventDevelopmentSysRole, inquiry, gpt_response)
+        
+        result = json.loads(gpt_response, strict=False)
+        print("=======================================\n")
+        print(result)
+        foodGenerated = Food(result["name"], result["appear_possibility"], result["weight"], \
+            result["item_energy_recovery"], result["edible"], result["freshness"], result["thirst"])
+        
+        return foodGenerated
     
 class InputTranslator():
     def __init__(self, gptAPI: Gpt3, playerStatus: Player_status, mapInfo: Map_information, \

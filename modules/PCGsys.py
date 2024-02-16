@@ -481,7 +481,7 @@ if __name__ == "__main__":
     # test.debug(5, 4)
     # test = objectsGenerator(DefininedSys())
     # test.objectGeneration(1, 6)
-    player_info = Player_status(currentLocation = [0, 20])
+    player_info = Player_status(currentLocation = [0, 0])
     map_record = Map_information(current_area_type = 1, map_size=(20, 20)) # land type
     worldStatus = globalInfo()
     

@@ -280,7 +280,7 @@ class DefininedSys(): #
             # Items("Edible Plants", 10, "Items"),
             # Items("firewood", {"sea": 0, "land": 10, "forest": 10, "beach": 2}, weight = 4),
             LandscapeFeature("rocks", {"sea": 10, "land": 12, "forest": 12, "beach": 10}, \
-                item_energy_recovery = 10, eatable = True, freshness = -1), 
+                item_energy_recovery = 10, eatable = True, freshness = 72), 
             Tool("weapon crafting bench", {"sea": 0, "land": 5, "forest": 5, "beach": 1}, \
                 weight = 6, durability = 10),
             # Food("fish", {"sea": 18, "land": 1, "forest": 1, "beach": 10}, weight = 2, \
@@ -291,34 +291,34 @@ class DefininedSys(): #
             Transportation("boat", {"sea": 2, "land": 0, "forest": 0, "beach": 8}, \
                 suitablePlace = {"sea"}, APReduce = 0.5),
             LandscapeFeature("grass", {"sea": 0, "land": 12, "forest": 15, "beach": 0}, \
-                item_energy_recovery = 2, eatable = False),
+                item_energy_recovery = 2, eatable = False, freshness = 20),
             # Items("aloe vera", 5, "landscape features"),
             LandscapeFeature("aloe vera", {"sea": 0, "land": 12, "forest": 5, "beach": 4}, \
-                item_energy_recovery = 2, eatable = True),
+                item_energy_recovery = 2, eatable = True, freshness = 20),
             #Food
             #Food("", {"sea": , "land": , "forest": , "beach": }, weight = , \
             #    item_energy_recovery = , state = , freshness = , satiety = , thirst = ),
             #Food state: 0: inedible, 1: raw, 2: edible, 3: rot
             Food("bread", {"sea": 0, "land": 0, "forest": 0, "beach": 0}, weight = 1, \
-                item_energy_recovery = 15, state = 2, freshness = 72, satiety = 30, thirst = -20),
+                item_energy_recovery = 15, eatable = True, freshness = 20, thirst = -20),
             Food("raw fish", {"sea": 15, "land": 0, "forest": 0, "beach": 1}, weight = 2, \
-                item_energy_recovery = 5, state = 1, freshness = 24, satiety = 15, thirst = 20),
+                item_energy_recovery = 5, eatable = False, freshness = 24, thirst = 20),
             Food("grilled fish", {"sea": 0, "land": 0, "forest": 0, "beach": 0}, weight = 2, \
-                item_energy_recovery = 15, state = 2, freshness = 24, satiety = 15, thirst = 10),
+                item_energy_recovery = 15, eatable = True, freshness = 24, thirst = 10),
             Food("berry", {"sea": 0, "land": 5, "forest": 10, "beach": 0}, weight = 1, \
-                item_energy_recovery = 5, state = 2, freshness = 72, satiety = 5, thirst = 10),
+                item_energy_recovery = 5, eatable = True, freshness = 18, thirst = 10),
             Food("potato", {"sea": 0, "land": 5, "forest": 2, "beach": 0}, weight = 1, \
-                item_energy_recovery = 10, state = 1, freshness = 120, satiety = 10, thirst = -5),
+                item_energy_recovery = 10, eatable = False, freshness = 50, thirst = -5),
             Food("grilled potato", {"sea": 0, "land": 0, "forest": 0, "beach": 0}, weight = 1, \
-                item_energy_recovery = 10, state = 2, freshness = 72, satiety = 10, thirst = -10),
+                item_energy_recovery = 10, eatable = True, freshness = 72, thirst = -10),
             Food("raw venison", {"sea": 0, "land": 1, "forest": 2, "beach": 0}, weight = 5, \
-                item_energy_recovery = 20, state = 1, freshness = 36, satiety = 80, thirst = 50),
+                item_energy_recovery = 20, eatable = False, freshness = 19, thirst = 50),
             Food("grilled venison", {"sea": 0, "land": 0, "forest": 0, "beach": 0}, weight = 5, \
-                item_energy_recovery = 30, state = 2, freshness = 48, satiety = 80, thirst = 20),
+                item_energy_recovery = 30, eatable = True, freshness = 29, thirst = 20),
             Food("vegetable soup", {"sea": 0, "land": 0, "forest": 0, "beach": 0}, weight = 5, \
-                item_energy_recovery = 30, state = 2, freshness = 36, satiety = 30, thirst = 50),
+                item_energy_recovery = 30, eatable = True, freshness = 15, thirst = 50),
             Food("stew", {"sea": 0, "land": 0, "forest": 0, "beach": 0}, weight = 10, \
-                item_energy_recovery = 50, state = 2, freshness = 36, satiety = 100, thirst = 30),
+                item_energy_recovery = 50, eatable = True, freshness = 15, thirst = 30),
 
             #Item
             #Item("", {"sea": , "land": , "forest": , "beach": }, weight = ),

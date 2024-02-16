@@ -8,7 +8,6 @@ class Items():
             `item_name (str)`: name for player or gpt to recognized
             `possibleWeight (dict)`: possibility of showing up in different location, \
                 from 0 to 20
-            `use (method)`: command should be called after use this item
             `weight (int)`: the weight of this item, from 1 to infinite, initial player \
                 could carry 20 weight of items
         """
@@ -19,8 +18,8 @@ class Items():
         self.weight = weight
         
 class Food(Items):
-    def __init__(self, item_name: str, possibleWeight: dict[str, int], use, weight : int, \
-        item_energy_recovery: int, state = 0, freshness = -1, thirst = 0):
+    def __init__(self, item_name: str, possibleWeight: dict[str, int], weight : int, \
+        item_energy_recovery: int, eatable = True, freshness = -1, thirst = 0):
         """
             `item_energy_recovery (int)`: the amount of action point player can recovery when \
                 making consume this food
@@ -29,8 +28,8 @@ class Food(Items):
         super().__init__(item_name, possibleWeight, weight)
         
         self.item_energy_recovery = item_energy_recovery
-        # self.eatable = eatable
-        self.state = state
+        self.eatable = eatable
+        # self.state = state
         self.freshness = freshness
         self.thirst = thirst
         
@@ -46,11 +45,12 @@ class Tool(Items):
         
 class LandscapeFeature(Items):
     def __init__(self, item_name: str, possibleWeight=dict(), weight=2**10, \
-        item_energy_recovery = 0, eatable=False):
+        item_energy_recovery = 0, eatable=False, freshness = -1):
         super().__init__(item_name, possibleWeight, weight)
         
         self.item_energy_recovery = item_energy_recovery
         self.eatable = eatable
+        self.freshness = freshness
         
 class EnvironmentElement(Items):
     def __init__(self, item_name: str, possibleWeight=dict(), weight=2**10, \
