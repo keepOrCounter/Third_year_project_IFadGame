@@ -321,12 +321,15 @@ class objectsGenerator():
 class eventGenerator():
     def __init__(self, defininedContent: DefininedSys, player : Player_status, \
         map_info: Map_information, currentEvents: EventsTriggered, \
-            descriptionGenerator: OutputGenerator) -> None:
+            descriptionGenerator: OutputGenerator, worldStatus) -> None:
         self.__defininedContent = defininedContent
         self.__player = player
         self.__map_info = map_info
         self.__currentEvents = currentEvents
         self.__descriptionGenerator = descriptionGenerator
+        self.__worldStatus = worldStatus
+        
+        self.__currentEvents.UnTriggered_passivity_events = copy.deepcopy(self.__defininedContent.get_events_frameWork()["survival crisis"])
         
     def eventGeneration(self) -> list[Events]:
         eventList = self.__defininedContent.get_events()
@@ -334,64 +337,81 @@ class eventGenerator():
         
         return generateResult
     
+    
     def event_triger(self) -> Events:
         triggered_event: Events = None
-        if self.__player.get_action_point() < 40 and self.__currentEvents.triggeredType["survival crisis"]["action point"]:
-            self.__currentEvents.triggeredType["survival crisis"]["action point"] = False
-            triggered_event = copy.deepcopy(self.__defininedContent.get_events_frameWork()["survival crisis"]["action point"])
-            
-            triggered_event.current_location = self.__map_info.currentLocation.location_name
-            player_action = self.__player.get_currentAction()
-            if player_action == None:
-                triggered_event.currentAction = "None"
-            else:
-                triggered_event.currentAction = player_action.actionName
-            
-            state = self.__player.get_buffs()
-            if len(state) == 0:
-                state = "normal"
-            triggered_event.play_current_status = state
-            triggered_event.description = self.__map_info.currentLocation.description
+        passivity_eventList = self.__currentEvents.UnTriggered_passivity_events
+        for x in range(len(passivity_eventList)):
+            if passivity_eventList[x].triggered_condition(self.__player, self.__map_info, \
+                self.__currentEvents , self.__worldStatus):
+            # if self.__player.get_action_point() < 40 and \
+            #     self.__currentEvents.triggeredType["survival crisis"]["action point"]:
 
-        if self.__player.get_action_point() >= 40:
-            self.__currentEvents.triggeredType["survival crisis"]["action point"] = True
+                # passivity_eventList[x].triggered = True
+                triggered_event = copy.deepcopy(passivity_eventList[x])
+                self.__currentEvents.eventsHappening.append(passivity_eventList.pop(x))
+
+                triggered_event.current_location = self.__map_info.currentLocation.location_name
+                player_action = self.__player.get_currentAction()
+                if player_action == None:
+                    triggered_event.currentAction = "None"
+                else:
+                    triggered_event.currentAction = player_action.actionName
+
+                state = self.__player.get_buffs()
+                if len(state) == 0:
+                    state = "normal"
+                triggered_event.play_current_status = state
+                triggered_event.description = self.__map_info.currentLocation.description
+        counter = 0
+        triggeredList = self.__currentEvents.eventsTriggered
+        while counter < len(triggeredList):
+            if triggeredList[counter].eventType == "survival crisis" and not \
+                triggeredList[counter].triggered_condition(self.__player, self.__map_info, \
+                self.__currentEvents , self.__worldStatus):
+        # if self.__player.get_action_point() >= 40:
+                passivity_eventList.append(triggeredList.pop(counter))
+                counter -= 1
+            else:
+                pass
+            counter += 1
             
-        if triggered_event != None:
-            self.__currentEvents.eventsTriggered.append(triggered_event)
+        # if triggered_event != None:
+        #     self.__currentEvents.eventsHappening.append(triggered_event)
         return triggered_event
     
     def event_handler(self):
         """
         Please call this every turn
         """
-        self.__currentEvents.eventsTriggered
+        triggeredList = self.__currentEvents.eventsHappening
         x = 0
-        while x < len(self.__currentEvents.eventsTriggered):
-            self.__currentEvents.eventsTriggered[x].triggered_time += 1
+        while x < len(triggeredList):
+            triggeredList[x].triggered_time += 1
             player_action = self.__player.get_currentAction()
             if player_action == None:
-                self.__currentEvents.eventsTriggered[x].currentAction = "None"
+                triggeredList[x].currentAction = "None"
             else:
-                self.__currentEvents.eventsTriggered[x].currentAction = player_action.actionName
+                triggeredList[x].currentAction = player_action.actionName
         
-            result = self.__descriptionGenerator.eventDevelopment(self.__currentEvents.eventsTriggered[x])
+            result = self.__descriptionGenerator.eventDevelopment(triggeredList[x])
             
             print(result["development description"])
                 
             for y in range(len(result["reward"])):
-                strCommand = self.__currentEvents.eventsTriggered[x].possible_reward[result["reward"][y]]
+                strCommand = triggeredList[x].possible_reward[result["reward"][y]]
                 
                 func, arg = self.__defininedContent.get_eventCommandMap()[strCommand]
                 self.__defininedContent.get_commandTranslate()[func](arg)
                 
             for y in range(len(result["penalty"])):
-                strCommand = self.__currentEvents.eventsTriggered[x].possible_penalty[result["penalty"][y]]
+                strCommand = triggeredList[x].possible_penalty[result["penalty"][y]]
                 
                 func, arg = self.__defininedContent.get_eventCommandMap()[strCommand]
                 self.__defininedContent.get_commandTranslate()[func](arg)
             
             if result["fail"] == True or result["successful"] == True:
-                self.__currentEvents.eventsTriggered.pop(x)
+                self.__currentEvents.eventsTriggered.append(triggeredList.pop(x))
                 x -= 1
                 
             x += 1
@@ -400,15 +420,16 @@ class eventGenerator():
 class PCGController():
     def __init__(self, defininedContent: DefininedSys, player : Player_status, \
         map_info: Map_information, descriptionGenerator: OutputGenerator, \
-            eventController: EventsTriggered) -> None:
+            eventController: EventsTriggered, worldStatus: globalInfo) -> None:
         self.__mapPCG = MapGenerator(player, map_info, defininedContent)
         self.__objectsPCG = objectsGenerator(defininedContent)
         self.__eventPCG = eventGenerator(defininedContent, player, map_info, eventController, \
-            descriptionGenerator)
+            descriptionGenerator, worldStatus)
         self.__player = player
         self.__map_info = map_info
         self.__descriptionGenerator = descriptionGenerator
         self.__eventController = eventController
+        self.__worldStatus = worldStatus
         
         self.__first_turn = True
         

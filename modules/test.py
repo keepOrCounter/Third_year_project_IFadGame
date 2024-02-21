@@ -311,65 +311,65 @@
 # print("\nModified Array:")
 # print(modified_array)
 # print(modified_array[(0,1)])
-import nltk
-from nltk.corpus import wordnet
-from nltk.tokenize import word_tokenize
-from nltk.tag import pos_tag
+# import nltk
+# from nltk.corpus import wordnet
+# from nltk.tokenize import word_tokenize
+# from nltk.tag import pos_tag
 
-def get_word_meaning_in_phrase(phrase, word):
-    tokens = word_tokenize(phrase)
-    tagged_tokens = pos_tag(tokens)
+# def get_word_meaning_in_phrase(phrase, word):
+#     tokens = word_tokenize(phrase)
+#     tagged_tokens = pos_tag(tokens)
     
-    # 找到目标单词在短语中的词性标签
-    word_pos = None
-    for token, pos in tagged_tokens:
-        if token.lower() == word.lower():
-            word_pos = pos
-            break
+#     # 找到目标单词在短语中的词性标签
+#     word_pos = None
+#     for token, pos in tagged_tokens:
+#         if token.lower() == word.lower():
+#             word_pos = pos
+#             break
     
-    if word_pos:
-        # 根据词性标签在WordNet中找到对应的含义
-        synsets = wordnet.synsets(word, pos=word_pos[0].lower())
-        print(synsets)
-        if synsets:
-            # 获取短语中其他单词的同义词集合
-            other_words_synsets = []
-            for token, pos in tagged_tokens:
-                if token.lower() != word.lower():
-                    synsets2 = wordnet.synsets(token, pos=pos[0].lower())
-                    other_words_synsets.extend(synsets2)
+#     if word_pos:
+#         # 根据词性标签在WordNet中找到对应的含义
+#         synsets = wordnet.synsets(word, pos=word_pos[0].lower())
+#         print(synsets)
+#         if synsets:
+#             # 获取短语中其他单词的同义词集合
+#             other_words_synsets = []
+#             for token, pos in tagged_tokens:
+#                 if token.lower() != word.lower():
+#                     synsets2 = wordnet.synsets(token, pos=pos[0].lower())
+#                     other_words_synsets.extend(synsets2)
             
-            meanings = [synset.definition() for synset in synsets]
-            return meanings, synsets, other_words_synsets
-        else:
-            return None, None, None
-    else:
-        return None, None, None
+#             meanings = [synset.definition() for synset in synsets]
+#             return meanings, synsets, other_words_synsets
+#         else:
+#             return None, None, None
+#     else:
+#         return None, None, None
 
-# 示例短语和目标单词
-phrase = "move forward"
-word = "move"
+# # 示例短语和目标单词
+# phrase = "move forward"
+# word = "move"
 
-# 获取目标单词在短语中的意思和相应的同义词集合
-meanings, synsets, other_words_synsets = get_word_meaning_in_phrase(phrase, word)
-if meanings:
-    print(f"Meanings of '{word}' in the context of the phrase:")
-    for i, meaning in enumerate(meanings, 1):
-        print(f"{i}. {meaning}")
+# # 获取目标单词在短语中的意思和相应的同义词集合
+# meanings, synsets, other_words_synsets = get_word_meaning_in_phrase(phrase, word)
+# if meanings:
+#     print(f"Meanings of '{word}' in the context of the phrase:")
+#     for i, meaning in enumerate(meanings, 1):
+#         print(f"{i}. {meaning}")
 
-    # 显示与给定含义相关的同义词集合
-    for synset in synsets:
-        print(f"\nSynonyms for '{word}' in the context of the phrase (Synset: {synset.name()}):")
-        for lemma in synset.lemmas():
-            print(lemma.name())
+#     # 显示与给定含义相关的同义词集合
+#     for synset in synsets:
+#         print(f"\nSynonyms for '{word}' in the context of the phrase (Synset: {synset.name()}):")
+#         for lemma in synset.lemmas():
+#             print(lemma.name())
     
-    # 显示短语中其他单词的同义词集合
-    print("\nOther words' synonyms in the context of the phrase:")
-    for other_word_synsets in other_words_synsets:
-        for lemma in other_word_synsets.lemmas():
-            print(lemma.name())
-else:
-    print(f"No meanings found for '{word}' in the context of the phrase")
+#     # 显示短语中其他单词的同义词集合
+#     print("\nOther words' synonyms in the context of the phrase:")
+#     for other_word_synsets in other_words_synsets:
+#         for lemma in other_word_synsets.lemmas():
+#             print(lemma.name())
+# else:
+#     print(f"No meanings found for '{word}' in the context of the phrase")
 
 
 # # import nltk
@@ -390,18 +390,45 @@ else:
 # print(f"Part of speech of '{target_word}' in '{phrase}': {meaning}")
 
 # print(meaning)
-import nltk
-import time
-# import sys
-from os.path import expanduser
-begin = time.time()
-home = expanduser("~")
-from nltk.tag.hunpos import HunposTagger
-_path_to_bin = home + '\\hunpos-1.0-win\\hunpos-tag.exe'
-_path_to_model = home + '\\hunpos-1.0-win\\english.model'
-ht = HunposTagger(path_to_model=_path_to_model, path_to_bin=_path_to_bin)
-text = "move forward"
-print(ht.tag(text.split()))
-print(time.time()-begin)
-ht.close()
+# import nltk
+# import time
+# # import sys
+# from os.path import expanduser
+# begin = time.time()
+# home = expanduser("~")
+# from nltk.tag.hunpos import HunposTagger
+# _path_to_bin = home + '\\hunpos-1.0-win\\hunpos-tag.exe'
+# _path_to_model = home + '\\hunpos-1.0-win\\english.model'
+# ht = HunposTagger(path_to_model=_path_to_model, path_to_bin=_path_to_bin)
+# text = "move forward"
+# print(ht.tag(text.split()))
+# print(time.time()-begin)
+# ht.close()
+# print("----------------------------------")
 # sys.exit(0)
+# print("----------------------------------")
+class Location():
+    def __init__(self, location_name) -> None:
+        """`location_name:` name of current terrain\n
+            `objects:` items at current place\n
+            `description:` description generated by GPT, only for visited places, in this format: \n
+{
+    "location name": <location name>,
+    "Description of current and surrounding locations": <What is surrounding and where player at>,
+    "Landscape Features description": <Any specific Landscape>, 
+    "Items description": <Any items>
+}\n
+            `x\y: ` locations' coordinate
+        """
+        self.location_name = location_name
+
+t = Location(0)
+a = lambda player: player.location_name > 1
+
+print(a(t))
+t.location_name +=10
+print(a(t))
+a=[1,2,3]
+b = a
+b.pop()
+print(a)

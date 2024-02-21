@@ -63,7 +63,7 @@ if __name__ == "__main__":
     inputAdapter = InputTranslator(gpt, player_info, map_record, game_content)
     eventHandler = EventsTriggered()
     
-    pcgSystem = PCGController(game_content, player_info, map_record, descriptionGenerator, eventHandler)
+    pcgSystem = PCGController(game_content, player_info, map_record, descriptionGenerator, eventHandler, worldStatus)
     
     game_rule = rule_system(player_info, map_record, worldStatus)
     

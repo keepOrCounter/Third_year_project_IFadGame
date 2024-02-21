@@ -349,9 +349,16 @@ class DefininedSys(): #
         # ]
         
         self.__pre_def_events_frameWork = {
-            "survival crisis": {"action point": PassivityEvents("", "survival crisis", \
+            "survival crisis": [PassivityEvents("", "survival crisis", \
                 "low action point", ["increase action point", "increase maximum action point"], \
-                    ["decrease action point", "decrease maximum action point"], -1, "")}
+                    ["decrease action point", "decrease maximum action point"], -1, "", \
+                        lambda player, mapInfo, events, worldStatus: player.get_action_point() < 40), 
+                        PassivityEvents("", "survival crisis", \
+                "low health point", ["increase health point", "increase maximum health point"], \
+                    ["decrease health point", "decrease maximum health point"], -1, "", \
+                        lambda player, mapInfo, events, worldStatus: player.get_hp() < 40), 
+                        
+            ]
         }
         
         self.__pre_def_events = {

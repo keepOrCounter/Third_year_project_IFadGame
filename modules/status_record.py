@@ -115,16 +115,24 @@ class Events():
         self.play_current_status = ""
         
         self.triggered_time = 0
+        
+        # self.triggered = False
         # self.gpt_required = gpt_required
         
 class PassivityEvents(Events):
     def __init__(self, eventName: str, eventType: str, triggered_reason: str, \
-        possible_reward: list, possible_penalty: list, time_limit: int, description: str) -> None:
+        possible_reward: list, possible_penalty: list, time_limit: int, description: str, \
+            triggered_condition) -> None:
+        """
+        `triggered_condition`: a function that receive player, map information \
+            as argument and return boolen based on these information
+        """
         super().__init__(eventName, eventType, time_limit, description)
-        
         self.triggered_reason = triggered_reason
         self.possible_reward = possible_reward
         self.possible_penalty = possible_penalty
+        
+        self.triggered_condition = triggered_condition
 
 class Actions():
     def __init__(self, actionName: str, command_executed: list[tuple]) -> None:
@@ -329,11 +337,21 @@ class EventsTriggered():
     def __init__(self) -> None:
         """
         This class is used to record and process the effects caused by events
+        
+        Attribute:
+        `eventsHappening`: list of events are happening
+        `eventsTriggered`: waiting list of events just occured, events in this list \
+            would be push back to UnTriggered event list when their trigerred \
+                conditions are no longer met
+        `UnTriggered_passivity_events`: UnTriggered `PassivityEvents` list
         """
-        self.eventsTriggered: list[Events]= []
-        self.triggeredType = {
-            "survival crisis": {"action point": True}
-        }
+        self.eventsHappening: list[Events]= []
+        
+        self.eventsTriggered: list[Events]= [] # event happened once
+        self.UnTriggered_passivity_events : list[PassivityEvents]= []
+        # self.triggeredType = {
+        #     "survival crisis": {"action point": True, "health point": True}
+        # }
         # self.__descriptionGenerator = descriptionGenerator
         
     # def get_current_events(self) -> list[Events]:
