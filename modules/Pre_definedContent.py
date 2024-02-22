@@ -357,7 +357,10 @@ class DefininedSys(): #
                 "low health point", ["increase health point", "increase maximum health point"], \
                     ["decrease health point", "decrease maximum health point"], -1, "", \
                         lambda player, mapInfo, events, worldStatus: player.get_hp() < 40), 
-                        
+                        PassivityEvents("", "survival crisis", \
+                "low health point", ["increase health point", "increase maximum health point"], \
+                    ["decrease health point", "decrease maximum health point"], -1, "", \
+                        lambda player, mapInfo, events, worldStatus: player.get_hp() < 40)
             ]
         }
         

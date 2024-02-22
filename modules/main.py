@@ -11,9 +11,21 @@ class rule_system():
         self.__map_info = map_info
         self.__worldStatus = worldStatus
         
+    def buffHandler(self):
+        buffs = self.__player.get_buffs()
+        counter = 0
+        while counter < len(buffs):
+            buffs[counter].exe_function(*buffs[counter].exe_args)
+            buffs[counter].startTime += 1
+            if buffs[counter].timeLimit != -1 and buffs[counter].startTime >= buffs[counter].timeLimit:
+                buffs.pop(counter)
+                counter -= 1
+            counter += 1
+        
     def eachTurn_handler(self):
         """Need to be called each turn
         """
+        self.buffHandler()
         if not self.player_active():
             self.__player.set_hp(self.__player.get_hp() + self.__player.get_action_point())
             self.__player.set_action_point(0)

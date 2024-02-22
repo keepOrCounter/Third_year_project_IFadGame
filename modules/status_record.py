@@ -165,10 +165,13 @@ class Location():
 
 
 class Buff():
-    def __init__(self, buff_name: str, exe_function, exe_args: tuple) -> None:
+    def __init__(self, buff_name: str, exe_function, exe_args: tuple, timeLimit:int = 0) -> None:
         self.buff_name = buff_name
         self.exe_function = exe_function
         self.exe_args = exe_args
+        
+        self.timeLimit = timeLimit
+        self.startTime = 0
 
 
 class Terrain_type():
@@ -193,7 +196,7 @@ class Player_status():
     def __init__(self, currentLocation:list[int,int] = [0,0], items:dict[str, list[Items]] = dict(), \
         hp: int = 100, maximum_hp: int = 100, maximum_action_point: int = 100, \
             action_point: int = 100, currentAction: Actions = None, cash:int = 0, \
-                buff:list[Buff] = []) -> None:
+                buff:list[Buff] = [], thirst:int = 100, maximum_thirst:int = 100) -> None:
         """ `__currentLocation:` player coordinate [x,y]\n
             `items:` items in bag\n
             `action_point:` energy bar of player
@@ -209,6 +212,8 @@ class Player_status():
         self.__cash = cash
         self.__buff = buff
         self.__APrecovery = 10
+        self.__thirst = thirst
+        self.__maximum_thirst = maximum_thirst
     
     def get_currentLocation(self) -> tuple[int]:
         return (self.__currentLocation[0], self.__currentLocation[1])
@@ -277,6 +282,18 @@ class Player_status():
     
     def set_APrecovery(self, newAPrecovery: int) -> None:
         self.__APrecovery = newAPrecovery
+        
+    def get_thirst(self) -> int:
+        return self.__thirst
+    
+    def set_thirst(self, thirst: int) -> None:
+        self.__thirst = thirst
+        
+    def get_maximum_thirst(self) -> int:
+        return self.__maximum_thirst
+    
+    def set_maximum_thirst(self, maximum_thirst: int) -> None:
+        self.__maximum_thirst= maximum_thirst
 
         
 class Map_information():
