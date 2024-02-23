@@ -319,15 +319,23 @@ class objectsGenerator():
     def __init__(self, defininedContent: DefininedSys) -> None:
         self.__defininedContent = defininedContent
         
-    def objectGeneration(self, lowest_amount: int, highest_amount: int) -> list[Items]:
+    def objectGeneration(self, lowest_amount: int, highest_amount: int, terrian_type: str) -> list[Items]:
         """
         Args:
-            `lowest_amount` (int): lower bound of number of objects generated (includ end point)\n
-            `highest_amount` (int): upper bound of number of objects generated (includ end point)\n
+            `lowest_amount` (int): lower bound of number of objects generated \
+                (includ end point, other than definitely_Object, which will always generated)\n
+            `highest_amount` (int): upper bound of number of objects generated \
+                (includ end point, other than definitely_Object, which will always generated)\n
         """
-        objectList = self.__defininedContent.get_items()
-        generateResult = random.choices(objectList, k=random.randint(lowest_amount, highest_amount))
+        all_terrain = self.__defininedContent.get_terrain_type()
+        result = copy.deepcopy(all_terrain[terrian_type].definitely_Object)
+        objectList = all_terrain[terrian_type].possible_Object
+        weight = all_terrain[terrian_type].possible_Object_Weight
         
+        choice = np.random.choice(objectList, size=(random.randint(lowest_amount, highest_amount),), \
+            p=(np.divide(weight, np.sum(weight))))
+        # generateResult = random.choices(objectList, k=random.randint(lowest_amount, highest_amount))
+        generateResult = np.append(result, choice)
         return generateResult
 
 

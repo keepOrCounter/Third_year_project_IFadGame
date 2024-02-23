@@ -517,7 +517,27 @@ class DefininedSys(): #
                     extraArgs =  tuple(), allowedAppearUpon = [1], visualizedColor = [0, 255, 0])
             }
         
-        
+        for terrain in self.__terrain_type.keys():
+            # print("----------------------")
+            # print(terrain)
+            for item in self.__def_items:
+                if item.possibleWeight[terrain] >= 20:
+                    definitely_Object = self.__terrain_type[terrain].definitely_Object
+                    definitely_Object = np.append(definitely_Object, item)
+                    # print(definitely_Object[-1].item_name)
+                    # self.__terrain_type[terrain].definitely_Object.append(item)
+                elif item.possibleWeight[terrain] > 0:
+                    possible_Object = self.__terrain_type[terrain].possible_Object
+                    weight = self.__terrain_type[terrain].possible_Object_Weight
+                    possible_Object = np.append(possible_Object, item)
+                    weight = np.append(weight, item.possibleWeight[terrain])
+                    # print(weight[-1])
+                    # .append(item)
+                    # .append(item.possibleWeight[terrain])
+                # if len(self.__terrain_type[terrain].possible_Object)>0:
+                #     print(self.__terrain_type[terrain].possible_Object[-1].item_name)
+                #     print(self.__terrain_type[terrain].possible_Object_Weight[-1])
+            
     def get_items(self) -> list[Items]:
         return self.__def_items
     

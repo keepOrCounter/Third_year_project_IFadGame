@@ -65,7 +65,7 @@ if __name__ == "__main__":
     map_record = Map_information(current_area_type = 1, map_size=(20, 20)) # land type
     # mapPCG = MapGenerator(player_info, map_record)
     defined_command = Commands(player_info, map_record, worldStatus)
-    game_content = DefininedSys(defined_command)
+    game_content = DefininedSys(defined_command, map_record)
     # objectPCG = objectsGenerator(game_content)
     # event_Engage = eventGenerator(game_content)
     

@@ -187,9 +187,9 @@ class Terrain_type():
         self.allowedAppearUpon = allowedAppearUpon
         self.visualizedColor = visualizedColor
         
-        self.definitely_Object = list()
-        self.possible_Object = list()
-        self.possible_Object_Weight = list()
+        self.definitely_Object: np.ndarray[Items] = np.array([])
+        self.possible_Object: np.ndarray[Items] = np.array([])
+        self.possible_Object_Weight: np.ndarray[int] = np.array([]).astype(int)
 
 
 class Player_status():
