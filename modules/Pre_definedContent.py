@@ -229,12 +229,81 @@ class MapPcgRule():
             tranferP = 0
             
         tranferP = int(tranferP)
-        if cell!= 0 and cell != 2 and tranferP > pTable[cellT] and cell != -1:
+        if cell!= 0 and cell != 3 and tranferP > pTable[cellT] and cell != -1:
             # print(cell)
             cell = copy.copy(currentId)
             # print("Changed!")
         # else:
         #     cell = -1
+
+        return cell
+    
+    def random_map_update_desert(self, cell_grid: np.ndarray, cellT, time_step, \
+        death_limit = 4, birth_limit = 4, currentId = 0, seed: int= None):
+        
+        rows, cols = cell_grid.shape
+        cell = cell_grid[int(rows/2), int(cols/2)]
+        oneD = cell_grid.copy().flatten()
+        number_of_sea = np.where(oneD == 0)[0].shape[0]
+        number_of_target = np.where(oneD == currentId)[0].shape[0]
+        
+
+        if cell == 0:
+            number_of_sea -= 1
+        elif cell == currentId:
+            number_of_target -= 1
+
+        if number_of_target > birth_limit:
+            cell = copy.copy(currentId)
+            # print("Changed!")
+        elif cell == currentId and (number_of_target < death_limit or number_of_sea>0):
+            cell = -1
+        
+        if cell == 4 and number_of_sea <= 0:
+            cell = 1
+            # print("Changed!")
+        # else:
+        #     cell = -1
+
+        return cell
+    
+    
+    def random_map_update_highland_snowfield(self, cell_grid: np.ndarray, cellT, time_step, \
+        death_limit = 4, birth_limit = 4, currentId = 0, seed: int= None, possibility = 0):
+        
+        rows, cols = cell_grid.shape
+        cell = cell_grid[int(rows/2), int(cols/2)]
+        oneD = cell_grid.copy().flatten()
+        number_of_target = np.where(oneD == currentId)[0].shape[0]
+        number_of_origin = np.where(oneD == -1)[0].shape[0]
+        # print(cellT)
+        np.random.seed(seed)
+        pTable = np.random.randint(0, 50, self.__map.get_map_size())
+        # print(seed)
+        tranferP = possibility * 50
+
+        if cell == currentId:
+            number_of_target -= 1
+            if number_of_origin + number_of_target < 8 and tranferP <= pTable[cellT]:
+                cell = -1
+                # print(pTable)
+                # print(tranferP)
+
+        return cell
+    
+    def random_map_update_town(self, cell_grid: np.ndarray, cellT, time_step, \
+        death_limit = 4, birth_limit = 4, currentId = 0, seed: int= None):
+        
+        rows, cols = cell_grid.shape
+        cell = cell_grid[int(rows/2), int(cols/2)]
+        oneD = cell_grid.copy().flatten()
+        number_of_target = np.where(oneD == currentId)[0].shape[0]
+        number_of_other = np.where(oneD == -1)[0].shape[0]
+        # print(cellT)
+        if cell == currentId:
+            number_of_target -= 1
+            if number_of_target + number_of_other > 0:
+                cell = -1
 
         return cell
     
@@ -268,72 +337,92 @@ class DefininedSys(): #
         """
         self.__map_record = map_record
         self.__def_items = [
-            # Items("Campfire", 20, "Items"),
-            LandscapeFeature("stream", {"sea": 0, "land": 12, "forest": 15, "beach": 0}, \
-                item_energy_recovery = 10, eatable = True, freshness = -1), 
-            # Food("bread", {"sea": 0, "land": 7, "forest": 6, "beach": 2}, weight = 1, \
-            #     item_energy_recovery = 15, eatable = True, freshness = 72),
-            Tool("traps", {"sea": 0, "land": 8, "forest": 8, "beach": 2}),
-            # Items("first aid kit", 25, "Items"),
-            # Items("Toolkits", 15),
-            # Items("Maps", 5),
-            # Items("Edible Plants", 10, "Items"),
-            # Items("firewood", {"sea": 0, "land": 10, "forest": 10, "beach": 2}, weight = 4),
-            LandscapeFeature("rocks", {"sea": 10, "land": 12, "forest": 12, "beach": 10}, \
-                item_energy_recovery = 10, eatable = True, freshness = 72), 
-            Tool("weapon crafting bench", {"sea": 0, "land": 5, "forest": 5, "beach": 1}, \
-                weight = 6, durability = 10),
-            # Food("fish", {"sea": 18, "land": 1, "forest": 1, "beach": 10}, weight = 2, \
-            #     item_energy_recovery = 5, eatable = False, freshness = 24),
-            Tool("fish rod", {"sea": 4, "land": 1, "forest": 1, "beach": 6}),
-            Container("glass water bottle", {"sea": 2, "land": 1, "forest": 1, "beach": 3}, \
-                capacity = 5),
-            Transportation("boat", {"sea": 2, "land": 0, "forest": 0, "beach": 8}, \
-                suitablePlace = {"sea"}, APReduce = 0.5),
-            LandscapeFeature("grass", {"sea": 0, "land": 12, "forest": 15, "beach": 0}, \
-                item_energy_recovery = 2, eatable = False, freshness = 20),
-            # Items("aloe vera", 5, "landscape features"),
-            LandscapeFeature("aloe vera", {"sea": 0, "land": 12, "forest": 5, "beach": 4}, \
-                item_energy_recovery = 2, eatable = True, freshness = 20),
-            #Food
-            #Food("", {"sea": , "land": , "forest": , "beach": }, weight = , \
-            #    item_energy_recovery = , state = , freshness = , satiety = , thirst = ),
-            #Food state: 0: inedible, 1: raw, 2: edible, 3: rot
-            Food("bread", {"sea": 0, "land": 0, "forest": 0, "beach": 0}, weight = 1, \
-                item_energy_recovery = 15, eatable = True, freshness = 20, thirst = -20),
-            Food("raw fish", {"sea": 15, "land": 0, "forest": 0, "beach": 1}, weight = 2, \
-                item_energy_recovery = 5, eatable = False, freshness = 24, thirst = 20),
-            Food("grilled fish", {"sea": 0, "land": 0, "forest": 0, "beach": 0}, weight = 2, \
-                item_energy_recovery = 15, eatable = True, freshness = 24, thirst = 10),
-            Food("berry", {"sea": 0, "land": 5, "forest": 10, "beach": 0}, weight = 1, \
-                item_energy_recovery = 5, eatable = True, freshness = 18, thirst = 10),
-            Food("potato", {"sea": 0, "land": 5, "forest": 2, "beach": 0}, weight = 1, \
-                item_energy_recovery = 10, eatable = False, freshness = 50, thirst = -5),
-            Food("grilled potato", {"sea": 0, "land": 0, "forest": 0, "beach": 0}, weight = 1, \
-                item_energy_recovery = 10, eatable = True, freshness = 72, thirst = -10),
-            Food("raw venison", {"sea": 0, "land": 1, "forest": 2, "beach": 0}, weight = 5, \
-                item_energy_recovery = 20, eatable = False, freshness = 19, thirst = 50),
-            Food("grilled venison", {"sea": 0, "land": 0, "forest": 0, "beach": 0}, weight = 5, \
-                item_energy_recovery = 30, eatable = True, freshness = 29, thirst = 20),
-            Food("vegetable soup", {"sea": 0, "land": 0, "forest": 0, "beach": 0}, weight = 5, \
-                item_energy_recovery = 30, eatable = True, freshness = 15, thirst = 50),
-            Food("stew", {"sea": 0, "land": 0, "forest": 0, "beach": 0}, weight = 10, \
-                item_energy_recovery = 50, eatable = True, freshness = 15, thirst = 30),
-
-            #Item
-            #Item("", {"sea": , "land": , "forest": , "beach": }, weight = ),
-            Items("wood", {"sea": 1, "land": 3, "forest": 20, "beach": 1}, weight = 5),
-            Items("rock", {"sea": 50, "land": 4, "forest": 10, "beach": 5}, weight = 5),
-            Items("stick", {"sea": 0, "land": 1, "forest": 20, "beach": 0}, weight = 2),
-            Items("palm leave", {"sea": 1, "land": 0, "forest": 0, "beach": 20}, weight = 1),
-            Items("seed", {"sea": 1, "land": 10, "forest": 10, "beach": 1}, weight = 1),
-            Items("coal", {"sea": 0, "land": 0, "forest": 0, "beach": 0}, weight = 2),
-            Items("cloth", {"sea": 0, "land": 0, "forest": 0, "beach": 0}, weight = 1),
-            Items("glass bottle", {"sea": 0, "land": 0, "forest": 0, "beach": 0}, weight = 1),
-            Items("handful of sand", {"sea": 50, "land": 0, "forest": 0, "beach": 99}, weight = 1),
-            Items("a bottle of sand", {"sea": 0, "land": 0, "forest": 0, "beach": 0}, weight = 3),
-
+            # LandscapeFeature
+            LandscapeFeature("stream", {"sea": 0, "land": 12, "forest": 15, "beach": 0, \
+                "river": 8, "desert": 0, "mountain": 0, "highland snowfield": 0, "town": 0, "grassland": 0}, \
+                item_energy_recovery=10, eatable=True, freshness=-1), 
+            LandscapeFeature("rocks", {"sea": 10, "land": 12, "forest": 12, "beach": 10, \
+                "river": 8, "desert": 5, "mountain": 5, "highland snowfield": 0, "town": 0, "grassland": 0}, \
+                item_energy_recovery=10, eatable=True, freshness=72), 
+            LandscapeFeature("grass", {"sea": 0, "land": 12, "forest": 15, "beach": 0, \
+                "river": 8, "desert": 0, "mountain": 0, "highland snowfield": 0, "town": 0, "grassland": 12}, \
+                item_energy_recovery=2, eatable=False, freshness=20),
+            LandscapeFeature("aloe vera", {"sea": 0, "land": 12, "forest": 5, "beach": 4, \
+                "river": 2, "desert": 12, "mountain": 0, "highland snowfield": 0, "town": 0, "grassland": 0}, \
+                item_energy_recovery=2, eatable=True, freshness=20),
+            
+            # Tool
+            Tool("traps", {"sea": 0, "land": 8, "forest": 8, "beach": 2, "river": 6, \
+                "desert": 2, "mountain": 0, "highland snowfield": 0, "town": 0, "grassland": 0}),
+            Tool("weapon crafting bench", {"sea": 0, "land": 5, "forest": 5, "beach": 1, \
+                "river": 3, "desert": 0, "mountain": 0, "highland snowfield": 0, "town": 10, "grassland": 0}, \
+                weight=6, durability=10),
+            Tool("fish rod", {"sea": 4, "land": 1, "forest": 1, "beach": 6, "river": 6, \
+                "desert": 0, "mountain": 0, "highland snowfield": 0, "town": 0, "grassland": 0}),
+            
+            # Container
+            Container("glass water bottle", {"sea": 2, "land": 1, "forest": 1, "beach": 3, \
+                "river": 2, "desert": 1, "mountain": 0, "highland snowfield": 0, "town": 5, "grassland": 0}, \
+                capacity=5),
+            
+            # Transportation
+            Transportation("boat", {"sea": 2, "land": 0, "forest": 0, "beach": 8, "river": 5, \
+                "desert": 0, "mountain": 0, "highland snowfield": 0, "town": 5, "grassland": 0}, \
+                suitablePlace={"sea"}, APReduce=0.5),
+            
+            # Food
+            Food("bread", {"sea": 0, "land": 0, "forest": 0, "beach": 0, "river": 0, \
+                "desert": 0, "mountain": 0, "highland snowfield": 0, "town": 0, "grassland": 0}, weight=1, \
+                item_energy_recovery=15, eatable=True, freshness=20, thirst=-20),
+            Food("raw fish", {"sea": 15, "land": 0, "forest": 0, "beach": 1, "river": 12, \
+                "desert": 0, "mountain": 0, "highland snowfield": 0, "town": 0, "grassland": 0}, weight=2, \
+                item_energy_recovery=5, eatable=False, freshness=24, thirst=20),
+            Food("grilled fish", {"sea": 0, "land": 0, "forest": 0, "beach": 0, "river": 0, \
+                "desert": 0, "mountain": 0, "highland snowfield": 0, "town": 0, "grassland": 0}, weight=2, \
+                item_energy_recovery=15, eatable=True, freshness=24, thirst=10),
+            Food("berry", {"sea": 0, "land": 5, "forest": 10, "beach": 0, "river": 5, \
+                "desert": 0, "mountain": 0, "highland snowfield": 0, "town": 5, "grassland": 12}, weight=1, \
+                item_energy_recovery=5, eatable=True, freshness=18, thirst=10),
+            Food("potato", {"sea": 0, "land": 5, "forest": 2, "beach": 0, "river": 2, \
+                "desert": 12, "mountain": 0, "highland snowfield": 0, "town": 0, "grassland": 12}, weight=1, \
+                item_energy_recovery=10, eatable=False, freshness=50, thirst=-5),
+            Food("grilled potato", {"sea": 0, "land": 0, "forest": 0, "beach": 0, "river": 0, \
+                "desert": 0, "mountain": 0, "highland snowfield": 0, "town": 0, "grassland": 0}, weight=1, \
+                item_energy_recovery=10, eatable=True, freshness=72, thirst=-10),
+            Food("raw venison", {"sea": 0, "land": 1, "forest": 2, "beach": 0, "river": 2, \
+                "desert": 12, "mountain": 5, "highland snowfield": 5, "town": 0, "grassland": 15}, weight=5, \
+                item_energy_recovery=20, eatable=False, freshness=19, thirst=50),
+            Food("grilled venison", {"sea": 0, "land": 0, "forest": 0, "beach": 0, "river": 0, \
+                "desert": 0, "mountain": 0, "highland snowfield": 0, "town": 0, "grassland": 0}, weight=5, \
+                item_energy_recovery=30, eatable=True, freshness=29, thirst=20),
+            Food("vegetable soup", {"sea": 0, "land": 0, "forest": 0, "beach": 0, "river": 0, \
+                "desert": 0, "mountain": 0, "highland snowfield": 0, "town": 0, "grassland": 0}, weight=5, \
+                item_energy_recovery=30, eatable=True, freshness=15, thirst=50),
+            Food("stew", {"sea": 0, "land": 0, "forest": 0, "beach": 0, "river": 0, "desert": 0, \
+                "mountain": 0, "highland snowfield": 0, "town": 0, "grassland": 0}, weight=10, \
+                item_energy_recovery=50, eatable=True, freshness=15, thirst=30),
+            
+            # Item
+            Items("wood", {"sea": 1, "land": 3, "forest": 20, "beach": 1, "river": 3, "desert": 0, \
+                "mountain": 8, "highland snowfield": 5, "town": 0, "grassland": 15}, weight=5),
+            Items("rock", {"sea": 10, "land": 12, "forest": 12, "beach": 10, "river": 8, \
+                "desert": 5, "mountain": 15, "highland snowfield": 10, "town": 0, "grassland": 12}, weight=5),
+            Items("stick", {"sea": 0, "land": 1, "forest": 20, "beach": 0, "river": 2, "desert": 0, \
+                "mountain": 5, "highland snowfield": 5, "town": 0, "grassland": 15}, weight=2),
+            Items("palm leave", {"sea": 1, "land": 0, "forest": 0, "beach": 19, "river": 2, \
+                "desert": 0, "mountain": 0, "highland snowfield": 0, "town": 5, "grassland": 15}, weight=1),
+            Items("seed", {"sea": 1, "land": 10, "forest": 10, "beach": 1, "river": 3, "desert": 0, \
+                "mountain": 3, "highland snowfield": 0, "town": 8, "grassland": 15}, weight=1),
+            Items("coal", {"sea": 0, "land": 0, "forest": 0, "beach": 0, "river": 0, "desert": 0, \
+                "mountain": 0, "highland snowfield": 0, "town": 0, "grassland": 0}, weight=2),
+            Items("cloth", {"sea": 0, "land": 0, "forest": 0, "beach": 0, "river": 0, "desert": 0, \
+                "mountain": 0, "highland snowfield": 0, "town": 0, "grassland": 0}, weight=1),
+            Items("glass bottle", {"sea": 0, "land": 0, "forest": 0, "beach": 0, "river": 0, \
+                "desert": 0, "mountain": 0, "highland snowfield": 0, "town": 0, "grassland": 0}, weight=1),
+            Items("a bottle of sand", {"sea": 0, "land": 0, "forest": 0, "beach": 0, "river": 0, \
+                "desert": 0, "mountain": 0, "highland snowfield": 0, "town": 0, "grassland": 0}, weight=3),
         ]
+
         # """
         # fun1
         # """
@@ -364,12 +453,12 @@ class DefininedSys(): #
             ]
         }
         
-        self.__pre_def_events = {
-            "survival crisis": {"action point": PassivityEvents("Exhausted","survival crisis", \
-                "low action point in anywhere", ["increase action point", \
-                    "increase maximum action point"], ["decrease action point", \
-                    "decrease maximum action point"], 3, "I'm so tired, I need have a rest!")}
-        }
+        # self.__pre_def_events = {
+        #     "survival crisis": {"action point": PassivityEvents("Exhausted","survival crisis", \
+        #         "low action point in anywhere", ["increase action point", \
+        #             "increase maximum action point"], ["decrease action point", \
+        #             "decrease maximum action point"], 3, "I'm so tired, I need have a rest!")}
+        # }
         
         self.__def_actions = {
             "Move North": Actions("Move North", [(preDefinedCommands.move, ("North",))]),
@@ -398,61 +487,36 @@ class DefininedSys(): #
         self.__terrain_type = {
             "sea": Terrain_type(terrain_name = "sea", terrain_ID = 0, possibilityOfGenerate = 0.7, \
                 move_dLevel = 4, rules = mapRule.random_map_update_SIslands, extraArgs =  tuple(), \
-                    allowedAppearUpon = [], visualizedColor = [255, 0, 0]), 
+                    allowedAppearUpon = [], visualizedColor = [128, 0, 0]), 
             "land": Terrain_type(terrain_name = "land", terrain_ID = 1, possibilityOfGenerate = 0.5, \
                 move_dLevel = 1, rules = mapRule.random_map_update_SIslands, extraArgs =  tuple(), \
-                    allowedAppearUpon = [0], visualizedColor = [0, 255, 0]), 
-            "forest": Terrain_type(terrain_name = "forest", terrain_ID = 2, possibilityOfGenerate = 0.4, \
+                    allowedAppearUpon = [0], visualizedColor = [0, 0, 128]), 
+            "river": Terrain_type(terrain_name = "river", terrain_ID = 2, possibilityOfGenerate = 0, \
+                move_dLevel = 4, rules = None, extraArgs =  tuple(), \
+                    allowedAppearUpon = [0], visualizedColor = [255, 0, 0]),
+            "forest": Terrain_type(terrain_name = "forest", terrain_ID = 3, possibilityOfGenerate = 0.4, \
                 move_dLevel = 1, rules = mapRule.random_map_update_defult, extraArgs =  tuple(), \
                     allowedAppearUpon = [1], visualizedColor = [52, 137, 52]),
-            "beach": Terrain_type(terrain_name = "beach", terrain_ID = 3, possibilityOfGenerate = 0, \
+            "beach": Terrain_type(terrain_name = "beach", terrain_ID = 4, possibilityOfGenerate = 0, \
                 move_dLevel = 2, rules = mapRule.random_map_update_sand, extraArgs = (0.3,), \
-                    allowedAppearUpon = [1], visualizedColor = [0, 255, 255])
+                    allowedAppearUpon = [1], visualizedColor = [0, 255, 255]),
+            "desert": Terrain_type(terrain_name = "desert", terrain_ID = 5, possibilityOfGenerate = 0.3, \
+                move_dLevel = 3, rules = mapRule.random_map_update_desert, extraArgs = tuple(), \
+                    allowedAppearUpon = [1], visualizedColor = [175, 201, 237]), 
+            "mountain": Terrain_type(terrain_name = "mountain", terrain_ID = 6, possibilityOfGenerate = 0.3, \
+                move_dLevel = 4, rules = mapRule.random_map_update_defult, extraArgs =  tuple(), \
+                    allowedAppearUpon = [1, 3, 4, 5], visualizedColor = [32, 96, 174]),
+            "highland snowfield": Terrain_type(terrain_name = "highland snowfield", terrain_ID = 7, \
+                possibilityOfGenerate = 1, move_dLevel = 5, rules = mapRule.random_map_update_highland_snowfield, \
+                    extraArgs =  (0.2,), allowedAppearUpon = [6], visualizedColor = [255, 255, 255]),
+            "town": Terrain_type(terrain_name = "town", terrain_ID = 8, \
+                possibilityOfGenerate = 0.005, move_dLevel = 1, rules = mapRule.random_map_update_town, \
+                    extraArgs =  tuple(), allowedAppearUpon = [1, 3, 4, 5, 6, 7], visualizedColor = [0, 0, 255]),
+            "grassland": Terrain_type(terrain_name = "grassland", terrain_ID = 9, \
+                possibilityOfGenerate = 0.6, move_dLevel = 1, rules = mapRule.random_map_update_defult, \
+                    extraArgs =  tuple(), allowedAppearUpon = [1], visualizedColor = [0, 255, 0])
             }
         
-        # self.__terrain_type["sea"].definitely_Object = [
-        #     Items("plenty of salt water", 5, "environment")
-        # ]
-        
-        # self.__terrain_type["sea"].possible_Object = np.array([
-        #     Items("fish", 5, "food"),
-        #     Items("fish rod", 0, "tool"),
-        #     Items("water bottle", 0, "tool"),
-        #     Items("fishing net", 0, "tool"),
-        #     Items("boat", 0, "cargo tool")
-        # ])
-        
-        # self.__terrain_type["sea"].possible_Object_Weight = np.array([
-        #     19,
-        #     12,
-        #     15,
-        #     12,
-        #     10
-        # ])
-        
-        
-        # self.__terrain_type["land"].definitely_Object = [
-        #     Items("plenty of soil", 0, "environment")
-        # ]
-        
-        # self.__terrain_type["land"].possible_Object = np.array([
-        #     Items("grass", 2, "landscape features"),
-        #     Items("aloe vera", 5, "landscape features"),
-        #     Items("water bottle", 0, "tool"),
-        #     Items("fishing net", 0, "tool"),
-        #     Items("boat", 0, "cargo tool")
-        # ])
-        
-        # self.__terrain_type["land"].possible_Object_Weight = np.array([
-        #     19,
-        #     12,
-        #     15,
-        #     12,
-        #     10
-        # ])
-        
-        # self.__terrain_type = ["sea", "land"]
-        # self.__move_dLevel = [4, 1]
         
     def get_items(self) -> list[Items]:
         return self.__def_items

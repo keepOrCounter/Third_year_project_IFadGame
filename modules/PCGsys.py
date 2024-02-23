@@ -66,7 +66,7 @@ class MapGenerator():
 
 
     def random_replace(self, arr: np.ndarray, replace_prob: float, cellAllowedReplaced: list[int], \
-        targetID: int, area: tuple[int]= (0, 0)):
+        targetID: int, area: tuple[int]= (0, 0), generateID = 0):
         """
         Randomly replaces some of the cell in a 2D numpy array with target cell.
 
@@ -78,6 +78,11 @@ class MapGenerator():
             numpy.ndarray: New array with replacements.
         """
         map_seed = self.map_Seed(area)
+        if map_seed - generateID > 0:
+            map_seed -= generateID
+        else:
+            map_seed += generateID
+        
         replaced_arr = np.copy(arr)  # Create a copy of the input array
         np.random.seed(map_seed) # use seed to get the same map for visited place
         mask = np.random.rand(*arr.shape) < replace_prob  # Create a mask of True/False values based on probability
@@ -132,11 +137,11 @@ class MapGenerator():
                 terrains["land"].rules(grid, cell, time_step, death_limit, birth_limit, \
                     1, seed, *terrains["land"].extraArgs))
         
-        for x in range(2, len(terrain_name)):
+        for x in range(3, len(terrain_name)):
             newTarrain = terrains[terrain_name[x]]
             lastMap = np.copy(updated_map[-1])
             updated_map[-1] = self.random_replace(updated_map[-1], newTarrain.possibilityOfGenerate, \
-                newTarrain.allowedAppearUpon, newTarrain.terrain_ID, area)
+                newTarrain.allowedAppearUpon, newTarrain.terrain_ID, area, x)
             
             updated_map = cpl.evolve2d(updated_map, timesteps=cellular_timesteps, \
             apply_rule=lambda grid, cell, time_step: \
@@ -145,13 +150,21 @@ class MapGenerator():
             
             unchangedCells = np.where(updated_map[-1] == -1)
             updated_map[-1][unchangedCells] = lastMap[unchangedCells]
+        
+        result = updated_map[-1]
+        
+        if self.__map_info.get_current_area_type() == 1:
+            result = np.copy(updated_map[-1])
+            # Replace all occurrences of 0 with 2
+            result[result == 0] = 2
+            
 
         # print(updated_map)
         # print(random_map)
         # print(updated_map[-1])
 
         
-        return random_map, updated_map[-1] # for debug use
+        return random_map, result # for debug use
         # return updated_map[-1]
         
         

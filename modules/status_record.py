@@ -202,7 +202,7 @@ class Player_status():
             `action_point:` energy bar of player
         """
         self.__currentLocation = currentLocation
-        self.__lastLocation = [None, None]
+        self.__lastLocation:list[int] = [None, None]
         self.__items = items
         self.__hp = hp
         self.__maximum_hp = maximum_hp

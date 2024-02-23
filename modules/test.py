@@ -1,414 +1,151 @@
-# import numpy as np
-# import random
-
-# def generate_random_map(rows, cols, wall_prob=0.4):
-#     """Generates a random map represented as a 2D array.
-    
-#     Args:
-#     rows (int): Number of rows in the map.
-#     cols (int): Number of columns in the map.
-#     wall_prob (float): Probability of a cell being a wall.
-
-#     Returns:
-#     numpy.ndarray: The generated map.
-#     """
-#     return np.random.choice([0, 1], size=(rows, cols), p=[1-wall_prob, wall_prob])
-
-# def get_neighbors(matrix, row, col):
-#     """Get the values of all neighbors of a cell in a 2D matrix.
-
-#     Args:
-#     matrix (numpy.ndarray): The 2D array representing the map.
-#     row (int): Row index of the cell.
-#     col (int): Column index of the cell.
-
-#     Returns:
-#     list: Values of the neighbors.
-#     """
-#     neighbors = []
-#     rows, cols = matrix.shape
-#     for i in range(max(0, row-1), min(rows, row+2)):
-#         for j in range(max(0, col-1), min(cols, col+2)):
-#             if (i, j) != (row, col):
-#                 neighbors.append(matrix[i, j])
-#     return neighbors
-
-# def apply_rules(matrix, n, m):
-#     """Apply the given rules to the map for m iterations.
-
-#     Args:
-#     matrix (numpy.ndarray): The 2D array representing the map.
-#     n (int): Threshold for the number of walls among neighbors.
-#     m (int): Number of iterations to apply the rules.
-
-#     Returns:
-#     numpy.ndarray: The updated map.
-#     """
-#     for _ in range(m):
-#         new_matrix = matrix.copy()
-#         rows, cols = matrix.shape
-#         for row in range(rows):
-#             for col in range(cols):
-#                 neighbors = get_neighbors(matrix, row, col)
-#                 if sum(neighbors) > n:
-#                     new_matrix[row, col] = 1  # Become a wall
-#                 elif sum(neighbors) < n:
-#                     new_matrix[row, col] = 0  # Become empty space
-#         matrix = new_matrix
-#     return matrix
-
-# # Example usage
-# rows, cols = 10, 10  # Size of the map
-# wall_prob = 0.4     # Probability of a cell being a wall initially
-# n = 4               # Threshold for the number of walls among neighbors
-# m = 3               # Number of iterations to apply the rules
-
-# # Generate a random map
-# random_map = generate_random_map(rows, cols, wall_prob)
-# # Apply the rules to the map
-# updated_map = apply_rules(random_map, n, m)
-
-# # Displaying the initial and final maps
-# print(random_map)
-# print(updated_map)
-
-# import numpy as np
-# import cellpylib as cpl
-# import cv2
-
-# def generate_random_map(rows, cols, land_prob=0.6):
-#     np.random.seed(0)
-#     return np.random.choice([0, 1], size=(rows, cols), p=[1-land_prob, land_prob])
-
-# # def get_neighbors(cell_grid, row, col):
-# #     neighbors = []
-# #     rows, cols = cell_grid.shape
-# #     for i in range(max(0, row-1), min(rows, row+2)):
-# #         for j in range(max(0, col-1), min(cols, col+2)):
-# #             if (i, j) != (row, col):
-# #                 neighbors.append(cell_grid[i, j])
-# #     return neighbors
-
-# def cellular_automaton_rule(cell_grid, n):
-#     rows, cols = cell_grid.shape
-#     cell = cell_grid[int(rows/2), int(cols/2)]
-#     oneD = cell_grid.copy().flatten()
-#     number_of_1 = np.where(oneD == 1)[0].shape[0]
-#     number_of_0 = oneD.shape[0] - number_of_1
-
-#     if cell == 1:
-#         number_of_1 -= 1
-#     else:
-#         number_of_0 -= 1
-#     # print(cell_grid)
-#     # print(number_of_1)
-#     # print(number_of_0)
-#     # print(cell)
-#     # print("-------------------")
-#     if number_of_1 > n:
-#         cell = 1
-#     elif number_of_1 < n:
-#         cell = 0
-#     # new_grid = np.zeros_like(cell_grid)
-#     # print(cell_grid)
-#     # rows, cols = cell_grid.shape
-#     # for row in range(rows):
-#     #     for col in range(cols):
-#     #         neighbors = get_neighbors(cell_grid, row, col)
-#     #         if sum(neighbors) > n:
-#     #             new_grid[row, col] = 1
-#     #         elif sum(neighbors) <= n:
-#     #             new_grid[row, col] = 0
-#     # print(new_grid)
-#     return cell
-
-# rows, cols = 100, 100
-# land_prob = 0.65
-# n = 4
-# m = 5
-
-# random_map = generate_random_map(rows, cols, land_prob=land_prob)
-# cellular_automaton = cpl.init_simple2d(rows, cols)
-# cellular_automaton[0] = random_map
-# # print(cellular_automaton)
-# # print(np.where(np.array([0, 0, 1, 0, 1, 0, 0, 1, 1, 1]) == 1)[0].shape[0])
-
-# # The rule function must return a scalar for each cell
-# def rule(grid, c, t):
-#     # print(grid, c, t)
-#     return cellular_automaton_rule(grid, n)
-
-# # print(cpl.nks_rule(np.array([[0, 0, 0],[0, 1, 0],[0, 0, 0]]), 30))
-# updated_map = cpl.evolve2d(cellular_automaton, timesteps=m, apply_rule=lambda n, c, t: rule(n, c, t))
-
-# # print(updated_map)
-# print(random_map)
-# print(updated_map[-1])
-
-
-# # Your 2D NumPy array
-# array = random_map
-
-# # Convert the array to a grayscale image
-# # image = np.uint8(array * 255)
-# colored_image = np.zeros((array.shape[0], array.shape[1], 3), dtype=np.uint8)
-# colored_image[array == 0] = [255, 0, 0]  # Blue for 0s
-# colored_image[array == 1] = [0, 255, 0]  # Green for 1s
-
-# # Optionally, scale the image to make it visually better
-# scale_factor = 5
-# scaled_image = cv2.resize(colored_image, None, fx=scale_factor, fy=scale_factor, interpolation=cv2.INTER_NEAREST)
-
-# # Display the image
-# cv2.imshow('Visualized Image', scaled_image)
-# cv2.waitKey(0)
-# cv2.destroyAllWindows()
-
-
-# array = updated_map[-1]
-
-# # Convert the array to a grayscale image
-# # image = np.uint8(array * 255)
-# colored_image = np.zeros((array.shape[0], array.shape[1], 3), dtype=np.uint8)
-# colored_image[array == 0] = [255, 0, 0]  # Blue for 0s
-# colored_image[array == 1] = [0, 255, 0]  # Green for 1s
-
-# # Optionally, scale the image to make it visually better
-# scale_factor = 5
-# scaled_image = cv2.resize(colored_image, None, fx=scale_factor, fy=scale_factor, interpolation=cv2.INTER_NEAREST)
-
-# # Display the image
-# cv2.imshow('Visualized Image', scaled_image)
-# cv2.waitKey(0)
-# cv2.destroyAllWindows()
-
-# print(np.zeros((50,)))
-# def ttt(t):
-#     print(t)
-
-# v = ttt
-# print(str(v))
-# b = (2, )
-# print(type(b))
-# v(*b)
-
-# import json
-# # import numpy as np
-# # terrain_type = np.array([1,2,3])
-# # print(np.shape(terrain_type)[0])
-# # Your JSON formatted string
-# json_string = '''
-# {
-#     "successful": false,
-#     "fail": "True",
-#     "reward": [], 
-#     "penalty": [1]
-# }
-# '''
-
-# # Parse the JSON string
-# data = json.loads(json_string, strict=False)
-# print(type(data))
-# a = dict()
-# print(type(a))
-
-# # Extract the value of the "event_name" key
-# event_name = data.get("event_name")
-
-# # Extract the value of the "event_description" key
-# event_description = data.get("event_description")
-
-# # Print the extracted values
-# print("Event Name:", event_name)
-# print("Event Description:", event_description)
-# print(data["successful"])
-# print(int(-0.1))
-
-    # def visualized(self, random_map, updated_map, mode="8_neighbours"): # rows, cols = y, x
-
-    #     # random_map, updated_map = self.game_map_generation(cellular_timesteps, \
-    #     #     convert_threshold, mode)
-
-    #     # print(updated_map)
-    #     print(random_map)
-    #     print(updated_map)
-    #     print(self.terrain_type[updated_map].tolist())
-
-    #     array = random_map
-
-    #     # Convert the array to a grayscale image
-    #     # image = np.uint8(array * 255)
-    #     colored_image = np.zeros((array.shape[0], array.shape[1], 3), dtype=np.uint8)
-    #     colored_image[array == 0] = [255, 0, 0]  # Blue for 0s
-    #     colored_image[array == 1] = [0, 255, 0]  # Green for 1s
-
-    #     # Optionally, scale the image to make it visually better
-    #     scale_factor = 5
-    #     scaled_image = cv2.resize(colored_image, None, fx=scale_factor, fy=scale_factor, interpolation=cv2.INTER_NEAREST)
-
-    #     # Display the image
-    #     cv2.imshow('Visualized Image', scaled_image)
-    #     cv2.waitKey(0)
-    #     cv2.destroyAllWindows()
-
-
-    #     array = updated_map
-
-    #     # Convert the array to a grayscale image
-    #     # image = np.uint8(array * 255)
-    #     colored_image = np.zeros((array.shape[0], array.shape[1], 3), dtype=np.uint8)
-    #     colored_image[array == 0] = [255, 0, 0]  # Blue for 0s
-    #     colored_image[array == 1] = [0, 255, 0]  # Green for 1s
-
-    #     # Optionally, scale the image to make it visually better
-    #     scale_factor = 5
-    #     scaled_image = cv2.resize(colored_image, None, fx=scale_factor, fy=scale_factor, interpolation=cv2.INTER_NEAREST)
-
-    #     # Display the image
-    #     cv2.imshow('Visualized Image', scaled_image)
-    #     cv2.waitKey(0)
-    #     cv2.destroyAllWindows()
-# for y in range(1, -2, -1):
-#     print(y)
-# import numpy as np
-
-# def random_replace(arr, replace_prob):
-#     """
-#     Randomly replaces some of the 1s in a 2D numpy array with 3s.
-
-#     Parameters:
-#         arr (numpy.ndarray): Input 2D numpy array.
-#         replace_prob (float): Probability of replacing a 1 with a 3.
-
-#     Returns:
-#         numpy.ndarray: New array with replacements.
-#     """
-#     replaced_arr = np.copy(arr)  # Create a copy of the input array
-#     np.random.seed(100)
-#     a = np.random.randint(0, 100, arr.shape)
-#     print(a)
-#     np.random.seed(100)
-#     mask = np.random.rand(*arr.shape)  # Create a mask of True/False values based on probability
-#     print(mask)
-#     # replaced_arr[arr == 1] = np.where(mask[arr == 1], 3, 1)  # Replace 1s with 3s where the mask is True
-#     # replaced_arr[np.logical_and(arr == 1, mask)] = 3  # Replace 1s with 3s where the mask is True
-#     # return replaced_arr
-
-# # Example usage:
-# # Create a 2D numpy array
-# original_array = np.array([[1, 0, 1, 1],
-#                            [1, 1, 1, 1],
-#                            [1, 1, 5, 1]])
-
-# # Probability of replacing 1s with 3s
-# replace_probability = 0.3
-
-# # Perform random replacements
-# modified_array = random_replace(original_array, replace_probability)
-
-# print("Original Array:")
-# print(original_array)
-# print("\nModified Array:")
-# print(modified_array)
-# print(modified_array[(0,1)])
-# import nltk
-# from nltk.corpus import wordnet
-# from nltk.tokenize import word_tokenize
-# from nltk.tag import pos_tag
-
-# def get_word_meaning_in_phrase(phrase, word):
-#     tokens = word_tokenize(phrase)
-#     tagged_tokens = pos_tag(tokens)
-    
-#     # 找到目标单词在短语中的词性标签
-#     word_pos = None
-#     for token, pos in tagged_tokens:
-#         if token.lower() == word.lower():
-#             word_pos = pos
-#             break
-    
-#     if word_pos:
-#         # 根据词性标签在WordNet中找到对应的含义
-#         synsets = wordnet.synsets(word, pos=word_pos[0].lower())
-#         print(synsets)
-#         if synsets:
-#             # 获取短语中其他单词的同义词集合
-#             other_words_synsets = []
-#             for token, pos in tagged_tokens:
-#                 if token.lower() != word.lower():
-#                     synsets2 = wordnet.synsets(token, pos=pos[0].lower())
-#                     other_words_synsets.extend(synsets2)
-            
-#             meanings = [synset.definition() for synset in synsets]
-#             return meanings, synsets, other_words_synsets
-#         else:
-#             return None, None, None
-#     else:
-#         return None, None, None
-
-# # 示例短语和目标单词
-# phrase = "move forward"
-# word = "move"
-
-# # 获取目标单词在短语中的意思和相应的同义词集合
-# meanings, synsets, other_words_synsets = get_word_meaning_in_phrase(phrase, word)
-# if meanings:
-#     print(f"Meanings of '{word}' in the context of the phrase:")
-#     for i, meaning in enumerate(meanings, 1):
-#         print(f"{i}. {meaning}")
-
-#     # 显示与给定含义相关的同义词集合
-#     for synset in synsets:
-#         print(f"\nSynonyms for '{word}' in the context of the phrase (Synset: {synset.name()}):")
-#         for lemma in synset.lemmas():
-#             print(lemma.name())
-    
-#     # 显示短语中其他单词的同义词集合
-#     print("\nOther words' synonyms in the context of the phrase:")
-#     for other_word_synsets in other_words_synsets:
-#         for lemma in other_word_synsets.lemmas():
-#             print(lemma.name())
-# else:
-#     print(f"No meanings found for '{word}' in the context of the phrase")
-
-
-# # import nltk
-# # from nltk.tokenize import word_tokenize
-
-# def get_word_meaning_in_context(phrase, target_word):
-#     tokens = word_tokenize(phrase)
-#     tagged_tokens = nltk.pos_tag(tokens)  # 进行词性标注
-#     print(tagged_tokens)
-#     for token, tag in tagged_tokens:
-#         if token == target_word:
-#             return tag
-
-# print("--------------------------------------")
-# phrase = "play game"
-# target_word = "play"
-# meaning = get_word_meaning_in_context(phrase, target_word)
-# print(f"Part of speech of '{target_word}' in '{phrase}': {meaning}")
-
-# print(meaning)
-# import nltk
-# import time
-# # import sys
-# from os.path import expanduser
-# begin = time.time()
-# home = expanduser("~")
-# from nltk.tag.hunpos import HunposTagger
-# _path_to_bin = home + '\\hunpos-1.0-win\\hunpos-tag.exe'
-# _path_to_model = home + '\\hunpos-1.0-win\\english.model'
-# ht = HunposTagger(path_to_model=_path_to_model, path_to_bin=_path_to_bin)
-# text = "move forward"
-# print(ht.tag(text.split()))
-# print(time.time()-begin)
-# ht.close()
-# print("----------------------------------")
-# sys.exit(0)
-# print("----------------------------------")
+import numpy as np
+# from typing import Callable
+# from interactionSys import OutputGenerator
+
+class Items():
+    def __init__(self, item_name: str, possibleWeight = {}, weight = 1):
+        """
+            `item_name (str)`: name for player or gpt to recognized
+            `possibleWeight (dict)`: possibility of showing up in different location, \
+                from 0 to 20
+            `weight (int)`: the weight of this item, from 1 to infinite, initial player \
+                could carry 20 weight of items
+        """
+        self.item_name = item_name
+        # self.category = category
+        
+        self.possibleWeight = possibleWeight
+        self.weight = weight
+        
+class Food(Items):
+    def __init__(self, item_name: str, possibleWeight: dict[str, int], weight : int, \
+        item_energy_recovery: int, eatable = True, freshness = -1, thirst = 0):
+        """
+            `item_energy_recovery (int)`: the amount of action point player can recovery when \
+                making consume this food
+            `eatable (bool)`: Whether this food is safe for eat
+        """
+        super().__init__(item_name, possibleWeight, weight)
+        
+        self.item_energy_recovery = item_energy_recovery
+        self.eatable = eatable
+        # self.state = state
+        self.freshness = freshness
+        self.thirst = thirst
+        
+class Tool(Items):
+    def __init__(self, item_name: str, possibleWeight=dict(), weight=1, \
+        durability = 1):
+        """
+            `durability (int)`: the turns number this tool can be used
+        """
+        super().__init__(item_name, possibleWeight, weight)
+        
+        self.durability = durability
+        
+class LandscapeFeature(Items):
+    def __init__(self, item_name: str, possibleWeight=dict(), weight=2**10, \
+        item_energy_recovery = 0, eatable=False, freshness = -1):
+        super().__init__(item_name, possibleWeight, weight)
+        
+        self.item_energy_recovery = item_energy_recovery
+        self.eatable = eatable
+        self.freshness = freshness
+        
+class EnvironmentElement(Items):
+    def __init__(self, item_name: str, possibleWeight=dict(), weight=2**10, \
+        item_energy_recovery = 0, eatable=False):
+        super().__init__(item_name, possibleWeight, weight)
+        
+        self.item_energy_recovery = item_energy_recovery
+        self.eatable = eatable
+        
+class Transportation(Items):
+    def __init__(self, item_name: str, possibleWeight=dict(), weight=2**10, \
+        suitablePlace = set(), APReduce = 1):
+        """
+            `suitablePlace (set)`: the place this transportation can be rod
+            `APReduce (int)`: to what precentage of action point would be reduce \
+                when moving on a place, from 0 to 1
+        """
+        super().__init__(item_name, possibleWeight, weight)
+        
+        self.suitablePlace = suitablePlace
+        self.APReduce = APReduce
+        
+class Weapon(Items):
+    def __init__(self, item_name: str, possibleWeight=dict(), weight=1, \
+        attack = 0, durability = 1):
+        """
+            `durability (int)`: the turns number this tool can be used
+            `attack (int)`: the hp value would reduce on target when player use this weapon
+        """
+        super().__init__(item_name, possibleWeight, weight)
+        
+        self.durability = durability
+        self.attack = attack
+        
+
+class Container(Items):
+    def __init__(self, item_name: str, possibleWeight=dict(), weight=1, \
+        capacity = 1):
+        """
+            `capacity (int)`: the turn number the liquide inside can be used
+        """
+        super().__init__(item_name, possibleWeight, weight)
+        
+        self.capacity = capacity
+
+
+class Events():
+    # TODO Change event description format
+    def __init__(self, eventName: str, eventType: str, time_limit: int, \
+        description: str) -> None:
+        
+        self.eventName = eventName
+        self.eventType = eventType
+        # self.succeedCondition = succeedCondition
+        self.time_limit = time_limit
+        
+        self.description = description
+        
+        self.currentAction = ""
+        self.current_location = ""
+        self.moving_tool = []
+        self.play_current_status = ""
+        
+        self.triggered_time = 0
+        
+        # self.triggered = False
+        # self.gpt_required = gpt_required
+        
+class PassivityEvents(Events):
+    def __init__(self, eventName: str, eventType: str, triggered_reason: str, \
+        possible_reward: list, possible_penalty: list, time_limit: int, description: str, \
+            triggered_condition) -> None:
+        """
+        `triggered_condition`: a function that receive player, map information \
+            as argument and return boolen based on these information
+        """
+        super().__init__(eventName, eventType, time_limit, description)
+        self.triggered_reason = triggered_reason
+        self.possible_reward = possible_reward
+        self.possible_penalty = possible_penalty
+        
+        self.triggered_condition = triggered_condition
+
+class Actions():
+    def __init__(self, actionName: str, command_executed: list[tuple]) -> None:
+        """
+            `actionName (str)`: related to player input
+            `command_executed (list[tuple])`: a list of method and its arguments would be called when player make this action
+        """
+        self.actionName = actionName
+        self.command_executed = command_executed
+        
 class Location():
-    def __init__(self, location_name) -> None:
+    def __init__(self, location_name:str, x:int, y:int, objects:list[Items] = [], \
+        description: str= "") -> None:
         """`location_name:` name of current terrain\n
             `objects:` items at current place\n
             `description:` description generated by GPT, only for visited places, in this format: \n
@@ -421,14 +158,404 @@ class Location():
             `x\y: ` locations' coordinate
         """
         self.location_name = location_name
+        self.objects = objects
+        self.description = description
+        self.x = x
+        self.y = y
 
-t = Location(0)
-a = lambda player: player.location_name > 1
 
-print(a(t))
-t.location_name +=10
-print(a(t))
-a=[1,2,3]
-b = a
-b.pop()
-print(a)
+class Buff():
+    def __init__(self, buff_name: str, exe_function, exe_args: tuple, timeLimit:int = 0) -> None:
+        self.buff_name = buff_name
+        self.exe_function = exe_function
+        self.exe_args = exe_args
+        
+        self.timeLimit = timeLimit
+        self.startTime = 0
+
+
+class Terrain_type():
+    def __init__(self, terrain_name: str, terrain_ID: int, possibilityOfGenerate: float, \
+        move_dLevel: int, rules, extraArgs, allowedAppearUpon: int, visualizedColor: list[int] = [0, 0, 0]) -> None:
+        
+        self.terrain_name = terrain_name
+        self.possibilityOfGenerate = possibilityOfGenerate
+        self.rules = rules
+        self.move_dLevel = move_dLevel
+        self.extraArgs = extraArgs
+        self.terrain_ID = terrain_ID
+        self.allowedAppearUpon = allowedAppearUpon
+        self.visualizedColor = visualizedColor
+        
+        self.definitely_Object = list()
+        self.possible_Object = list()
+        self.possible_Object_Weight = list()
+
+
+class Player_status():
+    def __init__(self, currentLocation:list[int,int] = [0,0], items:dict[str, list[Items]] = dict(), \
+        hp: int = 100, maximum_hp: int = 100, maximum_action_point: int = 100, \
+            action_point: int = 100, currentAction: Actions = None, cash:int = 0, \
+                buff:list[Buff] = [], thirst:int = 100, maximum_thirst:int = 100) -> None:
+        """ `__currentLocation:` player coordinate [x,y]\n
+            `items:` items in bag\n
+            `action_point:` energy bar of player
+        """
+        self.__currentLocation = currentLocation
+        self.__lastLocation:list[int] = [None, None]
+        self.__items = items
+        self.__hp = hp
+        self.__maximum_hp = maximum_hp
+        self.__action_point = action_point
+        self.__maximum_action_point = maximum_action_point
+        self.__currentAction = currentAction
+        self.__cash = cash
+        self.__buff = buff
+        self.__APrecovery = 10
+        self.__thirst = thirst
+        self.__maximum_thirst = maximum_thirst
+    
+    def get_currentLocation(self) -> tuple[int]:
+        return (self.__currentLocation[0], self.__currentLocation[1])
+    
+    def set_currentLocation(self, x:int, y:int) -> None:
+        self.__currentLocation[0] = x
+        self.__currentLocation[1] = y
+        
+    def get_lastLocation(self) -> tuple[int]:
+        return (self.__lastLocation[0], self.__lastLocation[1])
+    
+    def set_lastLocation(self, x:int, y:int) -> None:
+        self.__lastLocation[0] = x
+        self.__lastLocation[1] = y
+
+    def get_items(self) -> dict[str, list[Items]]:
+        return self.__items
+    
+    def set_items(self, items: dict[str, list[Items]]) -> None:
+        self.__items = items
+
+    def get_hp(self) -> int:
+        return self.__hp
+    
+    def set_hp(self, hp: int) -> None:
+        self.__hp = hp
+
+    def get_action_point(self) -> int:
+        return self.__action_point
+    
+    def set_action_point(self, action_point: int) -> None:
+        self.__action_point = action_point
+
+    def get_maximum_hp(self) -> int:
+        return self.__maximum_hp
+    
+    def set_maximum_hp(self, new_hp_limit: int) -> None:
+        self.__maximum_hp = new_hp_limit
+
+    def get_maximum_action_point(self) -> int:
+        return self.__maximum_action_point
+    
+    def set_maximum_action_point(self, new_action_point_limit: int) -> None:
+        self.__maximum_action_point = new_action_point_limit
+
+    def get_currentAction(self) -> Actions:
+        return self.__currentAction
+    
+    def set_currentAction(self, newAction: Actions) -> None:
+        self.__currentAction = newAction
+
+    def get_cash(self) -> int:
+        return self.__cash
+    
+    def set_cash(self, newAmount: int) -> None:
+        self.__cash = newAmount
+        
+    def get_buffs(self) -> list[Buff]:
+        return self.__buff
+    
+    def set_buffs(self, newBuffs: list[Buff]) -> None:
+        self.__buff = newBuffs
+        
+    def get_APrecovery(self) -> int:
+        return self.__APrecovery
+    
+    def set_APrecovery(self, newAPrecovery: int) -> None:
+        self.__APrecovery = newAPrecovery
+        
+    def get_thirst(self) -> int:
+        return self.__thirst
+    
+    def set_thirst(self, thirst: int) -> None:
+        self.__thirst = thirst
+        
+    def get_maximum_thirst(self) -> int:
+        return self.__maximum_thirst
+    
+    def set_maximum_thirst(self, maximum_thirst: int) -> None:
+        self.__maximum_thirst= maximum_thirst
+
+        
+class Map_information():
+    def __init__(self, current_area_type: int = 0, currentMap: np.ndarray[str] = [], \
+        map_size: tuple[int] = (20, 20)) -> None:
+        """`current_area_type:` used for generate map, 0 for sea area, 1 for land \
+            area, affect the probability of different terrain\n
+            `visitedPlace:` Place has visited in this form: {(x, y): "Location_object"}\n
+            `IMPORTANT!!! map_size: `opposite with coordinate system \
+                tuple in `(row, cols)`, height and width of map, `(y, x)`
+        """
+        self.__visitedPlace = {} # {(x, y): "Location_object"}, update every turn
+        self.__current_area_type = current_area_type # update when entering new area
+        self.__currentMap = currentMap # update when entering new area
+        self.__map_size = map_size # rows, cols = y, x, never update!!!
+        self.__init_map_coordinate = (0 - int(map_size[1]/2), 0 + int(map_size[0]/2)) # never update!!!
+        self.__current_map_coordinate = (0 - int(map_size[1]/2), 0 + int(map_size[0]/2)) # update when entering new area
+        self.__current_map_coordinate_Normalised = (0, 0)
+        self.currentLocation: Location = None
+
+    def get_current_area_type(self) -> int:
+        return self.__current_area_type
+
+    def set_current_area_type(self, current_area_type: int):
+        self.__current_area_type = current_area_type
+
+    def get_currentMap(self) -> np.ndarray[str]:
+        return self.__currentMap
+
+    def set_currentMap(self, currentMap: np.ndarray[str]):
+        self.__currentMap = currentMap
+
+    def get_visitedPlace(self) -> dict:
+        return self.__visitedPlace
+
+    def set_visitedPlace(self, visitedPlace: dict):
+        self.__visitedPlace = visitedPlace
+
+    def get_map_size(self) -> tuple[int]:
+        return self.__map_size
+
+    def get_init_map_coordinate(self) ->tuple[int]:
+        return self.__init_map_coordinate
+    
+    def get_current_map_coordinate(self) ->tuple[int]:
+        return self.__current_map_coordinate
+    
+    def set_current_map_coordinate(self, map_ccord: tuple[int]):
+        self.__current_map_coordinate = map_ccord
+        
+    def get_current_map_coordinate_Normalised(self) ->tuple[int]:
+        return self.__current_map_coordinate_Normalised
+    
+    def set_current_map_coordinate_Normalised(self, map_ccord_Normalised: tuple[int]):
+        self.__current_map_coordinate_Normalised = map_ccord_Normalised
+
+class EventsTriggered():
+    def __init__(self) -> None:
+        """
+        This class is used to record and process the effects caused by events
+        
+        Attribute:
+        `eventsHappening`: list of events are happening
+        `eventsTriggered`: waiting list of events just occured, events in this list \
+            would be push back to UnTriggered event list when their trigerred \
+                conditions are no longer met
+        `UnTriggered_passivity_events`: UnTriggered `PassivityEvents` list
+        """
+        self.eventsHappening: list[Events]= []
+        
+        self.eventsTriggered: list[Events]= [] # event happened once
+        self.UnTriggered_passivity_events : list[PassivityEvents]= []
+        # self.triggeredType = {
+        #     "survival crisis": {"action point": True, "health point": True}
+        # }
+        # self.__descriptionGenerator = descriptionGenerator
+        
+    # def get_current_events(self) -> list[Events]:
+    #     return self.__eventsTriggered
+    
+    # def add_new_event(self, newEvent: Events) -> None:
+    #     self.__eventsTriggered.append(newEvent)
+        
+
+
+class globalInfo():
+    def __init__(self) -> None:
+        """determine any global dynamic variable
+        
+        `move_APCost`: Action point cost of every move
+        `directionKnown`: Whether player know about direction
+        `move_dLevel`: Difficulty of player move
+        `restPlace`: Whether player can have a rest currently
+        """
+        self.move_APCost = 5
+        self.directionKnown = False
+        self.move_dLevel = 1
+        self.restPlace = True
+updated = [
+    LandscapeFeature("stream", {"sea": 0, "land": 12, "forest": 15, "beach": 0, "river": 8, "desert": 0, "mountain": 0, "highland snowfield": 0, "town": 0, "grassland": 0}, \
+        item_energy_recovery=10, eatable=True, freshness=-1), 
+    Tool("traps", {"sea": 0, "land": 8, "forest": 8, "beach": 2, "river": 6, "desert": 2, "mountain": 0, "highland snowfield": 0, "town": 0, "grassland": 0}),
+    LandscapeFeature("rocks", {"sea": 10, "land": 12, "forest": 12, "beach": 10, "river": 8, "desert": 5, "mountain": 5, "highland snowfield": 0, "town": 0, "grassland": 0}, \
+        item_energy_recovery=10, eatable=True, freshness=72), 
+    Tool("weapon crafting bench", {"sea": 0, "land": 5, "forest": 5, "beach": 1, "river": 3, "desert": 0, "mountain": 0, "highland snowfield": 0, "town": 10, "grassland": 0}, \
+        weight=6, durability=10),
+    Tool("fish rod", {"sea": 4, "land": 1, "forest": 1, "beach": 6, "river": 6, "desert": 0, "mountain": 0, "highland snowfield": 0, "town": 0, "grassland": 0}),
+    Container("glass water bottle", {"sea": 2, "land": 1, "forest": 1, "beach": 3, "river": 2, "desert": 1, "mountain": 0, "highland snowfield": 0, "town": 5, "grassland": 0}, \
+        capacity=5),
+    Transportation("boat", {"sea": 2, "land": 0, "forest": 0, "beach": 8, "river": 5, "desert": 0, "mountain": 0, "highland snowfield": 0, "town": 5, "grassland": 0}, \
+        suitablePlace={"sea"}, APReduce=0.5),
+    LandscapeFeature("grass", {"sea": 0, "land": 12, "forest": 15, "beach": 0, "river": 8, "desert": 0, "mountain": 0, "highland snowfield": 0, "town": 0, "grassland": 12}, \
+        item_energy_recovery=2, eatable=False, freshness=20),
+    LandscapeFeature("aloe vera", {"sea": 0, "land": 12, "forest": 5, "beach": 4, "river": 2, "desert": 12, "mountain": 0, "highland snowfield": 0, "town": 0, "grassland": 0}, \
+        item_energy_recovery=2, eatable=True, freshness=20),
+    # Food
+    Food("bread", {"sea": 0, "land": 0, "forest": 0, "beach": 0, "river": 0, "desert": 0, "mountain": 0, "highland snowfield": 0, "town": 0, "grassland": 0}, weight=1, \
+        item_energy_recovery=15, eatable=True, freshness=20, thirst=-20),
+    Food("raw fish", {"sea": 15, "land": 0, "forest": 0, "beach": 1, "river": 12, "desert": 0, "mountain": 0, "highland snowfield": 0, "town": 0, "grassland": 0}, weight=2, \
+        item_energy_recovery=5, eatable=False, freshness=24, thirst=20),
+    Food("grilled fish", {"sea": 0, "land": 0, "forest": 0, "beach": 0, "river": 0, "desert": 0, "mountain": 0, "highland snowfield": 0, "town": 0, "grassland": 0}, weight=2, \
+        item_energy_recovery=15, eatable=True, freshness=24, thirst=10),
+    Food("berry", {"sea": 0, "land": 5, "forest": 10, "beach": 0, "river": 5, "desert": 0, "mountain": 0, "highland snowfield": 0, "town": 5, "grassland": 12}, weight=1, \
+        item_energy_recovery=5, eatable=True, freshness=18, thirst=10),
+    Food("potato", {"sea": 0, "land": 5, "forest": 2, "beach": 0, "river": 2, "desert": 12, "mountain": 0, "highland snowfield": 0, "town": 0, "grassland": 12}, weight=1, \
+        item_energy_recovery=10, eatable=False, freshness=50, thirst=-5),
+    Food("grilled potato", {"sea": 0, "land": 0, "forest": 0, "beach": 0, "river": 0, "desert": 0, "mountain": 0, "highland snowfield": 0, "town": 0, "grassland": 0}, weight=1, \
+        item_energy_recovery=10, eatable=True, freshness=72, thirst=-10),
+    Food("raw venison", {"sea": 0, "land": 1, "forest": 2, "beach": 0, "river": 2, "desert": 12, "mountain": 5, "highland snowfield": 5, "town": 0, "grassland": 15}, weight=5, \
+        item_energy_recovery=20, eatable=False, freshness=19, thirst=50),
+    Food("grilled venison", {"sea": 0, "land": 0, "forest": 0, "beach": 0, "river": 0, "desert": 0, "mountain": 0, "highland snowfield": 0, "town": 0, "grassland": 0}, weight=5, \
+        item_energy_recovery=30, eatable=True, freshness=29, thirst=20),
+    Food("vegetable soup", {"sea": 0, "land": 0, "forest": 0, "beach": 0, "river": 0, "desert": 0, "mountain": 0, "highland snowfield": 0, "town": 0, "grassland": 0}, weight=5, \
+        item_energy_recovery=30, eatable=True, freshness=15, thirst=50),
+    Food("stew", {"sea": 0, "land": 0, "forest": 0, "beach": 0, "river": 0, "desert": 0, "mountain": 0, "highland snowfield": 0, "town": 0, "grassland": 0}, weight=10, \
+        item_energy_recovery=50, eatable=True, freshness=15, thirst=30),
+    # Item
+    Items("wood", {"sea": 1, "land": 3, "forest": 20, "beach": 1, "river": 3, "desert": 0, "mountain": 8, "highland snowfield": 5, "town": 0, "grassland": 15}, weight=5),
+    Items("rock", {"sea": 10, "land": 12, "forest": 12, "beach": 10, "river": 8, "desert": 5, "mountain": 15, "highland snowfield": 10, "town": 0, "grassland": 12}, weight=5),
+    Items("stick", {"sea": 0, "land": 1, "forest": 20, "beach": 0, "river": 2, "desert": 0, "mountain": 5, "highland snowfield": 5, "town": 0, "grassland": 15}, weight=2),
+    Items("palm leave", {"sea": 1, "land": 0, "forest": 0, "beach": 19, "river": 2, "desert": 0, "mountain": 0, "highland snowfield": 0, "town": 5, "grassland": 15}, weight=1),
+    Items("seed", {"sea": 1, "land": 10, "forest": 10, "beach": 1, "river": 3, "desert": 0, "mountain": 3, "highland snowfield": 0, "town": 8, "grassland": 15}, weight=1),
+    Items("coal", {"sea": 0, "land": 0, "forest": 0, "beach": 0, "river": 0, "desert": 0, "mountain": 0, "highland snowfield": 0, "town": 0, "grassland": 0}, weight=2),
+    Items("cloth", {"sea": 0, "land": 0, "forest": 0, "beach": 0, "river": 0, "desert": 0, "mountain": 0, "highland snowfield": 0, "town": 0, "grassland": 0}, weight=1),
+    Items("glass bottle", {"sea": 0, "land": 0, "forest": 0, "beach": 0, "river": 0, "desert": 0, "mountain": 0, "highland snowfield": 0, "town": 0, "grassland": 0}, weight=1),
+    Items("a bottle of sand", {"sea": 0, "land": 0, "forest": 0, "beach": 0, "river": 0, "desert": 0, "mountain": 0, "highland snowfield": 0, "town": 0, "grassland": 0}, weight=3),
+]
+def_items = [
+            LandscapeFeature("stream", {"sea": 0, "land": 12, "forest": 15, "beach": 0, \
+                "river": 10, "desert": 0, "mountain": 0, "highland": 0, "snowfield": 0, \
+                    "town": 0, "grassland": 0}, \
+                item_energy_recovery = 10, eatable = True, freshness = -1), 
+            Tool("traps", {"sea": 0, "land": 8, "forest": 8, "beach": 2, \
+                "river": 10, "desert": 0, "mountain": 0, "highland": 0, "snowfield": 0, \
+                    "town": 0, "grassland": 0}),
+            LandscapeFeature("rocks", {"sea": 10, "land": 12, "forest": 12, "beach": 10, \
+                "river": 10, "desert": 0, "mountain": 0, "highland": 0, "snowfield": 0, \
+                    "town": 0, "grassland": 0}, \
+                item_energy_recovery = 10, eatable = True, freshness = 72), 
+            Tool("weapon crafting bench", {"sea": 0, "land": 5, "forest": 5, "beach": 1}, \
+                weight = 6, durability = 10),
+            Tool("fish rod", {"sea": 4, "land": 1, "forest": 1, "beach": 6, \
+                "river": 10, "desert": 0, "mountain": 0, "highland": 0, "snowfield": 0, \
+                    "town": 0, "grassland": 0}),
+            Container("glass water bottle", {"sea": 2, "land": 1, "forest": 1, "beach": 3, \
+                "river": 10, "desert": 0, "mountain": 0, "highland": 0, "snowfield": 0, \
+                    "town": 0, "grassland": 0}, \
+                capacity = 5),
+            Transportation("boat", {"sea": 2, "land": 0, "forest": 0, "beach": 8, \
+                "river": 10, "desert": 0, "mountain": 0, "highland": 0, "snowfield": 0, \
+                    "town": 0, "grassland": 0}, \
+                suitablePlace = {"sea"}, APReduce = 0.5),
+            LandscapeFeature("grass", {"sea": 0, "land": 12, "forest": 15, "beach": 0, \
+                "river": 10, "desert": 0, "mountain": 0, "highland": 0, "snowfield": 0, \
+                    "town": 0, "grassland": 0}, \
+                item_energy_recovery = 2, eatable = False, freshness = 20),
+            LandscapeFeature("aloe vera", {"sea": 0, "land": 12, "forest": 5, "beach": 4, \
+                "river": 10, "desert": 0, "mountain": 0, "highland": 0, "snowfield": 0, \
+                    "town": 0, "grassland": 0}, \
+                item_energy_recovery = 2, eatable = True, freshness = 20),
+            #Food
+            Food("bread", {"sea": 0, "land": 0, "forest": 0, "beach": 0, \
+                "river": 10, "desert": 0, "mountain": 0, "highland": 0, "snowfield": 0, \
+                    "town": 0, "grassland": 0}, weight = 1, \
+                item_energy_recovery = 15, eatable = True, freshness = 20, thirst = -20),
+            Food("raw fish", {"sea": 15, "land": 0, "forest": 0, "beach": 1, \
+                "river": 10, "desert": 0, "mountain": 0, "highland": 0, "snowfield": 0, \
+                    "town": 0, "grassland": 0}, weight = 2, \
+                item_energy_recovery = 5, eatable = False, freshness = 24, thirst = 20),
+            Food("grilled fish", {"sea": 0, "land": 0, "forest": 0, "beach": 0, \
+                "river": 10, "desert": 0, "mountain": 0, "highland": 0, "snowfield": 0, \
+                    "town": 0, "grassland": 0}, weight = 2, \
+                item_energy_recovery = 15, eatable = True, freshness = 24, thirst = 10),
+            Food("berry", {"sea": 0, "land": 5, "forest": 10, "beach": 0, \
+                "river": 10, "desert": 0, "mountain": 0, "highland": 0, "snowfield": 0, \
+                    "town": 0, "grassland": 0}, weight = 1, \
+                item_energy_recovery = 5, eatable = True, freshness = 18, thirst = 10),
+            Food("potato", {"sea": 0, "land": 5, "forest": 2, "beach": 0, \
+                "river": 10, "desert": 0, "mountain": 0, "highland": 0, "snowfield": 0, \
+                    "town": 0, "grassland": 0}, weight = 1, \
+                item_energy_recovery = 10, eatable = False, freshness = 50, thirst = -5),
+            Food("grilled potato", {"sea": 0, "land": 0, "forest": 0, "beach": 0, \
+                "river": 10, "desert": 0, "mountain": 0, "highland": 0, "snowfield": 0, \
+                    "town": 0, "grassland": 0}, weight = 1, \
+                item_energy_recovery = 10, eatable = True, freshness = 72, thirst = -10),
+            Food("raw venison", {"sea": 0, "land": 1, "forest": 2, "beach": 0, \
+                "river": 10, "desert": 0, "mountain": 0, "highland": 0, "snowfield": 0, \
+                    "town": 0, "grassland": 0}, weight = 5, \
+                item_energy_recovery = 20, eatable = False, freshness = 19, thirst = 50),
+            Food("grilled venison", {"sea": 0, "land": 0, "forest": 0, "beach": 0, \
+                "river": 10, "desert": 0, "mountain": 0, "highland": 0, "snowfield": 0, \
+                    "town": 0, "grassland": 0}, weight = 5, \
+                item_energy_recovery = 30, eatable = True, freshness = 29, thirst = 20),
+            Food("vegetable soup", {"sea": 0, "land": 0, "forest": 0, "beach": 0, \
+                "river": 10, "desert": 0, "mountain": 0, "highland": 0, "snowfield": 0, \
+                    "town": 0, "grassland": 0}, weight = 5, \
+                item_energy_recovery = 30, eatable = True, freshness = 15, thirst = 50),
+            Food("stew", {"sea": 0, "land": 0, "forest": 0, "beach": 0, \
+                "river": 10, "desert": 0, "mountain": 0, "highland": 0, "snowfield": 0, \
+                    "town": 0, "grassland": 0}, weight = 10, \
+                item_energy_recovery = 50, eatable = True, freshness = 15, thirst = 30),
+
+            #Item
+            Items("wood", {"sea": 1, "land": 3, "forest": 20, "beach": 1, \
+                "river": 10, "desert": 0, "mountain": 0, "highland": 0, "snowfield": 0, \
+                    "town": 0, "grassland": 0}, weight = 5),
+            Items("rock", {"sea": 10, "land": 12, "forest": 12, "beach": 10, \
+                "river": 10, "desert": 0, "mountain": 0, "highland": 0, "snowfield": 0, \
+                    "town": 0, "grassland": 0}, weight = 5),
+            Items("stick", {"sea": 0, "land": 1, "forest": 20, "beach": 0, \
+                "river": 10, "desert": 0, "mountain": 0, "highland": 0, "snowfield": 0, \
+                    "town": 0, "grassland": 0}, weight = 2),
+            Items("palm leave", {"sea": 1, "land": 0, "forest": 0, "beach": 19, \
+                "river": 10, "desert": 0, "mountain": 0, "highland": 0, "snowfield": 0, \
+                    "town": 0, "grassland": 0}, weight = 1),
+            Items("seed", {"sea": 1, "land": 10, "forest": 10, "beach": 1, \
+                "river": 10, "desert": 0, "mountain": 0, "highland": 0, "snowfield": 0, \
+                    "town": 0, "grassland": 0}, weight = 1),
+            Items("coal", {"sea": 0, "land": 0, "forest": 0, "beach": 0, \
+                "river": 10, "desert": 0, "mountain": 0, "highland": 0, "snowfield": 0, \
+                    "town": 0, "grassland": 0}, weight = 2),
+            Items("cloth", {"sea": 0, "land": 0, "forest": 0, "beach": 0, \
+                "river": 10, "desert": 0, "mountain": 0, "highland": 0, "snowfield": 0, \
+                    "town": 0, "grassland": 0}, weight = 1),
+            Items("glass bottle", {"sea": 0, "land": 0, "forest": 0, "beach": 0, \
+                "river": 10, "desert": 0, "mountain": 0, "highland": 0, "snowfield": 0, \
+                    "town": 0, "grassland": 0}, weight = 1),
+            Items("a bottle of sand", {"sea": 0, "land": 0, "forest": 0, "beach": 0, \
+                "river": 10, "desert": 0, "mountain": 0, "highland": 0, "snowfield": 0, \
+                    "town": 0, "grassland": 0}, weight = 3),
+
+        ]
+
+result = []
+tem = {"sea", "land", "forest", "beach"}
+for x in range(len(updated)):
+    for y in updated[x].possibleWeight.keys():
+        if y in tem:
+            if def_items[x].possibleWeight[y] != updated[x].possibleWeight[y]:
+                print("NO!!!!!!!!!!!")
+    result.append(def_items[x].possibleWeight)
+
+# for x in result:
+#     print(x)
+# print(len(result) == len(def_items) == len(updated))
