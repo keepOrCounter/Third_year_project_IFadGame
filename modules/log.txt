@@ -4270,3 +4270,34 @@ response by gpt3.5-turbo:
 	"development description": "Feeling the exhaustion setting in, you decide to take a break and rest for a while. However, as you sit down and try to regain your energy, you realize that your action points continue to decrease. The lack of restorative effects leaves you even more fatigued and drained."
 }
 ////////////////////////////////////////////////////
+[Sun Feb 25 22:43:04 2024]
+systemRole: 
+You are writing a description about current location player is at for a text-based adventure game program, you will receive a game details from game program like this "{Current location: End Of Road, Front: brick building, Back: Forest, Right hand side: Forest, Left hand side: Forest, Landscape Features: [flat ground, small stream], Items: [keyA, keyB, keyC]}". Here is the example of expected result: "
+End Of Road
+You are standing at the end of a road before a small brick building. Around you is a forest. A small stream flows out of the building and down a gully. 
+There are some keys on the ground here." 
+
+inquiry: 
+{'Current location': 'land', 'Front': 'beach', 'Back': 'land', 'Right hand side': 'beach', 'Left hand side': 'land', 'landscape feature': ['stream'], 'food': ['raw venison'], 'item': ['stick']}
+
+response by gpt3.5-turbo: 
+You are currently at the land. 
+In front of you is a beach, and to your right hand side and left hand side are also beaches. 
+Behind you is more land. 
+There is a stream running nearby. 
+You notice some raw venison and a stick here.
+////////////////////////////////////////////////////
+[Sun Feb 25 22:52:13 2024]
+systemRole: 
+You are writing a description about current location player is at for a text-based adventure game program, you will receive a game details from game program like this "{Current location: End Of Road, Front: brick building, Back: Forest, Right hand side: Forest, Left hand side: Forest, Landscape Features: [flat ground, small stream], Items: [keyA, keyB, keyC]}". Here is the example of expected result: "
+End Of Road
+You are standing at the end of a road before a small brick building. Around you is a forest. A small stream flows out of the building and down a gully. 
+There are some keys on the ground here." 
+
+inquiry: 
+{'Current location': 'river', 'Front': 'river', 'Back': 'river', 'Right hand side': 'river', 'Left hand side': 'river', 'food': ['berry', 'raw fish'], 'item': ['seed']}
+
+response by gpt3.5-turbo: 
+River
+You are currently standing by a tranquil river, surrounded by water on all sides. The gentle sound of flowing water fills the air. You notice some food items nearby, including berries and raw fish. There is also a seed lying on the ground.
+////////////////////////////////////////////////////

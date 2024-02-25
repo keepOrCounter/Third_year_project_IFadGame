@@ -284,7 +284,7 @@ class MapGenerator():
                     # else:
                     mapArea, relaCoord = self.mapArea_And_RelativeCoordinate(placement_coord)
                     print(relaCoord)
-                    print(type(relaCoord[0]))
+                    # print(type(relaCoord[0]))
                     if current_area == mapArea:
                         # print(self.__map_info.get_currentMap())
                         # print(type(self.__map_info.get_currentMap()))
@@ -296,7 +296,6 @@ class MapGenerator():
                         current_location_name = self.__terrain_type[updated_map]\
                             [relaCoord[0], relaCoord[1]]
                     
-                    # objects_in_current_location = self.__objectsPCG.objectGeneration(1, 3) # TODO edit to change object amount
                     current_location = Location(current_location_name, \
                         placement_coord[0], placement_coord[1])
 
@@ -469,6 +468,7 @@ class PCGController():
         self.__eventPCG.event_handler() # determine the effects caused by any events
         
         player_surrounding = self.__mapPCG.surroundingLocation(playerCoord)
+        output = ""
         if playerCoord in visted_place.keys():
             current_location = visted_place[playerCoord]
             player_surrounding["Current location"] = current_location
@@ -483,7 +483,8 @@ class PCGController():
             elif self.__player.get_lastLocation() != playerCoord:
                 output = self.__map_info.currentLocation.description
         else:
-            objects_in_current_location = self.__objectsPCG.objectGeneration(1, 3) # TODO edit to change object amount
+            objects_in_current_location = self.__objectsPCG.objectGeneration(1, 3, \
+                player_surrounding["Current location"].location_name) # TODO edit to change object amount
 
             player_surrounding["Current location"].objects = objects_in_current_location
             visted_place[playerCoord] = player_surrounding["Current location"]
@@ -495,9 +496,9 @@ class PCGController():
             #         output["Items description"]))
         
             triggered_event = self.__eventPCG.event_triger()
+            self.__descriptionGenerator.locationDescription(player_surrounding)
             if triggered_event != None:
                 # TODO change the eventDescription to make it description all current events
-                self.__descriptionGenerator.locationDescription(player_surrounding)
                 self.__descriptionGenerator.eventDescription(triggered_event)
                 output = triggered_event.description
                 # self.__eventController.add_new_event(triggered_event)

@@ -512,8 +512,8 @@ class DefininedSys(): #
         
         self.__def_buff = { # TODO add end condition
             "thirsty": Buff("thirsty", exe_function= self.__buffEffect.thirsty, \
-                exe_args= tuple(), timeLimit= -1, end_Function= self.__buffEffect.de_thirsty, \
-                    end_args=tuple()),
+                exe_args= list(), timeLimit= -1, end_Function= self.__buffEffect.de_thirsty, \
+                    end_args=list()),
             
         }
         
@@ -573,17 +573,21 @@ class DefininedSys(): #
         for terrain in self.__terrain_type.keys():
             # print("----------------------")
             # print(terrain)
+            definitely_Object = self.__terrain_type[terrain].definitely_Object
+            possible_Object = self.__terrain_type[terrain].possible_Object
+            weight = self.__terrain_type[terrain].possible_Object_Weight
             for item in self.__def_items:
                 if item.possibleWeight[terrain] >= 20:
-                    definitely_Object = self.__terrain_type[terrain].definitely_Object
                     definitely_Object = np.append(definitely_Object, item)
                     # print(definitely_Object[-1].item_name)
                     # self.__terrain_type[terrain].definitely_Object.append(item)
                 elif item.possibleWeight[terrain] > 0:
-                    possible_Object = self.__terrain_type[terrain].possible_Object
-                    weight = self.__terrain_type[terrain].possible_Object_Weight
                     possible_Object = np.append(possible_Object, item)
                     weight = np.append(weight, item.possibleWeight[terrain])
+            
+            self.__terrain_type[terrain].definitely_Object = definitely_Object
+            self.__terrain_type[terrain].possible_Object = possible_Object
+            self.__terrain_type[terrain].possible_Object_Weight = weight
                     # print(weight[-1])
                     # .append(item)
                     # .append(item.possibleWeight[terrain])

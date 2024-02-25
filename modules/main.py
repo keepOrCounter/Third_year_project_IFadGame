@@ -1,7 +1,7 @@
 from status_record import Player_status, Map_information, EventsTriggered, globalInfo
 from PCGsys import PCGController
 from interactionSys import OutputGenerator, InputTranslator, Gpt3
-from Pre_definedContent import DefininedSys, Commands
+from Pre_definedContent import DefininedSys, Commands, character_effectSys
 import sys
 
 # from status_record import Location
@@ -42,14 +42,16 @@ class rule_system():
         if not self.player_alive():
             print("Game over.")
             sys.exit(0)
-            
-        currentPlace = self.__map_info.currentLocation.location_name
-        terrainDict = self.__defininedContent.get_terrain_type()
-        mdLevelGradient = terrainDict[currentPlace].move_dLevel/ \
-            terrainDict[self.__worldStatus.lastPlace].move_dLevel
-            
-        self.__worldStatus.move_dLevel *= mdLevelGradient
-        self.__worldStatus.lastPlace = currentPlace
+        
+        if self.__map_info.currentLocation != None:
+            currentPlace = self.__map_info.currentLocation.location_name
+            if self.__worldStatus.lastPlace != None:
+                terrainDict = self.__defininedContent.get_terrain_type()
+                mdLevelGradient = terrainDict[currentPlace].move_dLevel/ \
+                    terrainDict[self.__worldStatus.lastPlace].move_dLevel
+    
+                self.__worldStatus.move_dLevel *= mdLevelGradient
+            self.__worldStatus.lastPlace = currentPlace
             
         if self.__map_info.get_current_area_type() == 1:
             # self.__worldStatus.move_APCost = 5
@@ -85,7 +87,8 @@ if __name__ == "__main__":
     map_record = Map_information(current_area_type = 1, map_size=(20, 20)) # land type
     # mapPCG = MapGenerator(player_info, map_record)
     defined_command = Commands(player_info, map_record, worldStatus)
-    game_content = DefininedSys(defined_command, map_record)
+    buffEffect = character_effectSys(player_info, defined_command, worldStatus)
+    game_content = DefininedSys(defined_command, map_record, buffEffect)
     # objectPCG = objectsGenerator(game_content)
     # event_Engage = eventGenerator(game_content)
     
@@ -97,7 +100,7 @@ if __name__ == "__main__":
     
     pcgSystem = PCGController(game_content, player_info, map_record, descriptionGenerator, eventHandler, worldStatus)
     
-    game_rule = rule_system(player_info, map_record, worldStatus)
+    game_rule = rule_system(player_info, map_record, worldStatus, game_content)
     
     begin = True
     while begin:

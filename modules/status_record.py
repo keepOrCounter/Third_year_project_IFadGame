@@ -12,7 +12,7 @@ class Items():
                 could carry 20 weight of items
         """
         self.item_name = item_name
-        # self.category = category
+        self.category = "item"
         
         self.possibleWeight = possibleWeight
         self.weight = weight
@@ -33,6 +33,8 @@ class Food(Items):
         self.freshness = freshness
         self.thirst = thirst
         
+        self.category = "food"
+        
 class Tool(Items):
     def __init__(self, item_name: str, possibleWeight=dict(), weight=1, \
         durability = 1):
@@ -43,6 +45,8 @@ class Tool(Items):
         
         self.durability = durability
         
+        self.category = "tool"
+        
 class LandscapeFeature(Items):
     def __init__(self, item_name: str, possibleWeight=dict(), weight=2**10, \
         item_energy_recovery = 0, eatable=False, freshness = -1):
@@ -52,6 +56,8 @@ class LandscapeFeature(Items):
         self.eatable = eatable
         self.freshness = freshness
         
+        self.category = "landscape feature"
+        
 class EnvironmentElement(Items):
     def __init__(self, item_name: str, possibleWeight=dict(), weight=2**10, \
         item_energy_recovery = 0, eatable=False):
@@ -59,6 +65,8 @@ class EnvironmentElement(Items):
         
         self.item_energy_recovery = item_energy_recovery
         self.eatable = eatable
+        
+        self.category = "environment element"
         
 class Transportation(Items):
     def __init__(self, item_name: str, possibleWeight=dict(), weight=2**10, \
@@ -73,6 +81,8 @@ class Transportation(Items):
         self.suitablePlace = suitablePlace
         self.APReduce = APReduce
         
+        self.category = "transportation"
+        
 class Weapon(Items):
     def __init__(self, item_name: str, possibleWeight=dict(), weight=1, \
         attack = 0, durability = 1):
@@ -85,6 +95,8 @@ class Weapon(Items):
         self.durability = durability
         self.attack = attack
         
+        self.category = "weapon"
+        
 
 class Container(Items):
     def __init__(self, item_name: str, possibleWeight=dict(), weight=1, \
@@ -95,6 +107,8 @@ class Container(Items):
         super().__init__(item_name, possibleWeight, weight)
         
         self.capacity = capacity
+        
+        self.category = "container"
 
 
 class Events():
@@ -341,10 +355,10 @@ class Map_information():
     def set_currentMap(self, currentMap: np.ndarray[str]):
         self.__currentMap = currentMap
 
-    def get_visitedPlace(self) -> dict:
+    def get_visitedPlace(self) -> dict[tuple, Location]:
         return self.__visitedPlace
 
-    def set_visitedPlace(self, visitedPlace: dict):
+    def set_visitedPlace(self, visitedPlace: dict[tuple, Location]):
         self.__visitedPlace = visitedPlace
 
     def get_map_size(self) -> tuple[int]:
