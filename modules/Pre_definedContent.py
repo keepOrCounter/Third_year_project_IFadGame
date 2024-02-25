@@ -1,6 +1,6 @@
 from status_record import Player_status, Map_information, globalInfo, Items, Events, \
     Actions, Terrain_type, LandscapeFeature, EnvironmentElement, Tool, Food, \
-        Transportation, Weapon, Container, PassivityEvents
+        Transportation, Weapon, Container, PassivityEvents, Buff
 import random
 import copy
 import numpy as np
@@ -135,23 +135,6 @@ class Commands():
         else:
             print("You cannot have a rest now.")
     
-    # def equalTo(self, value, target) -> bool:
-    #     return value == target
-    
-    # def greaterThan(self, value, target) -> bool:
-    #     return value > target
-    
-    # def greaterThanOrEqualTo(self, value, target) -> bool:
-    #     return value >= target
-    
-    # def smallerThan(self, value, target) -> bool:
-    #     return value < target
-    
-    # def smallerThanOrEqualTo(self, value, target) -> bool:
-    #     return value <= target
-    
-    # def callableExecution(self, callablePosition, itsArguemts):
-    #     pass
     
     
 class MapPcgRule():
@@ -308,27 +291,84 @@ class MapPcgRule():
         return cell
     
 class character_effectSys():
-    def __init__(self, player: Player_status, preDefinedCommands: Commands) -> None:
+    def __init__(self, player: Player_status, preDefinedCommands: Commands, \
+        worldStatus: globalInfo) -> None:
         """
         This class is pre-defined buff function in methods form
         """
         self.__player = player
         self.__preDefinedCommands = preDefinedCommands
+        self.__worldStatus = worldStatus
         
-    def hp_recovery(self, amount):
+    # def __pack_buff(self, buff_name, exe_function, exe_args, timeLimit, trigerred_Condition = None, \
+    #     end_Condition = None) -> None:
+    #     currentBuffs = self.__player.get_buffs()
+    #     currentBuffs.append(Buff(buff_name, exe_function, exe_args, timeLimit, trigerred_Condition, \
+    #         trigerred_Condition))
+    #     self.__player.set_buffs(currentBuffs)
+        
+    def add_buff(self, buff: Buff, level: str= "low") -> None:
+        currentBuffs = self.__player.get_buffs()
+        if buff.buff_name not in currentBuffs.keys():
+            newBuff = copy.deepcopy(buff)
+            if level == "potential":
+                newBuff.level = 0
+            elif level == "low":
+                newBuff.level = 1
+            elif level == "median":
+                newBuff.level = 2
+            else:
+                newBuff.level = 3
+            
+            currentBuffs[newBuff.buff_name] = newBuff
+            self.__player.set_buffs(currentBuffs)
+            
+    def upgrade_buff(self, buffName: str) -> None:
+        currentBuffs = self.__player.get_buffs()
+        if buffName in currentBuffs.keys():
+            currentBuffs[buffName].level += 1
+            
+        self.__player.set_buffs(currentBuffs)
+    
+    def remove_buff(self, buffName: str) -> None:
+        currentBuffs = self.__player.get_buffs()
+        if buffName in currentBuffs.keys():
+            currentBuffs[buffName].end_Function(*currentBuffs[buffName].end_args)
+            currentBuffs.pop(buffName)
+        
+    def hp_recovery(self, buff: Buff, amount: int):
         self.__preDefinedCommands.increase_hp(amount)
         
-    def more_hp(self, amount):
+    def more_hp(self, buff: Buff, amount: int):
         self.__player.set_maximum_hp(self.__player.get_maximum_hp() + amount)
         
-    def action_point_recovery(self, amount):
+    def action_point_recovery(self, buff: Buff, amount: int):
         self.__preDefinedCommands.increase_action_point(amount)
         
-    def more_ap(self, amount):
+    def more_ap(self, buff: Buff, amount):
         self.__player.set_maximum_action_point(self.__player.get_maximum_action_point() + amount)
+        
+    def thirsty(self, buff: Buff):
+        if buff.startedTime == 0:
+            if buff.level == 1:
+                self.__worldStatus.action_dLevel *= 1.2
+            elif buff.level == 2:
+                self.__worldStatus.action_dLevel *= 1.5
+            elif buff.level == 3:
+                self.__worldStatus.action_dLevel *= 2
+                
+    def de_thirsty(self, buff: Buff):
+        if buff.level == 1:
+            self.__worldStatus.action_dLevel /= 1.2
+        elif buff.level == 2:
+            self.__worldStatus.action_dLevel /= 1.5
+        elif buff.level == 3:
+            self.__worldStatus.action_dLevel /= 2
+            
+    
 
 class DefininedSys(): # 
-    def __init__(self, preDefinedCommands: Commands, map_record: Map_information) -> None:
+    def __init__(self, preDefinedCommands: Commands, map_record: Map_information, buffEffect: character_effectSys) -> None:
         """
         All the defined content stored here\n\n
         `__def_items:` All the objects with same or differnt type here\n
@@ -336,6 +376,8 @@ class DefininedSys(): #
         usage example>>> <method stored in Actions>(*<arguments of method>), this would call the method\n
         """
         self.__map_record = map_record
+        self.__buffEffect = buffEffect
+        
         self.__def_items = [
             # LandscapeFeature
             LandscapeFeature("stream", {"sea": 0, "land": 12, "forest": 15, "beach": 0, \
@@ -446,10 +488,10 @@ class DefininedSys(): #
                 "low health point", ["increase health point", "increase maximum health point"], \
                     ["decrease health point", "decrease maximum health point"], -1, "", \
                         lambda player, mapInfo, events, worldStatus: player.get_hp() < 40), 
-                        PassivityEvents("", "survival crisis", \
-                "low health point", ["increase health point", "increase maximum health point"], \
-                    ["decrease health point", "decrease maximum health point"], -1, "", \
-                        lambda player, mapInfo, events, worldStatus: player.get_hp() < 40)
+                        PassivityEvents("", "survival crisis", "high thirst level", \
+                ["increase action point", "increase maximum action point", "remove thirsty status"], \
+                    ["decrease health point", "decrease maximum health point", "add thirsty status"], -1, "", \
+                        lambda player, mapInfo, events, worldStatus: player.get_thirst() < 40)
             ]
         }
         
@@ -468,11 +510,20 @@ class DefininedSys(): #
             "Rest": Actions("Rest", [(preDefinedCommands.rest, tuple())])
         }
         
+        self.__def_buff = { # TODO add end condition
+            "thirsty": Buff("thirsty", exe_function= self.__buffEffect.thirsty, \
+                exe_args= tuple(), timeLimit= -1, end_Function= self.__buffEffect.de_thirsty, \
+                    end_args=tuple()),
+            
+        }
+        
         self.__eventCommandMap = {
-            "increase action point": ("increase action point", "<random>"),
-            "decrease action point": ("decrease action point", "<random>"),
-            "increase maximum action point": ("increase maximum action point", "<random>"),
-            "decrease maximum action point": ("decrease maximum action point", "<random>")
+            "increase action point": ("increase action point", ("<random>",)),
+            "decrease action point": ("decrease action point", ("<random>",)),
+            "increase maximum action point": ("increase maximum action point", ("<random>",)),
+            "decrease maximum action point": ("decrease maximum action point", ("<random>",)),
+            "add thirsty status": ("add thirsty status", (self.__def_buff["thirsty"], "low")),
+            "remove thirsty status": ("remove thirsty status", ("thirsty",))
         }
         
         self.__commandTranslate = {
@@ -480,6 +531,8 @@ class DefininedSys(): #
             "decrease action point": preDefinedCommands.decrease_action_point,
             "increase maximum action point": preDefinedCommands.increase_maximum_action_point,
             "decrease maximum action point": preDefinedCommands.decrease_maximum_action_point,
+            "add thirsty status": self.__buffEffect.add_buff,
+            "remove thirsty status": self.__buffEffect.remove_buff
         }
         
         mapRule = MapPcgRule(map_record)
