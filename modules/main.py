@@ -6,20 +6,30 @@ import sys
 
 # from status_record import Location
 class rule_system():
-    def __init__(self, player : Player_status, map_info: Map_information, worldStatus: globalInfo) -> None:
+    def __init__(self, player : Player_status, map_info: Map_information, worldStatus: globalInfo, \
+        defininedContent: DefininedSys) -> None:
         self.__player = player
         self.__map_info = map_info
         self.__worldStatus = worldStatus
+        self.__defininedContent = defininedContent
         
     def buffHandler(self):
         buffs = self.__player.get_buffs()
         counter = 0
-        while counter < len(buffs):
-            buffs[counter].exe_function(*buffs[counter].exe_args)
-            buffs[counter].startTime += 1
-            if buffs[counter].timeLimit != -1 and buffs[counter].startTime >= buffs[counter].timeLimit:
-                buffs.pop(counter)
-                counter -= 1
+        buffName = buffs.keys()
+        while counter < len(buffName):
+            # dynamic_exe_args = [buffs[buffName[counter]].buff_name, buffs[buffName[counter]].timeLimit, buffs[buffName[counter]].startedTime]
+            # result_exe_args = tuple(dynamic_exe_args + list(buffs[buffName[counter]].exe_args))
+            
+            buffs[buffName[counter]].exe_function(*buffs[buffName[counter]].exe_args)
+            buffs[buffName[counter]].startedTime += 1
+            if buffs[buffName[counter]].timeLimit != -1 and \
+                buffs[buffName[counter]].startedTime >= buffs[buffName[counter]].timeLimit:
+                # result_end_args = tuple(dynamic_exe_args + list(buffs[buffName[counter]].end_args))
+                
+                buffs[buffName[counter]].end_Function(*buffs[buffName[counter]].end_args)
+                buffs.pop(buffName[counter])
+                # counter -= 1
             counter += 1
         
     def eachTurn_handler(self):
@@ -33,13 +43,23 @@ class rule_system():
             print("Game over.")
             sys.exit(0)
             
+        currentPlace = self.__map_info.currentLocation.location_name
+        terrainDict = self.__defininedContent.get_terrain_type()
+        mdLevelGradient = terrainDict[currentPlace].move_dLevel/ \
+            terrainDict[self.__worldStatus.lastPlace].move_dLevel
+            
+        self.__worldStatus.move_dLevel *= mdLevelGradient
+        self.__worldStatus.lastPlace = currentPlace
+            
         if self.__map_info.get_current_area_type() == 1:
-            self.__worldStatus.move_APCost = 5
+            # self.__worldStatus.move_APCost = 5
+            pass
         elif self.__map_info.get_current_area_type() == 0:
             if False:
                 pass
             else:
-                self.__worldStatus.move_APCost = 20 # determine the action point cost of each move
+                # self.__worldStatus.move_APCost = 20 # determine the action point cost of each move
+                pass
         
     def player_alive(self):
         return self.__player.get_hp() > 0

@@ -165,13 +165,28 @@ class Location():
 
 
 class Buff():
-    def __init__(self, buff_name: str, exe_function, exe_args: tuple, timeLimit:int = 0) -> None:
+    def __init__(self, buff_name: str, exe_function, exe_args: list, timeLimit: int, \
+        end_Function, end_args: list, trigerred_Condition = None, end_Condition = None) -> None:
+        
         self.buff_name = buff_name
         self.exe_function = exe_function
-        self.exe_args = exe_args
+        
+        self.end_Function = end_Function
         
         self.timeLimit = timeLimit
-        self.startTime = 0
+        self.startedTime = 0
+        
+        self.trigerred_Condition = trigerred_Condition
+        self.end_Condition = end_Condition
+        
+        self.level = 0
+        
+        self.exe_args = tuple([self] + exe_args)
+        self.end_args = tuple([self] + end_args)
+        
+        # a = lambda: (10>np.random.randint(0,20) and 5< np.random.randint(0,20))
+        
+        # dynamic_args = lambda self: (self.buff_name, self.timeLimit, self.startedTime)
 
 
 class Terrain_type():
@@ -196,7 +211,7 @@ class Player_status():
     def __init__(self, currentLocation:list[int,int] = [0,0], items:dict[str, list[Items]] = dict(), \
         hp: int = 100, maximum_hp: int = 100, maximum_action_point: int = 100, \
             action_point: int = 100, currentAction: Actions = None, cash:int = 0, \
-                buff:list[Buff] = [], thirst:int = 100, maximum_thirst:int = 100) -> None:
+                buff:dict[str, Buff] = dict(), thirst:int = 100, maximum_thirst:int = 100) -> None:
         """ `__currentLocation:` player coordinate [x,y]\n
             `items:` items in bag\n
             `action_point:` energy bar of player
@@ -271,10 +286,10 @@ class Player_status():
     def set_cash(self, newAmount: int) -> None:
         self.__cash = newAmount
         
-    def get_buffs(self) -> list[Buff]:
+    def get_buffs(self) -> dict[str, Buff]:
         return self.__buff
     
-    def set_buffs(self, newBuffs: list[Buff]) -> None:
+    def set_buffs(self, newBuffs: dict[str, Buff]) -> None:
         self.__buff = newBuffs
         
     def get_APrecovery(self) -> int:
@@ -390,5 +405,7 @@ class globalInfo():
         """
         self.move_APCost = 5
         self.directionKnown = False
-        self.move_dLevel = 1
+        self.move_dLevel: float = 1
+        self.action_dLevel: float = 1
         self.restPlace = True
+        self.lastPlace: str = None

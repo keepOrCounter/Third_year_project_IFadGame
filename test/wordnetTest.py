@@ -73,9 +73,10 @@ from nltk.tag.hunpos import HunposTagger
 _path_to_bin = home + '\\hunpos-1.0-win\\hunpos-tag.exe'
 _path_to_model = home + '\\hunpos-1.0-win\\english.model'
 ht = HunposTagger(path_to_model=_path_to_model, path_to_bin=_path_to_bin)
-text = "I move forward"
+text = "go north"
 def verbFinder(text):
     tagged_tokens = ht.tag(text.split())
+    print(tagged_tokens)
     for token, pos in tagged_tokens:
         pos = str(pos, 'utf-8')
         if pos[0].lower() == 'v':

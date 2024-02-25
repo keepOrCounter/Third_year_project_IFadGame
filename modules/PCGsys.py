@@ -423,13 +423,13 @@ class eventGenerator():
                 strCommand = triggeredList[x].possible_reward[result["reward"][y]]
                 
                 func, arg = self.__defininedContent.get_eventCommandMap()[strCommand]
-                self.__defininedContent.get_commandTranslate()[func](arg)
+                self.__defininedContent.get_commandTranslate()[func](*arg)
                 
             for y in range(len(result["penalty"])):
                 strCommand = triggeredList[x].possible_penalty[result["penalty"][y]]
                 
                 func, arg = self.__defininedContent.get_eventCommandMap()[strCommand]
-                self.__defininedContent.get_commandTranslate()[func](arg)
+                self.__defininedContent.get_commandTranslate()[func](*arg)
             
             if result["fail"] == True or result["successful"] == True:
                 self.__currentEvents.eventsTriggered.append(triggeredList.pop(x))
