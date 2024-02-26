@@ -163,6 +163,14 @@ class Commands():
         else:
             print("It seems that there is not such things around, even though you try to find one.")
             
+    def talk(self, action: Actions):
+        pass
+        
+    def attack(self, action: Actions):
+        pass
+    
+    def check(self, action: Actions):
+        pass
     
     def ActionCost(self, action: Actions):
         if action.actionName == "Move":
