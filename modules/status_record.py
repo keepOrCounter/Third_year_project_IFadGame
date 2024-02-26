@@ -3,7 +3,7 @@ import numpy as np
 # from interactionSys import OutputGenerator
 
 class Items():
-    def __init__(self, item_name: str, possibleWeight = {}, weight = 1):
+    def __init__(self, item_name: str, possibleWeight = {}, weight = 1, commandSuitable = "use"):
         """
             `item_name (str)`: name for player or gpt to recognized
             `possibleWeight (dict)`: possibility of showing up in different location, \
@@ -17,15 +17,17 @@ class Items():
         self.possibleWeight = possibleWeight
         self.weight = weight
         
+        self.commandSuitable = commandSuitable
+        
 class Food(Items):
     def __init__(self, item_name: str, possibleWeight: dict[str, int], weight : int, \
-        item_energy_recovery: int, eatable = True, freshness = -1, thirst = 0):
+        item_energy_recovery: int, eatable = True, freshness = -1, thirst = 0, commandSuitable = "eat"):
         """
             `item_energy_recovery (int)`: the amount of action point player can recovery when \
                 making consume this food
             `eatable (bool)`: Whether this food is safe for eat
         """
-        super().__init__(item_name, possibleWeight, weight)
+        super().__init__(item_name, possibleWeight, weight, commandSuitable)
         
         self.item_energy_recovery = item_energy_recovery
         self.eatable = eatable
@@ -33,15 +35,17 @@ class Food(Items):
         self.freshness = freshness
         self.thirst = thirst
         
+        self.commandSuitable = commandSuitable
+        
         self.category = "food"
         
 class Tool(Items):
     def __init__(self, item_name: str, possibleWeight=dict(), weight=1, \
-        durability = 1):
+        durability = 1, commandSuitable = "use"):
         """
             `durability (int)`: the turns number this tool can be used
         """
-        super().__init__(item_name, possibleWeight, weight)
+        super().__init__(item_name, possibleWeight, weight, commandSuitable)
         
         self.durability = durability
         
@@ -49,8 +53,8 @@ class Tool(Items):
         
 class LandscapeFeature(Items):
     def __init__(self, item_name: str, possibleWeight=dict(), weight=2**10, \
-        item_energy_recovery = 0, eatable=False, freshness = -1):
-        super().__init__(item_name, possibleWeight, weight)
+        item_energy_recovery = 0, eatable=False, freshness = -1, commandSuitable = "break"):
+        super().__init__(item_name, possibleWeight, weight, commandSuitable)
         
         self.item_energy_recovery = item_energy_recovery
         self.eatable = eatable
@@ -60,8 +64,8 @@ class LandscapeFeature(Items):
         
 class EnvironmentElement(Items):
     def __init__(self, item_name: str, possibleWeight=dict(), weight=2**10, \
-        item_energy_recovery = 0, eatable=False):
-        super().__init__(item_name, possibleWeight, weight)
+        item_energy_recovery = 0, eatable=False, commandSuitable = "collect"):
+        super().__init__(item_name, possibleWeight, weight, commandSuitable)
         
         self.item_energy_recovery = item_energy_recovery
         self.eatable = eatable
@@ -70,13 +74,13 @@ class EnvironmentElement(Items):
         
 class Transportation(Items):
     def __init__(self, item_name: str, possibleWeight=dict(), weight=2**10, \
-        suitablePlace = set(), APReduce = 1):
+        suitablePlace = set(), APReduce = 1, commandSuitable = "by"):
         """
             `suitablePlace (set)`: the place this transportation can be rod
             `APReduce (int)`: to what precentage of action point would be reduce \
                 when moving on a place, from 0 to 1
         """
-        super().__init__(item_name, possibleWeight, weight)
+        super().__init__(item_name, possibleWeight, weight, commandSuitable)
         
         self.suitablePlace = suitablePlace
         self.APReduce = APReduce
@@ -85,12 +89,12 @@ class Transportation(Items):
         
 class Weapon(Items):
     def __init__(self, item_name: str, possibleWeight=dict(), weight=1, \
-        attack = 0, durability = 1):
+        attack = 0, durability = 1, commandSuitable = "with"):
         """
             `durability (int)`: the turns number this tool can be used
             `attack (int)`: the hp value would reduce on target when player use this weapon
         """
-        super().__init__(item_name, possibleWeight, weight)
+        super().__init__(item_name, possibleWeight, weight, commandSuitable)
         
         self.durability = durability
         self.attack = attack
@@ -100,11 +104,11 @@ class Weapon(Items):
 
 class Container(Items):
     def __init__(self, item_name: str, possibleWeight=dict(), weight=1, \
-        capacity = 1):
+        capacity = 1, commandSuitable = "fill"):
         """
             `capacity (int)`: the turn number the liquide inside can be used
         """
-        super().__init__(item_name, possibleWeight, weight)
+        super().__init__(item_name, possibleWeight, weight, commandSuitable)
         
         self.capacity = capacity
         
@@ -149,13 +153,23 @@ class PassivityEvents(Events):
         self.triggered_condition = triggered_condition
 
 class Actions():
-    def __init__(self, actionName: str, command_executed: list[tuple]) -> None:
+    def __init__(self, actionName: str, command_executed: list, command_args: list[list], \
+        actionPointCost: int, thirstCost: int) -> None:
         """
             `actionName (str)`: related to player input
             `command_executed (list[tuple])`: a list of method and its arguments would be called when player make this action
+            `actionPointCost (int)`: basic action Point Cost on player
+            `thirstCost (int)`: basic reduce on player's thirst level
         """
         self.actionName = actionName
         self.command_executed = command_executed
+        
+        self.actionPointCost = actionPointCost
+        self.thirstCost = thirstCost
+        
+        self.command_args = []
+        for x in command_args:
+            self.command_args.append([self] + x)
         
 class Location():
     def __init__(self, location_name:str, x:int, y:int, objects:list[Items] = [], \
@@ -417,9 +431,12 @@ class globalInfo():
         `move_dLevel`: Difficulty of player move
         `restPlace`: Whether player can have a rest currently
         """
-        self.move_APCost = 5
+        # self.move_APCost = 5
         self.directionKnown = False
         self.move_dLevel: float = 1
         self.action_dLevel: float = 1
         self.restPlace = True
         self.lastPlace: str = None
+        
+        self.player_dangerAction = dict()
+        self.NPC_action_toPlayer = dict()

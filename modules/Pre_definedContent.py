@@ -30,7 +30,7 @@ class Commands():
         else:
             return valueProcessed[0]
         
-    def move(self, target) -> None:
+    def move(self, action: Actions, target) -> None:
         """
         Move to specific direction or target place
         """
@@ -47,10 +47,10 @@ class Commands():
         else:
             self.__player.set_currentLocation(*newTarget)
             
-        self.__player.set_action_point(self.__player.get_action_point() -\
-            self.__worldStatus.move_APCost * self.__worldStatus.move_dLevel)
+        # self.__player.set_action_point(self.__player.get_action_point() -\
+        #     action.actionPointCost * self.__worldStatus.move_dLevel)
         
-    def increase_action_point(self, value: int) -> None:
+    def increase_action_point(self, action: Actions, value: int) -> None:
         """
         Recovery action point
         """
@@ -59,7 +59,7 @@ class Commands():
         newValue = self.valueRetrieval(value)
         self.__player.set_action_point(self.__player.get_action_point() + newValue)
         
-    def decrease_action_point(self, value: int) -> None:
+    def decrease_action_point(self, action: Actions, value: int) -> None:
         """
         consume action point
         """
@@ -68,7 +68,7 @@ class Commands():
         newValue = self.valueRetrieval(value)
         self.__player.set_action_point(self.__player.get_action_point() - newValue)
         
-    def increase_hp(self, value: int) -> None:
+    def increase_hp(self, action: Actions, value: int) -> None:
         """
         Recovery health point
         """
@@ -77,7 +77,7 @@ class Commands():
         newValue = self.valueRetrieval(value)
         self.__player.set_hp(self.__player.get_hp() + newValue)
         
-    def decrease_hp(self, value: int) -> None:
+    def decrease_hp(self, action: Actions, value: int) -> None:
         """
         reduce health point
         """
@@ -86,7 +86,7 @@ class Commands():
         newValue = self.valueRetrieval(value)
         self.__player.set_hp(self.__player.get_hp() - newValue)
         
-    def add_items(self, items: list[Items]) -> None:
+    def add_items(self, action: Actions, items: list[Items]) -> None:
         """
         Add one or more items to player's package
         """
@@ -98,7 +98,7 @@ class Commands():
                 currentItems[x.item_name].append(copy.deepcopy(x))
         self.__player.set_items(currentItems)
         
-    def remove_items(self, items: dict[str, int]) -> None:
+    def remove_items(self, action: Actions, items: dict[str, int]) -> None:
         """
         Remove one or more items to player's package
         """
@@ -108,7 +108,7 @@ class Commands():
                 currentItems[x].pop()
         self.__player.set_items(currentItems)
         
-    def increase_maximum_action_point(self, value: int) -> None:
+    def increase_maximum_action_point(self, action: Actions, value: int) -> None:
         """
         Recovery action point
         """
@@ -117,7 +117,7 @@ class Commands():
         newValue = self.valueRetrieval(newValue)
         self.__player.set_maximum_action_point(self.__player.get_maximum_action_point() + newValue)
         
-    def decrease_maximum_action_point(self, value: int) -> None:
+    def decrease_maximum_action_point(self, action: Actions, value: int) -> None:
         """
         consume action point
         """
@@ -127,14 +127,54 @@ class Commands():
         self.__player.set_maximum_action_point(self.__player.get_maximum_action_point() - newValue)
     
     
-    def rest(self):
+    def rest(self, action: Actions):
         if self.__worldStatus.restPlace:
             self.increase_action_point(int(self.__player.get_APrecovery() / \
                 self.__worldStatus.move_dLevel))
             print("You seat down, and have a short nap")
         else:
             print("You cannot have a rest now.")
+            
+    def consume(self, action: Actions, items: Items):
+        items = self.valueRetrieval(items)
+        if items.category == "food":
+            self.__player.set_action_point(self.__player.get_action_point() +\
+                items.item_energy_recovery)
+            self.__player.set_thirst(int(self.__player.get_thirst() -\
+                items.thirst))
+            if not items.eatable:
+                if "<have uneatable food>" not in self.__worldStatus.player_dangerAction.keys():
+                    self.__worldStatus.player_dangerAction["<have uneatable food>"] = [items.item_name]
+                else:
+                    self.__worldStatus.player_dangerAction["<have uneatable food>"].append(items.item_name)
+            
+            print("You have your "+items.item_name+" and take a short break.")
+            
+    def pickUp(self, action: Actions, itemName: str, amount: int): # TODO process amount
+        itemName, amount = self.valueRetrieval(itemName, amount)
+        itemsList = []
+        for x in self.__map.currentLocation.objects:
+            if itemName == x.item_name:
+                itemsList.append(x)
+                break
+        if len(itemsList) > 0:
+            self.add_items(action, itemsList)
+            print("You pick up the "+itemName+" and drop it in your bag")
+        else:
+            print("It seems that there is not such things around, even though you try to find one.")
+            
     
+    def ActionCost(self, action: Actions):
+        if action.actionName == "Move":
+            self.__player.set_action_point(int(self.__player.get_action_point() -\
+                action.actionPointCost * self.__worldStatus.move_dLevel))
+            self.__player.set_thirst(int(self.__player.get_thirst() -\
+                action.thirstCost * self.__worldStatus.move_dLevel))
+        else:
+            self.__player.set_action_point(int(self.__player.get_action_point() -\
+                action.actionPointCost * self.__worldStatus.action_dLevel))
+            self.__player.set_thirst(int(self.__player.get_thirst() -\
+                action.thirstCost * self.__worldStatus.action_dLevel))
     
     
 class MapPcgRule():
@@ -337,13 +377,13 @@ class character_effectSys():
             currentBuffs.pop(buffName)
         
     def hp_recovery(self, buff: Buff, amount: int):
-        self.__preDefinedCommands.increase_hp(amount)
+        self.__preDefinedCommands.increase_hp(None, amount)
         
     def more_hp(self, buff: Buff, amount: int):
         self.__player.set_maximum_hp(self.__player.get_maximum_hp() + amount)
         
     def action_point_recovery(self, buff: Buff, amount: int):
-        self.__preDefinedCommands.increase_action_point(amount)
+        self.__preDefinedCommands.increase_action_point(None, amount)
         
     def more_ap(self, buff: Buff, amount):
         self.__player.set_maximum_action_point(self.__player.get_maximum_action_point() + amount)
@@ -439,10 +479,10 @@ class DefininedSys(): #
                 item_energy_recovery=30, eatable=True, freshness=29, thirst=20),
             Food("vegetable soup", {"sea": 0, "land": 0, "forest": 0, "beach": 0, "river": 0, \
                 "desert": 0, "mountain": 0, "highland snowfield": 0, "town": 0, "grassland": 0}, weight=5, \
-                item_energy_recovery=30, eatable=True, freshness=15, thirst=50),
+                item_energy_recovery=30, eatable=True, freshness=15, thirst=50, commandSuitable="have"),
             Food("stew", {"sea": 0, "land": 0, "forest": 0, "beach": 0, "river": 0, "desert": 0, \
                 "mountain": 0, "highland snowfield": 0, "town": 0, "grassland": 0}, weight=10, \
-                item_energy_recovery=50, eatable=True, freshness=15, thirst=30),
+                item_energy_recovery=50, eatable=True, freshness=15, thirst=30, commandSuitable="have"),
             
             # Item
             Items("wood", {"sea": 1, "land": 3, "forest": 20, "beach": 1, "river": 3, "desert": 0, \
@@ -503,11 +543,10 @@ class DefininedSys(): #
         # }
         
         self.__def_actions = {
-            "Move North": Actions("Move North", [(preDefinedCommands.move, ("North",))]),
-            "Move South": Actions("Move South", [(preDefinedCommands.move, ("South",))]),
-            "Move East": Actions("Move East", [(preDefinedCommands.move, ("East",))]),
-            "Move West": Actions("Move West", [(preDefinedCommands.move, ("West",))]),
-            "Rest": Actions("Rest", [(preDefinedCommands.rest, tuple())])
+            "Move": Actions("Move", [preDefinedCommands.move, preDefinedCommands.ActionCost], \
+                [[],[]], 10, 0),
+            "Rest": Actions("Rest", [preDefinedCommands.rest, preDefinedCommands.ActionCost], \
+                [[],[]], 0, 0)
         }
         
         self.__def_buff = { # TODO add end condition
