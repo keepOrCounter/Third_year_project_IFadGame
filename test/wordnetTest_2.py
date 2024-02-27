@@ -4,49 +4,44 @@ from nltk.tokenize import word_tokenize
 from nltk.tag import pos_tag
 import spacy
 
-# nlp = spacy.load("en_core_web_sm")
+nlp = spacy.load("en_core_web_sm")
 
-# def get_word_meaning_in_phrase(phrase, word):
-#     tokens = word_tokenize(phrase)
-#     doc = nlp(phrase)
-#     tagged_tokens = [(token.text, token.pos_) for token in doc]
+def get_word_meaning_in_phrase(phrase, word):
+    tokens = word_tokenize(phrase)
+    doc = nlp(phrase)
+    tagged_tokens = [(token.text, token.pos_) for token in doc]
+    return tagged_tokens
+    word_pos = None
+    for token, pos in tagged_tokens:
+        if token.lower() == word.lower():
+            word_pos = pos
+            break
 
-#     word_pos = None
-#     for token, pos in tagged_tokens:
-#         if token.lower() == word.lower():
-#             word_pos = pos
-#             break
+    if word_pos:
+        synsets = wordnet.synsets(word, pos=word_pos[0].lower())
 
-#     if word_pos:
-#         synsets = wordnet.synsets(word, pos=word_pos[0].lower())
+        if synsets:
+            return synsets
+        else:
+            return None
+    else:
+        return None
 
-#         if synsets:
-#             return synsets
-#         else:
-#             return None
-#     else:
-#         return None
+phrase = "find a number"
 
-# phrase = "have a remainder"
+# phrase = input()
 
-# doc = nlp(phrase)
-# tagged_tokens = [(token.text, token.pos_) for token in doc]
+def verbFinder(text):
+    doc = nlp(phrase)
+    tagged_tokens = [(token.text, token.pos_) for token in doc]
+    for token, pos in tagged_tokens:
+        if pos[0].lower() == 'v':
+            return token
+word = verbFinder(phrase)
 
-# print(tagged_tokens)
+synsets = get_word_meaning_in_phrase(phrase, word)
 
-# def verbFinder(text):
-#     doc = nlp(phrase)
-#     tagged_tokens = [(token.text, token.pos_) for token in doc]
-#     for token, pos in tagged_tokens:
-#         if pos[0].lower() == 'v':
-#             return token
-# word = "remainder"
-
-# synsets = get_word_meaning_in_phrase(phrase, word)
-
-# synsets = wordnet.synsets("move")
-
-# synonymsList = []
+synonymsList = []
 
 # for synset in synsets:
 #     for lemma in synset.lemmas():
@@ -55,17 +50,53 @@ import spacy
 # synonymsList = list(dict.fromkeys(synonymsList))
 # print(synonymsList)
 
-# def wordSynonyms(word):
-#     synsets = wordnet.synsets(word)
-#     synonymsList = []
-#     for synset in synsets:
-#         for lemma in synset.lemmas():
-#             synonymsList.append(lemma.name())
-#     print(f"\nSynonyms for '{word}':")
-#     synonymsList = list(dict.fromkeys(synonymsList))
-#     return synonymsList
+def wordSynonyms(word):
+    synsets = wordnet.synsets(word)
+    synonymsList = []
+    for synset in synsets:
+        for lemma in synset.lemmas():
+            synonymsList.append(lemma.name())
+    print(f"\nSynonyms for '{word}':")
+    synonymsList = list(dict.fromkeys(synonymsList))
+    return synonymsList
 
-# print(wordSynonyms("rest"))
+# print(wordSynonyms(word))
+def findNoun(phrase):
+    nounSet = set()
+    doc = nlp(phrase)
+    tagged_tokens = [(token.text, token.pos_) for token in doc]
+    for token, pos in tagged_tokens:
+        if pos.lower() == 'noun':
+            nounSet.add(token)
+    return nounSet
+
+print(findNoun(phrase))
+
+def grammarClassifier(phrase):
+    nounSet = set()
+    verbSet = set()
+    detSet = set()
+    doc = nlp(phrase)
+    tagged_tokens = [(token.text, token.pos_) for token in doc]
+    for token, pos in tagged_tokens:
+        if pos.lower() == 'noun':
+            nounSet.add(token)
+        elif pos.lower() == 'verb':
+            verbSet.add(token)
+        elif pos.lower() == 'det':
+            detSet.add(token)
+    grammarDict = {
+        "Noun list": nounSet,
+        "Verb list": verbSet,
+        "Determiner list": detSet
+    }
+
+    return grammarDict
+
+print(grammarClassifier(phrase))
+    
+
+
 
 # class action():
 #     def __init__(self, actionName: str, tag: [str]) -> None:
