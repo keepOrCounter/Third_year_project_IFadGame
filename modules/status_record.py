@@ -2,6 +2,17 @@ import numpy as np
 # from typing import Callable
 # from interactionSys import OutputGenerator
 
+class NPCs():
+    def __init__(self, NPC_name: str, age: int, character: str, gender: str, commandSuitable = "talk"):
+        self.NPC_name = NPC_name
+        self.category = "NPC"
+
+        self.age = age
+        self.character = character
+        self.gender = gender
+
+        self.commandSuitable = commandSuitable
+
 class Items():
     def __init__(self, item_name: str, possibleWeight = {}, weight = 1, commandSuitable = "use"):
         """
