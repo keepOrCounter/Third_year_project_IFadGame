@@ -552,9 +552,9 @@ class DefininedSys(): #
         
         self.__def_actions = {
             "Move": Actions("Move", [preDefinedCommands.move, preDefinedCommands.ActionCost], \
-                [[],[]], 10, 0),
+                [[],[]], 10, 0, ["move"]),
             "Rest": Actions("Rest", [preDefinedCommands.rest, preDefinedCommands.ActionCost], \
-                [[],[]], 0, 0)
+                [[],[]], 0, 0, ["rest"])
         }
         
         self.__def_buff = { # TODO add end condition

@@ -154,7 +154,7 @@ class PassivityEvents(Events):
 
 class Actions():
     def __init__(self, actionName: str, command_executed: list, command_args: list[list], \
-        actionPointCost: int, thirstCost: int) -> None:
+        actionPointCost: int, thirstCost: int, tag: list[str]) -> None:
         """
             `actionName (str)`: related to player input
             `command_executed (list[tuple])`: a list of method and its arguments would be called when player make this action
@@ -166,6 +166,8 @@ class Actions():
         
         self.actionPointCost = actionPointCost
         self.thirstCost = thirstCost
+
+        self.tag = tag
         
         self.command_args = []
         for x in command_args:
