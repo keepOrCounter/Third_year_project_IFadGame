@@ -358,8 +358,8 @@ class eventGenerator():
         return generateResult
     
     
-    def event_triger(self) -> Events:
-        triggered_event: Events = None
+    def event_triger(self) -> list[Events]:
+        result = []
         passivity_eventList = self.__currentEvents.UnTriggered_passivity_events
         for x in range(len(passivity_eventList)):
             if passivity_eventList[x].triggered_condition(self.__player, self.__map_info, \
@@ -368,6 +368,7 @@ class eventGenerator():
             #     self.__currentEvents.triggeredType["survival crisis"]["action point"]:
 
                 # passivity_eventList[x].triggered = True
+                triggered_event: Events = None
                 triggered_event = copy.deepcopy(passivity_eventList[x])
                 self.__currentEvents.eventsHappening.append(passivity_eventList.pop(x))
 
@@ -383,6 +384,7 @@ class eventGenerator():
                     state = "normal"
                 triggered_event.play_current_status = state
                 triggered_event.description = self.__map_info.currentLocation.description
+                result.append(triggered_event)
         counter = 0
         triggeredList = self.__currentEvents.eventsTriggered
         while counter < len(triggeredList):
@@ -398,7 +400,7 @@ class eventGenerator():
             
         # if triggered_event != None:
         #     self.__currentEvents.eventsHappening.append(triggered_event)
-        return triggered_event
+        return result
     
     def event_handler(self):
         """

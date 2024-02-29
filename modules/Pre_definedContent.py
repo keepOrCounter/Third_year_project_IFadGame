@@ -22,6 +22,10 @@ class Commands():
         for x in value:
             if x == "<random>":
                 valueProcessed.append(random.randint(0, 5))
+            elif x == "<median random>":
+                valueProcessed.append(random.randint(6, 10))
+            elif x == "<high random>":
+                valueProcessed.append(random.randint(11, 20))
             else:
                 valueProcessed.append(x)
         
@@ -59,7 +63,7 @@ class Commands():
         newValue = self.valueRetrieval(value)
         self.__player.set_action_point(self.__player.get_action_point() + newValue)
         
-    def decrease_action_point(self, action: Actions, value: int) -> None:
+    def decrease_action_point(self, _, value: int) -> None:
         """
         consume action point
         """
@@ -68,7 +72,7 @@ class Commands():
         newValue = self.valueRetrieval(value)
         self.__player.set_action_point(self.__player.get_action_point() - newValue)
         
-    def increase_hp(self, action: Actions, value: int) -> None:
+    def increase_hp(self, _, value: int) -> None:
         """
         Recovery health point
         """
@@ -77,7 +81,7 @@ class Commands():
         newValue = self.valueRetrieval(value)
         self.__player.set_hp(self.__player.get_hp() + newValue)
         
-    def decrease_hp(self, action: Actions, value: int) -> None:
+    def decrease_hp(self, _, value: int) -> None:
         """
         reduce health point
         """
@@ -143,23 +147,26 @@ class Commands():
             self.__player.set_thirst(int(self.__player.get_thirst() -\
                 items.thirst))
             if not items.eatable:
-                if "<have uneatable food>" not in self.__worldStatus.player_dangerAction.keys():
-                    self.__worldStatus.player_dangerAction["<have uneatable food>"] = [items.item_name]
+                if "have uneatable food" not in self.__worldStatus.player_dangerAction.keys():
+                    self.__worldStatus.player_dangerAction["have uneatable food"] = [items.item_name]
                 else:
-                    self.__worldStatus.player_dangerAction["<have uneatable food>"].append(items.item_name)
+                    self.__worldStatus.player_dangerAction["have uneatable food"].append(items.item_name)
             
             print("You have your "+items.item_name+" and take a short break.")
             
     def pickUp(self, action: Actions, itemName: str, amount: int): # TODO process amount
         itemName, amount = self.valueRetrieval(itemName, amount)
         itemsList = []
+        count = 0
         for x in self.__map.currentLocation.objects:
             if itemName == x.item_name:
                 itemsList.append(x)
-                break
+                count += 1
+                if count >= amount:
+                    break
         if len(itemsList) > 0:
             self.add_items(action, itemsList)
-            print("You pick up the "+itemName+" and drop it in your bag")
+            print("You pick up "+str(count)+" "+itemName+" and drop them in your bag")
         else:
             print("It seems that there is not such things around, even though you try to find one.")
             
@@ -170,7 +177,11 @@ class Commands():
         pass
     
     def check(self, action: Actions):
-        pass
+        self.__player.get_action_point()
+        self.__player.get_hp()
+        self.__player.get_cash()
+        self.__player.get_items()
+        # TODO pass information to gpt to descript current infomation
     
     def ActionCost(self, action: Actions):
         if action.actionName == "Move":
@@ -413,6 +424,20 @@ class character_effectSys():
         elif buff.level == 3:
             self.__worldStatus.action_dLevel /= 2
             
+            
+    def poisoning(self, buff: Buff):
+        if buff.level == 1:
+            self.__preDefinedCommands.decrease_action_point(None, "<random>")
+            self.__preDefinedCommands.decrease_hp(None, "<random>")
+        elif buff.level == 2:
+            self.__preDefinedCommands.decrease_action_point(None, "<median random>")
+            self.__preDefinedCommands.decrease_hp(None, "<median random>")
+        elif buff.level == 3:
+            self.__preDefinedCommands.decrease_action_point(None, "<high random>")
+            self.__preDefinedCommands.decrease_hp(None, "<high random>")
+            
+    def emptyFunc(self, _):
+        pass
     
 
 class DefininedSys(): # 
@@ -513,19 +538,6 @@ class DefininedSys(): #
                 "desert": 0, "mountain": 0, "highland snowfield": 0, "town": 0, "grassland": 0}, weight=3),
         ]
 
-        # """
-        # fun1
-        # """
-        
-        # self.__def_events = [
-        #     Events("init_reward", [(preDefinedCommands.equalTo, (player.get_currentLocation(), (0,0)))], \
-        #         [(preDefinedCommands.add_items, (None, random.choice, (self.__def_items, )))])
-        # ]
-        
-        # self.__def_events = [
-        #     PassivityEvents("init_reward", [(preDefinedCommands.equalTo, (player.get_currentLocation(), (0,0)))], \
-        #         [(preDefinedCommands.add_items, (None, random.choice, (self.__def_items, )))])
-        # ]
         
         self.__pre_def_events_frameWork = {
             "survival crisis": [PassivityEvents("", "survival crisis", \
@@ -538,8 +550,12 @@ class DefininedSys(): #
                         lambda player, mapInfo, events, worldStatus: player.get_hp() < 40), 
                         PassivityEvents("", "survival crisis", "high thirst level", \
                 ["increase action point", "increase maximum action point", "remove thirsty status"], \
-                    ["decrease health point", "decrease maximum health point", "add thirsty status"], -1, "", \
-                        lambda player, mapInfo, events, worldStatus: player.get_thirst() < 40)
+                    ["decrease action point", "decrease maximum action point", "add thirsty status(low)", "upgrade thirsty status"], -1, "", \
+                        lambda player, mapInfo, events, worldStatus: player.get_thirst() < 40),
+                        PassivityEvents("", "survival crisis", lambda player, mapInfo, events, worldStatus: "have uneatable food" + str(worldStatus.player_dangerAction["have uneatable food"]), \
+                ["increase action point", "increase maximum action point", "remove thirsty status"], \
+                    ["decrease health point", "add potential poisoning status", "add thirsty status(low)", "upgrade poisoning status"], 5, "", \
+                        lambda player, mapInfo, events, worldStatus: "have uneatable food" in worldStatus.player_dangerAction.keys())
             ]
         }
         
@@ -561,7 +577,9 @@ class DefininedSys(): #
             "thirsty": Buff("thirsty", exe_function= self.__buffEffect.thirsty, \
                 exe_args= list(), timeLimit= -1, end_Function= self.__buffEffect.de_thirsty, \
                     end_args=list()),
-            
+            "poisoning": Buff("poisoning", exe_function= self.__buffEffect.poisoning, \
+                exe_args= list(), timeLimit= 5, end_Function= self.__buffEffect.emptyFunc, \
+                    end_args=list())
         }
         
         self.__eventCommandMap = {
@@ -569,8 +587,17 @@ class DefininedSys(): #
             "decrease action point": ("decrease action point", ("<random>",)),
             "increase maximum action point": ("increase maximum action point", ("<random>",)),
             "decrease maximum action point": ("decrease maximum action point", ("<random>",)),
-            "add thirsty status": ("add thirsty status", (self.__def_buff["thirsty"], "low")),
-            "remove thirsty status": ("remove thirsty status", ("thirsty",))
+            "add thirsty status(low)": ("add buff", (self.__def_buff["thirsty"], "low")),
+            "add thirsty status(median)": ("add buff", (self.__def_buff["thirsty"], "median")),
+            "add thirsty status(high)": ("add buff", (self.__def_buff["thirsty"], "high")),
+            "upgrade thirsty status": ("upgrade buff" , ("thirsty", )), 
+            "remove thirsty status": ("remove buff", ("thirsty",)),
+            "add potential poisoning status": ("add buff", (self.__def_buff["poisoning"], "potential")),
+            "add poisoning status(low)": ("add buff", (self.__def_buff["poisoning"], "low")),
+            "add poisoning status(median)": ("add buff", (self.__def_buff["poisoning"], "median")),
+            "add poisoning status(high)": ("add buff", (self.__def_buff["poisoning"], "high")),
+            "upgrade poisoning status": ("upgrade buff" , ("poisoning", )), 
+            "remove poisoning status": ("remove buff", ("poisoning",)),
         }
         
         self.__commandTranslate = {
@@ -578,8 +605,9 @@ class DefininedSys(): #
             "decrease action point": preDefinedCommands.decrease_action_point,
             "increase maximum action point": preDefinedCommands.increase_maximum_action_point,
             "decrease maximum action point": preDefinedCommands.decrease_maximum_action_point,
-            "add thirsty status": self.__buffEffect.add_buff,
-            "remove thirsty status": self.__buffEffect.remove_buff
+            "add buff": self.__buffEffect.add_buff,
+            "remove buff": self.__buffEffect.remove_buff,
+            "upgrade buff": self.__buffEffect.upgrade_buff,
         }
         
         mapRule = MapPcgRule(map_record)

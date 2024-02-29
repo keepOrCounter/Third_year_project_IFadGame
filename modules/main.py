@@ -20,7 +20,7 @@ class rule_system():
         while counter < len(buffName):
             # dynamic_exe_args = [buffs[buffName[counter]].buff_name, buffs[buffName[counter]].timeLimit, buffs[buffName[counter]].startedTime]
             # result_exe_args = tuple(dynamic_exe_args + list(buffs[buffName[counter]].exe_args))
-            
+            # TODO add end condition
             buffs[buffName[counter]].exe_function(*buffs[buffName[counter]].exe_args)
             buffs[buffName[counter]].startedTime += 1
             if buffs[buffName[counter]].timeLimit != -1 and \

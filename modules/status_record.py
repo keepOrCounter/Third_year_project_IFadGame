@@ -149,7 +149,7 @@ class Events():
         # self.gpt_required = gpt_required
         
 class PassivityEvents(Events):
-    def __init__(self, eventName: str, eventType: str, triggered_reason: str, \
+    def __init__(self, eventName: str, eventType: str, triggered_reason, \
         possible_reward: list, possible_penalty: list, time_limit: int, description: str, \
             triggered_condition) -> None:
         """
