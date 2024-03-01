@@ -453,3 +453,5 @@ class globalInfo():
         
         self.player_dangerAction = dict()
         self.NPC_action_toPlayer = dict()
+        
+        self.current_description: dict[str, str] = dict()

@@ -153,8 +153,9 @@ class Commands():
                     self.__worldStatus.player_dangerAction["have uneatable food"].append(items.item_name)
             
             print("You have your "+items.item_name+" and take a short break.")
+            # TODO pass information to gpt to descript current player feeling
             
-    def pickUp(self, action: Actions, itemName: str, amount: int): # TODO process amount
+    def pickUp(self, action: Actions, itemName: str, amount: int): # TODO process weight
         itemName, amount = self.valueRetrieval(itemName, amount)
         itemsList = []
         count = 0
@@ -176,11 +177,12 @@ class Commands():
     def attack(self, action: Actions):
         pass
     
-    def check(self, action: Actions):
-        self.__player.get_action_point()
-        self.__player.get_hp()
-        self.__player.get_cash()
-        self.__player.get_items()
+    def check(self, action: Actions, target):
+        # self.__player.get_action_point()
+        # self.__player.get_hp()
+        # self.__player.get_cash()
+        # self.__player.get_items()
+        pass
         # TODO pass information to gpt to descript current infomation
     
     def ActionCost(self, action: Actions):
@@ -552,7 +554,7 @@ class DefininedSys(): #
                 ["increase action point", "increase maximum action point", "remove thirsty status"], \
                     ["decrease action point", "decrease maximum action point", "add thirsty status(low)", "upgrade thirsty status"], -1, "", \
                         lambda player, mapInfo, events, worldStatus: player.get_thirst() < 40),
-                        PassivityEvents("", "survival crisis", lambda player, mapInfo, events, worldStatus: "have uneatable food" + str(worldStatus.player_dangerAction["have uneatable food"]), \
+                        PassivityEvents("", "survival crisis", lambda player, mapInfo, events, worldStatus: "consume uneatable food" + str(worldStatus.player_dangerAction["have uneatable food"]), \
                 ["increase action point", "increase maximum action point", "remove thirsty status"], \
                     ["decrease health point", "add potential poisoning status", "add thirsty status(low)", "upgrade poisoning status"], 5, "", \
                         lambda player, mapInfo, events, worldStatus: "have uneatable food" in worldStatus.player_dangerAction.keys())

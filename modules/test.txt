@@ -183,4 +183,61 @@ There are some traps scattered around here, perhaps left by previous adventurers
 {'event_name': 'feeling exhausted', 'event type': 'survival crisis', 'triggered reason': 'low action point', 'player current status': 'normal', 'player action': 'Have a rest', 'times up': False, 'possible reward': ['increase action point', 'increase maximum action point'], 'possible penalty': ['decrease action point', 'decrease maximum action point'], 'event description': 'You stand on a vast expanse of land, surrounded by endless stretches of earth in every direction. The landscape is dotted with scattered rocks, creating a rugged and desolate atmosphere. As you survey your surroundings, a wave of exhaustion washes over you, weighing down your every step. The physical strain of your journey begins to take its toll, leaving you yearning for a moment of respite.'}
 
 
-You are an item generator for an RPG game, and you now need to update the content in dictionary in following list of object(which is the second parameter in for each object), this parameter is <the possibility of this item can be picked up(if the item is human processed, please set all the possibility into 0 or 1 like the bread in following examples): sea, land, forest and beach, in dictionary form, each possibility is between 0-20>, but now it only contains 4 terrian types, and you need to update the possibilities of following terrian types: [sea, land, river, forest, beach, desert, mountain, highland snowfield, town, grassland] and add these new possibilities as above requirement(i.e. the content in <>).
+You are writing the game description for a text-based adventure game program, you will receive a game details from game program like this in form of json:
+{
+	"player_information":{
+		"HP": "100/100",
+		"AP": "100/100",
+		"player_current_status": "normal",
+		"thirst_level": "90/100",
+		"player_current_action": "consumed 2 bread",
+	},
+	"environment_information": {
+		"Current location": "End Of Road",
+		"Front": "brick building",
+		"Back": "Forest",
+		"Right hand side": "Forest",
+		"Left hand side": "Forest",
+		"Landscape Features": ["small stream"],
+		"Items": ["keyA", "keyB", "keyC"]
+	}
+	"information_need_to_be_desctipt": {
+		"player_current_action": "have 2 bread",
+		"used/comsumed_items/consumable_detial":{
+			"items_name": ["bread", "bread"],
+			"weight": [1, 1],
+			"item_energy_recovery": [15, 15],
+			"freshness": [-5, -30],
+			"eatable": [false, false],
+			"thirst": [-20, -20]
+		}
+		"description_target": "player current feeling"
+	}
+}, you need to write the description for "description_target" with the details in "information_need_to_be_desctipt" and the basic information given in other two keys. Here is the expected result according to above example:
+{
+	"things_occured": "comsumed uneatable bread",
+	"description": "You are trying to have two slices of stale bread. The bread is dry and hard, its texture reminiscent of chewing on ancient parchment. Its taste is a blend of mustiness and decay, assaulting your palate with a bitter, stale flavor that lingers uncomfortably on your tongue. Your stomach churns uncomfortably, protesting against the foreign and indigestible substance. "
+}
+
+{
+	"player_information":{
+		"HP": "100/100",
+		"AP": "100/100",
+		"player_current_status": "normal",
+		"thirst_satisfied_level": "90/100",
+		"player_current_action": "check all",
+	},
+	"environment_information": {
+		"Current location": "End Of Road",
+		"Front": "brick building",
+		"Back": "Forest",
+		"Right hand side": "Forest",
+		"Left hand side": "Forest",
+		"Landscape Features": ["small stream"],
+		"Items": ["keyA", "keyB", "keyC"]
+	}
+	"information_need_to_be_desctipt": {
+		"player_current_action": "check all",
+		"description_target": ["player_information", "environment_information"]
+	}
+}

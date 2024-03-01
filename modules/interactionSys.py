@@ -55,7 +55,7 @@ class OutputGenerator():
         self.__locationDiscriptionSysRole = """You are writing a description about current location \
 player is at for a text-based adventure game program, you will receive a game details from game \
 program like this "{Current location: End Of Road, Front: brick building, Back: Forest, \
-Right hand side: Forest, Left hand side: Forest, Landscape Features: [flat ground, small stream], \
+Right hand side: Forest, Left hand side: Forest, Landscape Features: [small stream], \
 Items: [keyA, keyB, keyC]}". Here is the example of expected result: "
 End Of Road
 You are standing at the end of a road before a small brick building. Around you is a forest. A small stream flows out of the building and down a gully. 
@@ -151,6 +151,41 @@ Please note that the production of food must be logical. Here are some expected 
 	"thirst": -10
 }"""
     
+        self.__generalized_promt = """You are writing the game description for a text-based adventure game program, you will receive a game details from game program like this in form of json:
+{
+	"player_information":{
+		"HP": "100/100",
+		"AP": "100/100",
+		"player_current_status": "normal",
+		"thirst_level": "90/100",
+		"player_current_action": "consumed 2 bread",
+	},
+	"environment_information": {
+		"Current location": "End Of Road",
+		"Front": "brick building",
+		"Back": "Forest",
+		"Right hand side": "Forest",
+		"Left hand side": "Forest",
+		"Landscape Features": ["small stream"],
+		"Items": ["keyA", "keyB", "keyC"]
+	}
+	"information_need_to_be_desctipt": {
+		"player_current_action": "have 2 bread",
+		"used/comsumed_items/consumable_detial":{
+			"items_name": ["bread", "bread"],
+			"weight": [1, 1],
+			"item_energy_recovery": [15, 15],
+			"freshness": [-5, -30],
+			"eatable": [false, false],
+			"thirst": [-20, -20]
+		}
+		"description_target": "player current feeling"
+	}
+}, you need to write the description for "description_target" with the details in "information_need_to_be_desctipt" and the basic information given in other two keys. Please note that all the information should only be implicit in natural language(i.e. no explicit game value or number appear in output) Here is the expected result according to above example:
+{
+	"title_of_description": "comsumed uneatable bread",
+	"description": "You are trying to have two slices of stale bread. The bread is dry and hard, its texture reminiscent of chewing on ancient parchment. Its taste is a blend of mustiness and decay, assaulting your palate with a bitter, stale flavor that lingers uncomfortably on your tongue. Your stomach churns uncomfortably, protesting against the foreign and indigestible substance. "
+}""" # TODO improve this prompt
     
     def locationDescription(self, locationList: dict[str, Location]) -> None:
         """
@@ -237,6 +272,33 @@ Please note that the production of food must be logical. Here are some expected 
             result["item_energy_recovery"], result["edible"], result["freshness"], result["thirst"])
         
         return foodGenerated
+    
+    def generalDescription(self, target) -> None:
+        """
+        Args:
+            `locationList (dict[str, Location])`: {current: <Location>, Front: \
+                <Location>, Back: <Location>, Right hand side: <Location>, \
+                    Left hand side: <Location>}
+        """
+        inputDictionary = {"player_information": vars(self.__playerStatus), \
+            "environment_information": vars(self.__mapInfo.currentLocation), "information_need_to_be_desctipt": 
+                vars(target)}
+        # for current_object in locationList["Current location"].objects:
+        #     if current_object.category not in inputDictionary.keys():
+        #         inputDictionary[current_object.category] = [current_object.item_name]
+        #     else:
+        #         inputDictionary[current_object.category].append(current_object.item_name)
+        
+        # inquiry = str(inputDictionary)
+        # # print(inquiry)
+        # print("=======================================\n")
+        # gpt_response = self.__gptAPI.inquiry(inquiry, self.__locationDiscriptionSysRole)
+        # # print(gpt_response)
+        # self.__OuterData.inquery_response_log_recorder(self.__locationDiscriptionSysRole, inquiry, gpt_response)
+        
+        # # result = json.loads(gpt_response, strict=False)
+        
+        # locationList["Current location"].description = gpt_response
     
 class InputTranslator():
     def __init__(self, gptAPI: Gpt3, playerStatus: Player_status, mapInfo: Map_information, \

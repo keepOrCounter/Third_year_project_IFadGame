@@ -76,7 +76,22 @@
 # a.fu(*a.T)
 # a.buff_name *= 10
 # a.fu(*a.T)
-a = {"1":3, "2":13,"3":-3,"4":63,"5":10}
-print(list(a.values()))
+# a = {"1":3, "2":13,"3":-3,"4":63,"5":10}
+# print(list(a.values()))
 # a.pop("2")
 # print(a)
+class MyClass:
+    def __init__(self):
+        self.attr1 = 1
+        self.attr2 = 2
+        self.attr3 = 3
+
+obj = MyClass()
+
+# 使用 vars() 函数获取对象的属性字典
+attributes = vars(obj)
+print(type(attributes))
+for attribute, value in attributes.items():
+    print(attribute, '=', value)
+
+print(str(attributes))
