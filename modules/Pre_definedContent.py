@@ -184,8 +184,20 @@ class Commands():
     def talk(self, action: Actions):
         pass
         
-    def attack(self, action: Actions):
-        pass
+    def attack(self, action: Actions, target, item: Items = None):
+        if item == None:
+            target.set_hp(target.get_hp() - random.randint(0, 5))
+            self.__worldStatus.current_description["attack"] = \
+                "You give a punch at " + target.get_name()
+        else:
+            if item.category == "weapon":
+                target.set_hp(target.get_hp() - random.randint(0, 5 + item.attack*item.weight))
+            else:
+                target.set_hp(target.get_hp() - random.randint(0, 5 + item.weight))
+            action.actionPointCost += item.weight
+            self.__worldStatus.current_description["attack with " + item.item_name] = \
+                "You attack " + target.get_name() + " with " + item.item_name
+        # TODO add different output for different level of attack
     
     def check(self, action: Actions, target):
         # if target == "myself":
