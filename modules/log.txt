@@ -4301,3 +4301,138 @@ response by gpt3.5-turbo:
 River
 You are currently standing by a tranquil river, surrounded by water on all sides. The gentle sound of flowing water fills the air. You notice some food items nearby, including berries and raw fish. There is also a seed lying on the ground.
 ////////////////////////////////////////////////////
+[Sun Mar  3 15:51:46 2024]
+systemRole: 
+You are writing a description about current location player is at for a text-based adventure game program, you will receive a game details from game program like this "{Current location: End Of Road, Front: brick building, Back: Forest, Right hand side: Forest, Left hand side: Forest, Landscape Features: [small stream], Items: [keyA, keyB, keyC]}". Here is the example of expected result: "
+End Of Road
+You are standing at the end of a road before a small brick building. Around you is a forest. A small stream flows out of the building and down a gully. 
+There are some keys on the ground here." 
+
+inquiry: 
+{'Current location': 'river', 'Front': 'river', 'Back': 'river', 'Right hand side': 'river', 'Left hand side': 'river', 'item': ['stick'], 'tool': ['traps']}
+
+response by gpt3.5-turbo: 
+River
+You are currently standing in the middle of a river, surrounded by water on all sides. The gentle sound of flowing water can be heard all around you. 
+There is a stick lying on the riverbed here. You also notice some traps nearby, ready to be used.
+////////////////////////////////////////////////////
+[Sun Mar  3 15:58:51 2024]
+systemRole: 
+You are writing a description about current location player is at for a text-based adventure game program, you will receive a game details from game program like this "{Current location: End Of Road, Front: brick building, Back: Forest, Right hand side: Forest, Left hand side: Forest, Landscape Features: [small stream], Items: [keyA, keyB, keyC]}". Here is the example of expected result: "
+End Of Road
+You are standing at the end of a road before a small brick building. Around you is a forest. A small stream flows out of the building and down a gully. 
+There are some keys on the ground here." 
+
+inquiry: 
+{'Current location': 'land', 'Front': 'beach', 'Back': 'beach', 'Right hand side': 'beach', 'Left hand side': 'beach', 'landscape feature': ['aloe vera', 'grass', 'grass']}
+
+response by gpt3.5-turbo: 
+You are currently at a place called Land. 
+You find yourself surrounded by a beach on all sides - in front of you, behind you, to your right, and to your left. 
+The landscape features include aloe vera plants, and patches of grass scattered around.
+////////////////////////////////////////////////////
+[Sun Mar  3 16:00:38 2024]
+systemRole: 
+You are writing a description about current location player is at for a text-based adventure game program, you will receive a game details from game program like this "{Current location: End Of Road, Front: brick building, Back: Forest, Right hand side: Forest, Left hand side: Forest, Landscape Features: [small stream], Items: [keyA, keyB, keyC]}". Here is the example of expected result: "
+End Of Road
+You are standing at the end of a road before a small brick building. Around you is a forest. A small stream flows out of the building and down a gully. 
+There are some keys on the ground here." 
+
+inquiry: 
+{'Current location': 'river', 'Front': 'river', 'Back': 'river', 'Right hand side': 'river', 'Left hand side': 'river', 'transportation': ['boat'], 'food': ['raw fish']}
+
+response by gpt3.5-turbo: 
+You are currently at the river. The river stretches out in front, behind, to the right, and to the left of you. You have a boat that can help you navigate the river. You also have some raw fish for food.
+////////////////////////////////////////////////////
+[Sun Mar  3 16:05:35 2024]
+systemRole: 
+You are writing a description about current location player is at for a text-based adventure game program, you will receive a game details from game program like this "{Current location: End Of Road, Front: brick building, Back: Forest, Right hand side: Forest, Left hand side: Forest, Landscape Features: [small stream], Items: [keyA, keyB, keyC]}". Here is the example of expected result: "
+End Of Road
+You are standing at the end of a road before a small brick building. Around you is a forest. A small stream flows out of the building and down a gully. 
+There are some keys on the ground here." 
+
+inquiry: 
+{'Current location': 'land', 'Front': 'land', 'Back': 'river', 'Right hand side': 'river', 'Left hand side': 'land', 'landscape feature': ['aloe vera'], 'item': ['rock', 'seed']}
+
+response by gpt3.5-turbo: 
+You are currently at a piece of land surrounded by a river on the back and right-hand side, with more land on the left-hand side. The landscape features an aloe vera plant. 
+There are some rocks and seeds scattered on the ground here.
+////////////////////////////////////////////////////
+[Sun Mar  3 16:17:32 2024]
+systemRole: 
+You are writing a description about current location player is at for a text-based adventure game program, you will receive a game details from game program like this "{Current location: End Of Road, Front: brick building, Back: Forest, Right hand side: Forest, Left hand side: Forest, Landscape Features: [small stream], Items: [keyA, keyB, keyC]}". Here is the example of expected result: "
+End Of Road
+You are standing at the end of a road before a small brick building. Around you is a forest. A small stream flows out of the building and down a gully. 
+There are some keys on the ground here." 
+
+inquiry: 
+{'Current location': 'river', 'Front': 'river', 'Back': 'river', 'Right hand side': 'river', 'Left hand side': 'river', 'item': ['rock']}
+
+response by gpt3.5-turbo: 
+River
+You are currently standing in the middle of a river. The water flows gently around you in all directions. The riverbanks are lined with trees and bushes. 
+There is a rock lying on the riverbed.
+////////////////////////////////////////////////////
+[Sun Mar  3 16:19:52 2024]
+systemRole: 
+You are writing a description about current location player is at for a text-based adventure game program, you will receive a game details from game program like this "{Current location: End Of Road, Front: brick building, Back: Forest, Right hand side: Forest, Left hand side: Forest, Landscape Features: [small stream], Items: [keyA, keyB, keyC]}". Here is the example of expected result: "
+End Of Road
+You are standing at the end of a road before a small brick building. Around you is a forest. A small stream flows out of the building and down a gully. 
+There are some keys on the ground here." 
+
+inquiry: 
+{'Current location': 'land', 'Front': 'beach', 'Back': 'land', 'Right hand side': 'town', 'Left hand side': 'beach', 'tool': ['weapon crafting bench']}
+
+response by gpt3.5-turbo: 
+You are currently at the land
+You are standing on a stretch of land with a beach in front of you and another beach on your left side. To your right, you see a town in the distance. 
+There is a weapon crafting bench here.
+////////////////////////////////////////////////////
+[Sun Mar  3 16:22:45 2024]
+systemRole: 
+You are writing a description about current location player is at for a text-based adventure game program, you will receive a game details from game program like this "{Current location: End Of Road, Front: brick building, Back: Forest, Right hand side: Forest, Left hand side: Forest, Landscape Features: [small stream], Items: [keyA, keyB, keyC]}". Here is the example of expected result: "
+End Of Road
+You are standing at the end of a road before a small brick building. Around you is a forest. A small stream flows out of the building and down a gully. 
+There are some keys on the ground here." 
+
+inquiry: 
+{'Current location': 'river', 'Front': 'river', 'Back': 'river', 'Right hand side': 'river', 'Left hand side': 'river', 'food': ['raw venison']}
+
+response by gpt3.5-turbo: 
+River
+You are currently standing in the middle of a serene river. The water flows gently around you in all directions, creating a peaceful atmosphere. The surrounding area is lush with greenery, and the sound of birds chirping can be heard in the distance. 
+You notice some raw venison lying nearby.
+////////////////////////////////////////////////////
+[Sun Mar  3 16:25:40 2024]
+systemRole: 
+You are writing a description about current location player is at for a text-based adventure game program, you will receive a game details from game program like this "{Current location: End Of Road, Front: brick building, Back: Forest, Right hand side: Forest, Left hand side: Forest, Landscape Features: [small stream], Items: [keyA, keyB, keyC]}". Here is the example of expected result: "
+End Of Road
+You are standing at the end of a road before a small brick building. Around you is a forest. A small stream flows out of the building and down a gully. 
+There are some keys on the ground here." 
+
+inquiry: 
+{'Current location': 'river', 'Front': 'river', 'Back': 'beach', 'Right hand side': 'river', 'Left hand side': 'land', 'food': ['berry']}
+
+response by gpt3.5-turbo: 
+River
+
+You are currently standing by the river, with the water gently flowing in front of you. Behind you is a sandy beach where the river meets the land. To your right and left are more stretches of the river and the nearby land respectively. 
+
+You notice some berries nearby, perhaps you could use them for sustenance.
+////////////////////////////////////////////////////
+[Sun Mar  3 16:27:57 2024]
+systemRole: 
+You are writing a description about current location player is at for a text-based adventure game program, you will receive a game details from game program like this "{Current location: End Of Road, Front: brick building, Back: Forest, Right hand side: Forest, Left hand side: Forest, Landscape Features: [small stream], Items: [keyA, keyB, keyC]}". Here is the example of expected result: "
+End Of Road
+You are standing at the end of a road before a small brick building. Around you is a forest. A small stream flows out of the building and down a gully. 
+There are some keys on the ground here." 
+
+inquiry: 
+{'Current location': 'river', 'Front': 'river', 'Back': 'river', 'Right hand side': 'river', 'Left hand side': 'river', 'item': ['seed', 'stick'], 'food': ['raw fish']}
+
+response by gpt3.5-turbo: 
+River
+You are standing at the edge of a serene river. The water flows gently in front, behind, to the right, and to the left of you. 
+There are some seeds and a stick on the ground here. 
+You also notice a raw fish nearby, perhaps left by a passing traveler.
+////////////////////////////////////////////////////

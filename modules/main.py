@@ -96,7 +96,7 @@ if __name__ == "__main__":
     
     user_input = input("To start the game, please provide an openai key>>>")
     gpt = Gpt3(user_input)
-    descriptionGenerator = OutputGenerator(gpt, player_info, map_record)
+    descriptionGenerator = OutputGenerator(gpt, player_info, map_record, worldStatus)
     inputAdapter = InputTranslator(gpt, player_info, map_record, game_content)
     eventHandler = EventsTriggered()
     

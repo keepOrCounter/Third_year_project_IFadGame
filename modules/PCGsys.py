@@ -418,7 +418,9 @@ class eventGenerator():
         
             result = self.__descriptionGenerator.eventDevelopment(triggeredList[x])
             
-            print(result["development description"])
+            # print(result["development description"])
+            self.__worldStatus.current_description["development description"] = \
+                result["development description"]
                 
             for y in range(len(result["reward"])):
                 strCommand = triggeredList[x].possible_reward[result["reward"][y]]
@@ -477,9 +479,10 @@ class PCGController():
             self.__map_info.currentLocation = current_location
             
             triggered_event = self.__eventPCG.event_triger()
-            if triggered_event != None:
+            if len(triggered_event) > 0:
                 # TODO change the eventDescription to make it description all current events
-                self.__descriptionGenerator.eventDescription(triggered_event)
+                # for
+                self.__descriptionGenerator.eventDescription(triggered_event[0])
                 output = triggered_event.description
                 # self.__eventController.add_new_event(triggered_event)
             elif self.__player.get_lastLocation() != playerCoord:
@@ -499,9 +502,9 @@ class PCGController():
         
             triggered_event = self.__eventPCG.event_triger()
             self.__descriptionGenerator.locationDescription(player_surrounding)
-            if triggered_event != None:
+            if len(triggered_event) > 0:
                 # TODO change the eventDescription to make it description all current events
-                self.__descriptionGenerator.eventDescription(triggered_event)
+                self.__descriptionGenerator.eventDescription(triggered_event[0])
                 output = triggered_event.description
                 # self.__eventController.add_new_event(triggered_event)
             elif self.__player.get_lastLocation() != playerCoord:

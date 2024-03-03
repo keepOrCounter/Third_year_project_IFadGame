@@ -95,66 +95,82 @@
 #     print(attribute, '=', value)
 
 # print(str(attributes))
-import openai
-class Gpt3():
-    def __init__(self, api_key) -> None:
-        # Set up the OpenAI API client
-        openai.api_key = api_key
+# import openai
+# class Gpt3():
+#     def __init__(self, api_key) -> None:
+#         # Set up the OpenAI API client
+#         openai.api_key = api_key
 
-    def inquiry(self, prompt:str, systemRole: str, temperature = 0.5) -> str:
-        # Generate a response
-        response = openai.ChatCompletion.create(
-        model="gpt-3.5-turbo",#gpt-3.5-turbo-0301
-        messages=[
-        {"role": "system", "content": systemRole},
-        {"role": "user", "content": prompt}
-        ],
-        temperature=temperature,
-        max_tokens=1000,
-        top_p=1,
-        frequency_penalty=0,
-        presence_penalty=0,
-        )
+#     def inquiry(self, prompt:str, systemRole: str, temperature = 0.5) -> str:
+#         # Generate a response
+#         response = openai.ChatCompletion.create(
+#         model="gpt-3.5-turbo",#gpt-3.5-turbo-0301
+#         messages=[
+#         {"role": "system", "content": systemRole},
+#         {"role": "user", "content": prompt}
+#         ],
+#         temperature=temperature,
+#         max_tokens=1000,
+#         top_p=1,
+#         frequency_penalty=0,
+#         presence_penalty=0,
+#         )
 
-        # print(response.choices)
-        # print(response.choices[0].message)
-        # print(response.model)
-        return response.choices[0].message.content
-a = """You are an food generator for an RPG game and need to generate some food according to the json format and following requirements. Here is the reqirement form:
-{
-    "name": <name of the food>,
-    "category": "food",
-    "appear_possibility": <the possibility of this food can be picked up(note if the food is not totally natural or processed by human, please set all the possibility into 0 like the bread, grilled fish...): sea, land, forest and beach, in dictionary form, each possibility is between 0-20>,
-    "weight": <The weight of the food, player can take totally 20 units weight items>,
-    "item_energy_recovery": <how many action point player can recovery after eat this food>,
-    "edible": <true or false, whether food is edible, the food like "rotten apple" or "raw kidney bean" are not edible>,
-    "freshness": <How many turns the food can be store in general case>,
-    "thirst": <the sense of thirst player will change after eat this food>
-}
-Please note that the production of food must be logical. You will receive the list like this: ["soup", "grilled potato", "raw fish"], which means the food already in the game, and you should generate a different food that is not in the list. Here are some expected results:
-{
-    "name": "apple",
-    "category": "food",
-    "appear_possibility": {"sea": 0, "land": 1, "forest": 10, "beach": 0},
-    "weight": 2,
-    "item_energy_recovery": 5,
-    "edible": true,
-    "freshness": 72,
-    "thirst": 5
-},
-{
-    "name": "bread",
-    "category": "food",
-    "appear_possibility": {"sea": 0, "land": 0, "forest": 0, "beach": 0},
-    "weight": 1,
-    "item_energy_recovery": 25,
-    "edible": true,
-    "freshness": 50,
-    "thirst": -10
-}"""
+#         # print(response.choices)
+#         # print(response.choices[0].message)
+#         # print(response.model)
+#         return response.choices[0].message.content
+# a = """You are an food generator for an RPG game and need to generate some food according to the json format and following requirements. Here is the reqirement form:
+# {
+#     "name": <name of the food>,
+#     "category": "food",
+#     "appear_possibility": <the possibility of this food can be picked up(note if the food is not totally natural or processed by human, please set all the possibility into 0 like the bread, grilled fish...): sea, land, forest and beach, in dictionary form, each possibility is between 0-20>,
+#     "weight": <The weight of the food, player can take totally 20 units weight items>,
+#     "item_energy_recovery": <how many action point player can recovery after eat this food>,
+#     "edible": <true or false, whether food is edible, the food like "rotten apple" or "raw kidney bean" are not edible>,
+#     "freshness": <How many turns the food can be store in general case>,
+#     "thirst": <the sense of thirst player will change after eat this food>
+# }
+# Please note that the production of food must be logical. You will receive the list like this: ["soup", "grilled potato", "raw fish"], which means the food already in the game, and you should generate a different food that is not in the list. Here are some expected results:
+# {
+#     "name": "apple",
+#     "category": "food",
+#     "appear_possibility": {"sea": 0, "land": 1, "forest": 10, "beach": 0},
+#     "weight": 2,
+#     "item_energy_recovery": 5,
+#     "edible": true,
+#     "freshness": 72,
+#     "thirst": 5
+# },
+# {
+#     "name": "bread",
+#     "category": "food",
+#     "appear_possibility": {"sea": 0, "land": 0, "forest": 0, "beach": 0},
+#     "weight": 1,
+#     "item_energy_recovery": 25,
+#     "edible": true,
+#     "freshness": 50,
+#     "thirst": -10
+# }"""
 # test = Gpt3("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")
 # t = ["soup", "grilled potato", "raw fish", "bread", "berry", "potato"]
 # result = test.inquiry(str(t) + ", (note that the appear_possibility of human processed food should all be 0)", a)
 # print(result)
-a = [5, 7, 9, 14, 18, 21, 24, 29, 34, 39, 40, 50, 58, 72, 76, 80, 81, 97, 102, 120, 122, 138, 150, 156, 172, 187, 193, 199, 212, 232, 243, 251, 279, 314, 365, 392, 414, 429, 449, 450, 480, 485, 498, 553, 577, 652, 657, 661, 670, 675, 680, 686, 688, 712, 745, 777, 808, 819, 820, 834, 857, 870, 880, 886, 901, 906, 924, 952, 961, 966, 976, 1003, 1046, 1055]
-print(len(a))
+# a = [5, 7, 9, 14, 18, 21, 24, 29, 34, 39, 40, 50, 58, 72, 76, 80, 81, 97, 102, 120, 122, 138, 150, 156, 172, 187, 193, 199, 212, 232, 243, 251, 279, 314, 365, 392, 414, 429, 449, 450, 480, 485, 498, 553, 577, 652, 657, 661, 670, 675, 680, 686, 688, 712, 745, 777, 808, 819, 820, 834, 857, 870, 880, 886, 901, 906, 924, 952, 961, 966, 976, 1003, 1046, 1055]
+# print(len(a))
+import json
+import tiktoken # for token counting
+import numpy as np
+from collections import defaultdict
+
+data_path = "eventTune.jsonl"
+
+# Load the dataset
+with open(data_path, 'r', encoding='utf-8') as f:
+    dataset = [json.loads(line) for line in f]
+
+# Initial dataset stats
+print("Num examples:", len(dataset))
+print("First example:")
+for message in dataset[0]["messages"]:
+    print(message)

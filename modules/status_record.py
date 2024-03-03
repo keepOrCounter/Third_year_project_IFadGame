@@ -162,6 +162,22 @@ class PassivityEvents(Events):
         self.possible_penalty = possible_penalty
         
         self.triggered_condition = triggered_condition
+        
+class DisasterEvents(Events):
+    def __init__(self, eventName: str, eventType: str, triggered_reason, \
+        possible_penalty: list, time_limit: int, description: str, \
+            triggered_condition, end_condition) -> None:
+        """
+        `triggered_condition`: a function that receive player, map information \
+            as argument and return boolen based on these information
+        """
+        super().__init__(eventName, eventType, time_limit, description)
+        self.triggered_reason = triggered_reason
+        # self.possible_reward = possible_reward
+        self.possible_penalty = possible_penalty
+        
+        self.triggered_condition = triggered_condition
+        self.end_condition = end_condition
 
 class Actions():
     def __init__(self, actionName: str, command_executed: list, command_args: list[list], \

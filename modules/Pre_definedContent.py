@@ -1,6 +1,6 @@
 from status_record import Player_status, Map_information, globalInfo, Items, Events, \
     Actions, Terrain_type, LandscapeFeature, EnvironmentElement, Tool, Food, \
-        Transportation, Weapon, Container, PassivityEvents, Buff
+        Transportation, Weapon, Container, PassivityEvents, Buff, DisasterEvents
 import random
 import copy
 import numpy as np
@@ -133,7 +133,7 @@ class Commands():
     
     def rest(self, action: Actions):
         if self.__worldStatus.restPlace:
-            self.increase_action_point(int(self.__player.get_APrecovery() / \
+            self.increase_action_point(action, int(self.__player.get_APrecovery() / \
                 self.__worldStatus.move_dLevel))
             # print("You seat down, and have a short nap")
             self.__worldStatus.current_description["rest"] = \
@@ -151,10 +151,10 @@ class Commands():
             self.__player.set_thirst(int(self.__player.get_thirst() -\
                 items.thirst))
             if not items.eatable:
-                if "have uneatable food" not in self.__worldStatus.player_dangerAction.keys():
-                    self.__worldStatus.player_dangerAction["have uneatable food"] = [items.item_name]
+                if "consume uneatable food" not in self.__worldStatus.player_dangerAction.keys():
+                    self.__worldStatus.player_dangerAction["consume uneatable food"] = [items.item_name]
                 else:
-                    self.__worldStatus.player_dangerAction["have uneatable food"].append(items.item_name)
+                    self.__worldStatus.player_dangerAction["consume uneatable food"].append(items.item_name)
             
             # print("You have your "+items.item_name+" and take a short break.")
             self.__worldStatus.current_description["consume "+items.item_name] = \
@@ -532,7 +532,7 @@ class DefininedSys(): #
             Food("grilled potato", {"sea": 0, "land": 0, "forest": 0, "beach": 0, "river": 0, \
                 "desert": 0, "mountain": 0, "highland snowfield": 0, "town": 0, "grassland": 0}, weight=1, \
                 item_energy_recovery=10, eatable=True, freshness=72, thirst=-10),
-            Food("raw venison", {"sea": 0, "land": 1, "forest": 2, "beach": 0, "river": 2, \
+            Food("raw venison", {"sea": 0, "land": 1, "forest": 2, "beach": 0, "river": 0, \
                 "desert": 12, "mountain": 5, "highland snowfield": 5, "town": 0, "grassland": 15}, weight=5, \
                 item_energy_recovery=20, eatable=False, freshness=19, thirst=50),
             Food("grilled venison", {"sea": 0, "land": 0, "forest": 0, "beach": 0, "river": 0, \
@@ -580,10 +580,17 @@ class DefininedSys(): #
                 ["increase action point", "increase maximum action point", "remove thirsty status"], \
                     ["decrease action point", "decrease maximum action point", "add thirsty status(low)", "upgrade thirsty status"], -1, "", \
                         lambda player, mapInfo, events, worldStatus: player.get_thirst() < 40),
-                        PassivityEvents("", "survival crisis", lambda player, mapInfo, events, worldStatus: "consume uneatable food" + str(worldStatus.player_dangerAction["have uneatable food"]), \
+                        PassivityEvents("", "survival crisis", lambda player, mapInfo, events, worldStatus: "consume uneatable food" + str(worldStatus.player_dangerAction["consume uneatable food"]), \
                 ["increase action point", "increase maximum action point", "remove thirsty status"], \
                     ["decrease health point", "add potential poisoning status", "add thirsty status(low)", "upgrade poisoning status"], 5, "", \
-                        lambda player, mapInfo, events, worldStatus: "have uneatable food" in worldStatus.player_dangerAction.keys())
+                        lambda player, mapInfo, events, worldStatus: "consume uneatable food" in worldStatus.player_dangerAction.keys())
+            ],
+            "disaster": [
+                DisasterEvents("", "disaster", "dust storm occur", \
+                ["decrease action point", "decrease health point", "decrease maximum health point"], 3, "", \
+                    lambda player, mapInfo, events, worldStatus: ((mapInfo.currentLocation.location_name == "desert" and random.random() < 0.5) or \
+                        (mapInfo.currentLocation.location_name == "land" and random.random() < 0.3)), 
+                    lambda player, mapInfo, events, worldStatus: (mapInfo.currentLocation.location_name != "desert" and mapInfo.currentLocation.location_name != "land")),
             ]
         }
         
