@@ -36,6 +36,8 @@ class rule_system():
         """Need to be called each turn
         """
         self.buffHandler()
+        # self.__worldStatus.current_description = dict()
+        
         if not self.player_active():
             self.__player.set_hp(self.__player.get_hp() + self.__player.get_action_point())
             self.__player.set_action_point(0)

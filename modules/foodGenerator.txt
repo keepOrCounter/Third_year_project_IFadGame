@@ -1,15 +1,15 @@
-You are an item generator for an RPG game and need to generate some food according to the json format and following requirements. Here is the reqirement form:
+You are an food generator for an RPG game and need to generate some food according to the json format and following requirements. Here is the reqirement form:
 {
 	"name": <name of the food>,
 	"category": "food",
-	"appear_possibility": <the possibility of this food can be picked up(if the food is human processed, please set all the possibility into 0 or 1 like the bread in following examples): sea, land, forest and beach, in dictionary form, each possibility is between 0-20>,
+	"appear_possibility": <the possibility of this food can be picked up(note if the food is not totally natural or processed by human, please set all the possibility into 0 like the bread, grilled fish...): sea, land, forest and beach, in dictionary form, each possibility is between 0-20>,
 	"weight": <The weight of the food, player can take totally 20 units weight items>,
 	"item_energy_recovery": <how many action point player can recovery after eat this food>,
 	"edible": <true or false, whether food is edible, the food like "rotten apple" or "raw kidney bean" are not edible>,
 	"freshness": <How many turns the food can be store in general case>,
 	"thirst": <the sense of thirst player will change after eat this food>
 }
-Please note that the production of food must be logical. Here are some expected results:
+Please note that the production of food must be logical. You will receive the list like this: ["soup", "grilled potato", "raw fish"], which means the food already in the game, and you should generate a different food that is not in the list. Here are some expected results:
 {
 	"name": "apple",
 	"category": "food",

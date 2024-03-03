@@ -47,11 +47,13 @@ class Gpt3():
         return response.choices[0].message.content
     
 class OutputGenerator():
-    def __init__(self, gptAPI: Gpt3, playerStatus: Player_status, mapInfo: Map_information) -> None:
+    def __init__(self, gptAPI: Gpt3, playerStatus: Player_status, mapInfo: Map_information, \
+        worldStatus: globalInfo) -> None:
         self.__gptAPI = gptAPI
         self.__OuterData = IOSys()
         self.__playerStatus = playerStatus
         self.__mapInfo = mapInfo
+        self.__worldStatus = worldStatus
         self.__locationDiscriptionSysRole = """You are writing a description about current location \
 player is at for a text-based adventure game program, you will receive a game details from game \
 program like this "{Current location: End Of Road, Front: brick building, Back: Forest, \
@@ -206,7 +208,7 @@ Please note that the production of food must be logical. Here are some expected 
         
         inquiry = str(inputDictionary)
         # print(inquiry)
-        print("=======================================\n")
+        # print("=======================================\n")
         gpt_response = self.__gptAPI.inquiry(inquiry, self.__locationDiscriptionSysRole)
         # print(gpt_response)
         self.__OuterData.inquery_response_log_recorder(self.__locationDiscriptionSysRole, inquiry, gpt_response)
@@ -214,6 +216,8 @@ Please note that the production of food must be logical. Here are some expected 
         # result = json.loads(gpt_response, strict=False)
         
         locationList["Current location"].description = gpt_response
+        
+        return gpt_response
     
     
     def eventDescription(self, event: PassivityEvents) -> None:
@@ -224,7 +228,7 @@ Please note that the production of food must be logical. Here are some expected 
         
         inquiry = str(inputDictionary)
         # print(inquiry)
-        print("=======================================\n")
+        # print("=======================================\n")
         gpt_response = self.__gptAPI.inquiry(inquiry, self.__eventDescriptionSysRole)
         # print(gpt_response)
         self.__OuterData.inquery_response_log_recorder(self.__eventDescriptionSysRole, inquiry, gpt_response)
@@ -236,7 +240,7 @@ Please note that the production of food must be logical. Here are some expected 
         event.eventName = result["event_name"]
         event.description = result["event_description"]
 
-        # return result
+        return result
         
     def eventDevelopment(self, event: PassivityEvents) -> dict:
         # TODO
@@ -250,7 +254,7 @@ Please note that the production of food must be logical. Here are some expected 
         
         inquiry = str(inputDictionary)
         # print(inquiry)
-        print("=======================================\n")
+        # print("=======================================\n")
         gpt_response = self.__gptAPI.inquiry(inquiry, self.__eventDevelopmentSysRole)
         # print(gpt_response)
         self.__OuterData.inquery_response_log_recorder(self.__eventDevelopmentSysRole, inquiry, gpt_response)
@@ -299,6 +303,14 @@ Please note that the production of food must be logical. Here are some expected 
         # # result = json.loads(gpt_response, strict=False)
         
         # locationList["Current location"].description = gpt_response
+        
+    def text_output(self):
+        for x in self.__worldStatus.current_description.keys():
+            print(x)
+            print(self.__worldStatus.current_description[x])
+            
+        print("=======================================\n")
+        self.__worldStatus.current_description.clear()
     
 class InputTranslator():
     def __init__(self, gptAPI: Gpt3, playerStatus: Player_status, mapInfo: Map_information, \

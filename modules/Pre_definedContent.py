@@ -135,9 +135,13 @@ class Commands():
         if self.__worldStatus.restPlace:
             self.increase_action_point(int(self.__player.get_APrecovery() / \
                 self.__worldStatus.move_dLevel))
-            print("You seat down, and have a short nap")
+            # print("You seat down, and have a short nap")
+            self.__worldStatus.current_description["rest"] = \
+                "You seat down, and have a short nap"
         else:
-            print("You cannot have a rest now.")
+            # print("You cannot have a rest now.")
+            self.__worldStatus.current_description["rest"] = \
+                "You cannot have a rest now."
             
     def consume(self, action: Actions, items: Items):
         items = self.valueRetrieval(items)
@@ -152,7 +156,9 @@ class Commands():
                 else:
                     self.__worldStatus.player_dangerAction["have uneatable food"].append(items.item_name)
             
-            print("You have your "+items.item_name+" and take a short break.")
+            # print("You have your "+items.item_name+" and take a short break.")
+            self.__worldStatus.current_description["consume "+items.item_name] = \
+                "You have your "+items.item_name+" and take a short break."
             # TODO pass information to gpt to descript current player feeling
             
     def pickUp(self, action: Actions, itemName: str, amount: int): # TODO process weight
@@ -167,9 +173,13 @@ class Commands():
                     break
         if len(itemsList) > 0:
             self.add_items(action, itemsList)
-            print("You pick up "+str(count)+" "+itemName+" and drop them in your bag")
+            # print("You pick up "+str(count)+" "+itemName+" and drop them in your bag")
+            self.__worldStatus.current_description["pick up "+itemName] = \
+                "You pick up "+str(count)+" "+itemName+" and drop them in your bag"
         else:
-            print("It seems that there is not such things around, even though you try to find one.")
+            self.__worldStatus.current_description["pick up "+itemName] = \
+                "It seems that there is not such things around, even if you try to find one."
+            # print("It seems that there is not such things around, even if you try to find one.")
             
     def talk(self, action: Actions):
         pass
@@ -178,11 +188,15 @@ class Commands():
         pass
     
     def check(self, action: Actions, target):
+        # if target == "myself":
+            
         # self.__player.get_action_point()
         # self.__player.get_hp()
         # self.__player.get_cash()
         # self.__player.get_items()
-        pass
+        # pass
+        attributes = vars(target)
+        self.__worldStatus.current_description["checked"] = attributes
         # TODO pass information to gpt to descript current infomation
     
     def ActionCost(self, action: Actions):

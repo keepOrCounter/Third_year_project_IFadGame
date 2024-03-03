@@ -517,7 +517,9 @@ class PCGController():
         # elif self.__player.get_lastLocation() != playerCoord:
         
         self.__player.set_lastLocation(*playerCoord)
-        print(output)
+        # print(output)
+        self.__worldStatus.current_description["location"] = output
+        self.__descriptionGenerator.text_output()
     
 
 
