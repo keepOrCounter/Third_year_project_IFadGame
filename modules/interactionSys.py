@@ -7,6 +7,7 @@ from Pre_definedContent import *
 import json
 from autocorrect import Speller
 from numpy import inf
+import inspect
 
 class IOSys():
     def __init__(self) -> None:
@@ -319,6 +320,31 @@ class InputTranslator():
         self.__playerStatus = playerStatus
         self.__mapInfo = mapInfo
         self.__defined_content = defined_content
+        
+    def get_function_params_info(self, func):
+        func_signature = inspect.signature(func)
+        params_info = []
+        for param_name, param in func_signature.parameters.items():
+            param_type = param.annotation if param.annotation != inspect.Parameter.empty else "No type annotation"
+            params_info.append((param_name, param_type))
+        return params_info
+    
+    def tem_translater(self):
+        move_commands = list(self.__defined_content.get_Actions().keys())
+        for x in range(len(move_commands)):
+            print(x, ": ", move_commands[x])
+        
+        target = int(input(">>>"))
+        action = self.__defined_content.get_Actions()[move_commands[target]]
+        self.__playerStatus.set_currentAction(action)
+        for commands in range(len(action.command_executed)):
+            params_info = self.get_function_params_info(action.command_executed[commands])
+            print(params_info)
+            result = []
+            for x in range(1, len(params_info)):
+                target = input(str(x)+": ")
+                result.append(target)
+            action.command_executed[commands](*(action.command_args[commands]+result))
 
     def frequent_command (common_list:str) -> list:
         frequent_words_in_commands = []

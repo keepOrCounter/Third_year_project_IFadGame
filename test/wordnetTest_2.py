@@ -27,7 +27,7 @@ def get_word_meaning_in_phrase(phrase, word):
     else:
         return None
 
-phrase = "find a number"
+phrase = "rest"
 
 # phrase = input()
 

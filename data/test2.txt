@@ -1,0 +1,30 @@
+{
+	"player_information": {
+		"HP": "90/100",
+		"action_point": "40/100",
+		"player_current_status": "normal",
+		"thirst_satisfied": "70/100",
+		"package_weight": "19/30",
+		"player_current_action": "none",
+		"cash": 50,
+		"transportation": []
+	},
+	"environment_information": {
+		"Current location": "river",
+		"Front": "beach",
+		"Back": "river",
+		"Right hand side": "river",
+		"Left hand side": "river",
+		'item': ['seed'],
+		'food': ['berry', 'raw fish']
+	},
+	"information_need_to_be_described": {
+		"description_target": ["environment_information"]
+	}
+}
+
+{
+	"title_of_description": "Sea",
+	"description": "You and your boat are surrounded by the vast expanse of the sea. There is nothing but water as far as the eye can see in every direction. The sound of crashing waves fills the air. 
+There are some stuffs floating in the water here, including a first aid kit and some edible plants."
+}

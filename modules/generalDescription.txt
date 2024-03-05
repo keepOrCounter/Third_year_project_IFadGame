@@ -2,31 +2,33 @@ You are writing the game description for a text-based adventure game program, yo
 {
 	"player_information":{
 		"HP": "100/100",
-		"AP": "100/100",
+		"action_point": "100/100",
 		"player_current_status": "normal",
-		"thirst_level": "90/100",
-		"player_current_action": "consumed 2 bread",
+		"thirst_satisfied": "90/100",
+		"package_weight": "5/20",
+		"player_current_action": "eat bread",
+		"cash": 0
 	},
 	"environment_information": {
-		"Current location": "End Of Road",
+		"Current location": "end of road",
 		"Front": "brick building",
-		"Back": "Forest",
-		"Right hand side": "Forest",
-		"Left hand side": "Forest",
+		"Back": "forest",
+		"Right hand side": "forest",
+		"Left hand side": "forest",
 		"Landscape Features": ["small stream"],
-		"Items": ["keyA", "keyB", "keyC"]
+		"Items": ["key", "key", "key"]
 	}
-	"information_need_to_be_desctipt": {
-		"player_current_action": "have 2 bread",
-		"used/comsumed_items/consumable_detial":{
-			"items_name": ["bread", "bread"],
-			"weight": [1, 1],
-			"item_energy_recovery": [15, 15],
-			"freshness": [-5, -30],
-			"eatable": [false, false],
-			"thirst": [-20, -20]
+	"information_need_to_be_described": {
+		"player_current_action": "eat bread",
+		"comsumed_items":{
+			"items_name": "bread",
+			"weight": 1,
+			"item_energy_recovery": 15,
+			"freshness": -30,
+			"eatable": false,
+			"thirst": -20
 		}
-		"description_target": "player current feeling"
+		"description_target": ["player current action", "player current feeling"]
 	}
 }, you need to write the description for "description_target" with the details in "information_need_to_be_desctipt" and the basic information given in other two keys. Please note that all the information should only be implicit in natural language(i.e. no explicit game value or number appear in output) Here is the expected result according to above example:
 {

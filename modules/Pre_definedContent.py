@@ -618,10 +618,10 @@ class DefininedSys(): #
         }
         
         self.__eventCommandMap = {
-            "increase action point": ("increase action point", ("<random>",)),
-            "decrease action point": ("decrease action point", ("<random>",)),
-            "increase maximum action point": ("increase maximum action point", ("<random>",)),
-            "decrease maximum action point": ("decrease maximum action point", ("<random>",)),
+            "increase action point": ("increase action point", (None, "<random>")),
+            "decrease action point": ("decrease action point", (None, "<random>")),
+            "increase maximum action point": ("increase maximum action point", (None, "<random>")),
+            "decrease maximum action point": ("decrease maximum action point", (None, "<random>")),
             "add thirsty status(low)": ("add buff", (self.__def_buff["thirsty"], "low")),
             "add thirsty status(median)": ("add buff", (self.__def_buff["thirsty"], "median")),
             "add thirsty status(high)": ("add buff", (self.__def_buff["thirsty"], "high")),

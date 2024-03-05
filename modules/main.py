@@ -76,16 +76,22 @@ class rule_system():
         print("last_location:", self.__player.get_lastLocation())
         print("current Action_point:", self.__player.get_action_point())
         print("current maximum action_point:", self.__player.get_maximum_action_point())
-        print("Current action:", self.__player.get_currentAction())
+        print("current thirst:", self.__player.get_thirst())
+        print("current maximum thirst:", self.__player.get_maximum_thirst())
+        if self.__player.get_currentAction() != None:
+            print("Current action:", self.__player.get_currentAction().actionName)
+        else:
+            print("Current action:", None)
         print("visited place:", self.__map_info.get_visitedPlace())
         print("player hp:", self.__player.get_hp())
+        print("--------------------------------------")
     
     # def 
 
 if __name__ == "__main__":
     worldStatus = globalInfo()
-    # player_info = Player_status(action_point = 30)
-    player_info = Player_status()
+    player_info = Player_status(action_point = 30)
+    # player_info = Player_status()
     map_record = Map_information(current_area_type = 1, map_size=(20, 20)) # land type
     # mapPCG = MapGenerator(player_info, map_record)
     defined_command = Commands(player_info, map_record, worldStatus)
@@ -107,7 +113,7 @@ if __name__ == "__main__":
     begin = True
     while begin:
         game_rule.eachTurn_handler()
-        # game_rule.debug_information()
+        game_rule.debug_information()
         pcgSystem.locationPCG_each_turn()
         # print(map_record.get_currentMap())
 
@@ -116,4 +122,5 @@ if __name__ == "__main__":
         if user_input == "__exit":
             begin = False
         else:
-            inputAdapter.command_translator(user_input)
+            # inputAdapter.command_translator(user_input)
+            inputAdapter.tem_translater()
