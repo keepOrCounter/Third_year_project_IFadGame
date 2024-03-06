@@ -6,42 +6,42 @@ import spacy
 
 nlp = spacy.load("en_core_web_sm")
 
-def get_word_meaning_in_phrase(phrase, word):
-    tokens = word_tokenize(phrase)
-    doc = nlp(phrase)
-    tagged_tokens = [(token.text, token.pos_) for token in doc]
-    return tagged_tokens
-    word_pos = None
-    for token, pos in tagged_tokens:
-        if token.lower() == word.lower():
-            word_pos = pos
-            break
+# def get_word_meaning_in_phrase(phrase, word):
+#     tokens = word_tokenize(phrase)
+#     doc = nlp(phrase)
+#     tagged_tokens = [(token.text, token.pos_) for token in doc]
+#     return tagged_tokens
+#     word_pos = None
+#     for token, pos in tagged_tokens:
+#         if token.lower() == word.lower():
+#             word_pos = pos
+#             break
 
-    if word_pos:
-        synsets = wordnet.synsets(word, pos=word_pos[0].lower())
+#     if word_pos:
+#         synsets = wordnet.synsets(word, pos=word_pos[0].lower())
 
-        if synsets:
-            return synsets
-        else:
-            return None
-    else:
-        return None
+#         if synsets:
+#             return synsets
+#         else:
+#             return None
+#     else:
+#         return None
 
-phrase = "rest"
+phrase = "find all apples"
 
 # phrase = input()
 
-def verbFinder(text):
-    doc = nlp(phrase)
-    tagged_tokens = [(token.text, token.pos_) for token in doc]
-    for token, pos in tagged_tokens:
-        if pos[0].lower() == 'v':
-            return token
-word = verbFinder(phrase)
+# def verbFinder(text):
+#     doc = nlp(phrase)
+#     tagged_tokens = [(token.text, token.pos_) for token in doc]
+#     for token, pos in tagged_tokens:
+#         if pos[0].lower() == 'v':
+#             return token
+# word = verbFinder(phrase)
 
-synsets = get_word_meaning_in_phrase(phrase, word)
+# synsets = get_word_meaning_in_phrase(phrase, word)
 
-synonymsList = []
+# synonymsList = []
 
 # for synset in synsets:
 #     for lemma in synset.lemmas():
@@ -50,28 +50,29 @@ synonymsList = []
 # synonymsList = list(dict.fromkeys(synonymsList))
 # print(synonymsList)
 
-def wordSynonyms(word):
-    synsets = wordnet.synsets(word)
-    synonymsList = []
-    for synset in synsets:
-        for lemma in synset.lemmas():
-            synonymsList.append(lemma.name())
-    print(f"\nSynonyms for '{word}':")
-    synonymsList = list(dict.fromkeys(synonymsList))
-    return synonymsList
+# def wordSynonyms(word):
+#     synsets = wordnet.synsets(word)
+#     synonymsList = []
+#     for synset in synsets:
+#         for lemma in synset.lemmas():
+#             synonymsList.append(lemma.name())
+#     print(f"\nSynonyms for '{word}':")
+#     synonymsList = list(dict.fromkeys(synonymsList))
+#     return synonymsList
 
 # print(wordSynonyms(word))
-def findNoun(phrase):
-    nounSet = set()
-    doc = nlp(phrase)
-    tagged_tokens = [(token.text, token.pos_) for token in doc]
-    for token, pos in tagged_tokens:
-        if pos.lower() == 'noun':
-            nounSet.add(token)
-    return nounSet
+# def findNoun(phrase):
+#     nounSet = set()
+#     doc = nlp(phrase)
+#     tagged_tokens = [(token.text, token.pos_) for token in doc]
+#     for token, pos in tagged_tokens:
+#         if pos.lower() == 'noun':
+#             nounSet.add(token)
+#     return nounSet
 
-print(findNoun(phrase))
+# print(findNoun(phrase))
 
+# Break the phrase into words and classify the words into noun, verb and determiner(number).
 def grammarClassifier(phrase):
     nounSet = set()
     verbSet = set()
