@@ -83,7 +83,7 @@ def grammarClassifier(phrase):
             nounSet.add(token)
         elif pos.lower() == 'verb':
             verbSet.add(token)
-        elif pos.lower() == 'det':
+        elif pos.lower() == 'det' or pos.lower() == 'num':
             detSet.add(token)
     grammarDict = {
         "Noun list": nounSet,
