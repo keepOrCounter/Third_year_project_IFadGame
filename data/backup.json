@@ -2,50 +2,59 @@
     {
         "player_information": {
             "HP": "100/100",
-            "action_point": "100/100",
+            "action_point(AP)": "20/100",
             "player_current_status": "normal",
             "thirst_satisfied": "90/100",
             "package_weight": "5/20",
             "player_current_action": "eat bread",
+            "action_AP_cost": "1 time(s)",
             "cash": 0,
-            "transportation": []
+            "equipment": "none",
+            "suit": "old shirt",
+            "transportation_used": []
         },
         "environment_information": {
-            "Current location": "end of road",
-            "Front": "brick building",
-            "Back": "forest",
+            "Current location": "road",
+            "Front": "road",
+            "Back": "road",
             "Right hand side": "forest",
             "Left hand side": "forest",
-            "Landscape Features": ["small stream"],
-            "Items": ["key", "key", "key"]
+            "landscape feature": ["stream"],
+            "items": ["key", "key", "key"],
+            "move_AP_cost": "1 time(s)"
         },
-        "information_need_to_be_described": {
-            "player_current_action": "eat bread",
-            "comsumed_items":{
+        "comsumed_items":[
+            {
                 "items_name": "bread",
                 "weight": 1,
-                "item_energy_recovery": 15,
+                "AP_recovery": 15,
                 "freshness": -30,
                 "eatable": false,
-                "thirst": -20
-            },
-            "description_target": ["player current action", "player current feeling"]
+                "thirst_satisfied": -20
+            }
+        ],
+        "information_need_to_be_described": {
+            "description_target": ["player_current_action", "comsumed_items", "player current feeling"]
         }
     },
     {
         "title_of_description": "comsumed uneatable bread",
-        "description": "You are trying to have a slice of stale bread. The bread is dry and hard, makes you longing for a refreshing drink to relieve the parched feeling in your mouth. Its taste is a blend of mustiness and decay, assaulting your palate with a bitter, stale flavor that lingers uncomfortably on your tongue. Your stomach churns uncomfortably, protesting against the foreign and indigestible substance. Despite its staleness, you devour it hungrily, to replenish your energy. "
+        "description": "You are trying to have a small slice of stale bread. The bread is dry and hard, makes you longing for a refreshing drink to relieve the parched feeling in your mouth. Its taste is a blend of mustiness and decay, assaulting your palate with a bitter, stale flavor that lingers uncomfortably on your tongue. Your stomach churns uncomfortably, protesting against the foreign and indigestible substance. Despite its staleness, you devour it hungrily, to replenish your energy."
     },
+
     {
         "player_information": {
             "HP": "100/100",
-            "action_point": "70/100",
+            "action_point(AP)": "70/100",
             "player_current_status": "normal",
             "thirst_satisfied": "60/100",
             "package_weight": "3/20",
             "player_current_action": "eat mushroom soup",
+            "action_AP_cost": "1 time(s)",
             "cash": 0,
-            "transportation": []
+            "equipment": "none",
+            "suit": "old shirt",
+            "transportation_used": []
         },
         "environment_information": {
             "Current location": "grassland",
@@ -54,35 +63,189 @@
             "Right hand side": "forest",
             "Left hand side": "beach",
             "landscape Features": ["grass"],
-            "items": ["wood"]
+            "items": ["wood"],
+            "move_AP_cost": "1 time(s)"
         },
-        "information_need_to_be_described": {
-            "player_current_action": "eat mushroom soup",
-            "comsumed_items":{
+        "comsumed_items":[
+            {
                 "items_name": "mushroom soup",
                 "weight": 2,
-                "item_energy_recovery": 15,
+                "AP_recovery": 15,
                 "freshness": 10,
                 "eatable": true,
-                "thirst": 20
-            },
-            "description_target": ["player current action", "player current feeling"]
+                "thirst_satisfied": 20
+            }
+        ],
+        "information_need_to_be_described": {
+            "description_target": ["player_current_action", "comsumed_items", "player current feeling"]
         }
     },
     {
         "title_of_description": "Revitalizing with Mushroom Soup",
-        "description": "You are taking a moment to savor a hearty meal of mushroom soup. As you relish each spoonful, the savory aroma fills the air, revitalizing your senses and replenishing your energy. With each sip, your thirst is quenched, and a newfound vigor courses through your veins. "
+        "description": "You are taking a moment to savor a hearty meal of mushroom soup. As you relish each spoonful, the savory aroma fills the air, revitalizing your senses and replenishing your energy. With each sip, your thirst is quenched, and a newfound vigor courses through your veins."
     },
+
     {
         "player_information": {
             "HP": "100/100",
-            "action_point": "70/100",
+            "action_point(AP)": "20/100",
+            "player_current_status": "normal",
+            "thirst_satisfied": "60/100",
+            "package_weight": "3/20",
+            "player_current_action": "eat lamb leg",
+            "action_AP_cost": "1 time(s)",
+            "cash": 0,
+            "equipment": "none",
+            "suit": "old shirt",
+            "transportation_used": ["wooden boat"]
+        },
+        "environment_information": {
+            "Current location": "sea",
+            "Front": "sea",
+            "Back": "sea",
+            "Right hand side": "sea",
+            "Left hand side": "beach",
+            "items": ["wood"],
+            "move_AP_cost": "1 time(s)"
+        },
+        "comsumed_items":[
+            {
+                "items_name": "lamb leg",
+                "weight": 5,
+                "AP_recovery": 30,
+                "freshness": 5,
+                "eatable": true,
+                "thirst_satisfied": -30
+            }
+        ],
+        "information_need_to_be_described": {
+            "description_target": ["transportation_used", "Current location", "player_current_action", "comsumed_items", "player current feeling"]
+        }
+    },
+    {
+        "title_of_description": "Savoring a hearty lamb leg feast on the wooden boat",
+        "description": "As you sit on the creaking wooden planks of the boat, gently swaying with the rhythm of the waves, you delve into a hearty lamb leg feast. \n\nThe lamb leg is quite heavy and its size quite a filler. The meat is tender and flavorful, its aroma mingling with the salty sea breeze. Juices from the perfectly cooked meat burst with each mouthful, satisfying your hunger and rejuvenating your weary body, though leaving you with an undeniable thirst, urging you to quench your parched throat with a refreshing drink."
+    },
+
+    {
+        "player_information": {
+            "HP": "100/100",
+            "action_point(AP)": "80/100",
+            "player_current_status": ["thirst"],
+            "thirst_satisfied": "30/100",
+            "package_weight": "3/20",
+            "player_current_action": "eat 2 apple",
+            "action_AP_cost": "1 time(s)",
+            "cash": 0,
+            "equipment": "none",
+            "suit": "old shirt",
+            "transportation_used": []
+        },
+        "environment_information": {
+            "Current location": "forest",
+            "Front": "forest",
+            "Back": "forest",
+            "Right hand side": "forest",
+            "Left hand side": "forest",
+            "items": ["wood"],
+            "move_AP_cost": "1 time(s)"
+        },
+        "comsumed_items":[
+            {
+                "items_name": "apple",
+                "weight": 1,
+                "AP_recovery": 10,
+                "freshness": 5,
+                "eatable": true,
+                "thirst_satisfied": 30
+            },
+            {
+                "items_name": "apple",
+                "weight": 1,
+                "AP_recovery": 10,
+                "freshness": -5,
+                "eatable": false,
+                "thirst_satisfied": 30
+            }
+        ],
+        "information_need_to_be_described": {
+            "description_target": ["transportation_used", "Current location", "player_current_action", "comsumed_items", "player current feeling"]
+        }
+    },
+    {
+        "title_of_description": "Consuming Fresh and Stale Apples in the Forest",
+        "description": "As you sit in a forest, surrounded by towering trees and the sounds of nature, you decide to have some apple as a short break. \n\nYou reach for the apples in your pack. The first one looks promising, its skin still bearing a healthy sheen. With each bite, its crisp texture and sweet flavor invigorate you, quenching your thirst. However, the second apple disappoints; it's stale, its texture dry and unappealing. You take a bite, and something soft and squishy sinks into your teeth, making you realize the apple is rotten to the core. Despite your hunger, the taste is unpleasant. Both apples are small, failing to satisfy your cravings, leaving you yearning for more."
+    },
+
+    {
+        "player_information": {
+            "HP": "100/100",
+            "action_point(AP)": "80/100",
+            "player_current_status": ["thirst"],
+            "thirst_satisfied": "30/100",
+            "package_weight": "3/20",
+            "player_current_action": "attack 1st wolf",
+            "action_AP_cost": "1 time(s)",
+            "cash": 0,
+            "equipment": "none",
+            "suit": "old shirt",
+            "transportation_used": []
+        },
+        "environment_information": {
+            "Current location": "forest",
+            "Front": "forest",
+            "Back": "forest",
+            "Right hand side": "forest",
+            "Left hand side": "forest",
+            "animal": ["wolf", "wolf"],
+            "move_AP_cost": "1 time(s)"
+        },
+        "NPCs":[
+            {
+                "NPC_name": "wolf",
+                "NPC_category": "animal",
+                "HP": "90/100",
+                "action_point(AP)": "80/100",
+                "current_status": ["blooding"],
+                "thirst_satisfied": "<unknown>",
+                "current_action": "attack 2nd wolf",
+                "action_AP_cost": "1 time(s)",
+                "relationship_with_player": 0
+            },
+            {
+                "NPC_name": "wolf",
+                "NPC_category": "animal",
+                "HP": "100/100",
+                "action_point(AP)": "95/100",
+                "current_status": "normal",
+                "thirst_satisfied": "<unknown>",
+                "current_action": "attack 1st wolf",
+                "action_AP_cost": "1 time(s)",
+                "relationship_with_player": 0
+            }
+        ],
+        "information_need_to_be_described": {
+            "description_target": ["transportation_used", "Current location", "player_current_action", "NPCs", "player current feeling"]
+        }
+    },
+    {
+        "title_of_description": "Consuming Fresh and Stale Apples in the Forest",
+        "description": "As you sit in a forest, surrounded by towering trees and the sounds of nature, you decide to have some apple as a short break. \n\nYou reach for the apples in your pack. The first one looks promising, its skin still bearing a healthy sheen. With each bite, its crisp texture and sweet flavor invigorate you, quenching your thirst. However, the second apple disappoints; it's stale, its texture dry and unappealing. You take a bite, and something soft and squishy sinks into your teeth, making you realize the apple is rotten to the core. Despite your hunger, the taste is unpleasant. Both apples are small, failing to satisfy your cravings, leaving you yearning for more."
+    },\
+
+    {
+        "player_information": {
+            "HP": "100/100",
+            "action_point(AP)": "70/100",
             "player_current_status": "normal",
             "thirst_satisfied": "60/100",
             "package_weight": "3/20",
             "player_current_action": "move to north",
+            "action_AP_cost": "1 time(s)",
             "cash": 0,
-            "transportation": []
+            "equipment": "none",
+            "suit": "old shirt",
+            "transportation_used": []
         },
         "environment_information": {
             "Current location": "grassland",
@@ -91,26 +254,31 @@
             "Right hand side": "grassland",
             "Left hand side": "land",
             "landscape Features": ["grass"],
-            "items": ["wood"]
+            "items": ["wood"],
+            "move_AP_cost": "1 time(s)"
         },
         "information_need_to_be_described": {
-            "description_target": ["environment_information"]
+            "description_target": ["environment_information", "transportation_used by player"]
         }
     },
     {
         "title_of_description": "Grassland",
-        "description": "You stride through the heart of a sprawling grassland. Behind and to your right, endless fields of grass stretch into the distance. Ahead and to your left, a patch of land breaks the sea of green. The landscape is dominated by lush, verdant grass all around you. \nHere, nestled amidst the green expanse, lies a solitary piece of wood resting on the ground."
+        "description": "You stride through the heart of a sprawling grassland. Behind and to your right, endless fields of grass stretch into the distance. Ahead and to your left, a patch of land breaks the sea of green. The landscape is dominated by lush, verdant grass all around you. \n\nHere, nestled amidst the green expanse, lies a solitary piece of wood resting on the ground."
     },
+
     {
         "player_information": {
             "HP": "80/100",
-            "action_point": "75/100",
+            "action_point(AP)": "75/100",
             "player_current_status": ["thirst"],
             "thirst_satisfied": "40/100",
             "package_weight": "0/20",
             "player_current_action": "none",
+            "action_AP_cost": "1.2 time(s)",
             "cash": 0,
-            "transportation": []
+            "equipment": "none",
+            "suit": "old shirt",
+            "transportation_used": []
         },
         "environment_information": {
             "Current location": "beach",
@@ -118,28 +286,33 @@
             "Back": "river",
             "Right hand side": "beach",
             "Left hand side": "beach",
-            "transportation": ["boat"],
+            "transportation": ["wooden boat"],
             "food": ["raw fish"],
-            "landscape Features": ["aloe vera"]
+            "landscape Features": ["aloe vera"],
+            "move_AP_cost": "2 time(s)"
         },
         "information_need_to_be_described": {
-            "description_target": ["environment_information"]
+            "description_target": ["environment_information", "transportation_used by player"]
         }
     },
     {
         "title_of_description": "Beach",
-        "description": "You are standing on a sandy beach with land in front of you and a river behind you. The beach stretches out on both your right and left sides. Aloe vera plants dot the landscape. \nThere is a boat available for transportation and some raw fish for food."
+        "description": "You find yourself standing on a sandy beach, with stretches of land ahead and a river flowing behind. The beach extends to both your right and left, adorned with scattered aloe vera plants. Nearby, a wooden boat awaits for transportation, and there are provisions of raw fish for sustenance. Notably, the beach's soft, shifting sands pose a challenge to travel, requiring careful stamina management for continuous traversal."
     },
+
     {
         "player_information": {
             "HP": "80/100",
-            "action_point": "75/100",
+            "action_point(AP)": "75/100",
             "player_current_status": ["thirst"],
             "thirst_satisfied": "40/100",
             "package_weight": "0/20",
             "player_current_action": "move to east",
+            "action_AP_cost": "2 time(s)",
             "cash": 0,
-            "transportation": []
+            "equipment": "none",
+            "suit": "old shirt",
+            "transportation_used": []
         },
         "environment_information": {
             "Current location": "river",
@@ -147,27 +320,32 @@
             "Back": "beach",
             "Right hand side": "river",
             "Left hand side": "river",
-            "food": ["berry"],
-            "item": ["seed"]
+            "food": ["berries"],
+            "item": ["seed"],
+            "move_AP_cost": "4 time(s)"
         },
         "information_need_to_be_described": {
-            "description_target": ["environment_information"]
+            "description_target": ["environment_information", "transportation_used by player"]
         }
     },
     {
         "title_of_description": "River",
-        "description": "You are currently swimming in a serene river, with the gentle sound of water flowing surrounding. The river extends before you, while behind lies a sandy beach in view. To your right and left are more views of the river. \nThere is a single seed floats on the water, and some berries nearby that you can forage for food."
+        "description": "You find yourself swimming in the tranquil embrace of a serene river, enveloped by the soothing symphony of flowing water. Ahead, the river extends its watery path, while behind you, a sandy beach beckons from afar. To your right and left, the river's tranquil expanse unfolds, offering picturesque views of its meandering currents. However, the gentle flow disguises the challenge it presents, demanding extremely significant stamina for sustained swimming. \n\nAs you float, you notice a lone seed drifting on the water's surface, and nearby, some berries bob on the water's surface, tempting your foraging instincts."
     },
+
     {
         "player_information": {
             "HP": "90/100",
-            "action_point": "50/100",
+            "action_point(AP)": "50/100",
             "player_current_status": "normal",
             "thirst_satisfied": "100/100",
             "package_weight": "10/20",
-            "player_current_action": "move to east",
+            "player_current_action": "none",
+            "action_AP_cost": "1 time(s)",
             "cash": 0,
-            "transportation": []
+            "equipment": "none",
+            "suit": "old shirt",
+            "transportation_used": []
         },
         "environment_information": {
             "Current location": "river",
@@ -175,26 +353,31 @@
             "Back": "river",
             "Right hand side": "river",
             "Left hand side": "river",
-            "food": ["fish"]
+            "food": ["fish"],
+            "move_AP_cost": "4 time(s)"
         },
         "information_need_to_be_described": {
-            "description_target": ["environment_information"]
+            "description_target": ["environment_information", "transportation_used by player"]
         }
     },
     {
         "title_of_description": "River",
-        "description": "You are in the middle of a serene river. The water flows gently around you in all directions, creating a peaceful atmosphere. The surrounding area is lush with greenery, and the sound of birds chirping can be heard in the distance. \nYou notice some fish swimming nearby in the gentle currents."
+        "description": "You find yourself floating in the heart of a tranquil river, where the water flows gently around you in all directions, creating a peaceful atmosphere. The currents sway softly, adding to the peaceful ambiance that surrounds you. \n\nNearby, fish gracefully navigate through the gentle flow. Despite the apparent calmness of these waters, it's evident that enduring stamina is indispensable for anyone endeavoring to swim through them unaided by transportation."
     },
+
     {
         "player_information": {
             "HP": "90/100",
-            "action_point": "70/100",
+            "action_point(AP)": "70/100",
             "player_current_status": "normal",
             "thirst_satisfied": "100/100",
             "package_weight": "20/20",
             "player_current_action": "move to south",
+            "action_AP_cost": "1 time(s)",
             "cash": 0,
-            "transportation": []
+            "equipment": "none",
+            "suit": "old shirt",
+            "transportation_used": []
         },
         "environment_information": {
             "Current location": "land",
@@ -204,26 +387,31 @@
             "Left hand side": "land",
             "landscape feature": ["stream"],
             "food": ["raw venison"],
-            "item": ["stick"]
+            "item": ["stick"],
+            "move_AP_cost": "1 time(s)"
         },
         "information_need_to_be_described": {
-            "description_target": ["environment_information"]
+            "description_target": ["environment_information", "transportation_used by player"]
         }
     },
     {
         "title_of_description": "Land",
-        "description": "You find yourself walking at the land. \nIn front of you is a beach, and to your right hand side is also beach. To your left and behind you lies more land. \nThere is a stream running nearby. \nYou notice some raw venison and a stick here."
+        "description": "You find yourself strolling along on the land, with the vast expanse of beach stretching out before you and to your right. To your left and behind, the landscape extends into more land, painting a serene picture of natural beauty. \n\nA gentle stream flows nearby, its tranquil murmur adding to the peaceful atmosphere. Amidst the surroundings, your attention is drawn to some raw venison and a sturdy stick lying nearby, hinting at the possibilities of a simple yet fulfilling adventure."
     },
+
     {
         "player_information": {
             "HP": "90/100",
-            "action_point": "80/100",
+            "action_point(AP)": "80/100",
             "player_current_status": "normal",
             "thirst_satisfied": "100/100",
             "package_weight": "20/20",
             "player_current_action": "move to south",
+            "action_AP_cost": "1 time(s)",
             "cash": 0,
-            "transportation": []
+            "equipment": "none",
+            "suit": "old shirt",
+            "transportation_used": []
         },
         "environment_information": {
             "Current location": "land",
@@ -231,54 +419,63 @@
             "Back": "land",
             "Right hand side": "land",
             "Left hand side": "land",
-            "landscape feature": ["stream", "rocks"]
+            "landscape feature": ["stream", "rocks"],
+            "move_AP_cost": "1 time(s)"
         },
         "information_need_to_be_described": {
-            "description_target": ["environment_information"]
+            "description_target": ["environment_information", "transportation_used by player"]
         }
     },
     {
         "title_of_description": "Land",
-        "description": "You are walking at a vast open land. There is nothing but land in every direction. A gentle breeze blows through the area. \nThere is a stream flowing nearby, and some rocks scattered around."
+        "description": "You find yourself traversing a boundless expanse of open land, where the land extends endlessly in every direction, enveloping you in a sense of awe-inspiring vastness. A gentle breeze sweeps through the landscape, caressing your skin with its subtle touch. \n\nNearby, a tranquil stream meanders gracefully, its gentle flow adding a soothing soundtrack to the scene. Scattered about, you notice a collection of rocks, each one a silent testament to the enduring nature of this untamed wilderness."
     },
+
     {
         "player_information": {
             "HP": "90/100",
-            "action_point": "35/100",
+            "action_point(AP)": "35/100",
             "player_current_status": "normal",
             "thirst_satisfied": "35/100",
             "package_weight": "19/20",
-            "player_current_action": "none",
+            "player_current_action": "move to west",
+            "action_AP_cost": "1 time(s)",
             "cash": 50,
-            "transportation": []
+            "equipment": "none",
+            "suit": "old shirt",
+            "transportation_used": []
         },
         "environment_information": {
-            "Current location": "land",
-            "Front": "land",
-            "Back": "land",
-            "Right hand side": "land",
-            "Left hand side": "land",
-            "Items": ["First Aid Kit", "Bread"],
-            "landscape feature": ["rocks"]
+            "Current location": "highland snowfield",
+            "Front": "river",
+            "Back": "highland snowfield",
+            "Right hand side": "mountain",
+            "Left hand side": "mountain",
+            "landscape feature": ["rocks"],
+            "move_AP_cost": "5 time(s)"
         },
         "information_need_to_be_described": {
-            "description_target": ["environment_information"]
+            "description_target": ["environment_information", "transportation_used by player"]
         }
     },
     {
-        "title_of_description": "Land",
-        "description": "You are standing on a vast expanse of land. The area stretches out in all directions, with no distinct features in sight. The ground beneath your feet is flat and featureless, scattered with rocks. \nThere are a First Aid Kit and some Bread lying on the ground here."
+        "title_of_description": "Highland Snowfield",
+        "description": "You find yourself immersed in the ethereal grandeur of a highland snowfield, a realm of pristine serenity that captivates the senses. Mountains tower to your left and right, their rugged peaks piercing the azure sky. \nBefore you, a river meanders through the highland, its crystalline surface delineating a flowing line beneath the highland terrain. Behind you, the snowfield stretches on endlessly, a vast expanse of untouched wilderness. \n\nAmidst this breathtaking panorama, scattered rocks punctuate the snowy terrain, their weathered forms adding texture to the otherwise pristine vista. \n\nHowever, be cautious, for continuously traveling in this highland snowfield demands an exorbitant expenditure of stamina, potentially leading to perilous situations due to the extreme cold and high altitude terrain."
     },
+
     {
         "player_information": {
             "HP": "90/100",
-            "action_point": "100/100",
+            "action_point(AP)": "100/100",
             "player_current_status": "normal",
             "thirst_satisfied": "70/100",
             "package_weight": "19/30",
             "player_current_action": "none",
+            "action_AP_cost": "1 time(s)",
             "cash": 50,
-            "transportation": ["boat"]
+            "equipment": "none",
+            "suit": "old shirt",
+            "transportation_used": ["wooden boat"]
         },
         "environment_information": {
             "Current location": "sea",
@@ -287,15 +484,48 @@
             "Right hand side": "sea",
             "Left hand side": "sea",
             "Items": ["first aid kit"],
-            "food": ["edible plants"]
+            "food": ["edible plants"],
+            "move_AP_cost": "1 time(s)"
         },
         "information_need_to_be_described": {
-            "description_target": ["environment_information"]
+            "description_target": ["environment_information", "transportation_used by player"]
         }
     },
     {
         "title_of_description": "Sea",
-        "description": "You and your boat are surrounded by the vast expanse of the sea. There is nothing but water as far as the eye can see in every direction. The sound of crashing waves fills the air. \nThere are some stuffs floating in the water here, including a first aid kit and some edible plants."
+        "description": "You find yourself and your wooden boat enveloped by the boundless expanse of the ocean. Stretching in every direction as far as the eye can discern, nothing but water meets your gaze. The rhythmic symphony of waves crashing against the vessel fills the air. \n\nAmidst the currents, various items drift, among them a first aid kit and edible plants."
     },
+
+    {
+        "player_information": {
+            "HP": "90/100",
+            "action_point(AP)": "100/100",
+            "player_current_status": "normal",
+            "thirst_satisfied": "70/100",
+            "package_weight": "19/30",
+            "player_current_action": "move to east",
+            "action_AP_cost": "1 time(s)",
+            "cash": 50,
+            "equipment": "none",
+            "suit": "old shirt",
+            "transportation_used": ["wooden boat"]
+        },
+        "environment_information": {
+            "Current location": "river",
+            "Front": "river",
+            "Back": "river",
+            "Right hand side": "river",
+            "Left hand side": "river",
+            "Items": ["stick"],
+            "move_AP_cost": "1 time(s)"
+        },
+        "information_need_to_be_described": {
+            "description_target": ["environment_information", "transportation_used by player"]
+        }
+    },
+    {
+        "title_of_description": "River",
+        "description": "You're paddling a wooden boat, navigating through the heart of a river,  embraced by water in every direction. The tranquil symphony of flowing water serenades your journey. \n\nNotably, a stick drifts lazily on the river's surface nearby, a subtle detail in the vast expanse of water."
+    }
 
 ]

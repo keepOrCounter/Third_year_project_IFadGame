@@ -2,16 +2,6 @@ import numpy as np
 # from typing import Callable
 # from interactionSys import OutputGenerator
 
-class NPCs():
-    def __init__(self, NPC_name: str, age: int, character: str, gender: str, commandSuitable = "talk"):
-        self.NPC_name = NPC_name
-        self.category = "NPC"
-
-        self.age = age
-        self.character = character
-        self.gender = gender
-
-        self.commandSuitable = commandSuitable
 
 class Items():
     def __init__(self, item_name: str, possibleWeight = {}, weight = 1, commandSuitable = "use"):
@@ -32,19 +22,19 @@ class Items():
         
 class Food(Items):
     def __init__(self, item_name: str, possibleWeight: dict[str, int], weight : int, \
-        item_energy_recovery: int, eatable = True, freshness = -1, thirst = 0, commandSuitable = "eat"):
+        AP_recovery: int, eatable = True, freshness = -1, thirst_satisfied = 0, commandSuitable = "eat"):
         """
-            `item_energy_recovery (int)`: the amount of action point player can recovery when \
+            `AP_recovery (int)`: the amount of action point player can recovery when \
                 making consume this food
             `eatable (bool)`: Whether this food is safe for eat
         """
         super().__init__(item_name, possibleWeight, weight, commandSuitable)
         
-        self.item_energy_recovery = item_energy_recovery
+        self.AP_recovery = AP_recovery
         self.eatable = eatable
         # self.state = state
         self.freshness = freshness
-        self.thirst = thirst
+        self.thirst_satisfied = thirst_satisfied
         
         self.commandSuitable = commandSuitable
         
@@ -64,10 +54,10 @@ class Tool(Items):
         
 class LandscapeFeature(Items):
     def __init__(self, item_name: str, possibleWeight=dict(), weight=2**10, \
-        item_energy_recovery = 0, eatable=False, freshness = -1, commandSuitable = "break"):
+        AP_recovery = 0, eatable=False, freshness = -1, commandSuitable = "break"):
         super().__init__(item_name, possibleWeight, weight, commandSuitable)
         
-        self.item_energy_recovery = item_energy_recovery
+        self.AP_recovery = AP_recovery
         self.eatable = eatable
         self.freshness = freshness
         
@@ -75,10 +65,10 @@ class LandscapeFeature(Items):
         
 class EnvironmentElement(Items):
     def __init__(self, item_name: str, possibleWeight=dict(), weight=2**10, \
-        item_energy_recovery = 0, eatable=False, commandSuitable = "collect"):
+        AP_recovery = 0, eatable=False, commandSuitable = "collect"):
         super().__init__(item_name, possibleWeight, weight, commandSuitable)
         
-        self.item_energy_recovery = item_energy_recovery
+        self.AP_recovery = AP_recovery
         self.eatable = eatable
         
         self.category = "environment element"
@@ -124,6 +114,45 @@ class Container(Items):
         self.capacity = capacity
         
         self.category = "container"
+        
+        
+class NPCs():
+    def __init__(self, NPC_name: str, hp: int, maximum_hp: int, action_point: int, \
+        maximum_action_point: int, thirst_satisfied: int, maximum_thirst_satisfied: int, \
+            relationship_with_player: int):
+        self.NPC_name = NPC_name
+        self.category = "NPCs"
+        
+        self.hp = hp
+        self.maximum_hp = maximum_hp
+        self.action_point = action_point
+        self.maximum_action_point = maximum_action_point
+        self.currentAction: str = None
+        self.buff: dict[str, Buff] = dict()
+
+        self.action_AP_cost_level: float = 1
+        self.thirst_satisfied = thirst_satisfied
+        self.maximum_thirst_satisfied = maximum_thirst_satisfied
+        
+        self.relationship_with_player = relationship_with_player
+
+class humanNPC(NPCs):
+    def __init__(self, NPC_name: str, hp: int, maximum_hp: int, action_point: int, \
+        maximum_action_point: int, thirst_satisfied: int, maximum_thirst_satisfied: int, relationship_with_player: int, \
+            age: int, character: str, gender: str, commandSuitable = "talk", items:dict[str, list[Items]] = dict(), \
+                cash: int = 0):
+        super().__init__(NPC_name, hp, maximum_hp, action_point, maximum_action_point, thirst_satisfied, \
+            maximum_thirst_satisfied, relationship_with_player)
+
+        self.age = age
+        self.character = character
+        self.gender = gender
+
+        self.commandSuitable = commandSuitable
+        
+        self.category = "human"
+        self.items = items
+        self.cash = cash
 
 
 class Events():
@@ -268,7 +297,7 @@ class Player_status():
     def __init__(self, currentLocation:list[int,int] = [0,0], items:dict[str, list[Items]] = dict(), \
         hp: int = 100, maximum_hp: int = 100, maximum_action_point: int = 100, \
             action_point: int = 100, currentAction: Actions = None, cash:int = 0, \
-                buff:dict[str, Buff] = dict(), thirst:int = 100, maximum_thirst:int = 100) -> None:
+                buff:dict[str, Buff] = dict(), thirst_satisfied:int = 100, maximum_thirst_satisfied:int = 100) -> None:
         """ `__currentLocation:` player coordinate [x,y]\n
             `items:` items in bag\n
             `action_point:` energy bar of player
@@ -284,8 +313,8 @@ class Player_status():
         self.__cash = cash
         self.__buff = buff
         self.__APrecovery = 10
-        self.__thirst = thirst
-        self.__maximum_thirst = maximum_thirst
+        self.__thirst_satisfied = thirst_satisfied
+        self.__maximum_thirst_satisfied = maximum_thirst_satisfied
     
     def get_currentLocation(self) -> tuple[int]:
         return (self.__currentLocation[0], self.__currentLocation[1])
@@ -356,16 +385,16 @@ class Player_status():
         self.__APrecovery = newAPrecovery
         
     def get_thirst(self) -> int:
-        return self.__thirst
+        return self.__thirst_satisfied
     
-    def set_thirst(self, thirst: int) -> None:
-        self.__thirst = thirst
+    def set_thirst(self, thirst_satisfied: int) -> None:
+        self.__thirst_satisfied = thirst_satisfied
         
     def get_maximum_thirst(self) -> int:
-        return self.__maximum_thirst
+        return self.__maximum_thirst_satisfied
     
-    def set_maximum_thirst(self, maximum_thirst: int) -> None:
-        self.__maximum_thirst= maximum_thirst
+    def set_maximum_thirst(self, maximum_thirst_satisfied: int) -> None:
+        self.__maximum_thirst_satisfied= maximum_thirst_satisfied
 
         
 class Map_information():

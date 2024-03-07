@@ -147,9 +147,9 @@ class Commands():
         items = self.valueRetrieval(items)
         if items.category == "food":
             self.__player.set_action_point(self.__player.get_action_point() +\
-                items.item_energy_recovery)
+                items.AP_recovery)
             self.__player.set_thirst(int(self.__player.get_thirst() -\
-                items.thirst))
+                items.thirst_satisfied))
             if not items.eatable:
                 if "consume uneatable food" not in self.__worldStatus.player_dangerAction.keys():
                     self.__worldStatus.player_dangerAction["consume uneatable food"] = [items.item_name]
@@ -483,16 +483,16 @@ class DefininedSys(): #
             # LandscapeFeature
             LandscapeFeature("stream", {"sea": 0, "land": 12, "forest": 15, "beach": 0, \
                 "river": 8, "desert": 0, "mountain": 0, "highland snowfield": 0, "town": 0, "grassland": 0}, \
-                item_energy_recovery=10, eatable=True, freshness=-1), 
+                AP_recovery=10, eatable=True, freshness=-1), 
             LandscapeFeature("rocks", {"sea": 10, "land": 12, "forest": 12, "beach": 10, \
                 "river": 8, "desert": 5, "mountain": 5, "highland snowfield": 0, "town": 0, "grassland": 0}, \
-                item_energy_recovery=10, eatable=True, freshness=72), 
+                AP_recovery=10, eatable=True, freshness=72), 
             LandscapeFeature("grass", {"sea": 0, "land": 12, "forest": 15, "beach": 0, \
                 "river": 8, "desert": 0, "mountain": 0, "highland snowfield": 0, "town": 0, "grassland": 12}, \
-                item_energy_recovery=2, eatable=False, freshness=20),
+                AP_recovery=2, eatable=False, freshness=20),
             LandscapeFeature("aloe vera", {"sea": 0, "land": 12, "forest": 5, "beach": 4, \
                 "river": 2, "desert": 12, "mountain": 0, "highland snowfield": 0, "town": 0, "grassland": 0}, \
-                item_energy_recovery=2, eatable=True, freshness=20),
+                AP_recovery=2, eatable=True, freshness=20),
             
             # Tool
             Tool("traps", {"sea": 0, "land": 8, "forest": 8, "beach": 2, "river": 6, \
@@ -509,41 +509,41 @@ class DefininedSys(): #
                 capacity=5),
             
             # Transportation
-            Transportation("boat", {"sea": 2, "land": 0, "forest": 0, "beach": 8, "river": 5, \
+            Transportation("wooden boat", {"sea": 2, "land": 0, "forest": 0, "beach": 8, "river": 5, \
                 "desert": 0, "mountain": 0, "highland snowfield": 0, "town": 5, "grassland": 0}, \
                 suitablePlace={"sea"}, APReduce=0.5),
             
             # Food
             Food("bread", {"sea": 0, "land": 0, "forest": 0, "beach": 0, "river": 0, \
                 "desert": 0, "mountain": 0, "highland snowfield": 0, "town": 0, "grassland": 0}, weight=1, \
-                item_energy_recovery=15, eatable=True, freshness=20, thirst=-20),
+                AP_recovery=15, eatable=True, freshness=20, thirst_satisfied=-20),
             Food("raw fish", {"sea": 15, "land": 0, "forest": 0, "beach": 1, "river": 12, \
                 "desert": 0, "mountain": 0, "highland snowfield": 0, "town": 0, "grassland": 0}, weight=2, \
-                item_energy_recovery=5, eatable=False, freshness=24, thirst=20),
+                AP_recovery=5, eatable=False, freshness=24, thirst_satisfied=20),
             Food("grilled fish", {"sea": 0, "land": 0, "forest": 0, "beach": 0, "river": 0, \
                 "desert": 0, "mountain": 0, "highland snowfield": 0, "town": 0, "grassland": 0}, weight=2, \
-                item_energy_recovery=15, eatable=True, freshness=24, thirst=10),
-            Food("berry", {"sea": 0, "land": 5, "forest": 10, "beach": 0, "river": 5, \
+                AP_recovery=15, eatable=True, freshness=24, thirst_satisfied=10),
+            Food("berries", {"sea": 0, "land": 5, "forest": 10, "beach": 0, "river": 5, \
                 "desert": 0, "mountain": 0, "highland snowfield": 0, "town": 5, "grassland": 12}, weight=1, \
-                item_energy_recovery=5, eatable=True, freshness=18, thirst=10),
+                AP_recovery=5, eatable=True, freshness=18, thirst_satisfied=10),
             Food("potato", {"sea": 0, "land": 5, "forest": 2, "beach": 0, "river": 2, \
                 "desert": 12, "mountain": 0, "highland snowfield": 0, "town": 0, "grassland": 12}, weight=1, \
-                item_energy_recovery=10, eatable=False, freshness=50, thirst=-5),
+                AP_recovery=10, eatable=False, freshness=50, thirst_satisfied=-5),
             Food("grilled potato", {"sea": 0, "land": 0, "forest": 0, "beach": 0, "river": 0, \
                 "desert": 0, "mountain": 0, "highland snowfield": 0, "town": 0, "grassland": 0}, weight=1, \
-                item_energy_recovery=10, eatable=True, freshness=72, thirst=-10),
+                AP_recovery=10, eatable=True, freshness=72, thirst_satisfied=-10),
             Food("raw venison", {"sea": 0, "land": 1, "forest": 2, "beach": 0, "river": 0, \
                 "desert": 12, "mountain": 5, "highland snowfield": 5, "town": 0, "grassland": 15}, weight=5, \
-                item_energy_recovery=20, eatable=False, freshness=19, thirst=50),
+                AP_recovery=20, eatable=False, freshness=19, thirst_satisfied=50),
             Food("grilled venison", {"sea": 0, "land": 0, "forest": 0, "beach": 0, "river": 0, \
                 "desert": 0, "mountain": 0, "highland snowfield": 0, "town": 0, "grassland": 0}, weight=5, \
-                item_energy_recovery=30, eatable=True, freshness=29, thirst=20),
+                AP_recovery=30, eatable=True, freshness=29, thirst_satisfied=20),
             Food("vegetable soup", {"sea": 0, "land": 0, "forest": 0, "beach": 0, "river": 0, \
                 "desert": 0, "mountain": 0, "highland snowfield": 0, "town": 0, "grassland": 0}, weight=5, \
-                item_energy_recovery=30, eatable=True, freshness=15, thirst=50, commandSuitable="have"),
+                AP_recovery=30, eatable=True, freshness=15, thirst_satisfied=50, commandSuitable="have"),
             Food("stew", {"sea": 0, "land": 0, "forest": 0, "beach": 0, "river": 0, "desert": 0, \
                 "mountain": 0, "highland snowfield": 0, "town": 0, "grassland": 0}, weight=10, \
-                item_energy_recovery=50, eatable=True, freshness=15, thirst=30, commandSuitable="have"),
+                AP_recovery=50, eatable=True, freshness=15, thirst_satisfied=30, commandSuitable="have"),
             
             # Item
             Items("wood", {"sea": 1, "land": 3, "forest": 20, "beach": 1, "river": 3, "desert": 0, \

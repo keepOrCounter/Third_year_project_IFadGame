@@ -1,0 +1,26 @@
+location:{total: 9
+	land: 5,(none 2(transportation 0), move 3(difficult 1, normal 2))
+	move, nonT, normal
+	none, nonT, difficult
+	move, nonT, normal
+	move, nonT, difficult
+	move, nonT, normal
+	
+	water: 4, (none 2(transportation 1), move 1(difficult 1))
+	move, nonT, difficult
+	none, nonT, difficult
+	none, boat, normal
+	move, boat, normal
+	
+}
+action: {total: 4
+	eat: 4
+	light, recovery_median, not_freshness, uneable, Nethirst
+	normal, recovery_median, freshness, eable, Pothirst
+	weight, recovery_high, freshness, eable, Nethirst
+	light, recovery_low, freshness, eable, Pothirst
+	light, recovery_low, not_freshness, uneable, Pothirst
+}
+event: {
+
+}

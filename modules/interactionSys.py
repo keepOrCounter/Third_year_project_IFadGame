@@ -127,10 +127,10 @@ You stand at the end of a road before a small brick building. The dense forest s
 	"category": "food",
 	"appear_possibility": <the possibility of this food can be picked up(if the food is human processed, please set all the possibility into 0 or 1 like the bread in following examples): sea, land, forest and beach, in dictionary form, each possibility is between 0-20>,
 	"weight": <The weight of the food, player can take totally 20 units weight items>,
-	"item_energy_recovery": <how many action point player can recovery after eat this food>,
+	"AP_recovery": <how many action point player can recovery after eat this food>,
 	"edible": <true or false, whether food is edible, the food like "rotten apple" or "raw kidney bean" are not edible>,
 	"freshness": <How many turns the food can be store in general case>,
-	"thirst": <the sense of thirst player will change after eat this food>
+	"thirst_satisfied": <the sense of thirst player will change after eat this food>
 }
 Please note that the production of food must be logical. Here are some expected results:
 {
@@ -138,20 +138,20 @@ Please note that the production of food must be logical. Here are some expected 
 	"category": "food",
 	"appear_possibility": {"sea": 0, "land": 1, "forest": 10, "beach": 0},
 	"weight": 2,
-	"item_energy_recovery": 5,
+	"AP_recovery": 5,
 	"edible": true,
 	"freshness": 72,
-	"thirst": 5
+	"thirst_satisfied": 5
 },
 {
 	"name": "bread",
 	"category": "food",
 	"appear_possibility": {"sea": 0, "land": 0, "forest": 0, "beach": 0},
 	"weight": 1,
-	"item_energy_recovery": 25,
+	"AP_recovery": 25,
 	"edible": true,
 	"freshness": 50,
-	"thirst": -10
+	"thirst_satisfied": -10
 }"""
     
         self.__generalized_promt = """You are writing the game description for a text-based adventure game program, you will receive a game details from game program like this in form of json:
@@ -160,7 +160,7 @@ Please note that the production of food must be logical. Here are some expected 
 		"HP": "100/100",
 		"AP": "100/100",
 		"player_current_status": "normal",
-		"thirst_level": "90/100",
+		"thirst_satisfied": "90/100",
 		"player_current_action": "consumed 2 bread",
 	},
 	"environment_information": {
@@ -177,10 +177,10 @@ Please note that the production of food must be logical. Here are some expected 
 		"used/comsumed_items/consumable_detial":{
 			"items_name": ["bread", "bread"],
 			"weight": [1, 1],
-			"item_energy_recovery": [15, 15],
+			"AP_recovery": [15, 15],
 			"freshness": [-5, -30],
 			"eatable": [false, false],
-			"thirst": [-20, -20]
+			"thirst_satisfied": [-20, -20]
 		}
 		"description_target": "player current feeling"
 	}
@@ -274,7 +274,7 @@ Please note that the production of food must be logical. Here are some expected 
         print("=======================================\n")
         print(result)
         foodGenerated = Food(result["name"], result["appear_possibility"], result["weight"], \
-            result["item_energy_recovery"], result["edible"], result["freshness"], result["thirst"])
+            result["AP_recovery"], result["edible"], result["freshness"], result["thirst_satisfied"])
         
         return foodGenerated
     

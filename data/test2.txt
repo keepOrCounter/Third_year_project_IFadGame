@@ -28,3 +28,7 @@
 	"description": "You and your boat are surrounded by the vast expanse of the sea. There is nothing but water as far as the eye can see in every direction. The sound of crashing waves fills the air. 
 There are some stuffs floating in the water here, including a first aid kit and some edible plants."
 }
+
+As you sit in a forest, surrounded by towering trees and the sounds of nature, you decide to have some apple as a short break.
+
+You reach for the apples in your pack. The first one looks promising, its skin still bearing a healthy sheen. With each bite, its crisp texture and sweet flavor invigorate you, quenching your thirst. However, the second apple disappoints; it's stale, its texture dry and unappealing. You take a bite, and something soft and squishy sinks into your teeth, making you realize the apple is rotten to the core. Despite your hunger, the taste is unpleasant. Both apples are small, failing to satisfy your cravings, leaving you yearning for more.
