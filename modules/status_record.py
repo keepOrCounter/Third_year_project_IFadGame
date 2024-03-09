@@ -541,3 +541,5 @@ class globalInfo():
         
         self.current_description: dict[str, str] = dict()
         
+        self.naturalAP_reduce: int = 2
+        self.naturalThirst_reduce: int = 4

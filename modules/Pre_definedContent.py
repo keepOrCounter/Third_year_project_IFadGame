@@ -161,7 +161,7 @@ class Commands():
                 "You have your "+items.item_name+" and take a short break."
             # TODO pass information to gpt to descript current player feeling
             
-    def pickUp(self, action: Actions, itemName: str, amount: int): # TODO process weight
+    def pickUp(self, action: Actions, amount: int, itemName: str): # TODO process weight
         itemName, amount = self.valueRetrieval(itemName, amount)
         itemsList = []
         count = 0
@@ -184,7 +184,8 @@ class Commands():
     def talk(self, action: Actions):
         pass
         
-    def attack(self, action: Actions, target, item: Items = None):
+    def attack(self, action: Actions, target):
+        item = self.__player.get_equipment()
         if item == None:
             target.set_hp(target.get_hp() - random.randint(0, 5))
             self.__worldStatus.current_description["attack"] = \
@@ -210,6 +211,33 @@ class Commands():
         attributes = vars(target)
         self.__worldStatus.current_description["checked"] = attributes
         # TODO pass information to gpt to descript current infomation
+        
+    def equip(self, action: Actions, target: str):
+        bag = self.__player.get_items()
+        if target in bag.keys() and len(bag[target]) > 0:
+            equipment = self.__player.get_equipment()
+            if equipment != None:
+                self.add_items(action, [equipment])
+            self.__player.set_equipment(bag[target][-1])
+            self.remove_items(action, {target: 1})
+            self.__worldStatus.current_description["equip " + target] = \
+                "You have equipped " + target
+        else:
+            self.__worldStatus.current_description["fail to equip " + target] = \
+                "You do not have " + target
+                
+                
+    def unequip(self, action: Actions, target: str):
+        equipment = self.__player.get_equipment()
+        if equipment != None:
+            self.add_items(action, [equipment])
+            self.__player.set_equipment(None)
+            self.__worldStatus.current_description["unequip " + target] = \
+                "You have unequipped " + target
+        else:
+            self.__worldStatus.current_description["fail to equip " + target] = \
+                "You do not have anything equipped"
+    
     
     def ActionCost(self, action: Actions):
         if action.actionName == "Move":
@@ -603,9 +631,13 @@ class DefininedSys(): #
         
         self.__def_actions = {
             "Move": Actions("Move", [preDefinedCommands.move, preDefinedCommands.ActionCost], \
-                [[],[]], 10, 0, ["move"]),
+                [[],[]], 10, 2, ["move"]),
             "Rest": Actions("Rest", [preDefinedCommands.rest, preDefinedCommands.ActionCost], \
-                [[],[]], 0, 0, ["rest"])
+                [[],[]], 0, 0, ["rest"]),
+            "Take": Actions("Take", [preDefinedCommands.pickUp, preDefinedCommands.ActionCost], \
+                [[],[]], 0, 0, ["take"]),
+            "Attack": Actions("Attack", [preDefinedCommands.attack, preDefinedCommands.ActionCost], \
+                [[],[]], 0, 0, ["attack"])
         }
         
         self.__def_buff = { # TODO add end condition

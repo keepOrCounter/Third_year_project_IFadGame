@@ -32,10 +32,18 @@ class rule_system():
                 # counter -= 1
             counter += 1
         
+    def naturalChange(self):
+        AP_change = self.__worldStatus.naturalAP_reduce
+        thirst_change = self.__worldStatus.naturalThirst_reduce
+        
+        self.__player.set_action_point(self.__player.get_action_point() - AP_change)
+        self.__player.set_thirst(self.__player.get_thirst() - thirst_change)
+        
     def eachTurn_handler(self):
         """Need to be called each turn
         """
         self.buffHandler()
+        self.naturalChange()
         # self.__worldStatus.current_description = dict()
         
         if not self.player_active():
