@@ -29,6 +29,10 @@
 There are some stuffs floating in the water here, including a first aid kit and some edible plants."
 }
 
-As you sit in a forest, surrounded by towering trees and the sounds of nature, you decide to have some apple as a short break.
+All seems well on the surface, except for one persistent sensation: thirst. Your throat is dry and parched, a constant reminder of your unquenched longing for water.
 
-You reach for the apples in your pack. The first one looks promising, its skin still bearing a healthy sheen. With each bite, its crisp texture and sweet flavor invigorate you, quenching your thirst. However, the second apple disappoints; it's stale, its texture dry and unappealing. You take a bite, and something soft and squishy sinks into your teeth, making you realize the apple is rotten to the core. Despite your hunger, the taste is unpleasant. Both apples are small, failing to satisfy your cravings, leaving you yearning for more.
+Clad in an old shirt, you stand with empty hands, contemplating the need for some form of protection in this unforgiving environment.
+
+You have 10 units of currency in your pocket.
+
+With a heavy heart, you open your package, revealing its contents: a weighty, decaying fish. The stench of its staleness fills the air, rendering it inedible.

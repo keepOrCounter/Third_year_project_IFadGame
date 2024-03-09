@@ -13,13 +13,15 @@ location:{total: 9
 	move, boat, normal
 	
 }
-action: {total: 4
+action: {total: 6
 	eat: 4
 	light, recovery_median, not_freshness, uneable, Nethirst
 	normal, recovery_median, freshness, eable, Pothirst
 	weight, recovery_high, freshness, eable, Nethirst
 	light, recovery_low, freshness, eable, Pothirst
 	light, recovery_low, not_freshness, uneable, Pothirst
+	attack: 1
+	check: 1
 }
 event: {
 

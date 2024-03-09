@@ -331,10 +331,35 @@ class objectsGenerator():
         objectList = all_terrain[terrian_type].possible_Object
         weight = all_terrain[terrian_type].possible_Object_Weight
         
-        choice = np.random.choice(objectList, size=(random.randint(lowest_amount, highest_amount),), \
-            p=(np.divide(weight, np.sum(weight))))
+        if highest_amount > objectList.shape[0]:
+            highest_amount = objectList.shape[0]
+        if lowest_amount > objectList.shape[0]:
+            lowest_amount = objectList.shape[0]
+
+
+        randomWeight = np.random.rand(*objectList.shape) * 20
+        print(randomWeight)
+        strongItems = np.where(randomWeight<weight)[0]
+        if strongItems.shape[0] < lowest_amount:
+            gap = lowest_amount - strongItems.shape[0]
+            choice = np.random.choice(objectList, size=(gap,), p=(np.divide(weight, np.sum(weight))))
+            generateResult = objectList[strongItems]
+            generateResult = np.append(generateResult, choice)
+        elif strongItems.shape[0] > highest_amount:
+            # gap = lowest_amount - strongItems.shape[0]
+            candidateWeight = weight[strongItems]
+            candidateObject = objectList[strongItems]
+            choice = np.random.choice(candidateObject, size=(highest_amount,), \
+                p=(np.divide(candidateWeight, np.sum(candidateWeight))))
+            generateResult = choice
+        else:
+            generateResult = objectList[strongItems]
+        
+        # choice = np.random.choice(objectList, size=(random.randint(lowest_amount, highest_amount),), \
+        #     p=(np.divide(weight, np.sum(weight))))
         # generateResult = random.choices(objectList, k=random.randint(lowest_amount, highest_amount))
-        generateResult = np.append(result, choice)
+        # generateResult = np.append(result, choice)
+        generateResult = np.append(generateResult, result)
         return generateResult
 
 

@@ -184,7 +184,7 @@
             "player_current_status": ["thirst"],
             "thirst_satisfied": "30/100",
             "package_weight": "3/20",
-            "player_current_action": "attack 1st wolf",
+            "player_current_action": "attack 1st wolf by hand",
             "action_AP_cost": "1 time(s)",
             "cash": 0,
             "equipment": "none",
@@ -202,36 +202,82 @@
         },
         "NPCs":[
             {
-                "NPC_name": "wolf",
+                "NPC_name": "1st wolf",
                 "NPC_category": "animal",
-                "HP": "90/100",
+                "HP": "60/100",
                 "action_point(AP)": "80/100",
                 "current_status": ["blooding"],
                 "thirst_satisfied": "<unknown>",
-                "current_action": "attack 2nd wolf",
+                "current_action": "attack 2nd wolf by claws",
                 "action_AP_cost": "1 time(s)",
+                "equipment": ["buckteeth", "claws"],
                 "relationship_with_player": 0
             },
             {
-                "NPC_name": "wolf",
+                "NPC_name": "2nd wolf",
                 "NPC_category": "animal",
                 "HP": "100/100",
                 "action_point(AP)": "95/100",
                 "current_status": "normal",
                 "thirst_satisfied": "<unknown>",
-                "current_action": "attack 1st wolf",
+                "current_action": "attack 1st wolf by buckteeth",
                 "action_AP_cost": "1 time(s)",
+                "equipment": ["buckteeth", "claws"],
                 "relationship_with_player": 0
             }
         ],
         "information_need_to_be_described": {
-            "description_target": ["transportation_used", "Current location", "player_current_action", "NPCs", "player current feeling"]
+            "player_action_result": "1 HP damage on 1st wolf",
+            "1st_wolf_action_result": "10 HP damage on 2nd wolf",
+            "2nd_wolf_action_result": "10 HP damage on 1st wolf",
+            "description_target": ["transportation_used", "Current location", "player_current_action", "NPCs in player's view", "player_action_result", "1st_wolf_action_result", "2nd_wolf_action_result"]
         }
     },
     {
-        "title_of_description": "Consuming Fresh and Stale Apples in the Forest",
-        "description": "As you sit in a forest, surrounded by towering trees and the sounds of nature, you decide to have some apple as a short break. \n\nYou reach for the apples in your pack. The first one looks promising, its skin still bearing a healthy sheen. With each bite, its crisp texture and sweet flavor invigorate you, quenching your thirst. However, the second apple disappoints; it's stale, its texture dry and unappealing. You take a bite, and something soft and squishy sinks into your teeth, making you realize the apple is rotten to the core. Despite your hunger, the taste is unpleasant. Both apples are small, failing to satisfy your cravings, leaving you yearning for more."
-    },\
+        "title_of_description": "Intervention in the Wolf Duel",
+        "description": "Deep within the heart of the ancient forest, a fierce duel between two majestic wolves. \n\nThe first wolf, bears the marks of previous combat, blood staining its fur as it squares off against its adversary, and its formidable fangs relentlessly pressing the assault against the second wolf. Simultaneously, the second wolf retaliates with equal fervor, its own attacks leaving wounds upon the first. \n\nOn the opposing end, the second wolf, equally imposing and resolute, unleashes a torrent of relentless attacks, its claws cutting through the air with deadly precision. Yet, amidst its onslaught, it too sustains injuries inflicted by the first wolf's buckteeth. \n\nThough your presence goes unnoticed by the dueling wolves, you dare to intervene, attempting to assail the first wolf with your bare hands, yet your efforts yield little in the face of their ferocity."
+    },
+
+    {
+        "player_information": {
+            "HP": "100/100",
+            "action_point(AP)": "80/100",
+            "player_current_status": ["thirst"],
+            "thirst_satisfied": "30/100",
+            "package_weight": "3/20",
+            "player_current_action": "check player",
+            "action_AP_cost": "1 time(s)",
+            "cash": 10,
+            "equipment": "none",
+            "suit": "old shirt",
+            "transportation_used": []
+        },
+        "environment_information": {
+            "Current location": "land",
+            "Front": "forest",
+            "Back": "forest",
+            "Right hand side": "forest",
+            "Left hand side": "forest",
+            "move_AP_cost": "1 time(s)"
+        },
+        "package": [
+            {
+                "items_name": "raw fish",
+                "weight": 3,
+                "AP_recovery": 15,
+                "freshness": -30,
+                "eatable": false,
+                "thirst_satisfied": -20
+            }
+        ],
+        "information_need_to_be_described": {
+            "description_target": ["player_information(except: [player_current_action, cash])", "cash(explicit)", "package"]
+        }
+    },
+    {
+        "title_of_description": "Your situation",
+        "description": "All seems well on the surface, except for one persistent sensation: thirst. Your throat is dry and parched, a constant reminder of your unquenched longing for water. \n\nClad in an old shirt, you stand with empty hands, contemplating the need for some form of protection in this unforgiving environment. \n\nYou have 10 units of currency in your pocket. \n\nWith a heavy heart, you open your package, revealing its contents: a weighty, decaying fish. The stench of its staleness fills the air, rendering it inedible."
+    },
 
     {
         "player_information": {

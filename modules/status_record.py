@@ -115,11 +115,18 @@ class Container(Items):
         
         self.category = "container"
         
+
+class Suit(Items):
+    def __init__(self, item_name: str, possibleWeight={}, weight=1, commandSuitable="use", durability = 1):
+        super().__init__(item_name, possibleWeight, weight, commandSuitable)
+        self.durability = durability
+        
+        self.category = "Suit"
         
 class NPCs():
     def __init__(self, NPC_name: str, hp: int, maximum_hp: int, action_point: int, \
         maximum_action_point: int, thirst_satisfied: int, maximum_thirst_satisfied: int, \
-            relationship_with_player: int):
+            relationship_with_player: int, equipments: Items):
         self.NPC_name = NPC_name
         self.category = "NPCs"
         
@@ -135,14 +142,16 @@ class NPCs():
         self.maximum_thirst_satisfied = maximum_thirst_satisfied
         
         self.relationship_with_player = relationship_with_player
+        
+        self.equipments = equipments
 
 class humanNPC(NPCs):
     def __init__(self, NPC_name: str, hp: int, maximum_hp: int, action_point: int, \
         maximum_action_point: int, thirst_satisfied: int, maximum_thirst_satisfied: int, relationship_with_player: int, \
-            age: int, character: str, gender: str, commandSuitable = "talk", items:dict[str, list[Items]] = dict(), \
-                cash: int = 0):
+            equipments: Items, age: int, character: str, gender: str, commandSuitable = "talk", \
+                items:dict[str, list[Items]] = dict(), cash: int = 0):
         super().__init__(NPC_name, hp, maximum_hp, action_point, maximum_action_point, thirst_satisfied, \
-            maximum_thirst_satisfied, relationship_with_player)
+            maximum_thirst_satisfied, relationship_with_player, equipments)
 
         self.age = age
         self.character = character
@@ -315,6 +324,14 @@ class Player_status():
         self.__APrecovery = 10
         self.__thirst_satisfied = thirst_satisfied
         self.__maximum_thirst_satisfied = maximum_thirst_satisfied
+        
+        self.__transportation_used: Items = None
+        self.__suit: Items = Suit("old shirt", {"sea": 0, "land": 0, "forest": 0, "beach": 0, "river": 0, \
+            "desert": 0, "mountain": 0, "highland snowfield": 0, "town": 0, "grassland": 0}, 2)
+        self.__equipment: Items = None
+        
+        self.__action_dLevel: float = 1
+        # self.action_dLevel: float = 1
     
     def get_currentLocation(self) -> tuple[int]:
         return (self.__currentLocation[0], self.__currentLocation[1])
@@ -396,6 +413,29 @@ class Player_status():
     def set_maximum_thirst(self, maximum_thirst_satisfied: int) -> None:
         self.__maximum_thirst_satisfied= maximum_thirst_satisfied
 
+    def get_action_dLevel(self) -> float:
+        return self.__action_dLevel
+    
+    def set_action_dLevel(self, action_dLevel: float) -> None:
+        self.__action_dLevel = action_dLevel
+        
+    def get_transportation(self) -> Items:
+        return self.__transportation_used
+    
+    def set_transportation(self, transportation: Items) -> None:
+        self.__transportation_used = transportation
+        
+    def get_suit(self) -> Items:
+        return self.__suit
+    
+    def set_suit(self, suit: Items) -> None:
+        self.__suit = suit
+        
+    def get_equipment(self) -> Items:
+        return self.__equipment
+    
+    def set_equipment(self, equipment: Items) -> None:
+        self.__equipment = equipment
         
 class Map_information():
     def __init__(self, current_area_type: int = 0, currentMap: np.ndarray[str] = [], \
@@ -492,7 +532,7 @@ class globalInfo():
         # self.move_APCost = 5
         self.directionKnown = False
         self.move_dLevel: float = 1
-        self.action_dLevel: float = 1
+        
         self.restPlace = True
         self.lastPlace: str = None
         
@@ -500,3 +540,4 @@ class globalInfo():
         self.NPC_action_toPlayer = dict()
         
         self.current_description: dict[str, str] = dict()
+        

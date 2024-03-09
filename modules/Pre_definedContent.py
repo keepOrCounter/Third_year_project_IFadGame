@@ -219,9 +219,9 @@ class Commands():
                 action.thirstCost * self.__worldStatus.move_dLevel))
         else:
             self.__player.set_action_point(int(self.__player.get_action_point() -\
-                action.actionPointCost * self.__worldStatus.action_dLevel))
+                action.actionPointCost * self.__player.get_action_dLevel()))
             self.__player.set_thirst(int(self.__player.get_thirst() -\
-                action.thirstCost * self.__worldStatus.action_dLevel))
+                action.thirstCost * self.__player.get_action_dLevel()))
     
     
 class MapPcgRule():
@@ -438,19 +438,19 @@ class character_effectSys():
     def thirsty(self, buff: Buff):
         if buff.startedTime == 0:
             if buff.level == 1:
-                self.__worldStatus.action_dLevel *= 1.2
+                self.__player.set_action_dLevel(self.__player.get_action_dLevel()*1.2)
             elif buff.level == 2:
-                self.__worldStatus.action_dLevel *= 1.5
+                self.__player.set_action_dLevel(self.__player.get_action_dLevel()*1.5)
             elif buff.level == 3:
-                self.__worldStatus.action_dLevel *= 2
+                self.__player.set_action_dLevel(self.__player.get_action_dLevel()*2)
                 
     def de_thirsty(self, buff: Buff):
         if buff.level == 1:
-            self.__worldStatus.action_dLevel /= 1.2
+            self.__player.set_action_dLevel(self.__player.get_action_dLevel()/1.2)
         elif buff.level == 2:
-            self.__worldStatus.action_dLevel /= 1.5
+            self.__player.set_action_dLevel(self.__player.get_action_dLevel()/1.5)
         elif buff.level == 3:
-            self.__worldStatus.action_dLevel /= 2
+            self.__player.set_action_dLevel(self.__player.get_action_dLevel()/2)
             
             
     def poisoning(self, buff: Buff):
