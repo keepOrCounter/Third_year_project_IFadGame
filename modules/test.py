@@ -190,57 +190,81 @@ import random
 # # result = json.loads("tem.json", strict=False)
 # # print(result)
 
-definitely_Object = np.array(["air"])
-possible_Object = np.array(["grass", "gnm", "snow", "gl"])
-possible_Object_Weight = np.array([10, 2, 5, 15])
+# definitely_Object = np.array(["air"])
+# possible_Object = np.array(["grass", "gnm", "snow", "gl"])
+# possible_Object_Weight = np.array([10, 2, 5, 15])
 
-def objectGeneration(lowest_amount: int, highest_amount: int):
-    """
-    Args:
-        `lowest_amount` (int): lower bound of number of objects generated \
-            (includ end point, other than definitely_Object, which will always generated)\n
-        `highest_amount` (int): upper bound of number of objects generated \
-            (includ end point, other than definitely_Object, which will always generated)\n
-    """
-    result = copy.deepcopy(definitely_Object)
-    objectList = possible_Object
-    weight = possible_Object_Weight
-    if highest_amount > objectList.shape[0]:
-        highest_amount = objectList.shape[0]
-    if lowest_amount > objectList.shape[0]:
-        lowest_amount = objectList.shape[0]
+# def objectGeneration(lowest_amount: int, highest_amount: int):
+#     """
+#     Args:
+#         `lowest_amount` (int): lower bound of number of objects generated \
+#             (includ end point, other than definitely_Object, which will always generated)\n
+#         `highest_amount` (int): upper bound of number of objects generated \
+#             (includ end point, other than definitely_Object, which will always generated)\n
+#     """
+#     result = copy.deepcopy(definitely_Object)
+#     objectList = possible_Object
+#     weight = possible_Object_Weight
+#     if highest_amount > objectList.shape[0]:
+#         highest_amount = objectList.shape[0]
+#     if lowest_amount > objectList.shape[0]:
+#         lowest_amount = objectList.shape[0]
 
 
-    randomWeight = np.random.rand(*objectList.shape) * 20
-    print(randomWeight)
-    strongItems = np.where(randomWeight<weight)[0]
-    if strongItems.shape[0] < lowest_amount:
-        gap = lowest_amount - strongItems.shape[0]
-        choice = np.random.choice(objectList, size=(gap,), p=(np.divide(weight, np.sum(weight))))
-        generateResult = objectList[strongItems]
-        generateResult = np.append(generateResult, choice)
-    elif strongItems.shape[0] > highest_amount:
-        # gap = lowest_amount - strongItems.shape[0]
-        candidateWeight = weight[strongItems]
-        candidateObject = objectList[strongItems]
-        choice = np.random.choice(candidateObject, size=(highest_amount,), \
-            p=(np.divide(candidateWeight, np.sum(candidateWeight))))
-        generateResult = choice
-    else:
-        generateResult = objectList[strongItems]
+#     randomWeight = np.random.rand(*objectList.shape) * 20
+#     print(randomWeight)
+#     strongItems = np.where(randomWeight<weight)[0]
+#     if strongItems.shape[0] < lowest_amount:
+#         gap = lowest_amount - strongItems.shape[0]
+#         choice = np.random.choice(objectList, size=(gap,), p=(np.divide(weight, np.sum(weight))))
+#         generateResult = objectList[strongItems]
+#         generateResult = np.append(generateResult, choice)
+#     elif strongItems.shape[0] > highest_amount:
+#         # gap = lowest_amount - strongItems.shape[0]
+#         candidateWeight = weight[strongItems]
+#         candidateObject = objectList[strongItems]
+#         choice = np.random.choice(candidateObject, size=(highest_amount,), \
+#             p=(np.divide(candidateWeight, np.sum(candidateWeight))))
+#         generateResult = choice
+#     else:
+#         generateResult = objectList[strongItems]
 
-    # sortedMask = np.argsort(mask)
-    # size = random.randint(lowest_amount, highest_amount)
-    # descending_indices = sortedMask[::-1][0:size]
-    print(strongItems)
-    # print(descending_indices)
-    # print(mask[descending_indices]<weight[descending_indices])
+#     # sortedMask = np.argsort(mask)
+#     # size = random.randint(lowest_amount, highest_amount)
+#     # descending_indices = sortedMask[::-1][0:size]
+#     print(strongItems)
+#     # print(descending_indices)
+#     # print(mask[descending_indices]<weight[descending_indices])
     
-    # choice = np.random.choice(objectList, size=(random.randint(lowest_amount, highest_amount),), \
-    #     p=(np.divide(weight, np.sum(weight))))
-    # generateResult = random.choices(objectList, k=random.randint(lowest_amount, highest_amount))
-    generateResult = np.append(generateResult, result)
-    print(generateResult)
-    # return generateResult
+#     # choice = np.random.choice(objectList, size=(random.randint(lowest_amount, highest_amount),), \
+#     #     p=(np.divide(weight, np.sum(weight))))
+#     # generateResult = random.choices(objectList, k=random.randint(lowest_amount, highest_amount))
+#     generateResult = np.append(generateResult, result)
+#     print(generateResult)
+#     # return generateResult
 
-objectGeneration(2, 4)
+# objectGeneration(2, 4)
+class Parent:
+    def __init__(self):
+        print("This is method 0 from Parent class")
+    def method1(self):
+        print("This is method 1 from Parent class")
+
+    def method2(self):
+        print("This is method 2 from Parent class")
+
+class Child(Parent):
+    def __init__(self):
+        # super().__init__()
+        self._a = 3
+        print("This is method 0 from child class")
+    def method2(self):
+        print("This is method 3 from child class")
+
+# Creating an instance of Child class
+child_obj = Child()
+
+# Calling methods inherited from Parent class
+child_obj.method1()
+child_obj.method2()
+print(child_obj._a)

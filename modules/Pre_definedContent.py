@@ -1,6 +1,6 @@
 from status_record import Player_status, Map_information, globalInfo, Items, Events, \
     Actions, Terrain_type, LandscapeFeature, EnvironmentElement, Tool, Food, \
-        Transportation, Weapon, Container, PassivityEvents, Buff, DisasterEvents
+        Transportation, Weapon, Container, PassivityEvents, Buff, DisasterEvents, humanNPC
 import random
 import copy
 import numpy as np
@@ -130,6 +130,34 @@ class Commands():
         newValue = self.valueRetrieval(value)
         self.__player.set_maximum_action_point(self.__player.get_maximum_action_point() - newValue)
     
+    def findObject(self, action: Actions, target: str, place: str):
+        if place == "package":
+            bag = self.__player.get_items()
+            if target in bag.keys() and len(bag[target])>0:
+                result = target in bag.keys()
+                amount = len(bag[target])
+            else:
+                result = False
+                amount = 0
+        else:
+            currentPlace = self.__map.currentLocation
+            itemList = currentPlace.objects
+            npsList = currentPlace.npcs
+            counter = 0
+            for x in range(len(itemList)):
+                if itemList[x].item_name == target:
+                    counter += 1
+            if counter > 0:
+                return True, counter
+            
+            for x in range(len(npsList)):
+                if npsList[x].NPC_name == target:
+                    counter += 1
+            
+            result = counter > 0
+            amount = counter
+            
+        return result, amount
     
     def rest(self, action: Actions):
         if self.__worldStatus.restPlace:
@@ -160,6 +188,9 @@ class Commands():
             self.__worldStatus.current_description["consume "+items.item_name] = \
                 "You have your "+items.item_name+" and take a short break."
             # TODO pass information to gpt to descript current player feeling
+        else:
+            self.__worldStatus.current_description["failed to consume "+items.item_name] = \
+                "You cannot have that."
             
     def pickUp(self, action: Actions, amount: int, itemName: str): # TODO process weight
         itemName, amount = self.valueRetrieval(itemName, amount)
@@ -181,7 +212,7 @@ class Commands():
                 "It seems that there is not such things around, even if you try to find one."
             # print("It seems that there is not such things around, even if you try to find one.")
             
-    def talk(self, action: Actions):
+    def talk(self, action: Actions, npcs: humanNPC):
         pass
         
     def attack(self, action: Actions, target):
@@ -238,6 +269,8 @@ class Commands():
             self.__worldStatus.current_description["fail to equip " + target] = \
                 "You do not have anything equipped"
     
+    def filled(self, action: Actions, container: str, liquid: str):
+        pass
     
     def ActionCost(self, action: Actions):
         if action.actionName == "Move":
@@ -631,14 +664,25 @@ class DefininedSys(): #
         
         self.__def_actions = {
             "Move": Actions("Move", [preDefinedCommands.move, preDefinedCommands.ActionCost], \
-                [[],[]], 10, 2, ["move"]),
+                [[],[]], 5, 4, ["move"]),
             "Rest": Actions("Rest", [preDefinedCommands.rest, preDefinedCommands.ActionCost], \
                 [[],[]], 0, 0, ["rest"]),
             "Take": Actions("Take", [preDefinedCommands.pickUp, preDefinedCommands.ActionCost], \
-                [[],[]], 0, 0, ["take"]),
-            "Attack": Actions("Attack", [preDefinedCommands.attack, preDefinedCommands.ActionCost], \
-                [[],[]], 0, 0, ["attack"])
+                [[],[]], 2, 1, ["take"]),
+            "Equip": Actions("Equip", [preDefinedCommands.equip, preDefinedCommands.ActionCost], \
+                [[],[]], 1, 0, ["equip"]),
+            "Unequip": Actions("Unequip", [preDefinedCommands.unequip, preDefinedCommands.ActionCost], \
+                [[],[]], 1, 0, ["unequip"]),
+            "Check": Actions("Check", [preDefinedCommands.check, preDefinedCommands.ActionCost], \
+                [[],[]], 2, 1, ["check"]),
+            "Consume": Actions("Consume", [preDefinedCommands.consume, preDefinedCommands.ActionCost], \
+                [[],[]], 1, 1, ["eat", "drink"]),
+            "Fill": Actions("Fill", [preDefinedCommands.filled, preDefinedCommands.ActionCost], \
+                [[],[]], 1, 0, ["fill"]),
+            "Talk": Actions("Talk", [preDefinedCommands.talk, preDefinedCommands.ActionCost], \
+                [[],[]], 1, 2, ["talk"])
         }
+        ["Take all", "Take lamb leg", "Take glass water bottle", "Equip sword", "Unequip weapon crafting bench", "Check player", "Check all", "Check stream", "drink stream", "eat soup", "eat grilled fish", "fill glass water bottle with stream", "get on wooden boat", "get off wooden boat", "talk to Bob"]
         
         self.__def_buff = { # TODO add end condition
             "thirsty": Buff("thirsty", exe_function= self.__buffEffect.thirsty, \
