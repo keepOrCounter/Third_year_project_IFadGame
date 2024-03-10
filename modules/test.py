@@ -244,27 +244,33 @@ import random
 #     # return generateResult
 
 # objectGeneration(2, 4)
-class Parent:
-    def __init__(self):
-        print("This is method 0 from Parent class")
-    def method1(self):
-        print("This is method 1 from Parent class")
+# import re
+from status_record import *
+from Pre_definedContent import *
+from main import *
+import copy
+# Example usage:
+# input_string = "Hello123456World(1444)"
+# result = re.sub(r'\(\d+\)', '', input_string)
+# print(result)  # Output will be: HelloWorld
+worldStatus = globalInfo()
+# player_info = Player_status()
+map_record = Map_information(current_area_type = 1, map_size=(20, 20)) # land type
+# mapPCG = MapGenerator(player_info, map_record)
+player_info = Player_status(action_point = 30)
+defined_command = Commands(player_info, map_record, worldStatus)
+buffEffect = character_effectSys(player_info, defined_command, worldStatus)
+game_content = DefininedSys(defined_command, map_record, buffEffect)
 
-    def method2(self):
-        print("This is method 2 from Parent class")
+objectList = game_content.get_items()
+result = {"rocks": []}
+for x in range(3):
+    result["rocks"].append(copy.deepcopy(objectList[1]))
+    result["rocks"][-1].codeName = result["rocks"][-1].item_name + "(" + str(len(result["rocks"])) + ")"
+player_info.set_items(result)
+print(result)
 
-class Child(Parent):
-    def __init__(self):
-        # super().__init__()
-        self._a = 3
-        print("This is method 0 from child class")
-    def method2(self):
-        print("This is method 3 from child class")
-
-# Creating an instance of Child class
-child_obj = Child()
-
-# Calling methods inherited from Parent class
-child_obj.method1()
-child_obj.method2()
-print(child_obj._a)
+map_record.currentLocation = Location("Unkown", 0,0, objectList[0:3]+[result["rocks"][0]])
+result, count, li = defined_command.findObject(None, "stream", "location", "code name")
+# print(li[count].item_name)
+print(result, count, li)

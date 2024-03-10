@@ -4,6 +4,7 @@ from status_record import Player_status, Map_information, globalInfo, Items, Eve
 import random
 import copy
 import numpy as np
+import re
 
 
 
@@ -98,11 +99,15 @@ class Commands():
         for x in items:
             if x.item_name not in currentItems.keys():
                 currentItems[x.item_name] = [copy.deepcopy(x)]
+                # currentItems[x.item_name][-1].codeName = x.item_name + str(len(currentItems[x.item_name]))
             else:
                 currentItems[x.item_name].append(copy.deepcopy(x))
+                
+            currentItems[x.item_name][-1].codeName = x.item_name + "(" + str(len(currentItems[x.item_name])) + ")"
+                
         self.__player.set_items(currentItems)
         
-    def remove_items(self, action: Actions, items: dict[str, int]) -> None:
+    def remove_items(self, action: Actions, items: dict[str, Items]) -> None:
         """
         Remove one or more items to player's package
         """
@@ -130,34 +135,82 @@ class Commands():
         newValue = self.valueRetrieval(value)
         self.__player.set_maximum_action_point(self.__player.get_maximum_action_point() - newValue)
     
-    def findObject(self, action: Actions, target: str, place: str):
-        if place == "package":
-            bag = self.__player.get_items()
-            if target in bag.keys() and len(bag[target])>0:
-                result = target in bag.keys()
-                amount = len(bag[target])
+    def findObject(self, action: Actions, target: str, place: str, mode = "real name"):
+        """trying to find an object or an npc in player bag or current location
+
+        Args:
+            `target` (str): object name or code name
+            `place` (str): 'package' or 'location'
+            `mode` (str, optional): "real name" or "code name". Defaults to "real name".
+
+        Returns:
+            result, index, container
+            `result` (bool): whether found in list or dictionary
+            `index` (int): The position found in list or dictionary
+            `container` (iterable): Target list or dictionary
+        """
+        if mode == "real name":
+            if place == "package":
+                bag = self.__player.get_items()
+                container = bag
+                if target in bag.keys() and len(bag[target])>0:
+                    result = target in bag.keys()
+                    amount = 0
+                else:
+                    result = False
+                    amount = None
             else:
-                result = False
-                amount = 0
+                currentPlace = self.__map.currentLocation
+                itemList = currentPlace.objects
+                npsList = currentPlace.npcs
+                counter = 0
+                for x in range(len(itemList)):
+                    if itemList[x].item_name == target:
+                        result = True
+                        counter = x
+                        container = itemList
+                        return result, counter, container
+
+                for x in range(len(npsList)):
+                    if npsList[x].NPC_name == target:
+                        result = True
+                        counter = x
+                        container = npsList
+
+                amount = counter
+                
+            return result, amount, container
         else:
-            currentPlace = self.__map.currentLocation
-            itemList = currentPlace.objects
-            npsList = currentPlace.npcs
-            counter = 0
-            for x in range(len(itemList)):
-                if itemList[x].item_name == target:
-                    counter += 1
-            if counter > 0:
-                return True, counter
-            
-            for x in range(len(npsList)):
-                if npsList[x].NPC_name == target:
-                    counter += 1
-            
-            result = counter > 0
-            amount = counter
-            
-        return result, amount
+            result = False
+            count = None
+            container = None
+            realName = re.sub(r'\(\d+\)', '', target)
+            # print(realName)
+            if place == "package":
+                bag = self.__player.get_items()
+                if realName in bag.keys() and len(bag[realName])>0:
+                    for x in range(len(bag[realName])):
+                        if bag[realName][x].codeName == target:
+                            result = True
+                            count = x
+                            container = bag
+                            break
+            else:
+                currentPlace = self.__map.currentLocation
+                itemList = currentPlace.objects
+                npsList = currentPlace.npcs
+                for x in range(len(itemList)):
+                    if itemList[x].codeName == target:
+                        return True, x, itemList
+                    
+
+                for x in range(len(npsList)):
+                    if npsList[x].NPC_name == target:
+                        result = True
+                        count = x
+                        container = npsList
+
+            return result, count, container
     
     def rest(self, action: Actions):
         if self.__worldStatus.restPlace:

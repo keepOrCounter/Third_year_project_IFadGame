@@ -13,6 +13,7 @@ class Items():
                 could carry 20 weight of items
         """
         self.item_name = item_name
+        self.codeName = item_name
         self.category = "item"
         
         self.possibleWeight = possibleWeight
