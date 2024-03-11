@@ -33,6 +33,9 @@ class rule_system():
             counter += 1
         
     def naturalChange(self):
+        freshnessList = self.__worldStatus.freshNessChangedItems
+        for x in freshnessList:
+            x.freshness -= 1
         AP_change = self.__worldStatus.naturalAP_reduce
         thirst_change = self.__worldStatus.naturalThirst_reduce
         
@@ -52,6 +55,9 @@ class rule_system():
         if not self.player_alive():
             print("Game over.")
             sys.exit(0)
+        if not self.player_thirst():
+            
+            self.__player.set_thirst(0)
         
         if self.__map_info.currentLocation != None:
             currentPlace = self.__map_info.currentLocation.location_name
@@ -78,6 +84,9 @@ class rule_system():
     
     def player_active(self):
         return self.__player.get_action_point() > 0
+    
+    def player_thirst(self):
+        return self.__player.get_thirst() > 0
     
     def debug_information(self):
         print("current_location:", self.__player.get_currentLocation())

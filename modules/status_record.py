@@ -246,6 +246,8 @@ class NPCs():
         self.NPC_name = NPC_name
         self.category = "NPCs"
         
+        self.codeName = NPC_name
+        
         self.__hp = hp
         self.__maximum_hp = maximum_hp
         self.__action_point = action_point
@@ -632,6 +634,8 @@ class globalInfo():
         
         self.player_dangerAction = dict()
         self.NPC_action_toPlayer = dict()
+        
+        self.freshNessChangedItems: list[Items] = list()
         
         self.current_description: dict[str, str] = dict()
         

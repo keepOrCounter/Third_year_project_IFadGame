@@ -27,7 +27,7 @@ nlp = spacy.load("en_core_web_sm")
 #     else:
 #         return None
 
-phrase = "find all apples"
+phrase = "take apple A"
 
 # phrase = input()
 

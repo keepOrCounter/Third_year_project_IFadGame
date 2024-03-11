@@ -97,6 +97,8 @@ class Commands():
         """
         currentItems = self.__player.get_items()
         for x in items:
+            if x.category == "food":
+                self.__worldStatus.freshNessChangedItems.append(x)
             if x.item_name not in currentItems.keys():
                 currentItems[x.item_name] = [copy.deepcopy(x)]
                 # currentItems[x.item_name][-1].codeName = x.item_name + str(len(currentItems[x.item_name]))
