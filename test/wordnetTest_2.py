@@ -1,10 +1,129 @@
-import nltk
-from nltk.corpus import wordnet
-from nltk.tokenize import word_tokenize
-from nltk.tag import pos_tag
+# import nltk
+# from nltk.corpus import wordnet
+# from nltk.tokenize import word_tokenize
+# from nltk.tag import pos_tag
 import spacy
+from spacy.matcher import Matcher
+from spacy.util import filter_spans
 
 nlp = spacy.load("en_core_web_sm")
+
+# verbPhrasesPattern = [
+#     {"POS": "VERB", "OP": "*"},
+#     {"POS": "ADP", "OP": "{1}"}
+# ]
+
+# sentence = "eat lamb leg and wooden boat"
+
+# matcher = Matcher(nlp.vocab)
+
+# matcher.add("verb-phrases", [verbPhrasesPattern])
+# doc = nlp(sentence) 
+# tagged_tokens = [(token.text, token.pos_) for token in doc]
+
+# matches = matcher(doc) 
+# spans = [doc[start:end] for _, start, end in matches]
+
+# print (filter_spans(spans))
+
+# for chunk in doc.noun_chunks:
+#     print(chunk.text)
+
+#Break the phrase into words and classify the words into noun, verb and determiner(number).
+def grammarClassifier(phrase):
+    nounSet = set()
+    verbSet = set()
+    detSet = set()
+    doc = nlp(phrase)
+
+    verbPhrasesPattern = [
+        {"POS": "VERB", "OP": "{1}"},
+        {"POS": "ADP", "OP": "?"}
+    ]
+    matcher = Matcher(nlp.vocab)
+    matcher.add("verb-phrases", [verbPhrasesPattern])
+
+    matches = matcher(doc) 
+    noisyVerbs = [doc[start:end] for _, start, end in matches]
+    verbPhrases = filter_spans(noisyVerbs)
+
+    for verbPharse in verbPhrases:
+        verbSet.add(str(verbPharse))
+
+    for chunk in doc.noun_chunks:
+        print(chunk)
+        nounSet.add(str(chunk))
+
+    tagged_tokens = [(token.text, token.pos_) for token in doc]
+
+    for token, pos in tagged_tokens:
+        if pos.lower() == 'noun':
+            for noun in nounSet.copy():
+                if token in noun:
+                    pass
+                else:
+                    nounSet.add(token)
+        elif pos.lower() == 'verb':
+            for verb in verbSet.copy():
+                if token in verb:
+                    pass
+                else:
+                    verbSet.add(token)
+        elif pos.lower() == 'det' or pos.lower() == 'num':
+            detSet.add(token)
+    grammarDict = {
+        "Noun list": nounSet,
+        "Verb list": verbSet,
+        "Determiner list": detSet
+    }
+
+    return grammarDict
+
+print(grammarClassifier("fill glass water bottle with stream"))
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# nlp.add_pipe("textrank")
+# doc = nlp("get off wooden boat")
+# for chunk in doc.noun_chunks:
+#     print(chunk.text)
+
+# for phrase in doc._.phrases:
+#     print(phrase.text)
+
+# pattern = [
+#     {"POS": "VERB", "OP": "*"},
+#     {"POS": "ADP", "OP": "{1}"}
+# ]
+
+# sentence = "get on wooden boat"
+
+# matcher = Matcher(nlp.vocab)
+
+# matcher.add("verb-phrases", [pattern])
+# doc = nlp(sentence) 
+# tagged_tokens = [(token.text, token.pos_) for token in doc]
+
+# matches = matcher(doc) 
+# spans = [doc[start:end] for _, start, end in matches]
+
+# print (filter_spans(spans))
+
+# nlp = spacy.load("en_core_web_md")
 
 # def get_word_meaning_in_phrase(phrase, word):
 #     tokens = word_tokenize(phrase)
@@ -27,7 +146,7 @@ nlp = spacy.load("en_core_web_sm")
 #     else:
 #         return None
 
-phrase = "find all apples"
+phrase = "get off wooden boat"
 
 # phrase = input()
 
@@ -73,30 +192,35 @@ phrase = "find all apples"
 # print(findNoun(phrase))
 
 # Break the phrase into words and classify the words into noun, verb and determiner(number).
-def grammarClassifier(phrase):
-    nounSet = set()
-    verbSet = set()
-    detSet = set()
-    doc = nlp(phrase)
-    tagged_tokens = [(token.text, token.pos_) for token in doc]
-    for token, pos in tagged_tokens:
-        if pos.lower() == 'noun':
-            nounSet.add(token)
-        elif pos.lower() == 'verb':
-            verbSet.add(token)
-        elif pos.lower() == 'det' or pos.lower() == 'num':
-            detSet.add(token)
-    grammarDict = {
-        "Noun list": nounSet,
-        "Verb list": verbSet,
-        "Determiner list": detSet
-    }
+# def grammarClassifier(phrase):
+#     nounSet = set()
+#     verbSet = set()
+#     detSet = set()
+#     doc = nlp(phrase)
+#     tagged_tokens = [(token.text, token.pos_) for token in doc]
+#     print(tagged_tokens)
+#     for token, pos in tagged_tokens:
+#         if pos.lower() == 'noun':
+#             nounSet.add(token)
+#         elif pos.lower() == 'verb':
+#             verbSet.add(token)
+#         elif pos.lower() == 'det' or pos.lower() == 'num':
+#             detSet.add(token)
+#     grammarDict = {
+#         "Noun list": nounSet,
+#         "Verb list": verbSet,
+#         "Determiner list": detSet
+#     }
 
-    return grammarDict
+#     return grammarDict
 
-print(grammarClassifier(phrase))
+# print(grammarClassifier(phrase))
+
+# doc = nlp(phrase)
+# tagged_tokens = [(token.text, token.pos_) for token in doc]
     
-
+# for token, pos in tagged_tokens:
+#     print(token, pos)
 
 
 # class action():
