@@ -742,7 +742,8 @@ class DefininedSys(): #
         self.__def_buff = { # TODO add end condition
             "thirsty": Buff("thirsty", exe_function= self.__buffEffect.thirsty, \
                 exe_args= list(), timeLimit= -1, end_Function= self.__buffEffect.de_thirsty, \
-                    end_args=list()),
+                    end_args=list(), trigerred_Condition=lambda player, mapInfo, worldStatus: player.get_thirst() <= 0, \
+                        end_Condition=lambda player, mapInfo, worldStatus: player.get_thirst() > 0, start_level = "high"),
             "poisoning": Buff("poisoning", exe_function= self.__buffEffect.poisoning, \
                 exe_args= list(), timeLimit= 5, end_Function= self.__buffEffect.emptyFunc, \
                     end_args=list())
@@ -848,6 +849,9 @@ class DefininedSys(): #
     
     def get_events_frameWork(self) -> dict:
         return self.__pre_def_events_frameWork
+    
+    def get_buff(self) -> dict[str, Buff]:
+        return self.__def_buff
     
     # Setter method for def_items
     # def set_events(self, new_events: list[Events]):

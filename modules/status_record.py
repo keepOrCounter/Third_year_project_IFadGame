@@ -215,7 +215,7 @@ class Actions():
         
 class Buff():
     def __init__(self, buff_name: str, exe_function, exe_args: list, timeLimit: int, \
-        end_Function, end_args: list, trigerred_Condition = None, end_Condition = None) -> None:
+        end_Function, end_args: list, trigerred_Condition = False, end_Condition = False, start_level = "potential") -> None:
         
         self.buff_name = buff_name
         self.exe_function = exe_function
@@ -229,6 +229,7 @@ class Buff():
         self.end_Condition = end_Condition
         
         self.level = 0
+        self.start_level = start_level
         
         self.exe_args = tuple([self] + exe_args)
         self.end_args = tuple([self] + end_args)
@@ -641,3 +642,5 @@ class globalInfo():
         
         self.naturalAP_reduce: int = 2
         self.naturalThirst_reduce: int = 4
+        
+        self.skipTurn = False

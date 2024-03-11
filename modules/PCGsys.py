@@ -468,6 +468,7 @@ class eventGenerator():
             x += 1
 
 
+
 class PCGController():
     def __init__(self, defininedContent: DefininedSys, player : Player_status, \
         map_info: Map_information, descriptionGenerator: OutputGenerator, \
@@ -561,6 +562,7 @@ class PCGController():
         # print(output)
         # self.__worldStatus.current_description["location"] = output
         self.__descriptionGenerator.text_output()
+        
     
 
 

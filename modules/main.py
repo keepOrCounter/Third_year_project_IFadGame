@@ -7,13 +7,23 @@ import sys
 # from status_record import Location
 class rule_system():
     def __init__(self, player : Player_status, map_info: Map_information, worldStatus: globalInfo, \
-        defininedContent: DefininedSys) -> None:
+        defininedContent: DefininedSys, buffEffect: character_effectSys) -> None:
         self.__player = player
         self.__map_info = map_info
         self.__worldStatus = worldStatus
         self.__defininedContent = defininedContent
+        self.__buffEffect = buffEffect
+        
+    def buff_triggered(self):
+        buffDict = self.__defininedContent.get_buff()
+        for x in buffDict.keys():
+            if buffDict[x].trigerred_Condition(self.__player, self.__map_info, self.__worldStatus):
+                self.__buffEffect.add_buff(buffDict[x], buffDict[x].start_level)
+            elif buffDict[x].end_Condition(self.__player, self.__map_info, self.__worldStatus):
+                self.__buffEffect.remove_buff(buffDict[x].buff_name)
         
     def buffHandler(self):
+        self.buff_triggered()
         buffs = self.__player.get_buffs()
         counter = 0
         buffName = buffs.keys()
@@ -79,6 +89,10 @@ class rule_system():
                 # self.__worldStatus.move_APCost = 20 # determine the action point cost of each move
                 pass
         
+    def turnInfoClear(self):
+        self.__worldStatus.player_dangerAction = dict()
+        self.__worldStatus.NPC_action_toPlayer = dict()
+        
     def player_alive(self):
         return self.__player.get_hp() > 0
     
@@ -129,9 +143,13 @@ if __name__ == "__main__":
     
     begin = True
     while begin:
-        game_rule.eachTurn_handler()
-        game_rule.debug_information()
-        pcgSystem.locationPCG_each_turn()
+        if not worldStatus.skipTurn:
+            game_rule.eachTurn_handler()
+            game_rule.debug_information()
+            pcgSystem.locationPCG_each_turn()
+            game_rule.turnInfoClear()
+        else:
+            worldStatus.skipTurn = False
         # print(map_record.get_currentMap())
 
         # print(map_record.currentLocation.description)
