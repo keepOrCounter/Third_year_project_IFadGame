@@ -403,7 +403,8 @@ class Player_status():
     def __init__(self, currentLocation:list[int,int] = [0,0], items:dict[str, list[Items]] = dict(), \
         hp: int = 100, maximum_hp: int = 100, maximum_action_point: int = 100, \
             action_point: int = 100, currentAction: Actions = None, cash:int = 0, \
-                buff:dict[str, Buff] = dict(), thirst_satisfied:int = 100, maximum_thirst_satisfied:int = 100) -> None:
+                buff:dict[str, Buff] = dict(), thirst_satisfied:int = 100, maximum_thirst_satisfied:int = 100, \
+                    package_weight:int = 20, maximum_package_weight:int = 20) -> None:
         """ `__currentLocation:` player coordinate [x,y]\n
             `items:` items in bag\n
             `action_point:` energy bar of player
@@ -412,15 +413,21 @@ class Player_status():
         self.__lastLocation:list[int] = [None, None]
         self.__items = items
         self.__hp = hp
+        self.precentageHP: float = hp/maximum_hp
         self.__maximum_hp = maximum_hp
         self.__action_point = action_point
+        self.precentageAP: float = action_point/maximum_action_point
         self.__maximum_action_point = maximum_action_point
         self.__currentAction = currentAction
         self.__cash = cash
         self.__buff = buff
         self.__APrecovery = 10
         self.__thirst_satisfied = thirst_satisfied
+        self.precentageThirst_satisfied: float = thirst_satisfied/maximum_thirst_satisfied
         self.__maximum_thirst_satisfied = maximum_thirst_satisfied
+        self.__package_weight = package_weight
+        self.precentage_package_weight: float = package_weight/maximum_package_weight
+        self.__maximum_package_weight = maximum_package_weight
         
         self.__transportation_used: Items = None
         self.__suit: Items = Suit("old shirt", {"sea": 0, "land": 0, "forest": 0, "beach": 0, "river": 0, \
@@ -534,6 +541,19 @@ class Player_status():
     def set_equipment(self, equipment: Items) -> None:
         self.__equipment = equipment
         
+    def get_package_weight(self) -> int:
+        return self.__package_weight
+    
+    def set_package_weight(self, package_weight: int) -> None:
+        self.__package_weight = package_weight
+        
+    def get_maximum_package_weight(self) -> int:
+        return self.__maximum_package_weight
+    
+    def set_maximum_package_weight(self, maximum_package_weight: int) -> None:
+        self.__maximum_package_weight= maximum_package_weight
+
+    
 class Map_information():
     def __init__(self, current_area_type: int = 0, currentMap: np.ndarray[str] = [], \
         map_size: tuple[int] = (20, 20)) -> None:
@@ -639,8 +659,15 @@ class globalInfo():
         self.freshNessChangedItems: list[Items] = list()
         
         self.current_description: dict[str, str] = dict()
+        self.descriptor = False
+        self.descriptor_prompt: dict = {
+            "information_need_to_be_described": {
+                "description_target": []
+            }
+        }
         
         self.naturalAP_reduce: int = 2
         self.naturalThirst_reduce: int = 4
         
         self.skipTurn = False
+        

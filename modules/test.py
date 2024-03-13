@@ -82,13 +82,38 @@ import random
 # print(list(a.values()))
 # a.pop("2")
 # print(a)
-# class MyClass:
-#     def __init__(self):
-#         self.attr1 = 1
-#         self.attr2 = 2
-#         self.attr3 = 3
+# class Player_status():
+#     def __init__(self, currentLocation:list[int,int] = [0,0], items:dict[str, list] = dict(), \
+#         hp: int = 100, maximum_hp: int = 100, maximum_action_point: int = 100, \
+#             action_point: int = 100, currentAction = None, cash:int = 0, \
+#                 buff:dict = dict(), thirst_satisfied:int = 100, maximum_thirst_satisfied:int = 100) -> None:
+#         """ `__currentLocation:` player coordinate [x,y]\n
+#             `items:` items in bag\n
+#             `action_point:` energy bar of player
+#         """
+#         self.currentLocation = currentLocation
+#         self.__lastLocation:list[int] = [None, None]
+#         self.__items = items
+#         self.__hp = hp
+#         self.__maximum_hp = maximum_hp
+#         self.__action_point = action_point
+#         self.__maximum_action_point = maximum_action_point
+#         self.__currentAction = currentAction
+#         self.__cash = cash
+#         self.__buff = buff
+#         self.__APrecovery = 10
+#         self.__thirst_satisfied = thirst_satisfied
+#         self.__maximum_thirst_satisfied = maximum_thirst_satisfied
+        
+#         self.__transportation_used: Items = None
+#         # self.__suit: Items = Suit("old shirt", {"sea": 0, "land": 0, "forest": 0, "beach": 0, "river": 0, \
+#         #     "desert": 0, "mountain": 0, "highland snowfield": 0, "town": 0, "grassland": 0}, 2)
+#         self.__equipment: Items = None
+        
+#         self.__action_dLevel: float = 1
 
-# obj = MyClass()
+# obj = Player_status()
+# print(type(obj).__name__)
 
 # # 使用 vars() 函数获取对象的属性字典
 # attributes = vars(obj)
@@ -245,6 +270,23 @@ import random
 
 # objectGeneration(2, 4)
 # import re
+# target = "wolf_12"
+# realName = re.sub(r'_\d+', '', target)
+# print(realName)
+
+# class MyClass:
+#     def __init__(self):
+#         self.attr1 = 1
+#         self.attr2 = 2
+#         self.attr3 = 3
+
+# obj = MyClass()
+
+# # 使用 vars() 函数获取对象的属性字典
+# attributes = vars(obj)
+# for attribute, value in attributes.items():
+#     print(attribute, '=', value)
+
 from status_record import *
 from Pre_definedContent import *
 from main import *
@@ -258,7 +300,8 @@ worldStatus = globalInfo()
 map_record = Map_information(current_area_type = 1, map_size=(20, 20)) # land type
 # mapPCG = MapGenerator(player_info, map_record)
 player_info = Player_status(action_point = 30)
-defined_command = Commands(player_info, map_record, worldStatus)
+out = OutputTransfer(player_info, map_record, worldStatus)
+defined_command = Commands(player_info, map_record, worldStatus, out)
 buffEffect = character_effectSys(player_info, defined_command, worldStatus)
 game_content = DefininedSys(defined_command, map_record, buffEffect)
 
@@ -266,11 +309,36 @@ objectList = game_content.get_items()
 result = {"rocks": []}
 for x in range(3):
     result["rocks"].append(copy.deepcopy(objectList[1]))
-    result["rocks"][-1].codeName = result["rocks"][-1].item_name + "(" + str(len(result["rocks"])) + ")"
+    result["rocks"][-1].codeName = result["rocks"][-1].item_name + "_" + str(len(result["rocks"]))
 player_info.set_items(result)
 print(result)
 
 map_record.currentLocation = Location("Unkown", 0,0, objectList[0:3]+[result["rocks"][0]])
-result, count, li = defined_command.findObject(None, "stream", "location", "code name")
+results, count, li = defined_command.findObject(None, "rocks_2", "package", "code name")
 # print(li[count].item_name)
-print(result, count, li)
+print(results, count, li)
+defined_command.remove_items(None, itemList = [result["rocks"][2]], mode = "code name")
+for x in result["rocks"]:
+    print(x.codeName)
+
+a = out.generalTransfer(result["rocks"][-1], out.outputWordMap["items"])
+print(a)
+# def func1(x):
+#     return x * 2
+
+# def func2(x):
+#     return x * 3
+
+# # Create a dictionary with functions as keys
+# func_dict = {
+#     func1: "Function 1",
+#     func2: "Function 2"
+# }
+
+# # Access values using the functions as keys
+# result1 = func_dict[func1]
+# result2 = func_dict[func2]
+# print(type(func1))
+# print(result1)  # Output: Function 1
+# print(result2)  # Output: Function 2
+# print(1 in range(0,100))

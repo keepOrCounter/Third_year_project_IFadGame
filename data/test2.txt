@@ -1,38 +1,26 @@
-{
-	"player_information": {
-		"HP": "90/100",
-		"action_point": "40/100",
-		"player_current_status": "normal",
-		"thirst_satisfied": "70/100",
-		"package_weight": "19/30",
-		"player_current_action": "none",
-		"cash": 50,
-		"transportation": []
-	},
-	"environment_information": {
-		"Current location": "river",
-		"Front": "beach",
-		"Back": "river",
-		"Right hand side": "river",
-		"Left hand side": "river",
-		'item': ['seed'],
-		'food': ['berry', 'raw fish']
-	},
-	"information_need_to_be_described": {
-		"description_target": ["environment_information"]
-	}
-}
+    {
+        "transportation_used_by_player": [],
+        "environment_information": {
+            "Current location": "forest",
+            "Front": "forest",
+            "Back": "forest",
+            "Right hand side": "forest",
+            "Left hand side": "forest",
+            "animal": ["wolf", "wolf"],
+            "move_AP_cost": "normal"
+        },
+        "information_need_to_be_described": {
+            "description_target": ["environment_information", "transportation_used_by_player"]
+        }
+    }
 
-{
-	"title_of_description": "Sea",
-	"description": "You and your boat are surrounded by the vast expanse of the sea. There is nothing but water as far as the eye can see in every direction. The sound of crashing waves fills the air. 
-There are some stuffs floating in the water here, including a first aid kit and some edible plants."
-}
+You find yourself deep within a dense forest, surrounded on all sides by towering trees that blot out much of the sunlight. The air is cool and damp, carrying with it the earthy scent of moss and decaying foliage.
 
-All seems well on the surface, except for one persistent sensation: thirst. Your throat is dry and parched, a constant reminder of your unquenched longing for water.
+In this natural arena, a fierce duel between two majestic wolves. \n\nThe first wolf, bears the marks of previous combat, blood staining its fur as it squares off against its adversary, and its formidable fangs relentlessly pressing the assault against the second wolf. \n\nOn the opposing end, the second wolf, equally imposing and resolute, untouched by the conflict thus far. It unleashes a torrent of relentless attacks, its claws cutting through the air with deadly precision. Yet, for all their prowess, neither wolf yields, each sustaining wounds in the relentless exchange of blows.
 
-Clad in an old shirt, you stand with empty hands, contemplating the need for some form of protection in this unforgiving environment.
+Despite the tension that hangs heavy in the air, neither combatant spares you more than a passing glance, their focus consumed by the primal battle unfolding between them.
 
-You have 10 units of currency in your pocket.
 
-With a heavy heart, you open your package, revealing its contents: a weighty, decaying fish. The stench of its staleness fills the air, rendering it inedible.
+In your front, two majestic wolves engage in a fierce duel. The environment around you is tense, with the air filled with growls and snarls. Despite sustaining injuries, the wolves, armed with razor-sharp buckteeth and claws, press on in their fierce combat, displaying a ferocity that seems undeterred by their wounds.
+
+Although they showing no interest in your presence. You still attempt to intervene, attack on one of the wolf without any weapons, but your efforts are in vain against their ferocity.

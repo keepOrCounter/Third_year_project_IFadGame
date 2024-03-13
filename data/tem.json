@@ -1,19 +1,5 @@
 {
-	"player_information": {
-		"HP": "100/100",
-		"action_point(AP)": "80/100",
-		"player_current_status": ["thirst"],
-		"thirst_satisfied": "30/100",
-		"package_weight": "0/20",
-		"player_current_action": "attack bob by hand",
-		"action_AP_cost": "1 time(s)",
-		"cash": 0,
-		"equipment": "none",
-		"suit": "old shirt",
-		"transportation_used": []
-	},
-	"package": [],
 	"information_need_to_be_described": {
-		"description_target": ["player_information(except: [player_current_action, cash])", "cash(explicit)", "package"]
+		"description_target": []
 	}
 }

@@ -76,7 +76,7 @@ class Gpt3():
     def inquiry(self, prompt:str) -> str:
         # Generate a response
         response = openai.ChatCompletion.create(
-        model="ft:gpt-3.5-turbo-0125:3rdprojectgroup:generaltest2:90cz1xIx",#gpt-3.5-turbo-0301
+        model="ft:gpt-3.5-turbo-0125:3rdprojectgroup:generaltest3:91haHqhT",#gpt-3.5-turbo-0301
         messages=[
         {"role": "system", "content": self.output_systemRole},
         {"role": "user", "content": prompt}

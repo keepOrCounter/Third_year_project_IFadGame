@@ -6,16 +6,160 @@ import copy
 import numpy as np
 import re
 
+class OutputTransfer():
+    def __init__(self, player : Player_status, map_info: Map_information,\
+        worldStatus: globalInfo) -> None:
+        self.__player = player
+        self.__map_info = map_info
+        # self.__descriptionGenerator = descriptionGenerator
+        self.__worldStatus = worldStatus
+        self.outputWordMap = {
+            "player_or_other_NPC": 
+            {
+                "HP": 
+                {
+                    lambda precentageHP: precentageHP == 1: "no hurt",
+                    lambda precentageHP: 0.8 <= precentageHP < 1: "little hurt",
+                    lambda precentageHP: 0.41 <= precentageHP < 0.8: "moderate hurt",
+                    lambda precentageHP: precentageHP < 0.41: "intense hurt"
+                },
+                "action_point(AP)": 
+                {
+                    lambda precentageAP: 0.8 < precentageAP <= 1: "normal",
+                    lambda precentageAP: 0.4 < precentageAP <= 0.8: "a little bit tired",
+                    lambda precentageAP: precentageAP <= 0.4: "exhausted"
+                },
+                "thirst_satisfied":
+                {
+                    lambda precentageThirst_satisfied: 0.8 <= precentageThirst_satisfied <= 1: "normal",
+                    lambda precentageThirst_satisfied: 0.4 < precentageThirst_satisfied <= 0.8: "a little bit thirst",
+                    lambda precentageThirst_satisfied: precentageThirst_satisfied <= 0.4: "extremely thirst"
+                },
+                "package_weight":
+                {
+                    lambda precentage_package_weight: precentage_package_weight <= 0.1: "light",
+                    lambda precentage_package_weight: 0.1 < precentage_package_weight <= 0.5: "moderate",
+                    lambda precentage_package_weight: 0.5 < precentage_package_weight <= 0.75: "a little bit heavy",
+                    lambda precentage_package_weight: 0.75 < precentage_package_weight: "heavy"
+                },
+                "action_AP_cost":
+                {
+                    lambda action_dLevel: action_dLevel <= 1: "normal",
+                    lambda action_dLevel: 1 < action_dLevel <= 1.2: "a little bit strenuous",
+                    lambda action_dLevel: 1.2 < action_dLevel <= 2: "strenuous",
+                    lambda action_dLevel: 2 < action_dLevel: "extremely strenuous"
+                },
+                "relationship":
+                {
+                    lambda relationship: relationship < -10: "hostile",
+                    lambda relationship: -10 <= relationship < 0: "cautious, on guard",
+                    lambda relationship: 0 <= relationship < 10: "strange, not interested in",
+                    lambda relationship: 10 <= relationship < 20: "friendly",
+                    lambda relationship: 20 <= relationship: "acquainted"
+                }
+            },
+            "items":
+            {
+                "item_name":
+                {
+                    lambda item_name: True: "<origin>"
+                },
+                "weight":
+                {
+                    lambda weight: weight < 2: "light/small",
+                    lambda weight: weight == 2: "moderate",
+                    lambda weight: weight > 2: "heavy/large"
+                },
+                "AP_recovery":
+                {
+                    lambda AP_recovery: 0 <= AP_recovery < 10: "insufficient portions",
+                    lambda AP_recovery: 10 <= AP_recovery < 20: "moderate",
+                    lambda AP_recovery: 20 <= AP_recovery: "quite a filler"
+                },
+                "freshness": 
+                {
+                    lambda freshness: freshness <= 0: "stale",
+                    lambda freshness: freshness > 0: "fresh"
+                },
+                "eatable":
+                {
+                    lambda eatable: True: "<origin>"
+                },
+                "thirst_satisfied": 
+                {
+                    lambda thirst_satisfied: thirst_satisfied <= 0: "cause a thirst",
+                    lambda thirst_satisfied: thirst_satisfied > 0: "quench a thirst"
+                }
+            },
+            "environment_information":
+            {
+                "move_AP_cost":
+                {
+                    lambda move_AP_cost: move_AP_cost <= 1: "normal",
+                    lambda move_AP_cost: 1 < move_AP_cost <= 3: "hard to travel through",
+                    lambda move_AP_cost: move_AP_cost > 3: "extremely hard to travel through"
+                }
+            },
+            "action":
+            {
+                "attack":
+                {
+                    lambda reduce: reduce == 0: "no effect",
+                    lambda reduce: 0 < reduce <= 5: "light damage",
+                    lambda reduce: 5 < reduce <= 20: "moderate damage",
+                    lambda reduce: reduce > 20: "intense damage"
+                }
+            }
+        }
+    
+    def outPutTransfer(self, trasferDict: dict, transferNumber) -> str:
+        attributeName = None
+        print(trasferDict)
+        for x in list(trasferDict.keys()):
+            print(x)
+            print(trasferDict[x](*transferNumber))
+            if type(trasferDict[x]).__name__ == "str":
+                attributeName = trasferDict[x]
+            elif trasferDict[x](*transferNumber):
+                if trasferDict[x] == "<origin>":
+                    return attributeName, transferNumber
+                return attributeName, trasferDict[x]
+            
+        return attributeName, "<None>"
+    # def foodInfoTransfer(self, food: Food):
+    #     result = dict()
+    #     result["items_name"] = food.item_name
+    #     result["weight"] = self.outPutTransfer(self.outputWordMap["items"]["weight"], food.weight)
+        
+    def generalTransfer(self, transferObj, trasferDict: dict):
+        # className = type(transferObj).__name__
+        attributes = vars(transferObj)
+        # print(type(attributes))
+        result = dict()
+        for attribute, value in attributes.items():
+            # print(attribute, '=', value)
+            if attribute in trasferDict.keys():
+                print(attribute, value)
+                attributeName, valueDescribe = self.outPutTransfer(trasferDict[attribute], value)
+                if attributeName != None:
+                    newAttribute = attributeName
+                else:
+                    newAttribute = attribute
+                if valueDescribe != "<None>":
+                    result[newAttribute] = valueDescribe
+                
+        return result
 
 
 class Commands():
-    def __init__(self, player: Player_status, map: Map_information, worldStatus: globalInfo) -> None:
+    def __init__(self, player: Player_status, map: Map_information, worldStatus: globalInfo, OutputTrafer: OutputTransfer) -> None:
         """
         This class is pre-defined commands in methods form
         """
         self.__player = player
         self.__map = map
         self.__worldStatus = worldStatus
+        self.__OutputTrafer = OutputTrafer
         # self.__executionTranslator
         
     def valueRetrieval(self, *value):
@@ -105,19 +249,28 @@ class Commands():
             else:
                 currentItems[x.item_name].append(copy.deepcopy(x))
                 
-            currentItems[x.item_name][-1].codeName = x.item_name + "(" + str(len(currentItems[x.item_name])) + ")"
+            currentItems[x.item_name][-1].codeName = x.item_name + "_" + str(len(currentItems[x.item_name]))
                 
         self.__player.set_items(currentItems)
         
-    def remove_items(self, action: Actions, items: dict[str, Items]) -> None:
+    def remove_items(self, action: Actions, items: dict[str, int] = dict(), itemList:list[Items] = [], \
+        mode = "real name") -> None:
         """
         Remove one or more items to player's package
         """
         currentItems = self.__player.get_items()
-        for x in items.keys():
-            for y in range(items[x]):
-                currentItems[x].pop()
-        self.__player.set_items(currentItems)
+        if mode == "real name":
+            for x in items.keys():
+                for y in range(items[x]):
+                    currentItems[x].pop()
+            self.__player.set_items(currentItems)
+        else:
+            for x in itemList:
+                result, position, container = self.findObject(action, x.codeName, "package", "code name")
+                if result:
+                    currentItems[x.item_name].pop(position)
+                    for y in range(position, len(currentItems[x.item_name])):
+                        currentItems[x.item_name][y].codeName = x.item_name+"_"+str(y+1)
         
     def increase_maximum_action_point(self, action: Actions, value: int) -> None:
         """
@@ -157,36 +310,39 @@ class Commands():
                 container = bag
                 if target in bag.keys() and len(bag[target])>0:
                     result = target in bag.keys()
-                    amount = 0
+                    position = 0
                 else:
                     result = False
-                    amount = None
+                    position = None
             else:
                 currentPlace = self.__map.currentLocation
                 itemList = currentPlace.objects
                 npsList = currentPlace.npcs
                 counter = 0
+                container = []
                 for x in range(len(itemList)):
                     if itemList[x].item_name == target:
                         result = True
                         counter = x
-                        container = itemList
-                        return result, counter, container
-
+                        container.append(itemList[x])
+                        
+                if len(container) > 0:
+                    return result, counter, container
+                
                 for x in range(len(npsList)):
                     if npsList[x].NPC_name == target:
                         result = True
                         counter = x
-                        container = npsList
+                        container.append(npsList[x])
 
-                amount = counter
+                position = counter
                 
-            return result, amount, container
+            return result, position, container
         else:
             result = False
-            count = None
+            position = None
             container = None
-            realName = re.sub(r'\(\d+\)', '', target)
+            realName = re.sub(r'_\d+', '', target)
             # print(realName)
             if place == "package":
                 bag = self.__player.get_items()
@@ -194,7 +350,7 @@ class Commands():
                     for x in range(len(bag[realName])):
                         if bag[realName][x].codeName == target:
                             result = True
-                            count = x
+                            position = x
                             container = bag
                             break
             else:
@@ -209,10 +365,10 @@ class Commands():
                 for x in range(len(npsList)):
                     if npsList[x].NPC_name == target:
                         result = True
-                        count = x
+                        position = x
                         container = npsList
 
-            return result, count, container
+            return result, position, container
     
     def rest(self, action: Actions):
         if self.__worldStatus.restPlace:
@@ -226,8 +382,29 @@ class Commands():
             self.__worldStatus.current_description["rest"] = \
                 "You cannot have a rest now."
             
-    def consume(self, action: Actions, items: Items):
-        items = self.valueRetrieval(items)
+    def consume(self, action: Actions, amount: int, items: str):
+        amount, items = self.valueRetrieval(amount, items)
+        place = "package"
+        mode = "real name"
+        result, position, container = self.findObject(action, items, place, mode)
+        if not result:
+            place = "location"
+            result, position, container = self.findObject(action, items, "location", "real name")
+        if not result:
+            place = "package"
+            mode = "code name"
+            result, position, container = self.findObject(action, items, "location", "real name")
+        if not result:
+            place = "location"
+            result, position, container = self.findObject(action, items, "location", "real name")
+        if not result:
+            self.__worldStatus.current_description["failed to consume "+items] = \
+                "Although you have tried to find one "+items+", yet there is not such thing."
+            return
+        
+        if mode == "real name":
+            input("Which "+str(amount)+" you would like to have? Input the numbers and split them with commas>>>")
+        
         if items.category == "food":
             self.__player.set_action_point(self.__player.get_action_point() +\
                 items.AP_recovery)
@@ -339,7 +516,7 @@ class Commands():
             self.__player.set_thirst(int(self.__player.get_thirst() -\
                 action.thirstCost * self.__player.get_action_dLevel()))
     
-    
+        
 class MapPcgRule():
     def __init__(self, map: Map_information) -> None:
         self.__map = map
@@ -594,6 +771,7 @@ class DefininedSys(): #
         """
         self.__map_record = map_record
         self.__buffEffect = buffEffect
+        
         
         self.__def_items = [
             # LandscapeFeature

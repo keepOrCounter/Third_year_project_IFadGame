@@ -8,15 +8,15 @@ def convert_to_jsonl(input_file, output_file):
         for item in range(0, len(data), 2):
             # system_role = item.get('system_role', '')
             system_role = "You are writting the description about 'description_target' for a survival \
-text-based adventure game based on game information given, every numerical attribute should be presented in \
-implicit way(different level of perception) unless 'description_target' tell you not to do so, following dictionary show you how to transfer numerical attribute into implicit description: "
+text-based adventure game based on game information given"
             table = {"player_or_other_NPC": 
                         {
                             "HP": 
                             {
-                                "80%-100%": "little hurt",
-                                "41%-79%": "median hurt",
-                                "1%-40%": "intense damage"
+                                "100%": "no hurt",
+                                "80%-99%": "little hurt",
+                                "41%-79%": "moderate hurt",
+                                "1%-40%": "intense hurt"
                             },
                             "action_point(AP)": 
                             {
@@ -32,7 +32,8 @@ implicit way(different level of perception) unless 'description_target' tell you
                             },
                             "package_weight":
                             {
-                                "0-10": "normal",
+                                "0-2": "light",
+                                "3-10": "moderate",
                                 "11-15": "a little bit heavy",
                                 "16-20": "heavy"
                             },
@@ -42,6 +43,14 @@ implicit way(different level of perception) unless 'description_target' tell you
                                 "1.2 times": "a little bit strenuous",
                                 "1.5 times": "strenuous",
                                 "2 times": "extremely strenuous"
+                            },
+                            "relationship":
+                            {
+                                "<-10": "hostile",
+                                "-10-(-1)": "cautious, on guard",
+                                "0-10": "strange, not interested in",
+                                "10-20": "friendly",
+                                ">20": "acquainted"
                             }
                         },
                         "items":
@@ -49,18 +58,18 @@ implicit way(different level of perception) unless 'description_target' tell you
                             "weight":
                             {
                                 "1": "light/small",
-                                "2": "normal",
+                                "2": "moderate",
                                 ">2": "heavy/large"
                             },
                             "AP_recovery":
                             {
-                                "1-10": "not enough/small",
-                                "11-20": "normal",
+                                "1-10": "insufficient portions",
+                                "11-20": "moderate",
                                 ">20": "quite a filler"
                             },
                             "freshness": 
                             {
-                                "<=0": "not fresh",
+                                "<=0": "stale",
                                 ">0": "fresh"
                             },
                             "thirst_satisfied": 
@@ -74,8 +83,18 @@ implicit way(different level of perception) unless 'description_target' tell you
                             "move_AP_cost":
                             {
                                 "1 time": "normal",
-                                "2-4 times": "hard to travel through",
-                                ">4 times": "extremely hard to travel through"
+                                "2-3 times": "hard to travel through",
+                                ">3 times": "extremely hard to travel through"
+                            }
+                        },
+                        "action":
+                        {
+                            "attack":
+                            {
+                                "0 hp": "no effect",
+                                "1-5 hp": "light damage",
+                                "6-20 hp": "moderate damage",
+                                ">20 hp": "intense damage"
                             }
                         }
                     }
@@ -85,7 +104,7 @@ implicit way(different level of perception) unless 'description_target' tell you
             # Creating the JSONL format
             json_line = {
                 "messages": [
-                    {"role": "system", "content": system_role + str(table)},
+                    {"role": "system", "content": system_role},
                     {"role": "user", "content": str(user_role)},
                     {"role": "assistant", "content": str(assistant_role)}
                 ]

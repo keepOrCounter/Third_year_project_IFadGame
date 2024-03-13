@@ -3,7 +3,7 @@ import openai
 import time
 import Levenshtein
 from status_record import *
-from Pre_definedContent import *
+from Pre_definedContent import DefininedSys
 import json
 from autocorrect import Speller
 from numpy import inf
@@ -312,6 +312,7 @@ Please note that the production of food must be logical. Here are some expected 
             
         print("=======================================\n")
         self.__worldStatus.current_description.clear()
+    
     
 class InputTranslator():
     def __init__(self, gptAPI: Gpt3, playerStatus: Player_status, mapInfo: Map_information, \
