@@ -32,9 +32,9 @@ class Food(Items):
         super().__init__(item_name, possibleWeight, weight, commandSuitable)
         
         self.AP_recovery = AP_recovery
+        self.freshness = freshness
         self.eatable = eatable
         # self.state = state
-        self.freshness = freshness
         self.thirst_satisfied = thirst_satisfied
         
         self.commandSuitable = commandSuitable

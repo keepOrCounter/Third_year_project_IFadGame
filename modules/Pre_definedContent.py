@@ -16,114 +16,139 @@ class OutputTransfer():
         self.outputWordMap = {
             "player_or_other_NPC": 
             {
-                "HP": 
-                {
-                    lambda precentageHP: precentageHP == 1: "no hurt",
-                    lambda precentageHP: 0.8 <= precentageHP < 1: "little hurt",
-                    lambda precentageHP: 0.41 <= precentageHP < 0.8: "moderate hurt",
-                    lambda precentageHP: precentageHP < 0.41: "intense hurt"
+                "HP": {
+                    "function": [
+                        lambda precentageHP: precentageHP == 1,
+                        lambda precentageHP: 0.8 <= precentageHP < 1,
+                        lambda precentageHP: 0.41 <= precentageHP < 0.8,
+                        lambda precentageHP: precentageHP < 0.41
+                    ],
+                    "map_result": ["no hurt", "little hurt", "moderate hurt", "intense hurt"]
                 },
-                "action_point(AP)": 
-                {
-                    lambda precentageAP: 0.8 < precentageAP <= 1: "normal",
-                    lambda precentageAP: 0.4 < precentageAP <= 0.8: "a little bit tired",
-                    lambda precentageAP: precentageAP <= 0.4: "exhausted"
+                "action_point(AP)": {
+                    "function": [
+                        lambda precentageAP: 0.8 < precentageAP <= 1,
+                        lambda precentageAP: 0.4 < precentageAP <= 0.8,
+                        lambda precentageAP: precentageAP <= 0.4
+                    ],
+                    "map_result": ["normal", "a little bit tired", "exhausted"]
                 },
-                "thirst_satisfied":
-                {
-                    lambda precentageThirst_satisfied: 0.8 <= precentageThirst_satisfied <= 1: "normal",
-                    lambda precentageThirst_satisfied: 0.4 < precentageThirst_satisfied <= 0.8: "a little bit thirst",
-                    lambda precentageThirst_satisfied: precentageThirst_satisfied <= 0.4: "extremely thirst"
+                "thirst_satisfied": {
+                    "function": [
+                        lambda precentageThirst_satisfied: 0.8 <= precentageThirst_satisfied <= 1,
+                        lambda precentageThirst_satisfied: 0.4 < precentageThirst_satisfied <= 0.8,
+                        lambda precentageThirst_satisfied: precentageThirst_satisfied <= 0.4
+                    ],
+                    "map_result": ["normal", "a little bit thirst", "extremely thirst"]
                 },
-                "package_weight":
-                {
-                    lambda precentage_package_weight: precentage_package_weight <= 0.1: "light",
-                    lambda precentage_package_weight: 0.1 < precentage_package_weight <= 0.5: "moderate",
-                    lambda precentage_package_weight: 0.5 < precentage_package_weight <= 0.75: "a little bit heavy",
-                    lambda precentage_package_weight: 0.75 < precentage_package_weight: "heavy"
+                "package_weight": {
+                    "function": [
+                        lambda precentage_package_weight: precentage_package_weight <= 0.1,
+                        lambda precentage_package_weight: 0.1 < precentage_package_weight <= 0.5,
+                        lambda precentage_package_weight: 0.5 < precentage_package_weight <= 0.75,
+                        lambda precentage_package_weight: 0.75 < precentage_package_weight
+                    ],
+                    "map_result": ["light", "moderate", "a little bit heavy", "heavy"]
                 },
-                "action_AP_cost":
-                {
-                    lambda action_dLevel: action_dLevel <= 1: "normal",
-                    lambda action_dLevel: 1 < action_dLevel <= 1.2: "a little bit strenuous",
-                    lambda action_dLevel: 1.2 < action_dLevel <= 2: "strenuous",
-                    lambda action_dLevel: 2 < action_dLevel: "extremely strenuous"
+                "action_AP_cost": {
+                    "function": [
+                        lambda action_dLevel: action_dLevel <= 1,
+                        lambda action_dLevel: 1 < action_dLevel <= 1.2,
+                        lambda action_dLevel: 1.2 < action_dLevel <= 2,
+                        lambda action_dLevel: 2 < action_dLevel
+                    ],
+                    "map_result": ["normal", "a little bit strenuous", "strenuous", "extremely strenuous"]
                 },
-                "relationship":
-                {
-                    lambda relationship: relationship < -10: "hostile",
-                    lambda relationship: -10 <= relationship < 0: "cautious, on guard",
-                    lambda relationship: 0 <= relationship < 10: "strange, not interested in",
-                    lambda relationship: 10 <= relationship < 20: "friendly",
-                    lambda relationship: 20 <= relationship: "acquainted"
+                "relationship": {
+                    "function": [
+                        lambda relationship: relationship < -10,
+                        lambda relationship: -10 <= relationship < 0,
+                        lambda relationship: 0 <= relationship < 10,
+                        lambda relationship: 10 <= relationship < 20,
+                        lambda relationship: 20 <= relationship
+                    ],
+                    "map_result": ["hostile", "cautious, on guard", "strange, not interested in", "friendly", "acquainted"]
                 }
             },
-            "items":
+            "items": 
             {
-                "item_name":
-                {
-                    lambda item_name: True: "<origin>"
+                "item_name": {
+                    "function": [lambda item_name: True],
+                    "map_result": ["<origin>"]
                 },
-                "weight":
-                {
-                    lambda weight: weight < 2: "light/small",
-                    lambda weight: weight == 2: "moderate",
-                    lambda weight: weight > 2: "heavy/large"
+                "weight": {
+                    "function": [
+                        lambda weight: weight < 2,
+                        lambda weight: weight == 2,
+                        lambda weight: weight > 2
+                    ],
+                    "map_result": ["light/small", "moderate", "heavy/large"]
                 },
-                "AP_recovery":
-                {
-                    lambda AP_recovery: 0 <= AP_recovery < 10: "insufficient portions",
-                    lambda AP_recovery: 10 <= AP_recovery < 20: "moderate",
-                    lambda AP_recovery: 20 <= AP_recovery: "quite a filler"
+                "AP_recovery": {
+                    "function": [
+                        lambda AP_recovery: 0 <= AP_recovery < 10,
+                        lambda AP_recovery: 10 <= AP_recovery < 20,
+                        lambda AP_recovery: 20 <= AP_recovery
+                    ],
+                    "map_result": ["insufficient portions", "moderate", "quite a filler"]
                 },
-                "freshness": 
-                {
-                    lambda freshness: freshness <= 0: "stale",
-                    lambda freshness: freshness > 0: "fresh"
+                "freshness": {
+                    "function": [
+                        lambda freshness: freshness <= 0,
+                        lambda freshness: freshness > 0
+                    ],
+                    "map_result": ["stale", "fresh"]
                 },
-                "eatable":
-                {
-                    lambda eatable: True: "<origin>"
+                "eatable": {
+                    "function": [lambda eatable: True],
+                    "map_result": ["<origin>"]
                 },
-                "thirst_satisfied": 
-                {
-                    lambda thirst_satisfied: thirst_satisfied <= 0: "cause a thirst",
-                    lambda thirst_satisfied: thirst_satisfied > 0: "quench a thirst"
+                "thirst_satisfied": {
+                    "function": [
+                        lambda thirst_satisfied: thirst_satisfied <= 0,
+                        lambda thirst_satisfied: thirst_satisfied > 0
+                    ],
+                    "map_result": ["cause a thirst", "quench a thirst"]
                 }
             },
-            "environment_information":
+            "environment_information": 
             {
-                "move_AP_cost":
-                {
-                    lambda move_AP_cost: move_AP_cost <= 1: "normal",
-                    lambda move_AP_cost: 1 < move_AP_cost <= 3: "hard to travel through",
-                    lambda move_AP_cost: move_AP_cost > 3: "extremely hard to travel through"
+                "move_AP_cost": {
+                    "function": [
+                        lambda move_AP_cost: move_AP_cost <= 1,
+                        lambda move_AP_cost: 1 < move_AP_cost <= 3,
+                        lambda move_AP_cost: move_AP_cost > 3
+                    ],
+                    "map_result": ["normal", "hard to travel through", "extremely hard to travel through"]
                 }
             },
-            "action":
+            "action": 
             {
-                "attack":
-                {
-                    lambda reduce: reduce == 0: "no effect",
-                    lambda reduce: 0 < reduce <= 5: "light damage",
-                    lambda reduce: 5 < reduce <= 20: "moderate damage",
-                    lambda reduce: reduce > 20: "intense damage"
+                "attack": {
+                    "function": [
+                        lambda reduce: reduce == 0,
+                        lambda reduce: 0 < reduce <= 5,
+                        lambda reduce: 5 < reduce <= 20,
+                        lambda reduce: reduce > 20
+                    ],
+                    "map_result": ["no effect", "light damage", "moderate damage", "intense damage"]
                 }
             }
         }
+
     
     def outPutTransfer(self, trasferDict: dict, transferNumber) -> str:
-        attributeName = None
-        print(trasferDict)
-        for x in list(trasferDict.keys()):
-            print(x)
-            print(trasferDict[x](*transferNumber))
-            if type(trasferDict[x]).__name__ == "str":
-                attributeName = trasferDict[x]
-            elif trasferDict[x](*transferNumber):
-                if trasferDict[x] == "<origin>":
+        if "name" in trasferDict.keys():
+            attributeName = trasferDict["name"]
+        else:
+            attributeName = None
+        # print(trasferDict)
+        for x in range(len(trasferDict["function"])):
+            # print(transferNumber)
+            if trasferDict["function"][x](*(transferNumber,)):
+                if trasferDict["map_result"][x] == "<origin>":
                     return attributeName, transferNumber
-                return attributeName, trasferDict[x]
+                return attributeName, trasferDict["map_result"][x]
             
         return attributeName, "<None>"
     # def foodInfoTransfer(self, food: Food):
@@ -779,8 +804,7 @@ class DefininedSys(): #
                 "river": 8, "desert": 0, "mountain": 0, "highland snowfield": 0, "town": 0, "grassland": 0}, \
                 AP_recovery=10, eatable=True, freshness=-1), 
             LandscapeFeature("rocks", {"sea": 10, "land": 12, "forest": 12, "beach": 10, \
-                "river": 8, "desert": 5, "mountain": 5, "highland snowfield": 0, "town": 0, "grassland": 0}, \
-                AP_recovery=10, eatable=True, freshness=72), 
+                "river": 8, "desert": 5, "mountain": 5, "highland snowfield": 0, "town": 0, "grassland": 0}), 
             LandscapeFeature("grass", {"sea": 0, "land": 12, "forest": 15, "beach": 0, \
                 "river": 8, "desert": 0, "mountain": 0, "highland snowfield": 0, "town": 0, "grassland": 12}, \
                 AP_recovery=2, eatable=False, freshness=20),

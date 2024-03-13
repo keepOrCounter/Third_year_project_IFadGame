@@ -321,7 +321,9 @@ defined_command.remove_items(None, itemList = [result["rocks"][2]], mode = "code
 for x in result["rocks"]:
     print(x.codeName)
 
-a = out.generalTransfer(result["rocks"][-1], out.outputWordMap["items"])
+a = out.generalTransfer(Food("bread", {"sea": 0, "land": 0, "forest": 0, "beach": 0, "river": 0, \
+                "desert": 0, "mountain": 0, "highland snowfield": 0, "town": 0, "grassland": 0}, weight=1, \
+                AP_recovery=15, eatable=True, freshness=20, thirst_satisfied=-20), out.outputWordMap["items"])
 print(a)
 # def func1(x):
 #     return x * 2
