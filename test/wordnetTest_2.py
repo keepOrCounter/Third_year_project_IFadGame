@@ -51,19 +51,13 @@ def grammarClassifier(phrase):
         verbSet.add(str(verbPharse))
 
     for chunk in doc.noun_chunks:
-        print(chunk)
         nounSet.add(str(chunk))
 
     tagged_tokens = [(token.text, token.pos_) for token in doc]
+    print(tagged_tokens)
 
     for token, pos in tagged_tokens:
-        if pos.lower() == 'noun':
-            for noun in nounSet.copy():
-                if token in noun:
-                    pass
-                else:
-                    nounSet.add(token)
-        elif pos.lower() == 'verb':
+        if pos.lower() == 'verb':
             for verb in verbSet.copy():
                 if token in verb:
                     pass
@@ -79,7 +73,8 @@ def grammarClassifier(phrase):
 
     return grammarDict
 
-print(grammarClassifier("fill glass water bottle with stream"))
+print(grammarClassifier("fill glass bottle with stream"))
+
 
 
 
