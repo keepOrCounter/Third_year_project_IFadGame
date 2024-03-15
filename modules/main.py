@@ -157,5 +157,5 @@ if __name__ == "__main__":
         if user_input == "__exit":
             begin = False
         else:
-            # inputAdapter.command_translator(user_input)
-            inputAdapter.tem_translater()
+            inputAdapter.command_translator(user_input)
+            # inputAdapter.tem_translater()

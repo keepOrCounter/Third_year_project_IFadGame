@@ -4793,3 +4793,149 @@ response by gpt3.5-turbo:
 	"event_description": "You stand on the serene beach, the rhythmic melody of waves embracing the shore. The vast expanse of the beach unfolds ahead, while behind you, a tranquil river meanders peacefully. To your right, a stretch of land extends, and to your left, the river's gentle current persists. Amidst the sand, a vibrant palm leaf catches your eye, its green hue a vivid contrast against the golden beachscape. The air carries a salty tang, and a gentle breeze brings the faint scent of seawater. Despite the tranquility of your surroundings, a weariness creeps into your limbs, a subtle reminder of your dwindling energy." 
 }
 ////////////////////////////////////////////////////
+[Fri Mar 15 17:18:52 2024]
+systemRole: 
+You are writting the description about 'description_target' for a survival text-based adventure game based on game information given
+
+inquiry: 
+{'information_need_to_be_described': {'description_target': ['environment_information', 'transportation_used_by_player']}, 'transportation_used_by_player': [], 'environment_information': {'Current location': 'beach', 'Front': 'river', 'Back': 'land', 'Right hand side': 'river', 'Left hand side': 'beach', 'food': ['raw fish'], 'item': ['palm leave'], 'move_AP_cost': 'normal'}}
+
+response by gpt3.5-turbo: 
+{'title_of_description': 'Beach', 'content': "You find yourself standing on a serene beach, with the gentle caress of the ocean breeze and the distant sound of waves lapping against the shore. \n\nIn the distance, a river flows before you, its waters meandering into the horizon, while behind you stretches a vast expanse of land. \n\nTo your right, the river continues its course, mirroring the flow on your left, where the beach extends further along the coastline. \n\nAmidst the sand, you spot a few items - a freshly caught raw fish, still glistening in the sunlight, and a sturdy palm leaf, swaying gently in the wind. \n\nThe environment exudes a sense of tranquility, inviting you to explore its natural beauty and discover the secrets it holds."}
+////////////////////////////////////////////////////
+[Fri Mar 15 17:18:54 2024]
+systemRole: 
+You are creating a event for a text-based adventure game, you should create event in following form based on game information(Mainly the triggered reason) provided in later:
+{
+	"event_name": <event name here>,
+	"event_discription": <possible discription in third person and first person view>
+}, Here is an example:
+	game information:
+	{
+		"event type": "survival crisis",
+		"triggered reason": "low action point",
+		"Current location": "Road",
+		"Current action": "moving",
+		"Tool(s) assist with moving": [],
+		"player current status": "Normal",
+		"description needed to be modified": "
+Road
+You are standing at a road before a mountain. Around you is a forest. A stream flows down the mountain. 
+There are some keys on the ground here."
+	}
+	
+	expected result:
+	{
+		"event_name": "starting feeling tired",
+		"event_description": "
+Road
+You stand at a road before a mountain. The dense forest surrounds you, its looming trees casting shadows. A weary sensation seeps through your limbs, accentuating the fatigue in your bones. A small stream trickles from the mountain, and amidst the weariness, you notice a glint¡ªkeys scattered on the ground, waiting to be claimed."
+	}
+
+inquiry: 
+{'event type': 'survival crisis', 'triggered reason': 'low action point', 'Current location': 'beach', 'Current action': 'None', 'Tool(s) assist with moving': [], 'player current status': 'normal', 'description needed to be modified': '{\'title_of_description\': \'Beach\', \'content\': "You find yourself standing on a serene beach, with the gentle caress of the ocean breeze and the distant sound of waves lapping against the shore. \\n\\nIn the distance, a river flows before you, its waters meandering into the horizon, while behind you stretches a vast expanse of land. \\n\\nTo your right, the river continues its course, mirroring the flow on your left, where the beach extends further along the coastline. \\n\\nAmidst the sand, you spot a few items - a freshly caught raw fish, still glistening in the sunlight, and a sturdy palm leaf, swaying gently in the wind. \\n\\nThe environment exudes a sense of tranquility, inviting you to explore its natural beauty and discover the secrets it holds."}'}
+
+response by gpt3.5-turbo: 
+{
+	"event_name": "feeling weakened by fatigue",
+	"event_description": "
+Beach
+You stand on a serene beach, the gentle caress of the ocean breeze and the distant sound of waves lulling you into a sense of peace. \\n\\nIn the distance, a river meanders into the horizon, while behind you stretches a vast expanse of land. \\n\\nTo your right, the river continues its course, mirroring the flow on your left, where the beach extends further along the coastline. \\n\\nAmidst the sand, you spot a few items - a freshly caught raw fish, still glistening in the sunlight, and a sturdy palm leaf, swaying gently in the wind. \\n\\nYet beneath this tranquil facade, a growing weariness seeps into your limbs, a subtle reminder of the fatigue that threatens to overwhelm you."
+}
+////////////////////////////////////////////////////
+[Fri Mar 15 17:19:43 2024]
+systemRole: 
+You are writting the description about 'description_target' for a survival text-based adventure game based on game information given
+
+inquiry: 
+{'information_need_to_be_described': {'description_target': ['environment_information', 'transportation_used_by_player']}, 'transportation_used_by_player': [], 'environment_information': {'Current location': 'beach', 'Front': 'beach', 'Back': 'river', 'Right hand side': 'beach', 'Left hand side': 'river', 'item': ['palm leave', 'palm leave', 'palm leave'], 'move_AP_cost': 'normal'}}
+
+response by gpt3.5-turbo: 
+{'title_of_description': 'Beach', 'content': "You find yourself standing on a tranquil beach, surrounded by the soothing symphony of waves gently lapping against the shore. \n\nStretching before you is the vast expanse of the beach, while behind you, a serene river flows gently. To your right and left, the beach continues its sandy embrace, while the river meanders alongside, offering a peaceful contrast to the open expanse of the beach. \n\nAmidst the sand, several palm leaves are scattered, adding a touch of tropical charm to the scene. \n\nThe beach beckons exploration, offering a calming respite from the challenges that lie ahead."}
+////////////////////////////////////////////////////
+[Fri Mar 15 17:19:45 2024]
+systemRole: 
+You are creating a event for a text-based adventure game, you should create event in following form based on game information(Mainly the triggered reason) provided in later:
+{
+	"event_name": <event name here>,
+	"event_discription": <possible discription in third person and first person view>
+}, Here is an example:
+	game information:
+	{
+		"event type": "survival crisis",
+		"triggered reason": "low action point",
+		"Current location": "Road",
+		"Current action": "moving",
+		"Tool(s) assist with moving": [],
+		"player current status": "Normal",
+		"description needed to be modified": "
+Road
+You are standing at a road before a mountain. Around you is a forest. A stream flows down the mountain. 
+There are some keys on the ground here."
+	}
+	
+	expected result:
+	{
+		"event_name": "starting feeling tired",
+		"event_description": "
+Road
+You stand at a road before a mountain. The dense forest surrounds you, its looming trees casting shadows. A weary sensation seeps through your limbs, accentuating the fatigue in your bones. A small stream trickles from the mountain, and amidst the weariness, you notice a glint¡ªkeys scattered on the ground, waiting to be claimed."
+	}
+
+inquiry: 
+{'event type': 'survival crisis', 'triggered reason': 'low action point', 'Current location': 'beach', 'Current action': 'None', 'Tool(s) assist with moving': [], 'player current status': 'normal', 'description needed to be modified': '{\'title_of_description\': \'Beach\', \'content\': "You find yourself standing on a tranquil beach, surrounded by the soothing symphony of waves gently lapping against the shore. \\n\\nStretching before you is the vast expanse of the beach, while behind you, a serene river flows gently. To your right and left, the beach continues its sandy embrace, while the river meanders alongside, offering a peaceful contrast to the open expanse of the beach. \\n\\nAmidst the sand, several palm leaves are scattered, adding a touch of tropical charm to the scene. \\n\\nThe beach beckons exploration, offering a calming respite from the challenges that lie ahead."}'}
+
+response by gpt3.5-turbo: 
+{
+	"event_name": "feeling fatigued",
+	"event_description": "Beach You stand on a tranquil beach, enveloped in the gentle melody of waves caressing the shore. Before you, the expansive beach sprawls, while behind you, a placid river meanders. To your sides, the sandy shore extends, the river's meandering path providing a serene counterpoint to the open expanse. Amidst the sand, palm leaves lie scattered, infusing the scene with a tropical allure. As you stand, a wave of weariness washes over you, a subtle reminder of the challenges yet to come, urging you to rest and restore your energy."
+}
+////////////////////////////////////////////////////
+[Fri Mar 15 17:20:22 2024]
+systemRole: 
+You are writting the description about 'description_target' for a survival text-based adventure game based on game information given
+
+inquiry: 
+{'information_need_to_be_described': {'description_target': ['environment_information', 'transportation_used_by_player']}, 'transportation_used_by_player': [], 'environment_information': {'Current location': 'land', 'Front': 'land', 'Back': 'land', 'Right hand side': 'land', 'Left hand side': 'land', 'tool': ['traps', 'traps'], 'item': ['rock'], 'move_AP_cost': 'normal'}}
+
+response by gpt3.5-turbo: 
+{'title_of_the_description': 'Land Environment', 'description': 'You find yourself surrounded by vast stretches of land in every direction. The terrain is predominantly flat, with no distinguishing features in sight. The ground beneath your feet feels firm and slightly uneven, hinting at a natural, unaltered landscape.\n\nAmidst the expanse, you notice a few scattered items. A couple of traps lie nearby, their mechanisms silently waiting to be triggered. A lone rock rests on the ground, its rough surface contrasting with the earthy tones of the surroundings.\n\nThe land extends endlessly, offering no respite or shelter from the elements. You stand in the midst of a desolate, yet eerily serene, wilderness, where every step forward is a venture into the unknown.'}
+////////////////////////////////////////////////////
+[Fri Mar 15 17:20:24 2024]
+systemRole: 
+You are creating a event for a text-based adventure game, you should create event in following form based on game information(Mainly the triggered reason) provided in later:
+{
+	"event_name": <event name here>,
+	"event_discription": <possible discription in third person and first person view>
+}, Here is an example:
+	game information:
+	{
+		"event type": "survival crisis",
+		"triggered reason": "low action point",
+		"Current location": "Road",
+		"Current action": "moving",
+		"Tool(s) assist with moving": [],
+		"player current status": "Normal",
+		"description needed to be modified": "
+Road
+You are standing at a road before a mountain. Around you is a forest. A stream flows down the mountain. 
+There are some keys on the ground here."
+	}
+	
+	expected result:
+	{
+		"event_name": "starting feeling tired",
+		"event_description": "
+Road
+You stand at a road before a mountain. The dense forest surrounds you, its looming trees casting shadows. A weary sensation seeps through your limbs, accentuating the fatigue in your bones. A small stream trickles from the mountain, and amidst the weariness, you notice a glint¡ªkeys scattered on the ground, waiting to be claimed."
+	}
+
+inquiry: 
+{'event type': 'survival crisis', 'triggered reason': 'low action point', 'Current location': 'land', 'Current action': 'None', 'Tool(s) assist with moving': [], 'player current status': 'normal', 'description needed to be modified': "{'title_of_the_description': 'Land Environment', 'description': 'You find yourself surrounded by vast stretches of land in every direction. The terrain is predominantly flat, with no distinguishing features in sight. The ground beneath your feet feels firm and slightly uneven, hinting at a natural, unaltered landscape.\\n\\nAmidst the expanse, you notice a few scattered items. A couple of traps lie nearby, their mechanisms silently waiting to be triggered. A lone rock rests on the ground, its rough surface contrasting with the earthy tones of the surroundings.\\n\\nThe land extends endlessly, offering no respite or shelter from the elements. You stand in the midst of a desolate, yet eerily serene, wilderness, where every step forward is a venture into the unknown.'}"}
+
+response by gpt3.5-turbo: 
+{
+	"event_name": "sudden fatigue",
+	"event_description": "Land\nYou find yourself surrounded by vast stretches of land in every direction. The terrain is predominantly flat, with no distinguishing features in sight. The ground beneath your feet feels firm and slightly uneven, hinting at a natural, unaltered landscape.\n\nAmidst the expanse, you notice a few scattered items. A couple of traps lie nearby, their mechanisms silently waiting to be triggered. A lone rock rests on the ground, its rough surface contrasting with the earthy tones of the surroundings.\n\nThe unending expanse of the land seems to stretch on infinitely, leaving no refuge or shelter from the elements. In the midst of this desolate, yet strangely tranquil, wilderness, a wave of exhaustion washes over you, each step feeling heavier than the last, as if the very land itself conspires to drain your energy away." 
+}
+////////////////////////////////////////////////////
