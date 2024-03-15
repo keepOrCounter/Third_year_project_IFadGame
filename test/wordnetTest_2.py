@@ -29,6 +29,27 @@ nlp = spacy.load("en_core_web_sm")
 # for chunk in doc.noun_chunks:
 #     print(chunk.text)
 
+
+#Get verb phrases
+# def verbPhrasesFinder(phrase):
+#     doc = nlp(phrase)
+#     verbPhrasesPattern = [
+#         {"POS": "VERB", "OP": "{1}"},
+#         {"POS": "ADP", "OP": "?"}
+#     ]
+
+#     matcher = Matcher(nlp.vocab)
+#     matcher.add("verb-phrases", [verbPhrasesPattern])
+#     matches = matcher(doc)
+#     noisyVerbs = [doc[start:end] for _, start, end in matches]
+#     verbPhrases = filter_spans(noisyVerbs)
+
+#     return verbPhrases
+
+# print(verbPhrasesFinder("fill glass bottle with stream"))
+
+# def parameterFinder()
+
 #Break the phrase into words and classify the words into noun, verb and determiner(number).
 def grammarClassifier(phrase):
     nounSet = set()
@@ -40,8 +61,15 @@ def grammarClassifier(phrase):
         {"POS": "VERB", "OP": "{1}"},
         {"POS": "ADP", "OP": "?"}
     ]
+
+    # paraPattern = [
+    #     {"POS": "ADP", "OP": "{1}"},
+    #     {"POS": "NOUN", "OP": "?"}
+    # ]
+
     matcher = Matcher(nlp.vocab)
     matcher.add("verb-phrases", [verbPhrasesPattern])
+    # matcher.add("parameter-phrases", [paraPattern])
 
     matches = matcher(doc) 
     noisyVerbs = [doc[start:end] for _, start, end in matches]
@@ -51,20 +79,12 @@ def grammarClassifier(phrase):
         verbSet.add(str(verbPharse))
 
     for chunk in doc.noun_chunks:
+        print(chunk)
         nounSet.add(str(chunk))
 
     tagged_tokens = [(token.text, token.pos_) for token in doc]
     print(tagged_tokens)
 
-    for token, pos in tagged_tokens:
-        if pos.lower() == 'verb':
-            for verb in verbSet.copy():
-                if token in verb:
-                    pass
-                else:
-                    verbSet.add(token)
-        elif pos.lower() == 'det' or pos.lower() == 'num':
-            detSet.add(token)
     grammarDict = {
         "Noun list": nounSet,
         "Verb list": verbSet,
@@ -73,13 +93,22 @@ def grammarClassifier(phrase):
 
     return grammarDict
 
-print(grammarClassifier("fill glass bottle with stream"))
+print(grammarClassifier("take all"))
 
-
-
-
-
-
+# take all finish
+# take glass water bottle finish
+# equip sword
+# unequip weapon crafting bench
+# check player finish
+# check all finish
+# check stream finish
+# drink stream finish
+# eat soup finish
+# eat grilled fish finish
+# fill flass water bottle with stream finish
+# get on wooden boat finish
+# get off wooden boat finish
+# talk to Bob finish
 
 
 
