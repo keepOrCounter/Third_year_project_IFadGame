@@ -16,7 +16,8 @@ class OutputTransfer():
         self.outputWordMap = {
             "player_or_other_NPC": 
             {
-                "HP": {
+                "precentageHP": {
+                    "name": "HP",
                     "function": [
                         lambda precentageHP: precentageHP == 1,
                         lambda precentageHP: 0.8 <= precentageHP < 1,
@@ -25,7 +26,8 @@ class OutputTransfer():
                     ],
                     "map_result": ["no hurt", "little hurt", "moderate hurt", "intense hurt"]
                 },
-                "action_point(AP)": {
+                "precentageAP": {
+                    "name": "action_point(AP)",
                     "function": [
                         lambda precentageAP: 0.8 < precentageAP <= 1,
                         lambda precentageAP: 0.4 < precentageAP <= 0.8,
@@ -33,7 +35,8 @@ class OutputTransfer():
                     ],
                     "map_result": ["normal", "a little bit tired", "exhausted"]
                 },
-                "thirst_satisfied": {
+                "precentageThirst_satisfied": {
+                    "name": "thirst_satisfied",
                     "function": [
                         lambda precentageThirst_satisfied: 0.8 <= precentageThirst_satisfied <= 1,
                         lambda precentageThirst_satisfied: 0.4 < precentageThirst_satisfied <= 0.8,
@@ -41,7 +44,8 @@ class OutputTransfer():
                     ],
                     "map_result": ["normal", "a little bit thirst", "extremely thirst"]
                 },
-                "package_weight": {
+                "_Player_status__package_weight": {
+                    "name": "package_weight",
                     "function": [
                         lambda precentage_package_weight: precentage_package_weight <= 0.1,
                         lambda precentage_package_weight: 0.1 < precentage_package_weight <= 0.5,
@@ -50,7 +54,8 @@ class OutputTransfer():
                     ],
                     "map_result": ["light", "moderate", "a little bit heavy", "heavy"]
                 },
-                "action_AP_cost": {
+                "_Player_status__action_dLevel": {
+                    "name": "action_AP_cost",
                     "function": [
                         lambda action_dLevel: action_dLevel <= 1,
                         lambda action_dLevel: 1 < action_dLevel <= 1.2,
@@ -59,7 +64,16 @@ class OutputTransfer():
                     ],
                     "map_result": ["normal", "a little bit strenuous", "strenuous", "extremely strenuous"]
                 },
-                "relationship": {
+                "_NPCs__action_dLevel": {
+                    "function": [
+                        lambda action_dLevel: action_dLevel <= 1,
+                        lambda action_dLevel: 1 < action_dLevel <= 1.2,
+                        lambda action_dLevel: 1.2 < action_dLevel <= 2,
+                        lambda action_dLevel: 2 < action_dLevel
+                    ],
+                    "map_result": ["normal", "a little bit strenuous", "strenuous", "extremely strenuous"]
+                },
+                "relationship_with_player": {
                     "function": [
                         lambda relationship: relationship < -10,
                         lambda relationship: -10 <= relationship < 0,
@@ -82,7 +96,7 @@ class OutputTransfer():
                         lambda weight: weight == 2,
                         lambda weight: weight > 2
                     ],
-                    "map_result": ["light/small", "moderate", "heavy/large"]
+                    "map_result": ["light", "moderate weight", "heavy"]
                 },
                 "AP_recovery": {
                     "function": [
@@ -90,7 +104,7 @@ class OutputTransfer():
                         lambda AP_recovery: 10 <= AP_recovery < 20,
                         lambda AP_recovery: 20 <= AP_recovery
                     ],
-                    "map_result": ["insufficient portions", "moderate", "quite a filler"]
+                    "map_result": ["insufficient portions", "medium portion", "quite a filler"]
                 },
                 "freshness": {
                     "function": [
@@ -100,8 +114,15 @@ class OutputTransfer():
                     "map_result": ["stale", "fresh"]
                 },
                 "eatable": {
-                    "function": [lambda eatable: True],
-                    "map_result": ["<origin>"]
+                    "name": "edibility",
+                    "function": [
+                        lambda eatable: eatable,
+                        lambda eatable: not eatable
+                    ],
+                    "map_result": [
+                        "edible",
+                        "inedible"
+                    ]
                 },
                 "thirst_satisfied": {
                     "function": [
@@ -109,6 +130,25 @@ class OutputTransfer():
                         lambda thirst_satisfied: thirst_satisfied > 0
                     ],
                     "map_result": ["cause a thirst", "quench a thirst"]
+                },
+                "capacity": {
+                    "function": [
+                        lambda capacity: capacity <= 2,
+                        lambda capacity: 4 >= capacity > 2,
+                        lambda capacity: capacity > 4
+                    ],
+                    "map_result": ["low capacity", "moderate capacity", "high capacity"]
+                },
+                "precentageCapacity": {
+                    "name": "fill level",
+                    "function": [
+                        lambda currentCapacity: currentCapacity == 0,
+                        lambda currentCapacity: 0.4 >= currentCapacity > 0,
+                        lambda currentCapacity: 0.7 >= currentCapacity > 0.4,
+                        lambda currentCapacity: 1 > currentCapacity > 0.7,
+                        lambda currentCapacity: currentCapacity == 1
+                    ],
+                    "map_result": ["no liquid", "some liquid", "half capacity", "almost full capacity", "full capacity"]
                 }
             },
             "environment_information": 
@@ -137,7 +177,7 @@ class OutputTransfer():
         }
 
     
-    def outPutTransfer(self, trasferDict: dict, transferNumber) -> str:
+    def outPutTransfer(self, trasferDict: dict, transferNumber):
         if "name" in trasferDict.keys():
             attributeName = trasferDict["name"]
         else:
@@ -260,12 +300,21 @@ class Commands():
         newValue = self.valueRetrieval(value)
         self.__player.set_hp(self.__player.get_hp() - newValue)
         
-    def add_items(self, action: Actions, items: list[Items]) -> None:
+    def add_items(self, action: Actions, items: list[Items]) -> list[Items]:
         """
         Add one or more items to player's package
+        
         """
         currentItems = self.__player.get_items()
+        changedWeight = 0
+        packageWeight = self.__player.get_package_weight()
+        maxWeight = self.__player.get_maximum_package_weight()
+        counter = 0
         for x in items:
+            if changedWeight + x.weight + packageWeight > maxWeight:
+                return items[counter:]
+            changedWeight += x.weight
+            counter += 1
             if x.category == "food":
                 self.__worldStatus.freshNessChangedItems.append(x)
             if x.item_name not in currentItems.keys():
@@ -277,25 +326,56 @@ class Commands():
             currentItems[x.item_name][-1].codeName = x.item_name + "_" + str(len(currentItems[x.item_name]))
                 
         self.__player.set_items(currentItems)
-        
+        if changedWeight != 0:
+            self.__player.set_package_weight(self.__player.get_package_weight() + changedWeight)
+            self.__player.precentage_package_weight = self.__player.get_package_weight() / \
+                maxWeight
+        return list()
+    
     def remove_items(self, action: Actions, items: dict[str, int] = dict(), itemList:list[Items] = [], \
-        mode = "real name") -> None:
+        mode = "real name", place: str = "package") -> None:
         """
-        Remove one or more items to player's package
+        Remove one or more items from player's package or current location
         """
         currentItems = self.__player.get_items()
+        changedWeight = 0
         if mode == "real name":
-            for x in items.keys():
-                for y in range(items[x]):
-                    currentItems[x].pop()
-            self.__player.set_items(currentItems)
+            if place == "package":
+                for x in items.keys():
+                    counter = 0
+                    while len(currentItems[x]) > 0:
+                        changedWeight -= currentItems[x][-1].weight
+                        currentItems[x].pop()
+                        counter+=1
+                        if counter >= items[x]:
+                            break
+                self.__player.set_items(currentItems)
+            else:
+                counter = 0
+                popDict = items.copy()
+                while counter < len(self.__map.currentLocation.objects):
+                    targetName = self.__map.currentLocation.objects[counter].item_name
+                    if targetName in popDict.keys() and popDict[targetName] > 0:
+                        popDict[targetName] -= 1
+                        self.__map.currentLocation.objects.pop(counter)
+                        counter -= 1
+                    counter += 1
         else:
             for x in itemList:
                 result, position, container = self.findObject(action, x.codeName, "package", "code name")
-                if result:
+                if place == "package" and result:
+                    changedWeight -= currentItems[x.item_name][position].weight
                     currentItems[x.item_name].pop(position)
                     for y in range(position, len(currentItems[x.item_name])):
                         currentItems[x.item_name][y].codeName = x.item_name+"_"+str(y+1)
+                elif place == "location" and result:
+                    self.__map.currentLocation.objects.pop(position)
+                    
+        if changedWeight != 0:
+            self.__player.set_package_weight(self.__player.get_package_weight() + changedWeight)
+            self.__player.precentage_package_weight = self.__player.get_package_weight() / \
+                self.__player.get_maximum_package_weight()
+        
         
     def increase_maximum_action_point(self, action: Actions, value: int) -> None:
         """
@@ -332,7 +412,7 @@ class Commands():
         if mode == "real name":
             if place == "package":
                 bag = self.__player.get_items()
-                container = bag
+                container = bag[target]
                 if target in bag.keys() and len(bag[target])>0:
                     result = target in bag.keys()
                     position = 0
@@ -376,7 +456,7 @@ class Commands():
                         if bag[realName][x].codeName == target:
                             result = True
                             position = x
-                            container = bag
+                            container = bag[realName]
                             break
             else:
                 currentPlace = self.__map.currentLocation
@@ -407,60 +487,118 @@ class Commands():
             self.__worldStatus.current_description["rest"] = \
                 "You cannot have a rest now."
             
-    def consume(self, action: Actions, amount: int, items: str):
-        amount, items = self.valueRetrieval(amount, items)
+    def _find_all(self, action: Actions, items: str):
         place = "package"
         mode = "real name"
         result, position, container = self.findObject(action, items, place, mode)
         if not result:
             place = "location"
-            result, position, container = self.findObject(action, items, "location", "real name")
+            result, position, container = self.findObject(action, items, place, mode)
         if not result:
             place = "package"
             mode = "code name"
-            result, position, container = self.findObject(action, items, "location", "real name")
+            result, position, container = self.findObject(action, items, place, mode)
         if not result:
             place = "location"
-            result, position, container = self.findObject(action, items, "location", "real name")
+            result, position, container = self.findObject(action, items, place, mode)
+
+        return result, position, container, place, mode
+        
+    def consume(self, action: Actions, amount: int, items: str):
+        amount, items = self.valueRetrieval(amount, items)
+        
+        result, position, container, place, mode = self._find_all(action, items)
         if not result:
             self.__worldStatus.current_description["failed to consume "+items] = \
                 "Although you have tried to find one "+items+", yet there is not such thing."
             return
         
         if mode == "real name":
-            input("Which "+str(amount)+" you would like to have? Input the numbers and split them with commas>>>")
-        
-        if items.category == "food":
-            self.__player.set_action_point(self.__player.get_action_point() +\
-                items.AP_recovery)
-            self.__player.set_thirst(int(self.__player.get_thirst() -\
-                items.thirst_satisfied))
-            if not items.eatable:
-                if "consume uneatable food" not in self.__worldStatus.player_dangerAction.keys():
-                    self.__worldStatus.player_dangerAction["consume uneatable food"] = [items.item_name]
-                else:
-                    self.__worldStatus.player_dangerAction["consume uneatable food"].append(items.item_name)
+            for x in range(len(container)):
+                resultDict = self.__OutputTrafer.generalTransfer(container[x], self.__OutputTrafer.outputWordMap["items"])
+                if len(resultDict.keys()) == 0:
+                    self.__worldStatus.current_description["failed to consume " + items] = \
+                        "You try to find one "+items+", but there is no such thing in your package"
+                    return
+                result_str = '  '.join(str(value) for value in resultDict.values())
+                print(str(x+1)+". "+result_str)
+            choose = input("Which "+str(amount)+" "+ items+" you would like to have? Input the numbers and split them with commas>>>")
             
-            # print("You have your "+items.item_name+" and take a short break.")
-            self.__worldStatus.current_description["consume "+items.item_name] = \
-                "You have your "+items.item_name+" and take a short break."
-            # TODO pass information to gpt to descript current player feeling
+            itemList = []
+            for x in re.findall(r'\d+', choose):
+                itemList.append(container[int(x)-1])
         else:
-            self.__worldStatus.current_description["failed to consume "+items.item_name] = \
-                "You cannot have that."
+            itemList = [container[position]]
+        
+        consumedItems = list()
+        for x in itemList:
+            resultDict = self.__OutputTrafer.generalTransfer(x, self.__OutputTrafer.outputWordMap["items"])
+            if x.category == "food":
+                consumedItems.append(resultDict)
+                self.__player.set_action_point(self.__player.get_action_point() +\
+                    items.AP_recovery)
+                self.__player.set_thirst(int(self.__player.get_thirst() -\
+                    items.thirst_satisfied))
+                if not items.eatable:
+                    if "consume uneatable food" not in self.__worldStatus.player_dangerAction.keys():
+                        self.__worldStatus.player_dangerAction["consume uneatable food"] = [items.item_name]
+                    else:
+                        self.__worldStatus.player_dangerAction["consume uneatable food"].append(items.item_name)
+
+                # print("You have your "+items.item_name+" and take a short break.")
+                # self.__worldStatus.current_description["consume "+items.item_name] = \
+                #     "You have your "+items.item_name+" and take a short break."
+            else:
+                self.__worldStatus.current_description["failed to consume "+items.item_name] = \
+                    "You cannot have that."
+        if len(consumedItems)>0:
+            self.__worldStatus.descriptor_prompt["comsumed_items"] = consumedItems
+            self.__worldStatus.descriptor_prompt["player_current_action"] = \
+                self.__player.get_currentAction().nameForDescription
+            self.__worldStatus.descriptor_prompt["information_need_to_be_described"]["description_target"]\
+                .append("player_current_action")
+            self.__worldStatus.descriptor_prompt["information_need_to_be_described"]["description_target"]\
+                .append("comsumed_items")
+            self.__worldStatus.descriptor_prompt["information_need_to_be_described"]["description_target"]\
+                .append("player current feeling")
+                
+        self.remove_items(itemList=itemList, mode=mode, place=place)
             
     def pickUp(self, action: Actions, amount: int, itemName: str): # TODO process weight
         itemName, amount = self.valueRetrieval(itemName, amount)
+        place = "location"
+        mode = "real name"
+        result, position, container = self.findObject(action, itemName, place, mode)
+        if not result:
+            mode = "code name"
+            result, position, container = self.findObject(action, itemName, place, mode)
         itemsList = []
         count = 0
-        for x in self.__map.currentLocation.objects:
-            if itemName == x.item_name:
-                itemsList.append(x)
-                count += 1
-                if count >= amount:
-                    break
+        if result:
+            if mode == "real name":
+                for x in range(len(container)):
+                    resultDict = self.__OutputTrafer.generalTransfer(container[x], self.__OutputTrafer.outputWordMap["items"])
+                    if len(resultDict.keys()) == 0:
+                        self.__worldStatus.current_description["pick up "+itemName] = \
+                            "It seems that there is not such things around, even if you try to find one."
+                    result_str = '  '.join(str(value) for value in resultDict.values())
+                    print(str(x+1)+". "+result_str)
+                choose = input("Which "+str(amount)+" "+ itemName +" you would like to have? Input the numbers and split them with commas>>>")
+
+                itemList = []
+                for x in re.findall(r'\d+', choose):
+                    itemsList.append(container[int(x)-1])
+            else:
+                itemsList = [container[position]]
+            # for x in self.__map.currentLocation.objects:
+            #     if itemName == x.item_name:
+            #         itemsList.append(x)
+            #         count += 1
+            #         if count >= amount:
+            #             break
         if len(itemsList) > 0:
             self.add_items(action, itemsList)
+            self.remove_items(action, itemList = itemsList, mode = mode, place=place)
             # print("You pick up "+str(count)+" "+itemName+" and drop them in your bag")
             self.__worldStatus.current_description["pick up "+itemName] = \
                 "You pick up "+str(count)+" "+itemName+" and drop them in your bag"
@@ -472,62 +610,163 @@ class Commands():
     def talk(self, action: Actions, npcs: humanNPC):
         pass
         
-    def attack(self, action: Actions, target):
+    def attack(self, action: Actions, target: str):
+        place = "location"
+        mode = "real name"
+        result, position, container = self.findObject(action, target, place, mode)
+        if not result:
+            mode = "code name"
+            result, position, container = self.findObject(action, target, place, mode)
+        
+        if mode == "real name":
+            for x in range(len(container)):
+                resultDict = self.__OutputTrafer.generalTransfer(container[x], self.__OutputTrafer.outputWordMap["player_or_other_NPC"])
+                if len(resultDict.keys()) == 0:
+                    self.__worldStatus.current_description["no target"] = \
+                        "You cannot find a "+target
+                    self.__worldStatus.skipTurn = True
+                    return
+                result_str = '  '.join(str(value) for value in resultDict.values())
+                print(str(x+1)+". "+result_str)
+            choose = input("Which " + target +" you would like to attack? Input a number>>>")
+            
+            targetAttack = container[int(re.findall(r'\d+', choose)[0])-1]
+        else:
+            targetAttack = container[position]
+            
         item = self.__player.get_equipment()
+        attackedValue = 0
         if item == None:
-            target.set_hp(target.get_hp() - random.randint(0, 5))
-            self.__worldStatus.current_description["attack"] = \
-                "You give a punch at " + target.get_name()
+            attackedValue += random.randint(0, 5)
+            targetAttack.set_hp(targetAttack.get_hp() - attackedValue)
+            # self.__worldStatus.current_description["attack"] = \
+            #     "You give a punch at " + targetAttack.get_name()
         else:
             if item.category == "weapon":
-                target.set_hp(target.get_hp() - random.randint(0, 5 + item.attack*item.weight))
+                attackedValue += random.randint(0, 5 + item.attack*item.weight)
+                targetAttack.set_hp(targetAttack.get_hp() - attackedValue)
             else:
-                target.set_hp(target.get_hp() - random.randint(0, 5 + item.weight))
+                attackedValue += random.randint(0, 5 + item.weight)
+                targetAttack.set_hp(targetAttack.get_hp() - attackedValue)
             action.actionPointCost += item.weight
-            self.__worldStatus.current_description["attack with " + item.item_name] = \
-                "You attack " + target.get_name() + " with " + item.item_name
+            # self.__worldStatus.current_description["attack with " + item.item_name] = \
+            #     "You attack " + targetAttack.get_name() + " with " + item.item_name
+            
+        self.__worldStatus.descriptor_prompt["player_current_action"] = \
+            self.__player.get_currentAction().nameForDescription
+        self.__worldStatus.descriptor_prompt["player_equipment"] = \
+            self.__player.get_equipment().item_name
+        self.__worldStatus.descriptor_prompt["information_need_to_be_described"]["player_action_result"] \
+            = self.__OutputTrafer.outPutTransfer(self.__OutputTrafer.outputWordMap["action"]["attack"], attackedValue)[1]
+        self.__worldStatus.descriptor_prompt["information_need_to_be_described"]["description_target"]\
+            .append("player_current_action")
+        self.__worldStatus.descriptor_prompt["information_need_to_be_described"]["description_target"]\
+            .append("player_equipment")
+        self.__worldStatus.descriptor_prompt["information_need_to_be_described"]["description_target"]\
+            .append("player_action_result")
         # TODO add different output for different level of attack
     
-    def check(self, action: Actions, target):
-        # if target == "myself":
-            
-        # self.__player.get_action_point()
-        # self.__player.get_hp()
-        # self.__player.get_cash()
-        # self.__player.get_items()
-        # pass
-        attributes = vars(target)
-        self.__worldStatus.current_description["checked"] = attributes
+    def check(self, action: Actions, target: str):
+        if target.lower() == "player":
+            resultDict = self.__OutputTrafer.generalTransfer(self.__player, self.__OutputTrafer.outputWordMap["player_or_other_NPC"])
+            package = self.__player.get_items()
+            itemsInfo = []
+            for x in package.keys():
+                for y in package[x]:
+                    itemsInfo.append(self.__OutputTrafer.generalTransfer(y, self.__OutputTrafer.outputWordMap["items"]))
+            self.__worldStatus.descriptor_prompt["player_information"] = resultDict
+            self.__worldStatus.descriptor_prompt["package"] = itemsInfo
+            self.__worldStatus.descriptor_prompt["information_need_to_be_described"]["description_target"]\
+                .append("player_information")
+            self.__worldStatus.descriptor_prompt["information_need_to_be_described"]["description_target"]\
+                .append("package")
+        # elif target.lower() == "surround":
+        # attributes = vars(target)
+        # self.__worldStatus.current_description["checked"] = attributes
         # TODO pass information to gpt to descript current infomation
         
     def equip(self, action: Actions, target: str):
-        bag = self.__player.get_items()
-        if target in bag.keys() and len(bag[target]) > 0:
-            equipment = self.__player.get_equipment()
-            if equipment != None:
-                self.add_items(action, [equipment])
-            self.__player.set_equipment(bag[target][-1])
-            self.remove_items(action, {target: 1})
-            self.__worldStatus.current_description["equip " + target] = \
-                "You have equipped " + target
+        place = "package"
+        mode = "real name"
+        result, position, iterableObject = self.findObject(action, target, place, mode)
+        if not result:
+            mode = "code name"
+            result, position, iterableObject = self.findObject(action, target, place, mode)
+
+        if mode == "real name":
+            for x in range(len(iterableObject)):
+                resultDict = self.__OutputTrafer.generalTransfer(iterableObject[x], self.__OutputTrafer.outputWordMap["items"])
+                if len(resultDict.keys()) == 0:
+                    self.__worldStatus.current_description["failed to equip " + target] = \
+                        "You cannot find one "+target+" in your package"
+                    return
+                result_str = '  '.join(str(value) for value in resultDict.values())
+                print(str(x+1)+". "+result_str)
+            choose = input("Which " + target +" you would like to equip? Input a number>>>")
+
+            equipedTarget = iterableObject[int(re.findall(r'\d+', choose)[0])-1]
         else:
-            self.__worldStatus.current_description["fail to equip " + target] = \
-                "You do not have " + target
+            equipedTarget = iterableObject[position]
+            
+        equipment = self.__player.get_equipment()
+        if equipment != None:
+            self.add_items(action, [equipment])
+        self.__player.set_equipment(equipedTarget)
+        self.remove_items(action, itemList=equipedTarget, mode=mode, place=place)
+        self.__worldStatus.current_description["equip " + equipedTarget] = \
+            "You have equipped " + equipedTarget
                 
                 
-    def unequip(self, action: Actions, target: str):
+    def unequip(self, action: Actions):
         equipment = self.__player.get_equipment()
         if equipment != None:
             self.add_items(action, [equipment])
             self.__player.set_equipment(None)
-            self.__worldStatus.current_description["unequip " + target] = \
-                "You have unequipped " + target
+            self.__worldStatus.current_description["unequip " + equipment.item_name] = \
+                "You have unequipped " + equipment.item_name
         else:
-            self.__worldStatus.current_description["fail to equip " + target] = \
+            self.__worldStatus.current_description["fail to equip " + equipment.item_name] = \
                 "You do not have anything equipped"
     
     def filled(self, action: Actions, container: str, liquid: str):
-        pass
+        liquidResult = None
+        for x in self.__map.currentLocation.objects:
+            if type(x).__name__ == "LandscapeFeature" or type(x).__name__ == "EnvironmentElement":
+                if x.liquid != None and x.item_name == liquid:
+                    liquidResult = x
+                    break
+        if liquidResult != None:
+            place = "package"
+            mode = "real name"
+            result, position, iterableObject = self.findObject(action, container, place, mode)
+            if not result:
+                mode = "code name"
+                result, position, iterableObject = self.findObject(action, container, place, mode)
+
+            if mode == "real name":
+                for x in range(len(iterableObject)):
+                    resultDict = self.__OutputTrafer.generalTransfer(iterableObject[x], self.__OutputTrafer.outputWordMap["items"])
+                    if len(resultDict.keys()) == 0:
+                        self.__worldStatus.current_description["failed to filled " + container + " with "+liquid] = \
+                            "You do not have such container"
+                        self.__worldStatus.skipTurn = True
+                        return
+                    result_str = '  '.join(str(value) for value in resultDict.values())
+                    print(str(x+1)+". "+result_str)
+                choose = input("Which " + container +" you would like to fill? Input a number>>>")
+
+                target = iterableObject[int(re.findall(r'\d+', choose)[0])-1]
+            else:
+                target = iterableObject[position]
+                
+            target.liquid = liquidResult
+            target.currentCapacity = target.capacity
+            self.precentageCapacity = 1.0
+            self.__worldStatus.current_description["filled " + container + " with "+liquid] = \
+                "You have filled "+ container + " with "+liquid
+        else:
+            self.__worldStatus.current_description["failed to filled " + container + " with "+liquid] = \
+                "There is no such things can be filled into " + container
     
     def ActionCost(self, action: Actions):
         if action.actionName == "Move":
@@ -541,7 +780,7 @@ class Commands():
             self.__player.set_thirst(int(self.__player.get_thirst() -\
                 action.thirstCost * self.__player.get_action_dLevel()))
     
-        
+    
 class MapPcgRule():
     def __init__(self, map: Map_information) -> None:
         self.__map = map

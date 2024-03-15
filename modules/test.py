@@ -292,8 +292,8 @@ from Pre_definedContent import *
 from main import *
 import copy
 # Example usage:
-# input_string = "Hello123456World(1444)"
-# result = re.sub(r'\(\d+\)', '', input_string)
+# input_string = "Hello123456World"
+# result = re.findall(r'\d+', input_string)
 # print(result)  # Output will be: HelloWorld
 worldStatus = globalInfo()
 # player_info = Player_status()
@@ -325,6 +325,8 @@ a = out.generalTransfer(Food("bread", {"sea": 0, "land": 0, "forest": 0, "beach"
                 "desert": 0, "mountain": 0, "highland snowfield": 0, "town": 0, "grassland": 0}, weight=1, \
                 AP_recovery=15, eatable=True, freshness=20, thirst_satisfied=-20), out.outputWordMap["items"])
 print(a)
+result_str = '  '.join(str(value) for value in a.values())
+print("1. "+result_str)
 # def func1(x):
 #     return x * 2
 
@@ -344,3 +346,13 @@ print(a)
 # print(result1)  # Output: Function 1
 # print(result2)  # Output: Function 2
 # print(1 in range(0,100))
+# import re
+
+# def extract_numbers(text):
+#     numbers = re.findall(r'\d+', text)
+#     return numbers
+
+# # Example usage:
+# text = "There are 3 apples, 2 bananas, and 5 oranges in the basket."
+# numbers = extract_numbers(text)
+# print(numbers)  # Output: ['3', '2', '5']

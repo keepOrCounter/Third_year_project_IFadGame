@@ -21,6 +21,17 @@ class Items():
         
         self.commandSuitable = commandSuitable
         
+        
+class Liquid(Items):
+    def __init__(self, item_name: str, possibleWeight=dict(), weight=1, \
+        eatable=False, commandSuitable = "fill", thirst_satisfied = 0):
+        super().__init__(item_name, possibleWeight, weight, commandSuitable)
+        
+        self.eatable = eatable
+        self.thirst_satisfied = thirst_satisfied
+        
+        self.category = "liquid"
+        
 class Food(Items):
     def __init__(self, item_name: str, possibleWeight: dict[str, int], weight : int, \
         AP_recovery: int, eatable = True, freshness = -1, thirst_satisfied = 0, commandSuitable = "eat"):
@@ -55,22 +66,26 @@ class Tool(Items):
         
 class LandscapeFeature(Items):
     def __init__(self, item_name: str, possibleWeight=dict(), weight=2**10, \
-        AP_recovery = 0, eatable=False, freshness = -1, commandSuitable = "break"):
+        AP_recovery = 0, eatable=False, freshness = -1, commandSuitable = "break", liquid:Liquid = None):
         super().__init__(item_name, possibleWeight, weight, commandSuitable)
         
         self.AP_recovery = AP_recovery
         self.eatable = eatable
         self.freshness = freshness
         
+        self.liquid = liquid
+        
         self.category = "landscape feature"
         
 class EnvironmentElement(Items):
     def __init__(self, item_name: str, possibleWeight=dict(), weight=2**10, \
-        AP_recovery = 0, eatable=False, commandSuitable = "collect"):
+        AP_recovery = 0, eatable=False, commandSuitable = "collect", liquid:Liquid = None):
         super().__init__(item_name, possibleWeight, weight, commandSuitable)
         
         self.AP_recovery = AP_recovery
         self.eatable = eatable
+        
+        self.liquid = None
         
         self.category = "environment element"
         
@@ -114,20 +129,13 @@ class Container(Items):
         
         self.capacity = capacity
         self.currentCapacity = 0
+        self.precentageCapacity: float = self.currentCapacity/capacity
+        self.liquid = None
         
         self.oldName = item_name
         
         self.category = "container"
         
-class Liquid(Items):
-    def __init__(self, item_name: str, possibleWeight=dict(), weight=1, \
-        eatable=False, commandSuitable = "fill", thirst_satisfied = 0):
-        super().__init__(item_name, possibleWeight, weight, commandSuitable)
-        
-        self.eatable = eatable
-        self.thirst_satisfied = thirst_satisfied
-        
-        self.category = "liquid"
         
 
 class Suit(Items):
@@ -201,6 +209,7 @@ class Actions():
             `thirstCost (int)`: basic reduce on player's thirst level
         """
         self.actionName = actionName
+        self.nameForDescription = ""
         self.command_executed = command_executed
         
         self.actionPointCost = actionPointCost
@@ -250,14 +259,17 @@ class NPCs():
         self.codeName = NPC_name
         
         self.__hp = hp
+        self.precentageHP: float = hp/maximum_hp
         self.__maximum_hp = maximum_hp
         self.__action_point = action_point
+        self.precentageAP: float = action_point/maximum_action_point
         self.__maximum_action_point = maximum_action_point
         self.__currentAction: str = None
         self.__buff: dict[str, Buff] = dict()
 
         self.__action_dLevel: float = 1
         self.__thirst_satisfied = thirst_satisfied
+        self.precentageThirst_satisfied: float = thirst_satisfied/maximum_thirst_satisfied
         self.__maximum_thirst_satisfied = maximum_thirst_satisfied
         
         self.relationship_with_player = relationship_with_player
