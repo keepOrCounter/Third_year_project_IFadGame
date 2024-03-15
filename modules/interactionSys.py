@@ -385,7 +385,7 @@ class InputTranslator():
         return all_case_word_list
 
     #Break the phrase into words and classify the words into noun, verb and determiner(number).
-    def grammarClassifier(phrase):
+    def grammarClassifier(self, phrase):
         nlp = spacy.load("en_core_web_sm")
         nounSet = set()
         verbSet = set()
@@ -450,7 +450,7 @@ be any of the game command above, just reply a '<Rejected>'."
             nlp = spacy.load("en_core_web_sm")
             command = user_input
 
-            classified_command = InputTranslator.grammarClassifier(command)
+            classified_command = self.grammarClassifier(command)
             print(classified_command)
             
             # dis = Levenshtein.distance(move_commands[0], command)
@@ -471,6 +471,7 @@ be any of the game command above, just reply a '<Rejected>'."
             #         dis = tem_dis
             print(move_commands[command_id])
             print(move_commands)
+            print(target)
             # if move_commands[target] != "<Rejected>":
             #     action = self.__defined_content.get_Actions()[move_commands[target]]
             #     self.__playerStatus.set_currentAction(action)

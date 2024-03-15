@@ -236,14 +236,14 @@ if __name__ == "__main__":
     systemRole = "You are an author of a text-based adventure game, \
 and you need to write one short description(Only for current location) \
 for player base on game information, here \
-is an example:{Map: \n[Forest      ]--[brick building]--[Forest     ]\n\
+is an example:{Map: \n[Forest      ]--[Mountain]--[Forest     ]\n\
         |            |               |\n\
-[Forest      ]--[End Of Road   ]--[Deep forest]\n\
+[Forest      ]--[Road   ]--[Deep forest]\n\
         |            |               |\n\
-[Not Known   ]--[Forest        ]--[Not Known  ]\nCurrent location: End Of Road\nObjects at current location:[stream, keyA, keyB, keyC]} \
+[Not Known   ]--[Forest        ]--[Not Known  ]\nCurrent location: Road\nObjects at current location:[stream, keyA, keyB, keyC]} \
 According to th example above, you should author the game text in this style: You are standing \
-at the end of a road before a small brick building. Around you is a forest. \
-A small stream flows out of the building and down a gully. \n\
+at a road before a mountain. Around you is a forest. \
+A stream flows down the mountain. \n\
 There are some keys on the ground here."
 
     translate_system = "You are trying to translate the command in natual language \
