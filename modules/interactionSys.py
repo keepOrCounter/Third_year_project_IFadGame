@@ -8,6 +8,9 @@ import json
 from autocorrect import Speller
 from numpy import inf
 import inspect
+import spacy
+from spacy.matcher import Matcher
+from spacy.util import filter_spans
 
 class IOSys():
     def __init__(self) -> None:
@@ -340,22 +343,22 @@ class InputTranslator():
             params_info.append((param_name, param_type))
         return params_info
     
-    def tem_translater(self):
-        move_commands = list(self.__defined_content.get_Actions().keys())
-        for x in range(len(move_commands)):
-            print(x, ": ", move_commands[x])
+    # def tem_translater(self):
+    #     move_commands = list(self.__defined_content.get_Actions().keys())
+    #     for x in range(len(move_commands)):
+    #         print(x, ": ", move_commands[x])
         
-        target = int(input(">>>"))
-        action = self.__defined_content.get_Actions()[move_commands[target]]
-        self.__playerStatus.set_currentAction(action)
-        for commands in range(len(action.command_executed)):
-            params_info = self.get_function_params_info(action.command_executed[commands])
-            print(params_info)
-            result = []
-            for x in range(1, len(params_info)):
-                target = input(str(x)+": ")
-                result.append(target)
-            action.command_executed[commands](*(action.command_args[commands]+result))
+    #     target = int(input(">>>"))
+    #     action = self.__defined_content.get_Actions()[move_commands[target]]
+    #     self.__playerStatus.set_currentAction(action)
+    #     for commands in range(len(action.command_executed)):
+    #         params_info = self.get_function_params_info(action.command_executed[commands])
+    #         print(params_info)
+    #         result = []
+    #         for x in range(1, len(params_info)):
+    #             target = input(str(x)+": ")
+    #             result.append(target)
+    #         action.command_executed[commands](*(action.command_args[commands]+result))
 
     def frequent_command (common_list:str) -> list:
         frequent_words_in_commands = []
@@ -380,6 +383,47 @@ class InputTranslator():
             all_case_word_list.append(word_list[i].upper())
 
         return all_case_word_list
+
+    #Break the phrase into words and classify the words into noun, verb and determiner(number).
+    def grammarClassifier(phrase):
+        nlp = spacy.load("en_core_web_sm")
+        nounSet = set()
+        verbSet = set()
+        detSet = set()
+        doc = nlp(phrase)
+
+        verbPhrasesPattern = [
+            {"POS": "VERB", "OP": "{1}"},
+            {"POS": "ADP", "OP": "?"}
+        ]
+
+        matcher = Matcher(nlp.vocab)
+        matcher.add("verb-phrases", [verbPhrasesPattern])
+
+        matches = matcher(doc) 
+        noisyVerbs = [doc[start:end] for _, start, end in matches]
+        verbPhrases = filter_spans(noisyVerbs)
+
+        for verbPharse in verbPhrases:
+            verbSet.add(str(verbPharse))
+
+        for chunk in doc.noun_chunks:
+            print(chunk)
+            nounSet.add(str(chunk))
+
+        tagged_tokens = [(token.text, token.pos_) for token in doc]
+
+        for token, pos in tagged_tokens:
+            if pos.lower() == "adv" or pos.lower() == "noun":
+                nounSet.add(str(token))
+
+        grammarDict = {
+            "Noun list": nounSet,
+            "Verb list": verbSet,
+            "Determiner list": detSet
+        }
+
+        return grammarDict
         
     def command_translator(self, user_input:str):
         move_commands = list(self.__defined_content.get_Actions().keys())
@@ -393,38 +437,44 @@ be any of the game command above, just reply a '<Rejected>'."
 
         clear_word_list_in_move_commands = InputTranslator.frequent_command(move_commands)
         all_case_word_list = InputTranslator.all_case_word_list(clear_word_list_in_move_commands)
-        print(clear_word_list_in_move_commands)
-        print(all_case_word_list)
         spell = Speller(lang = 'en')
 
         for i in range(len(all_case_word_list)):
             spell.nlp_data.update({all_case_word_list[i]:inf})
 
         corrected_user_input = spell(user_input)
-        print(corrected_user_input)
 
         if (corrected_user_input != user_input):
             print("Wait, why I have that mind, is it\"", corrected_user_input, "\"?")
         else:
+            nlp = spacy.load("en_core_web_sm")
             command = self.__gptAPI.inquiry(user_input, systemRole)
-            print(command)
+
+            doc = nlp(command)
+            tagged_tokens = [(token.text, token.pos_) for token in doc]
+            for token, pos in tagged_tokens:
+                print(token)
+                print(pos)
+
+            classified_command = InputTranslator.grammarClassifier(command)
+            print(classified_command)
             
-            dis = Levenshtein.distance(move_commands[0], command)
-            target = 0
-            for x in range(1, len(move_commands)):
-                tem_dis = Levenshtein.distance(move_commands[x], command)
-                if tem_dis < dis:
-                    target = x
-                    dis = tem_dis
+            # dis = Levenshtein.distance(move_commands[0], command)
+            target = list(classified_command["Noun list"])[0]
+            # for x in range(1, len(move_commands)):
+            #     tem_dis = Levenshtein.distance(move_commands[x], command)
+            #     if tem_dis < dis:
+            #         target = x
+            #         dis = tem_dis
             print(move_commands[target])
             print(move_commands)
-            if move_commands[target] != "<Rejected>":
-                action = self.__defined_content.get_Actions()[move_commands[target]]
-                self.__playerStatus.set_currentAction(action)
-                for commands in range(len(action.command_executed)):
-                    action.command_executed[commands](*action.command_args[commands])
-                    # commands[0](*commands[1])
-            else:
-                print("Nothing happen...")
+            # if move_commands[target] != "<Rejected>":
+            #     action = self.__defined_content.get_Actions()[move_commands[target]]
+            #     self.__playerStatus.set_currentAction(action)
+            #     for commands in range(len(action.command_executed)):
+            #         action.command_executed[commands](*action.command_args[commands])
+            #         # commands[0](*commands[1])
+            # else:
+            #     print("Nothing happen...")
     
         
