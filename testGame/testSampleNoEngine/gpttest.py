@@ -83,7 +83,7 @@ table = {"player_or_other_NPC":
         }
 prompt = "{'player_current_action': 'monitor all', 'player_equipment': 'none', 'NPCs': [{'NPC_name': 'wolf', 'NPC_id': 'wolf_1', 'NPC_category': 'animal', 'current_action': 'monitor player', 'equipment': ['buckteeth', 'claws'], 'relationship_with_player': 'cautious, on guard'}], 'information_need_to_be_described': {'player_action_result': 'none', 'wolf_1_action_result': 'none', 'description_target': ['player_current_action', 'player_equipment', \"NPCs in player's view\", 'wolf_1_action_result', 'player_action_result']}}" # put your test prompt here
 
-GptWarpper = Gpt3("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", systemRole, "")
+GptWarpper = Gpt3("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", systemRole, "")
 result = GptWarpper.inquiry(prompt)
 print(result) # gpt response will be printed here
 inquery_response_log_recorder(systemRole, prompt, result, "ft:gpt-3.5-turbo-0125:3rdprojectgroup:generaltest3:91haHqhT")
