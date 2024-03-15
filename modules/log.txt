@@ -4745,3 +4745,51 @@ response by gpt3.5-turbo:
 	"development description": "Feeling the exhaustion setting in, you push yourself to keep moving forward despite your low action points. Unfortunately, the strain takes its toll on you. Your action points decrease further, and your maximum action points also decrease as your body struggles to keep up with the demands of the journey."
 }
 ////////////////////////////////////////////////////
+[Fri Mar 15 15:03:23 2024]
+systemRole: 
+You are writting the description about 'description_target' for a survival text-based adventure game based on game information given
+
+inquiry: 
+{'information_need_to_be_described': {'description_target': ['environment_information', 'transportation_used_by_player']}, 'transportation_used_by_player': [], 'environment_information': {'Current location': 'beach', 'Front': 'beach', 'Back': 'river', 'Right hand side': 'land', 'Left hand side': 'river', 'item': ['palm leave'], 'move_AP_cost': 'normal'}}
+
+response by gpt3.5-turbo: 
+{'title_of_the_description': 'Beach', 'content': "You find yourself standing on a serene beach, with the gentle sound of the waves lapping against the shore. The beach stretches out in front of you, while behind you, a tranquil river flows gently. To your right, there is a stretch of land, and to your left, the river continues its course.\n\nAmidst the sand, you notice a palm leaf, its vibrant green contrasting against the golden hues of the beach. The air is filled with a salty tang, and a warm breeze carries the faint scent of seawater."}
+////////////////////////////////////////////////////
+[Fri Mar 15 15:03:26 2024]
+systemRole: 
+You are creating a event for a text-based adventure game, you should create event in following form based on game information(Mainly the triggered reason) provided in later:
+{
+	"event_name": <event name here>,
+	"event_discription": <possible discription in third person and first person view>
+}, Here is an example:
+	game information:
+	{
+		"event type": "survival crisis",
+		"triggered reason": "low action point",
+		"Current location": "Road",
+		"Current action": "moving",
+		"Tool(s) assist with moving": [],
+		"player current status": "Normal",
+		"description needed to be modified": "
+Road
+You are standing at a road before a mountain. Around you is a forest. A stream flows down the mountain. 
+There are some keys on the ground here."
+	}
+	
+	expected result:
+	{
+		"event_name": "starting feeling tired",
+		"event_description": "
+Road
+You stand at a road before a mountain. The dense forest surrounds you, its looming trees casting shadows. A weary sensation seeps through your limbs, accentuating the fatigue in your bones. A small stream trickles from the mountain, and amidst the weariness, you notice a glint¡ªkeys scattered on the ground, waiting to be claimed."
+	}
+
+inquiry: 
+{'event type': 'survival crisis', 'triggered reason': 'low action point', 'Current location': 'beach', 'Current action': 'None', 'Tool(s) assist with moving': [], 'player current status': 'normal', 'description needed to be modified': '{\'title_of_the_description\': \'Beach\', \'content\': "You find yourself standing on a serene beach, with the gentle sound of the waves lapping against the shore. The beach stretches out in front of you, while behind you, a tranquil river flows gently. To your right, there is a stretch of land, and to your left, the river continues its course.\\n\\nAmidst the sand, you notice a palm leaf, its vibrant green contrasting against the golden hues of the beach. The air is filled with a salty tang, and a warm breeze carries the faint scent of seawater."}'}
+
+response by gpt3.5-turbo: 
+{
+	"event_name": "feeling drained",
+	"event_description": "You stand on the serene beach, the rhythmic melody of waves embracing the shore. The vast expanse of the beach unfolds ahead, while behind you, a tranquil river meanders peacefully. To your right, a stretch of land extends, and to your left, the river's gentle current persists. Amidst the sand, a vibrant palm leaf catches your eye, its green hue a vivid contrast against the golden beachscape. The air carries a salty tang, and a gentle breeze brings the faint scent of seawater. Despite the tranquility of your surroundings, a weariness creeps into your limbs, a subtle reminder of your dwindling energy." 
+}
+////////////////////////////////////////////////////

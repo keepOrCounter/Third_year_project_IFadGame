@@ -3,7 +3,7 @@ import openai
 import time
 import Levenshtein
 from status_record import *
-from Pre_definedContent import DefininedSys
+from Pre_definedContent import DefininedSys, OutputTransfer
 import json
 from autocorrect import Speller
 from numpy import inf
@@ -28,11 +28,12 @@ class Gpt3():
     def __init__(self, api_key) -> None:
         # Set up the OpenAI API client
         openai.api_key = api_key
+        self.model = "ft:gpt-3.5-turbo-0125:3rdprojectgroup:generaltest3:91haHqhT"
 
     def inquiry(self, prompt:str, systemRole: str, temperature = 0.5) -> str:
         # Generate a response
         response = openai.ChatCompletion.create(
-        model="gpt-3.5-turbo",#gpt-3.5-turbo-0301
+        model=self.model,#gpt-3.5-turbo-0301
         messages=[
         {"role": "system", "content": systemRole},
         {"role": "user", "content": prompt}
@@ -55,13 +56,14 @@ class OutputGenerator():
         self.__playerStatus = playerStatus
         self.__mapInfo = mapInfo
         self.__worldStatus = worldStatus
+        self.__outputTranslate = OutputTransfer(playerStatus, mapInfo, worldStatus)
         self.__locationDiscriptionSysRole = """You are writing a description about current location \
 player is at for a text-based adventure game program, you will receive a game details from game \
-program like this "{Current location: End Of Road, Front: brick building, Back: Forest, \
-Right hand side: Forest, Left hand side: Forest, Landscape Features: [small stream], \
+program like this "{Current location: Road, Front: mountain, Back: Forest, \
+Right hand side: Forest, Left hand side: Forest, Landscape Features: [stream], \
 Items: [keyA, keyB, keyC]}". Here is the example of expected result: "
-End Of Road
-You are standing at the end of a road before a small brick building. Around you is a forest. A small stream flows out of the building and down a gully. 
+Road
+You are standing at a road before a mountain. Around you is a forest. A stream flows down the mountain. 
 There are some keys on the ground here." """
 
         self.__eventDescriptionSysRole = """You are creating a event for a text-based adventure game, you should create event in following form based on game information(Mainly the triggered reason) provided in later:
@@ -73,13 +75,13 @@ There are some keys on the ground here." """
 	{
 		"event type": "survival crisis",
 		"triggered reason": "low action point",
-		"Current location": "End Of Road",
+		"Current location": "Road",
 		"Current action": "moving",
 		"Tool(s) assist with moving": [],
 		"player current status": "Normal",
 		"description needed to be modified": "
-End Of Road
-You are standing at the end of a road before a small brick building. Around you is a forest. A small stream flows out of the building and down a gully. 
+Road
+You are standing at a road before a mountain. Around you is a forest. A stream flows down the mountain. 
 There are some keys on the ground here."
 	}
 	
@@ -87,8 +89,8 @@ There are some keys on the ground here."
 	{
 		"event_name": "starting feeling tired",
 		"event_description": "
-End Of Road
-You stand at the end of a road before a small brick building. The dense forest surrounds you, its looming trees casting shadows. A weary sensation seeps through your limbs, accentuating the fatigue in your bones. A small stream trickles from the building, and amidst the weariness, you notice a glint—keys scattered on the ground, waiting to be claimed."
+Road
+You stand at a road before a mountain. The dense forest surrounds you, its looming trees casting shadows. A weary sensation seeps through your limbs, accentuating the fatigue in your bones. A small stream trickles from the mountain, and amidst the weariness, you notice a glint—keys scattered on the ground, waiting to be claimed."
 	}"""
         
         self.__eventDevelopmentSysRole = """You are determine the development of an event in a text-based adventure game, you should tell the program the development in following form of event based on (Mainly based on the triggered reason and player information) the game information provided later:
@@ -189,7 +191,8 @@ Please note that the production of food must be logical. Here are some expected 
 	"title_of_description": "comsumed uneatable bread",
 	"description": "You are trying to have two slices of stale bread. The bread is dry and hard, its texture reminiscent of chewing on ancient parchment. Its taste is a blend of mustiness and decay, assaulting your palate with a bitter, stale flavor that lingers uncomfortably on your tongue. Your stomach churns uncomfortably, protesting against the foreign and indigestible substance. "
 }""" # TODO improve this prompt
-    
+        self.__generalized_promt2 = "You are writting the description about 'description_target' for a survival \
+text-based adventure game based on game information given"
     def locationDescription(self, locationList: dict[str, Location]) -> None:
         """
         Args:
@@ -207,16 +210,37 @@ Please note that the production of food must be logical. Here are some expected 
             else:
                 inputDictionary[current_object.category].append(current_object.item_name)
         
-        inquiry = str(inputDictionary)
+        _, inputDictionary["move_AP_cost"] = self.__outputTranslate.outPutTransfer(self.__outputTranslate.outputWordMap["environment_information"]["move_AP_cost"], self.__worldStatus.move_dLevel)
+        
+        transPortation = self.__playerStatus.get_transportation()
+        transportation_used_by_player = []
+        if transPortation != None:
+            transportation_used_by_player.append(transPortation.item_name)
+        self.__worldStatus.descriptor_prompt["transportation_used_by_player"] = \
+            transportation_used_by_player
+        self.__worldStatus.descriptor_prompt["environment_information"] = \
+            inputDictionary
+        self.__worldStatus.descriptor_prompt["information_need_to_be_described"]["description_target"]\
+            .append("environment_information")
+        self.__worldStatus.descriptor_prompt["information_need_to_be_described"]["description_target"]\
+            .append("transportation_used_by_player")
+        self.__worldStatus.descriptor = True
+        inquiry = str(self.__worldStatus.descriptor_prompt)
         # print(inquiry)
         # print("=======================================\n")
-        gpt_response = self.__gptAPI.inquiry(inquiry, self.__locationDiscriptionSysRole)
+        gpt_response = self.__gptAPI.inquiry(inquiry, self.__generalized_promt2)
         # print(gpt_response)
-        self.__OuterData.inquery_response_log_recorder(self.__locationDiscriptionSysRole, inquiry, gpt_response)
+        self.__OuterData.inquery_response_log_recorder(self.__generalized_promt2, inquiry, gpt_response)
         
         # result = json.loads(gpt_response, strict=False)
         
         locationList["Current location"].description = gpt_response
+        self.__worldStatus.descriptor = False
+        self.__worldStatus.descriptor_prompt = {
+            "information_need_to_be_described": {
+                "description_target": []
+            }
+        }
         
         return gpt_response
     
@@ -278,32 +302,18 @@ Please note that the production of food must be logical. Here are some expected 
         
         return foodGenerated
     
-    def generalDescription(self, target) -> None:
+    def generalDescriptor(self) -> None:
         """
         Args:
             `locationList (dict[str, Location])`: {current: <Location>, Front: \
                 <Location>, Back: <Location>, Right hand side: <Location>, \
                     Left hand side: <Location>}
         """
-        inputDictionary = {"player_information": vars(self.__playerStatus), \
-            "environment_information": vars(self.__mapInfo.currentLocation), "information_need_to_be_desctipt": 
-                vars(target)}
-        # for current_object in locationList["Current location"].objects:
-        #     if current_object.category not in inputDictionary.keys():
-        #         inputDictionary[current_object.category] = [current_object.item_name]
-        #     else:
-        #         inputDictionary[current_object.category].append(current_object.item_name)
-        
-        # inquiry = str(inputDictionary)
-        # # print(inquiry)
-        # print("=======================================\n")
-        # gpt_response = self.__gptAPI.inquiry(inquiry, self.__locationDiscriptionSysRole)
-        # # print(gpt_response)
-        # self.__OuterData.inquery_response_log_recorder(self.__locationDiscriptionSysRole, inquiry, gpt_response)
-        
-        # # result = json.loads(gpt_response, strict=False)
-        
-        # locationList["Current location"].description = gpt_response
+        # inputDictionary = {"player_information": vars(self.__playerStatus), \
+        #     "environment_information": vars(self.__mapInfo.currentLocation), "information_need_to_be_desctipt": 
+        #         vars(target)}
+        if self.__worldStatus.descriptor:
+            pass
         
     def text_output(self):
         for x in self.__worldStatus.current_description.keys():

@@ -217,14 +217,14 @@ class OutputTransfer():
 
 
 class Commands():
-    def __init__(self, player: Player_status, map: Map_information, worldStatus: globalInfo, OutputTrafer: OutputTransfer) -> None:
+    def __init__(self, player: Player_status, map: Map_information, worldStatus: globalInfo) -> None:
         """
         This class is pre-defined commands in methods form
         """
         self.__player = player
         self.__map = map
         self.__worldStatus = worldStatus
-        self.__OutputTrafer = OutputTrafer
+        self.__outputTranslate = OutputTransfer(player, map, worldStatus)
         # self.__executionTranslator
         
     def valueRetrieval(self, *value):
@@ -515,7 +515,7 @@ class Commands():
         
         if mode == "real name":
             for x in range(len(container)):
-                resultDict = self.__OutputTrafer.generalTransfer(container[x], self.__OutputTrafer.outputWordMap["items"])
+                resultDict = self.__outputTranslate.generalTransfer(container[x], self.__outputTranslate.outputWordMap["items"])
                 if len(resultDict.keys()) == 0:
                     self.__worldStatus.current_description["failed to consume " + items] = \
                         "You try to find one "+items+", but there is no such thing in your package"
@@ -532,7 +532,7 @@ class Commands():
         
         consumedItems = list()
         for x in itemList:
-            resultDict = self.__OutputTrafer.generalTransfer(x, self.__OutputTrafer.outputWordMap["items"])
+            resultDict = self.__outputTranslate.generalTransfer(x, self.__outputTranslate.outputWordMap["items"])
             if x.category == "food":
                 consumedItems.append(resultDict)
                 self.__player.set_action_point(self.__player.get_action_point() +\
@@ -561,7 +561,7 @@ class Commands():
                 .append("comsumed_items")
             self.__worldStatus.descriptor_prompt["information_need_to_be_described"]["description_target"]\
                 .append("player current feeling")
-                
+            self.__worldStatus.descriptor = True
         self.remove_items(itemList=itemList, mode=mode, place=place)
             
     def pickUp(self, action: Actions, amount: int, itemName: str): # TODO process weight
@@ -577,7 +577,7 @@ class Commands():
         if result:
             if mode == "real name":
                 for x in range(len(container)):
-                    resultDict = self.__OutputTrafer.generalTransfer(container[x], self.__OutputTrafer.outputWordMap["items"])
+                    resultDict = self.__outputTranslate.generalTransfer(container[x], self.__outputTranslate.outputWordMap["items"])
                     if len(resultDict.keys()) == 0:
                         self.__worldStatus.current_description["pick up "+itemName] = \
                             "It seems that there is not such things around, even if you try to find one."
@@ -620,7 +620,7 @@ class Commands():
         
         if mode == "real name":
             for x in range(len(container)):
-                resultDict = self.__OutputTrafer.generalTransfer(container[x], self.__OutputTrafer.outputWordMap["player_or_other_NPC"])
+                resultDict = self.__outputTranslate.generalTransfer(container[x], self.__outputTranslate.outputWordMap["player_or_other_NPC"])
                 if len(resultDict.keys()) == 0:
                     self.__worldStatus.current_description["no target"] = \
                         "You cannot find a "+target
@@ -657,29 +657,31 @@ class Commands():
         self.__worldStatus.descriptor_prompt["player_equipment"] = \
             self.__player.get_equipment().item_name
         self.__worldStatus.descriptor_prompt["information_need_to_be_described"]["player_action_result"] \
-            = self.__OutputTrafer.outPutTransfer(self.__OutputTrafer.outputWordMap["action"]["attack"], attackedValue)[1]
+            = self.__outputTranslate.outPutTransfer(self.__outputTranslate.outputWordMap["action"]["attack"], attackedValue)[1]
         self.__worldStatus.descriptor_prompt["information_need_to_be_described"]["description_target"]\
             .append("player_current_action")
         self.__worldStatus.descriptor_prompt["information_need_to_be_described"]["description_target"]\
             .append("player_equipment")
         self.__worldStatus.descriptor_prompt["information_need_to_be_described"]["description_target"]\
             .append("player_action_result")
+        self.__worldStatus.descriptor = True
         # TODO add different output for different level of attack
     
     def check(self, action: Actions, target: str):
         if target.lower() == "player":
-            resultDict = self.__OutputTrafer.generalTransfer(self.__player, self.__OutputTrafer.outputWordMap["player_or_other_NPC"])
+            resultDict = self.__outputTranslate.generalTransfer(self.__player, self.__outputTranslate.outputWordMap["player_or_other_NPC"])
             package = self.__player.get_items()
             itemsInfo = []
             for x in package.keys():
                 for y in package[x]:
-                    itemsInfo.append(self.__OutputTrafer.generalTransfer(y, self.__OutputTrafer.outputWordMap["items"]))
+                    itemsInfo.append(self.__outputTranslate.generalTransfer(y, self.__outputTranslate.outputWordMap["items"]))
             self.__worldStatus.descriptor_prompt["player_information"] = resultDict
             self.__worldStatus.descriptor_prompt["package"] = itemsInfo
             self.__worldStatus.descriptor_prompt["information_need_to_be_described"]["description_target"]\
                 .append("player_information")
             self.__worldStatus.descriptor_prompt["information_need_to_be_described"]["description_target"]\
                 .append("package")
+            self.__worldStatus.descriptor = True
         # elif target.lower() == "surround":
         # attributes = vars(target)
         # self.__worldStatus.current_description["checked"] = attributes
@@ -695,7 +697,7 @@ class Commands():
 
         if mode == "real name":
             for x in range(len(iterableObject)):
-                resultDict = self.__OutputTrafer.generalTransfer(iterableObject[x], self.__OutputTrafer.outputWordMap["items"])
+                resultDict = self.__outputTranslate.generalTransfer(iterableObject[x], self.__outputTranslate.outputWordMap["items"])
                 if len(resultDict.keys()) == 0:
                     self.__worldStatus.current_description["failed to equip " + target] = \
                         "You cannot find one "+target+" in your package"
@@ -745,7 +747,7 @@ class Commands():
 
             if mode == "real name":
                 for x in range(len(iterableObject)):
-                    resultDict = self.__OutputTrafer.generalTransfer(iterableObject[x], self.__OutputTrafer.outputWordMap["items"])
+                    resultDict = self.__outputTranslate.generalTransfer(iterableObject[x], self.__outputTranslate.outputWordMap["items"])
                     if len(resultDict.keys()) == 0:
                         self.__worldStatus.current_description["failed to filled " + container + " with "+liquid] = \
                             "You do not have such container"

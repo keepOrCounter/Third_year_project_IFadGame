@@ -224,7 +224,8 @@ class Actions():
         
 class Buff():
     def __init__(self, buff_name: str, exe_function, exe_args: list, timeLimit: int, \
-        end_Function, end_args: list, trigerred_Condition = False, end_Condition = False, start_level = "potential") -> None:
+        end_Function, end_args: list, trigerred_Condition = lambda player, mapInfo, worldStatus: False, \
+            end_Condition = lambda player, mapInfo, worldStatus: False, start_level = "potential") -> None:
         
         self.buff_name = buff_name
         self.exe_function = exe_function

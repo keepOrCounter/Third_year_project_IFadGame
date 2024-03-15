@@ -139,7 +139,7 @@ if __name__ == "__main__":
     
     pcgSystem = PCGController(game_content, player_info, map_record, descriptionGenerator, eventHandler, worldStatus)
     
-    game_rule = rule_system(player_info, map_record, worldStatus, game_content)
+    game_rule = rule_system(player_info, map_record, worldStatus, game_content, buffEffect)
     
     begin = True
     while begin:
