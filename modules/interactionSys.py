@@ -448,25 +448,28 @@ be any of the game command above, just reply a '<Rejected>'."
             print("Wait, why I have that mind, is it\"", corrected_user_input, "\"?")
         else:
             nlp = spacy.load("en_core_web_sm")
-            command = self.__gptAPI.inquiry(user_input, systemRole)
-
-            doc = nlp(command)
-            tagged_tokens = [(token.text, token.pos_) for token in doc]
-            for token, pos in tagged_tokens:
-                print(token)
-                print(pos)
+            command = user_input
 
             classified_command = self.grammarClassifier(command)
             print(classified_command)
             
             # dis = Levenshtein.distance(move_commands[0], command)
-            target = list(classified_command["Noun list"])[0]
+            for target in classified_command["Verb list"]:
+                target = target
+                break
+            
+            command_id = 0
+            for command in move_commands:
+                if target.lower() == command.lower():
+                    command_id = command_id
+                else:
+                    command_id = command_id + 1
             # for x in range(1, len(move_commands)):
             #     tem_dis = Levenshtein.distance(move_commands[x], command)
             #     if tem_dis < dis:
             #         target = x
             #         dis = tem_dis
-            print(move_commands[target])
+            print(move_commands[command_id])
             print(move_commands)
             print(target)
             # if move_commands[target] != "<Rejected>":

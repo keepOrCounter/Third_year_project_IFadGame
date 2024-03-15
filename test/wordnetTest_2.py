@@ -62,14 +62,8 @@ def grammarClassifier(phrase):
         {"POS": "ADP", "OP": "?"}
     ]
 
-    # paraPattern = [
-    #     {"POS": "ADP", "OP": "{1}"},
-    #     {"POS": "NOUN", "OP": "?"}
-    # ]
-
     matcher = Matcher(nlp.vocab)
     matcher.add("verb-phrases", [verbPhrasesPattern])
-    # matcher.add("parameter-phrases", [paraPattern])
 
     matches = matcher(doc) 
     noisyVerbs = [doc[start:end] for _, start, end in matches]
@@ -85,6 +79,10 @@ def grammarClassifier(phrase):
     tagged_tokens = [(token.text, token.pos_) for token in doc]
     print(tagged_tokens)
 
+    for token, pos in tagged_tokens:
+        if pos.lower() == "adv":
+            nounSet.add(str(token))
+
     grammarDict = {
         "Noun list": nounSet,
         "Verb list": verbSet,
@@ -93,7 +91,7 @@ def grammarClassifier(phrase):
 
     return grammarDict
 
-print(grammarClassifier("take all"))
+print(grammarClassifier("move to north"))
 
 # take all finish
 # take glass water bottle finish
