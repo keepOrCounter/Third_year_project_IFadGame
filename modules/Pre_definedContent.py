@@ -244,23 +244,25 @@ class Commands():
         else:
             return valueProcessed[0]
         
-    def move(self, action: Actions, target) -> None:
+    def move(self, action: Actions, target) -> None: #Tested
         """
         Move to specific direction or target place
         """
         newTarget = self.valueRetrieval(target)
         x, y = self.__player.get_currentLocation()
-        if newTarget == "North":
+        if isinstance(target, str) and newTarget.lower() == "north":
             self.__player.set_currentLocation(x, y+1)
-        elif newTarget == "South":
+        elif isinstance(target, str) and newTarget.lower() == "south":
             self.__player.set_currentLocation(x, y-1)
-        elif newTarget == "East":
+        elif isinstance(target, str) and newTarget.lower() == "east":
             self.__player.set_currentLocation(x+1, y)
-        elif newTarget == "West":
+        elif isinstance(target, str) and newTarget.lower() == "west":
             self.__player.set_currentLocation(x-1, y)
         else:
             self.__player.set_currentLocation(*newTarget)
             
+        x, y = self.__player.get_currentLocation()
+        # print("____________-------", x, y)
         # self.__player.set_action_point(self.__player.get_action_point() -\
         #     action.actionPointCost * self.__worldStatus.move_dLevel)
         
@@ -300,7 +302,7 @@ class Commands():
         newValue = self.valueRetrieval(value)
         self.__player.set_hp(self.__player.get_hp() - newValue)
         
-    def add_items(self, action: Actions, items: list[Items]) -> list[Items]:
+    def add_items(self, action: Actions, items: list[Items]) -> list[Items]: # tested
         """
         Add one or more items to player's package
         
@@ -326,6 +328,7 @@ class Commands():
             currentItems[x.item_name][-1].codeName = x.item_name + "_" + str(len(currentItems[x.item_name]))
                 
         self.__player.set_items(currentItems)
+        # print(currentItems)
         if changedWeight != 0:
             self.__player.set_package_weight(self.__player.get_package_weight() + changedWeight)
             self.__player.precentage_package_weight = self.__player.get_package_weight() / \
@@ -333,7 +336,7 @@ class Commands():
         return list()
     
     def remove_items(self, action: Actions, items: dict[str, int] = dict(), itemList:list[Items] = [], \
-        mode = "real name", place: str = "package") -> None:
+        mode = "real name", place: str = "package") -> None: # tested
         """
         Remove one or more items from player's package or current location
         """
@@ -362,15 +365,16 @@ class Commands():
                     counter += 1
         else:
             for x in itemList:
+                # print(x.codeName)
                 result, position, container = self.findObject(action, x.codeName, "package", "code name")
                 if place == "package" and result:
                     changedWeight -= currentItems[x.item_name][position].weight
                     currentItems[x.item_name].pop(position)
-                    for y in range(position, len(currentItems[x.item_name])):
-                        currentItems[x.item_name][y].codeName = x.item_name+"_"+str(y+1)
                 elif place == "location" and result:
                     self.__map.currentLocation.objects.pop(position)
                     
+            for y in range(len(currentItems[x.item_name])):
+                currentItems[x.item_name][y].codeName = x.item_name+"_"+str(y+1)
         if changedWeight != 0:
             self.__player.set_package_weight(self.__player.get_package_weight() + changedWeight)
             self.__player.precentage_package_weight = self.__player.get_package_weight() / \
@@ -412,13 +416,14 @@ class Commands():
         if mode == "real name":
             if place == "package":
                 bag = self.__player.get_items()
-                container = bag[target]
                 if target in bag.keys() and len(bag[target])>0:
                     result = target in bag.keys()
                     position = 0
+                    container = bag[target]
                 else:
                     result = False
                     position = None
+                    container = None
             else:
                 currentPlace = self.__map.currentLocation
                 itemList = currentPlace.objects

@@ -4,7 +4,7 @@ import numpy as np
 
 
 class Items():
-    def __init__(self, item_name: str, possibleWeight = {}, weight = 1, commandSuitable = "use"):
+    def __init__(self, item_name: str, possibleWeight = None, weight = 1, commandSuitable = "use"):
         """
             `item_name (str)`: name for player or gpt to recognized
             `possibleWeight (dict)`: possibility of showing up in different location, \
@@ -16,15 +16,31 @@ class Items():
         self.codeName = item_name
         self.category = "item"
         
+        if possibleWeight is None:
+            possibleWeight = {}
+        else:
+            possibleWeight = dict(possibleWeight)
+        
         self.possibleWeight = possibleWeight
         self.weight = weight
         
         self.commandSuitable = commandSuitable
+
         
+    # def __eq__(self, other):
+    #     if isinstance(other, Items):
+    #         return self.value == other.value
+    #     return False
         
 class Liquid(Items):
-    def __init__(self, item_name: str, possibleWeight=dict(), weight=1, \
-        eatable=False, commandSuitable = "fill", thirst_satisfied = 0):
+    def __init__(self, item_name: str, possibleWeight=None, weight=1, \
+        eatable=False, commandSuitable="fill", thirst_satisfied=0):
+        
+        if possibleWeight is None:
+            possibleWeight = {}
+        else:
+            possibleWeight = dict(possibleWeight)
+        
         super().__init__(item_name, possibleWeight, weight, commandSuitable)
         
         self.eatable = eatable
@@ -40,6 +56,11 @@ class Food(Items):
                 making consume this food
             `eatable (bool)`: Whether this food is safe for eat
         """
+        if possibleWeight is None:
+            possibleWeight = {}
+        else:
+            possibleWeight = dict(possibleWeight)
+        
         super().__init__(item_name, possibleWeight, weight, commandSuitable)
         
         self.AP_recovery = AP_recovery
@@ -51,22 +72,35 @@ class Food(Items):
         self.commandSuitable = commandSuitable
         
         self.category = "food"
+
         
 class Tool(Items):
-    def __init__(self, item_name: str, possibleWeight=dict(), weight=1, \
-        durability = 1, commandSuitable = "use"):
+    def __init__(self, item_name: str, possibleWeight=None, weight=1, \
+        durability=1, commandSuitable="use"):
         """
             `durability (int)`: the turns number this tool can be used
         """
+        if possibleWeight is None:
+            possibleWeight = {}
+        else:
+            possibleWeight = dict(possibleWeight)
+        
         super().__init__(item_name, possibleWeight, weight, commandSuitable)
         
         self.durability = durability
         
         self.category = "tool"
+
         
 class LandscapeFeature(Items):
-    def __init__(self, item_name: str, possibleWeight=dict(), weight=2**10, \
-        AP_recovery = 0, eatable=False, freshness = -1, commandSuitable = "break", liquid:Liquid = None):
+    def __init__(self, item_name: str, possibleWeight=None, weight=2**10, \
+        AP_recovery=0, eatable=False, freshness=-1, commandSuitable="break", liquid: Liquid = None):
+        
+        if possibleWeight is None:
+            possibleWeight = {}
+        else:
+            possibleWeight = dict(possibleWeight)
+        
         super().__init__(item_name, possibleWeight, weight, commandSuitable)
         
         self.AP_recovery = AP_recovery
@@ -76,75 +110,106 @@ class LandscapeFeature(Items):
         self.liquid = liquid
         
         self.category = "landscape feature"
+
         
 class EnvironmentElement(Items):
-    def __init__(self, item_name: str, possibleWeight=dict(), weight=2**10, \
-        AP_recovery = 0, eatable=False, commandSuitable = "collect", liquid:Liquid = None):
+    def __init__(self, item_name: str, possibleWeight=None, weight=2**10, \
+        AP_recovery=0, eatable=False, commandSuitable="collect", liquid: Liquid = None):
+        
+        if possibleWeight is None:
+            possibleWeight = {}
+        else:
+            possibleWeight = dict(possibleWeight)
+        
         super().__init__(item_name, possibleWeight, weight, commandSuitable)
         
         self.AP_recovery = AP_recovery
         self.eatable = eatable
         
-        self.liquid = None
+        self.liquid = liquid
         
         self.category = "environment element"
+
         
 class Transportation(Items):
-    def __init__(self, item_name: str, possibleWeight=dict(), weight=2**10, \
-        suitablePlace = set(), APReduce = 1, commandSuitable = "by"):
+    def __init__(self, item_name: str, possibleWeight=None, weight=2**10, \
+        suitablePlace=None, APReduce=1, commandSuitable="by"):
         """
             `suitablePlace (set)`: the place this transportation can be rod
             `APReduce (int)`: to what precentage of action point would be reduce \
                 when moving on a place, from 0 to 1
         """
+        if possibleWeight is None:
+            possibleWeight = {}
+        else:
+            possibleWeight = dict(possibleWeight)
+            
+        if suitablePlace is None:
+            suitablePlace = {}
+        else:
+            suitablePlace = dict(suitablePlace)
+        
         super().__init__(item_name, possibleWeight, weight, commandSuitable)
         
         self.suitablePlace = suitablePlace
         self.APReduce = APReduce
         
         self.category = "transportation"
+
         
 class Weapon(Items):
-    def __init__(self, item_name: str, possibleWeight=dict(), weight=1, \
-        attack = 0, durability = 1, commandSuitable = "with"):
+    def __init__(self, item_name: str, possibleWeight=None, weight=1, \
+        attack=0, durability=1, commandSuitable="with"):
         """
             `durability (int)`: the turns number this tool can be used
             `attack (int)`: the hp value would reduce on target when player use this weapon
         """
+        if possibleWeight is None:
+            possibleWeight = {}
+        else:
+            possibleWeight = dict(possibleWeight)
+        
         super().__init__(item_name, possibleWeight, weight, commandSuitable)
         
         self.durability = durability
         self.attack = attack
         
         self.category = "weapon"
-        
 
+        
 class Container(Items):
-    def __init__(self, item_name: str, possibleWeight=dict(), weight=1, \
-        capacity = 1, commandSuitable = "fill"):
+    def __init__(self, item_name: str, possibleWeight=None, weight=1, \
+        capacity=1, commandSuitable="fill"):
         """
-            `capacity (int)`: the turn number the liquide inside can be used
+            `capacity (int)`: the turn number the liquid inside can be used
         """
+        if possibleWeight is None:
+            possibleWeight = {}
+        else:
+            possibleWeight = dict(possibleWeight)
+        
         super().__init__(item_name, possibleWeight, weight, commandSuitable)
         
         self.capacity = capacity
         self.currentCapacity = 0
-        self.precentageCapacity: float = self.currentCapacity/capacity
+        self.precentageCapacity: float = self.currentCapacity / capacity
         self.liquid = None
         
         self.oldName = item_name
         
         self.category = "container"
-        
-        
 
+        
 class Suit(Items):
-    def __init__(self, item_name: str, possibleWeight={}, weight=1, commandSuitable="use", durability = 1):
+    def __init__(self, item_name: str, possibleWeight=None, weight=1, commandSuitable="use", durability=1):
+        if possibleWeight is None:
+            possibleWeight = {}
+        
         super().__init__(item_name, possibleWeight, weight, commandSuitable)
+        
         self.durability = durability
-        
         self.category = "Suit"
-        
+
 
 class Events():
     # TODO Change event description format
@@ -367,8 +432,7 @@ class humanNPC(NPCs):
         
         
 class Location():
-    def __init__(self, location_name:str, x:int, y:int, objects:list[Items] = [], \
-        npcs:list[NPCs] = [],description: str= "") -> None:
+    def __init__(self, location_name:str, x:int, y:int, objects=None, npcs=None, description: str= "") -> None:
         """`location_name:` name of current terrain\n
             `objects:` items at current place\n
             `description:` description generated by GPT, only for visited places, in this format: \n
@@ -380,6 +444,12 @@ class Location():
 }\n
             `x\y: ` locations' coordinate
         """
+        
+        if objects is None:
+            objects = []
+        if npcs is None:
+            npcs = []
+            
         self.location_name = location_name
         self.objects = objects
         self.npcs = npcs
@@ -393,10 +463,12 @@ class Location():
         self.west: str = "<unknown>"
 
 
-
 class Terrain_type():
     def __init__(self, terrain_name: str, terrain_ID: int, possibilityOfGenerate: float, \
-        move_dLevel: int, rules, extraArgs, allowedAppearUpon: int, visualizedColor: list[int] = [0, 0, 0]) -> None:
+        move_dLevel: int, rules, extraArgs, allowedAppearUpon: int, visualizedColor=None) -> None:
+        
+        if visualizedColor is None:
+            visualizedColor = [0, 0, 0]
         
         self.terrain_name = terrain_name
         self.possibilityOfGenerate = possibilityOfGenerate
@@ -413,41 +485,48 @@ class Terrain_type():
 
 
 class Player_status():
-    def __init__(self, currentLocation:list[int,int] = [0,0], items:dict[str, list[Items]] = dict(), \
-        hp: int = 100, maximum_hp: int = 100, maximum_action_point: int = 100, \
-            action_point: int = 100, currentAction: Actions = None, cash:int = 0, \
-                buff:dict[str, Buff] = dict(), thirst_satisfied:int = 100, maximum_thirst_satisfied:int = 100, \
-                    package_weight:int = 20, maximum_package_weight:int = 20) -> None:
-        """ `__currentLocation:` player coordinate [x,y]\n
+    def __init__(self, currentLocation=None, items=None, hp=100, maximum_hp=100, maximum_action_point=100,\
+            action_point=100, currentAction=None, cash=0, buff=None, thirst_satisfied=100,\
+                maximum_thirst_satisfied=100, package_weight=0, maximum_package_weight=20):
+        """ `currentLocation:` player coordinate [x,y]\n
             `items:` items in bag\n
             `action_point:` energy bar of player
         """
+        if currentLocation is None:
+            currentLocation = [0, 0]
+        if items is None:
+            items = {}
+        if buff is None:
+            buff = {}
+
         self.__currentLocation = currentLocation
-        self.__lastLocation:list[int] = [None, None]
+        self.__lastLocation = [None, None]
         self.__items = items
         self.__hp = hp
-        self.precentageHP: float = hp/maximum_hp
+        self.precentageHP = hp / maximum_hp
         self.__maximum_hp = maximum_hp
         self.__action_point = action_point
-        self.precentageAP: float = action_point/maximum_action_point
+        self.precentageAP = action_point / maximum_action_point
         self.__maximum_action_point = maximum_action_point
         self.__currentAction = currentAction
         self.__cash = cash
         self.__buff = buff
         self.__APrecovery = 10
         self.__thirst_satisfied = thirst_satisfied
-        self.precentageThirst_satisfied: float = thirst_satisfied/maximum_thirst_satisfied
+        self.precentageThirst_satisfied = thirst_satisfied / maximum_thirst_satisfied
         self.__maximum_thirst_satisfied = maximum_thirst_satisfied
         self.__package_weight = package_weight
-        self.precentage_package_weight: float = package_weight/maximum_package_weight
+        self.precentage_package_weight = package_weight / maximum_package_weight
         self.__maximum_package_weight = maximum_package_weight
-        
-        self.__transportation_used: Items = None
-        self.__suit: Items = Suit("old shirt", {"sea": 0, "land": 0, "forest": 0, "beach": 0, "river": 0, \
-            "desert": 0, "mountain": 0, "highland snowfield": 0, "town": 0, "grassland": 0}, 2)
-        self.__equipment: Items = None
-        
-        self.__action_dLevel: float = 1
+
+        self.__transportation_used = None
+        self.__suit = Suit("old shirt", {"sea": 0, "land": 0, "forest": 0, "beach": 0, "river": 0,\
+            "desert": 0, "mountain": 0, "highland snowfield": 0, "town": 0,\
+                "grassland": 0}, 2)
+        self.__equipment = None
+
+        self.__action_dLevel = 1
+
         # self.action_dLevel: float = 1
     
     def get_currentLocation(self) -> tuple[int]:
@@ -568,20 +647,22 @@ class Player_status():
 
     
 class Map_information():
-    def __init__(self, current_area_type: int = 0, currentMap: np.ndarray[str] = [], \
-        map_size: tuple[int] = (20, 20)) -> None:
+    def __init__(self, current_area_type: int = 0, currentMap=None, map_size: tuple[int] = (20, 20)) -> None:
         """`current_area_type:` used for generate map, 0 for sea area, 1 for land \
             area, affect the probability of different terrain\n
             `visitedPlace:` Place has visited in this form: {(x, y): "Location_object"}\n
             `IMPORTANT!!! map_size: `opposite with coordinate system \
                 tuple in `(row, cols)`, height and width of map, `(y, x)`
         """
-        self.__visitedPlace = {} # {(x, y): "Location_object"}, update every turn
-        self.__current_area_type = current_area_type # update when entering new area
-        self.__currentMap = currentMap # update when entering new area
-        self.__map_size = map_size # rows, cols = y, x, never update!!!
-        self.__init_map_coordinate = (0 - int(map_size[1]/2), 0 + int(map_size[0]/2)) # never update!!!
-        self.__current_map_coordinate = (0 - int(map_size[1]/2), 0 + int(map_size[0]/2)) # update when entering new area
+        if currentMap is None:
+            currentMap = []
+        
+        self.__visitedPlace = {}  # {(x, y): "Location_object"}, update every turn
+        self.__current_area_type = current_area_type  # update when entering new area
+        self.__currentMap = currentMap  # update when entering new area
+        self.__map_size = map_size  # rows, cols = y, x, never update!!!
+        self.__init_map_coordinate = (0 - int(map_size[1] / 2), 0 + int(map_size[0] / 2))  # never update!!!
+        self.__current_map_coordinate = (0 - int(map_size[1] / 2), 0 + int(map_size[0] / 2))  # update when entering new area
         self.__current_map_coordinate_Normalised = (0, 0)
         self.currentLocation: Location = None
 
@@ -637,16 +718,6 @@ class EventsTriggered():
         
         self.eventsTriggered: list[Events]= [] # event happened once
         self.UnTriggered_passivity_events : list[PassivityEvents]= []
-        # self.triggeredType = {
-        #     "survival crisis": {"action point": True, "health point": True}
-        # }
-        # self.__descriptionGenerator = descriptionGenerator
-        
-    # def get_current_events(self) -> list[Events]:
-    #     return self.__eventsTriggered
-    
-    # def add_new_event(self, newEvent: Events) -> None:
-    #     self.__eventsTriggered.append(newEvent)
         
 
 
