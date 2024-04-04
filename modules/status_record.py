@@ -1,4 +1,5 @@
 import numpy as np
+import copy
 # from typing import Callable
 # from interactionSys import OutputGenerator
 
@@ -94,7 +95,8 @@ class Tool(Items):
         
 class LandscapeFeature(Items):
     def __init__(self, item_name: str, possibleWeight=None, weight=2**10, \
-        AP_recovery=0, eatable=False, freshness=-1, commandSuitable="break", liquid: Liquid = None):
+        AP_recovery=0, eatable=False, freshness=-1, thirst_satisfied = 0,\
+            commandSuitable="break", liquid: Liquid = None):
         
         if possibleWeight is None:
             possibleWeight = {}
@@ -108,6 +110,7 @@ class LandscapeFeature(Items):
         self.freshness = freshness
         
         self.liquid = liquid
+        self.thirst_satisfied = thirst_satisfied
         
         self.category = "landscape feature"
 
@@ -147,7 +150,7 @@ class Transportation(Items):
         if suitablePlace is None:
             suitablePlace = {}
         else:
-            suitablePlace = dict(suitablePlace)
+            suitablePlace = set(suitablePlace)
         
         super().__init__(item_name, possibleWeight, weight, commandSuitable)
         
@@ -286,6 +289,7 @@ class Actions():
         for x in command_args:
             self.command_args.append([self] + x)
         
+        self.command_args_back_up = copy.deepcopy(self.command_args)
         
 class Buff():
     def __init__(self, buff_name: str, exe_function, exe_args: list, timeLimit: int, \
@@ -313,7 +317,6 @@ class Buff():
         
         # dynamic_args = lambda self: (self.buff_name, self.timeLimit, self.startedTime)
 
-        
         
 class NPCs():
     def __init__(self, NPC_name: str, hp: int, maximum_hp: int, action_point: int, \
@@ -404,7 +407,6 @@ class NPCs():
         self.__currentAction = newAction
 
 
-
 class humanNPC(NPCs):
     def __init__(self, NPC_name: str, hp: int, maximum_hp: int, action_point: int, \
         maximum_action_point: int, thirst_satisfied: int, maximum_thirst_satisfied: int, relationship_with_player: int, \
@@ -428,7 +430,6 @@ class humanNPC(NPCs):
     
     def set_cash(self, newAmount: int) -> None:
         self.__cash = newAmount
-        
         
         
 class Location():

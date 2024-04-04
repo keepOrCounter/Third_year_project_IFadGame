@@ -204,7 +204,7 @@ class OutputTransfer():
         for attribute, value in attributes.items():
             # print(attribute, '=', value)
             if attribute in trasferDict.keys():
-                print(attribute, value)
+                # print(attribute, value)
                 attributeName, valueDescribe = self.outPutTransfer(trasferDict[attribute], value)
                 if attributeName != None:
                     newAttribute = attributeName
@@ -358,27 +358,36 @@ class Commands():
                 popDict = items.copy()
                 while counter < len(self.__map.currentLocation.objects):
                     targetName = self.__map.currentLocation.objects[counter].item_name
-                    if targetName in popDict.keys() and popDict[targetName] > 0:
+                    targetType = self.__map.currentLocation.objects[counter].category
+                    if targetName in popDict.keys() and popDict[targetName] > 0 \
+                        and targetType!="landscape feature" and targetType!="environment element":
                         popDict[targetName] -= 1
                         self.__map.currentLocation.objects.pop(counter)
                         counter -= 1
                     counter += 1
         else:
+            itemDel = set()
             for x in itemList:
                 # print(x.codeName)
-                result, position, container = self.findObject(action, x.codeName, "package", "code name")
+                result, position, container = self.findObject(action, x.codeName, place, "code name")
                 if place == "package" and result:
                     changedWeight -= currentItems[x.item_name][position].weight
                     currentItems[x.item_name].pop(position)
+                    itemDel.add(x.item_name)
                 elif place == "location" and result:
-                    self.__map.currentLocation.objects.pop(position)
-                    
-            for y in range(len(currentItems[x.item_name])):
-                currentItems[x.item_name][y].codeName = x.item_name+"_"+str(y+1)
+                    targetType = self.__map.currentLocation.objects[position].category
+                    if targetType!="landscape feature" and targetType!="environment element":
+                        self.__map.currentLocation.objects.pop(position)
+            for x in itemDel:
+                for y in range(len(currentItems[x])):
+                    currentItems[x][y].codeName = x+"_"+str(y+1)
+                
         if changedWeight != 0:
             self.__player.set_package_weight(self.__player.get_package_weight() + changedWeight)
             self.__player.precentage_package_weight = self.__player.get_package_weight() / \
                 self.__player.get_maximum_package_weight()
+                
+        # print("remove", self.__player.get_items())
         
         
     def increase_maximum_action_point(self, action: Actions, value: int) -> None:
@@ -430,6 +439,7 @@ class Commands():
                 npsList = currentPlace.npcs
                 counter = 0
                 container = []
+                result = False
                 for x in range(len(itemList)):
                     if itemList[x].item_name == target:
                         result = True
@@ -439,6 +449,9 @@ class Commands():
                 if len(container) > 0:
                     return result, counter, container
                 
+                counter = 0
+                container = []
+                result = False
                 for x in range(len(npsList)):
                     if npsList[x].NPC_name == target:
                         result = True
@@ -536,26 +549,30 @@ class Commands():
             itemList = [container[position]]
         
         consumedItems = list()
+        counter = 0
         for x in itemList:
             resultDict = self.__outputTranslate.generalTransfer(x, self.__outputTranslate.outputWordMap["items"])
-            if x.category == "food":
+            if x.category == "food" or x.category == "landscape feature":
                 consumedItems.append(resultDict)
                 self.__player.set_action_point(self.__player.get_action_point() +\
-                    items.AP_recovery)
-                self.__player.set_thirst(int(self.__player.get_thirst() -\
-                    items.thirst_satisfied))
-                if not items.eatable:
+                    x.AP_recovery)
+                self.__player.set_thirst(int(self.__player.get_thirst() +\
+                    x.thirst_satisfied))
+                if not x.eatable:
                     if "consume uneatable food" not in self.__worldStatus.player_dangerAction.keys():
-                        self.__worldStatus.player_dangerAction["consume uneatable food"] = [items.item_name]
+                        self.__worldStatus.player_dangerAction["consume uneatable food"] = [x.item_name]
                     else:
-                        self.__worldStatus.player_dangerAction["consume uneatable food"].append(items.item_name)
+                        self.__worldStatus.player_dangerAction["consume uneatable food"].append(x.item_name)
 
                 # print("You have your "+items.item_name+" and take a short break.")
                 # self.__worldStatus.current_description["consume "+items.item_name] = \
                 #     "You have your "+items.item_name+" and take a short break."
             else:
-                self.__worldStatus.current_description["failed to consume "+items.item_name] = \
+                self.__worldStatus.current_description["failed to consume "+items] = \
                     "You cannot have that."
+                itemList.pop(counter)
+                counter -= 1
+            counter += 1
         if len(consumedItems)>0:
             self.__worldStatus.descriptor_prompt["comsumed_items"] = consumedItems
             self.__worldStatus.descriptor_prompt["player_current_action"] = \
@@ -567,7 +584,10 @@ class Commands():
             self.__worldStatus.descriptor_prompt["information_need_to_be_described"]["description_target"]\
                 .append("player current feeling")
             self.__worldStatus.descriptor = True
-        self.remove_items(itemList=itemList, mode=mode, place=place)
+            
+        # print("itemList", itemList)
+        # print(mode)
+        self.remove_items(action, itemList=itemList, mode="code name", place=place)
             
     def pickUp(self, action: Actions, amount: int, itemName: str): # TODO process weight
         itemName, amount = self.valueRetrieval(itemName, amount)
@@ -578,13 +598,13 @@ class Commands():
             mode = "code name"
             result, position, container = self.findObject(action, itemName, place, mode)
         itemsList = []
-        count = 0
+        # count = 0
         if result:
             if mode == "real name":
                 for x in range(len(container)):
                     resultDict = self.__outputTranslate.generalTransfer(container[x], self.__outputTranslate.outputWordMap["items"])
                     if len(resultDict.keys()) == 0:
-                        self.__worldStatus.current_description["pick up "+itemName] = \
+                        self.__worldStatus.current_description["failed to pick up "+itemName] = \
                             "It seems that there is not such things around, even if you try to find one."
                     result_str = '  '.join(str(value) for value in resultDict.values())
                     print(str(x+1)+". "+result_str)
@@ -602,13 +622,14 @@ class Commands():
             #         if count >= amount:
             #             break
         if len(itemsList) > 0:
-            self.add_items(action, itemsList)
-            self.remove_items(action, itemList = itemsList, mode = mode, place=place)
+            failed = self.add_items(action, itemsList)
+            succeed = [obj for obj in itemsList if obj not in failed]
+            self.remove_items(action, itemList = succeed, mode = "code name", place=place)
             # print("You pick up "+str(count)+" "+itemName+" and drop them in your bag")
             self.__worldStatus.current_description["pick up "+itemName] = \
-                "You pick up "+str(count)+" "+itemName+" and drop them in your bag"
+                "You pick up "+str(len(succeed))+" "+itemName+" and drop them in your bag"
         else:
-            self.__worldStatus.current_description["pick up "+itemName] = \
+            self.__worldStatus.current_description["failed to pick up "+itemName] = \
                 "It seems that there is not such things around, even if you try to find one."
             # print("It seems that there is not such things around, even if you try to find one.")
             
@@ -699,31 +720,36 @@ class Commands():
         if not result:
             mode = "code name"
             result, position, iterableObject = self.findObject(action, target, place, mode)
+        
+        if result:
+            if mode == "real name":
+                for x in range(len(iterableObject)):
+                    resultDict = self.__outputTranslate.generalTransfer(iterableObject[x], self.__outputTranslate.outputWordMap["items"])
+                    if len(resultDict.keys()) == 0:
+                        self.__worldStatus.current_description["failed to equip " + target] = \
+                            "You cannot find one "+target+" in your package"
+                        return
+                    result_str = '  '.join(str(value) for value in resultDict.values())
+                    print(str(x+1)+". "+result_str)
+                choose = input("Which " + target +" you would like to equip? Input a number>>>")
 
-        if mode == "real name":
-            for x in range(len(iterableObject)):
-                resultDict = self.__outputTranslate.generalTransfer(iterableObject[x], self.__outputTranslate.outputWordMap["items"])
-                if len(resultDict.keys()) == 0:
-                    self.__worldStatus.current_description["failed to equip " + target] = \
-                        "You cannot find one "+target+" in your package"
-                    return
-                result_str = '  '.join(str(value) for value in resultDict.values())
-                print(str(x+1)+". "+result_str)
-            choose = input("Which " + target +" you would like to equip? Input a number>>>")
+                equipedTarget = iterableObject[int(re.findall(r'\d+', choose)[0])-1]
+            else:
+                equipedTarget = iterableObject[position]
 
-            equipedTarget = iterableObject[int(re.findall(r'\d+', choose)[0])-1]
+            equipment = self.__player.get_equipment()
+            if equipment != None:
+                self.add_items(action, [equipment])
+            self.__player.set_equipment(equipedTarget)
+            self.remove_items(action, itemList=[equipedTarget], mode="code name", place=place)
+            self.__worldStatus.current_description["equip " + target] = \
+                "You have equipped " + target
+                
         else:
-            equipedTarget = iterableObject[position]
-            
-        equipment = self.__player.get_equipment()
-        if equipment != None:
-            self.add_items(action, [equipment])
-        self.__player.set_equipment(equipedTarget)
-        self.remove_items(action, itemList=equipedTarget, mode=mode, place=place)
-        self.__worldStatus.current_description["equip " + equipedTarget] = \
-            "You have equipped " + equipedTarget
-                
-                
+            self.__worldStatus.current_description["failed to equip " + target] = \
+                "You cannot find one "+target+" in your package"
+        
+        
     def unequip(self, action: Actions):
         equipment = self.__player.get_equipment()
         if equipment != None:
@@ -1047,16 +1073,17 @@ class DefininedSys(): #
         self.__def_items = [
             # LandscapeFeature
             LandscapeFeature("stream", {"sea": 0, "land": 12, "forest": 15, "beach": 0, \
-                "river": 8, "desert": 0, "mountain": 0, "highland snowfield": 0, "town": 0, "grassland": 0}, \
-                AP_recovery=10, eatable=True, freshness=-1), 
+                "river": 10, "desert": 0, "mountain": 0, "highland snowfield": 0, "town": 0, "grassland": 0}, \
+                AP_recovery=10, thirst_satisfied=30, eatable=True, freshness=2**10), 
             LandscapeFeature("rocks", {"sea": 10, "land": 12, "forest": 12, "beach": 10, \
-                "river": 8, "desert": 5, "mountain": 5, "highland snowfield": 0, "town": 0, "grassland": 0}), 
+                "river": 8, "desert": 5, "mountain": 5, "highland snowfield": 0, "town": 0, "grassland": 0}, \
+                freshness=-1), 
             LandscapeFeature("grass", {"sea": 0, "land": 12, "forest": 15, "beach": 0, \
                 "river": 8, "desert": 0, "mountain": 0, "highland snowfield": 0, "town": 0, "grassland": 12}, \
-                AP_recovery=2, eatable=False, freshness=20),
+                AP_recovery=2, thirst_satisfied=10, eatable=False, freshness=2**10),
             LandscapeFeature("aloe vera", {"sea": 0, "land": 12, "forest": 5, "beach": 4, \
                 "river": 2, "desert": 12, "mountain": 0, "highland snowfield": 0, "town": 0, "grassland": 0}, \
-                AP_recovery=2, eatable=True, freshness=20),
+                AP_recovery=2, thirst_satisfied=10, eatable=True, freshness=2**10),
             
             # Tool
             Tool("traps", {"sea": 0, "land": 8, "forest": 8, "beach": 2, "river": 6, \
@@ -1083,10 +1110,10 @@ class DefininedSys(): #
                 AP_recovery=15, eatable=True, freshness=20, thirst_satisfied=-20),
             Food("raw fish", {"sea": 15, "land": 0, "forest": 0, "beach": 1, "river": 12, \
                 "desert": 0, "mountain": 0, "highland snowfield": 0, "town": 0, "grassland": 0}, weight=2, \
-                AP_recovery=5, eatable=False, freshness=24, thirst_satisfied=20),
+                AP_recovery=5, eatable=False, freshness=24, thirst_satisfied=-20),
             Food("grilled fish", {"sea": 0, "land": 0, "forest": 0, "beach": 0, "river": 0, \
                 "desert": 0, "mountain": 0, "highland snowfield": 0, "town": 0, "grassland": 0}, weight=2, \
-                AP_recovery=15, eatable=True, freshness=24, thirst_satisfied=10),
+                AP_recovery=15, eatable=True, freshness=24, thirst_satisfied=-10),
             Food("berries", {"sea": 0, "land": 5, "forest": 10, "beach": 0, "river": 5, \
                 "desert": 0, "mountain": 0, "highland snowfield": 0, "town": 5, "grassland": 12}, weight=1, \
                 AP_recovery=5, eatable=True, freshness=18, thirst_satisfied=10),
@@ -1128,6 +1155,10 @@ class DefininedSys(): #
                 "desert": 0, "mountain": 0, "highland snowfield": 0, "town": 0, "grassland": 0}, weight=1),
             Items("a bottle of sand", {"sea": 0, "land": 0, "forest": 0, "beach": 0, "river": 0, \
                 "desert": 0, "mountain": 0, "highland snowfield": 0, "town": 0, "grassland": 0}, weight=3),
+            
+            Weapon("iron sword", {"sea": 0, "land": 10, "forest": 5, "beach": 10, "river": 0, \
+                "desert": 5, "mountain": 5, "highland snowfield": 2, "town": 0, "grassland": 10}, \
+                    3, 10, 10),
         ]
 
         

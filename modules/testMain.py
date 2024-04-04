@@ -1,5 +1,5 @@
 from status_record import Player_status, Map_information, EventsTriggered, globalInfo, \
-    Food, Location, LandscapeFeature, Container, Tool
+    Food, Location, LandscapeFeature, Container, Tool, Actions, Weapon
 from PCGsys import PCGController
 from interactionSys import OutputGenerator, InputTranslator, Gpt3
 from Pre_definedContent import DefininedSys, Commands, character_effectSys
@@ -204,8 +204,8 @@ class TestStringMethods(unittest.TestCase):
     def test_add_itemsOR_drop_items(self):
         worldStatus = copy.deepcopy(globalInfo())
         # player_info = Player_status(action_point = 30)
-        player_info = copy.deepcopy(Player_status())
-        map_record = copy.deepcopy(Map_information(current_area_type = 1, map_size=(20, 20))) # land type
+        player_info = Player_status()
+        map_record = Map_information(current_area_type = 1, map_size=(20, 20)) # land type
         defined_command = Commands(player_info, map_record, worldStatus)
         buffEffect = character_effectSys(player_info, defined_command, worldStatus)
         game_content = DefininedSys(defined_command, map_record, buffEffect)
@@ -368,12 +368,16 @@ class TestStringMethods(unittest.TestCase):
 
     def test_consume(self):
         worldStatus = globalInfo()
-        player_info = copy.deepcopy(Player_status(action_point = 30))
+        player_info = Player_status(action_point = 30)
         # player_info = Player_status()
         map_record = Map_information(current_area_type = 1, map_size=(20, 20)) # land type
         defined_command = Commands(player_info, map_record, worldStatus)
         buffEffect = character_effectSys(player_info, defined_command, worldStatus)
         game_content = DefininedSys(defined_command, map_record, buffEffect)
+        
+        player_info.set_currentAction(Actions("Consume", [defined_command.consume, defined_command.ActionCost], \
+                [[],[]], 1, 1, ["eat", "drink"]))
+        map_record.currentLocation = Location("land", 0, 0)
         
         defined_command.consume(None, 1, "bread")
         self.assertEqual(len(worldStatus.current_description), 1)
@@ -393,14 +397,361 @@ class TestStringMethods(unittest.TestCase):
         ]
         
         failAdd = defined_command.add_items(None, items) # testing add two legal items
-        currentItem = copy.deepcopy(player_info.get_items()["bread"])
+        currentItem = player_info.get_items()["bread"]
         self.assertEqual(failAdd, list())
         self.assertEqual(len(player_info.get_items()), 1)
         self.assertEqual(len(currentItem), 2)
         
+        worldStatus.descriptor_prompt = {
+            "information_need_to_be_described": {
+                "description_target": []
+            }
+        }
+        print("1 or 2")
         defined_command.consume(None, 1, "bread")
         self.assertEqual(len(worldStatus.current_description), 1)
-        self.assertEqual(worldStatus.current_description["failed to consume bread"], "Although you have tried to find one bread, yet there is not such thing.")
+        self.assertEqual(player_info.get_action_point(), 45)
+        self.assertEqual(player_info.get_thirst(), 80)
+        # self.assertEqual(worldStatus.current_description, "Although you have tried to find one bread, yet there is not such thing.")
+        
+        currentItem = player_info.get_items()["bread"]
+        self.assertEqual(len(worldStatus.descriptor_prompt), 3)
+        self.assertEqual(worldStatus.descriptor_prompt["comsumed_items"], [{'item_name': 'bread', 'weight': 'light', 'AP_recovery': 'medium portion', 'freshness': 'fresh', 'edibility': 'edible', 'thirst_satisfied': 'cause a thirst'}])
+        self.assertEqual(worldStatus.descriptor_prompt["information_need_to_be_described"], {'description_target': ['player_current_action', 'comsumed_items', 'player current feeling']})
+        self.assertEqual(worldStatus.descriptor_prompt["player_current_action"], "")
+        # print(worldStatus.descriptor_prompt)
+        self.assertEqual(len(player_info.get_items()), 1)
+        self.assertEqual(len(currentItem), 1)
+        
+        defined_command.remove_items(None, {"bread": 1}, None)
+        
+        items = [
+            Food("bread", {"sea": 0, "land": 0, "forest": 0, "beach": 0, "river": 0, \
+                "desert": 0, "mountain": 0, "highland snowfield": 0, "town": 0, "grassland": 0}, weight=1, \
+                AP_recovery=15, eatable=True, freshness=20, thirst_satisfied=-20), 
+            Food("bread", {"sea": 0, "land": 0, "forest": 0, "beach": 0, "river": 0, \
+                "desert": 0, "mountain": 0, "highland snowfield": 0, "town": 0, "grassland": 0}, weight=1, \
+                AP_recovery=15, eatable=True, freshness=20, thirst_satisfied=-20)
+        ]
+        
+        failAdd = defined_command.add_items(None, items) # testing add two legal items
+        currentItem = player_info.get_items()["bread"]
+        self.assertEqual(failAdd, list())
+        self.assertEqual(len(player_info.get_items()), 1)
+        self.assertEqual(len(currentItem), 2)
+        
+        worldStatus.descriptor_prompt = {
+            "information_need_to_be_described": {
+                "description_target": []
+            }
+        }
+        print("1, 2")
+        defined_command.consume(None, 1, "bread")
+        self.assertEqual(len(worldStatus.current_description), 1)
+        self.assertEqual(player_info.get_action_point(), 75)
+        self.assertEqual(player_info.get_thirst(), 40)
+        # self.assertEqual(worldStatus.current_description, "Although you have tried to find one bread, yet there is not such thing.")
+        
+        currentItem = player_info.get_items()["bread"]
+        # print(worldStatus.descriptor_prompt)
+        self.assertEqual(len(worldStatus.descriptor_prompt), 3)
+        self.assertEqual(worldStatus.descriptor_prompt["comsumed_items"], [{'item_name': 'bread', 'weight': 'light', 'AP_recovery': 'medium portion', 'freshness': 'fresh', 'edibility': 'edible', 'thirst_satisfied': 'cause a thirst'}, \
+            {'item_name': 'bread', 'weight': 'light', 'AP_recovery': 'medium portion', 'freshness': 'fresh', 'edibility': 'edible', 'thirst_satisfied': 'cause a thirst'}])
+        self.assertEqual(worldStatus.descriptor_prompt["information_need_to_be_described"], {'description_target': ['player_current_action', 'comsumed_items', 'player current feeling']})
+        self.assertEqual(worldStatus.descriptor_prompt["player_current_action"], "")
+        self.assertEqual(len(player_info.get_items()), 1)
+        self.assertEqual(len(currentItem), 0)
+        
+        defined_command.remove_items(None, {"bread": 1}, None)
+        
+        
+        items = [
+            Tool("traps", {"sea": 0, "land": 8, "forest": 8, "beach": 2, "river": 6, \
+                "desert": 2, "mountain": 0, "highland snowfield": 0, "town": 0, "grassland": 0}), 
+            Food("bread", {"sea": 0, "land": 0, "forest": 0, "beach": 0, "river": 0, \
+                "desert": 0, "mountain": 0, "highland snowfield": 0, "town": 0, "grassland": 0}, weight=1, \
+                AP_recovery=15, eatable=True, freshness=20, thirst_satisfied=-20)
+        ]
+        
+        failAdd = defined_command.add_items(None, items) # testing add two legal items
+        currentItem = player_info.get_items()["bread"]
+        self.assertEqual(failAdd, list())
+        self.assertEqual(len(player_info.get_items()), 2)
+        self.assertEqual(len(currentItem), 1)
+        self.assertEqual(len(player_info.get_items()["traps"]), 1)
+        
+        worldStatus.descriptor_prompt = {
+            "information_need_to_be_described": {
+                "description_target": []
+            }
+        }
+        print("1")
+        defined_command.consume(None, 1, "traps")
+        self.assertEqual(player_info.get_action_point(), 75)
+        self.assertEqual(player_info.get_thirst(), 40)
+        # self.assertEqual(len(worldStatus.current_description), 1)
+        # self.assertEqual(worldStatus.current_description, "Although you have tried to find one bread, yet there is not such thing.")
+        
+        currentItem = player_info.get_items()["bread"]
+        self.assertEqual(len(player_info.get_items()), 2)
+        self.assertEqual(len(currentItem), 1)
+        self.assertEqual(worldStatus.current_description["failed to consume traps"], "You cannot have that.")
+        self.assertEqual(len(player_info.get_items()["traps"]), 1)
+        
+        defined_command.remove_items(None, {"bread": 1, "traps": 1}, None)
+        self.assertEqual(len(player_info.get_items()["traps"]), 0)
+        self.assertEqual(len(player_info.get_items()["bread"]), 0)
+        
+        
+        items = [
+            Tool("traps", {"sea": 0, "land": 8, "forest": 8, "beach": 2, "river": 6, \
+                "desert": 2, "mountain": 0, "highland snowfield": 0, "town": 0, "grassland": 0}), 
+            Food("bread", {"sea": 0, "land": 0, "forest": 0, "beach": 0, "river": 0, \
+                "desert": 0, "mountain": 0, "highland snowfield": 0, "town": 0, "grassland": 0}, weight=1, \
+                AP_recovery=15, eatable=True, freshness=20, thirst_satisfied=-20)
+        ]
+        
+        failAdd = defined_command.add_items(None, items) # testing add two legal items
+        currentItem = player_info.get_items()["bread"]
+        self.assertEqual(failAdd, list())
+        self.assertEqual(len(player_info.get_items()), 2)
+        self.assertEqual(len(currentItem), 1)
+        self.assertEqual(len(player_info.get_items()["traps"]), 1)
+        
+        worldStatus.descriptor_prompt = {
+            "information_need_to_be_described": {
+                "description_target": []
+            }
+        }
+        print("1")
+        defined_command.consume(None, 1, "bread")
+        self.assertEqual(player_info.get_action_point(), 90)
+        self.assertEqual(player_info.get_thirst(), 20)
+        # self.assertEqual(len(worldStatus.current_description), 1)
+        # self.assertEqual(worldStatus.current_description, "Although you have tried to find one bread, yet there is not such thing.")
+        
+        currentItem = player_info.get_items()["bread"]
+        self.assertEqual(len(player_info.get_items()), 2)
+        self.assertEqual(len(currentItem), 0)
+        self.assertEqual(len(player_info.get_items()["traps"]), 1)
+        
+        defined_command.remove_items(None, {"bread": 1, "traps": 1}, None)
+        self.assertEqual(len(player_info.get_items()["traps"]), 0)
+        self.assertEqual(len(player_info.get_items()["bread"]), 0)
+        
+        items = [
+            Food("bread", {"sea": 0, "land": 0, "forest": 0, "beach": 0, "river": 0, \
+                "desert": 0, "mountain": 0, "highland snowfield": 0, "town": 0, "grassland": 0}, weight=1, \
+                AP_recovery=15, eatable=True, freshness=20, thirst_satisfied=-20), 
+            Food("grilled potato", {"sea": 0, "land": 0, "forest": 0, "beach": 0, "river": 0, \
+                "desert": 0, "mountain": 0, "highland snowfield": 0, "town": 0, "grassland": 0}, weight=1, \
+                AP_recovery=20, eatable=True, freshness=72, thirst_satisfied=-10)
+        ]
+        
+        worldStatus.current_description = dict()
+        map_record.currentLocation.objects = copy.deepcopy(items)
+        
+        worldStatus.descriptor_prompt = {
+            "information_need_to_be_described": {
+                "description_target": []
+            }
+        }
+        print("1")
+        defined_command.consume(None, 1, "grilled potato")
+        self.assertEqual(player_info.get_action_point(), 110)
+        self.assertEqual(player_info.get_thirst(), 10)
+        # self.assertEqual(len(worldStatus.current_description), 1)
+        # self.assertEqual(worldStatus.current_description, "Although you have tried to find one bread, yet there is not such thing.")
+        
+        self.assertEqual(len(map_record.currentLocation.objects), 1)
+        self.assertEqual(map_record.currentLocation.objects[0].item_name, "bread")
+        self.assertEqual(map_record.currentLocation.objects[0].codeName, "bread")
+        
+        
+        
+        defined_command.remove_items(None, {"bread": 1}, None, place="location")
+        self.assertEqual(len(map_record.currentLocation.objects), 0)
+        
+        items = [
+            Food("bread", {"sea": 0, "land": 0, "forest": 0, "beach": 0, "river": 0, \
+                "desert": 0, "mountain": 0, "highland snowfield": 0, "town": 0, "grassland": 0}, weight=1, \
+                AP_recovery=15, eatable=True, freshness=20, thirst_satisfied=-20), 
+            LandscapeFeature("stream", {"sea": 0, "land": 12, "forest": 15, "beach": 0, \
+                "river": 8, "desert": 0, "mountain": 0, "highland snowfield": 0, "town": 0, "grassland": 0}, \
+                AP_recovery=10, eatable=True, freshness=20, thirst_satisfied=20)
+        ]
+        
+        worldStatus.current_description = dict()
+        map_record.currentLocation.objects = copy.deepcopy(items)
+        
+        worldStatus.descriptor_prompt = {
+            "information_need_to_be_described": {
+                "description_target": []
+            }
+        }
+        print("1")
+        defined_command.consume(None, 1, "stream")
+        self.assertEqual(player_info.get_action_point(), 120)
+        self.assertEqual(player_info.get_thirst(), 30)
+        # self.assertEqual(len(worldStatus.current_description), 1)
+        # self.assertEqual(worldStatus.current_description, "Although you have tried to find one bread, yet there is not such thing.")
+        
+        self.assertEqual(len(map_record.currentLocation.objects), 2)
+        self.assertEqual(map_record.currentLocation.objects[0].item_name, "bread")
+        self.assertEqual(map_record.currentLocation.objects[0].codeName, "bread")
+        self.assertEqual(map_record.currentLocation.objects[1].item_name, "stream")
+        self.assertEqual(map_record.currentLocation.objects[1].codeName, "stream")
+        
+        
+    def test_pickUp(self):
+        worldStatus = globalInfo()
+        player_info = Player_status(action_point = 30)
+        # player_info = Player_status()
+        map_record = Map_information(current_area_type = 1, map_size=(20, 20)) # land type
+        defined_command = Commands(player_info, map_record, worldStatus)
+        buffEffect = character_effectSys(player_info, defined_command, worldStatus)
+        game_content = DefininedSys(defined_command, map_record, buffEffect)
+        
+        player_info.set_currentAction(Actions("Take", [defined_command.pickUp, defined_command.ActionCost], \
+                [[],[]], 2, 1, ["take"]))
+        map_record.currentLocation = Location("land", 0, 0)
+        
+        defined_command.pickUp(None, 1, "bread")
+        self.assertEqual(len(worldStatus.current_description), 1)
+        self.assertEqual(worldStatus.current_description["failed to pick up bread"], \
+            "It seems that there is not such things around, even if you try to find one.")
+        
+        
+        items = [
+            Food("bread", {"sea": 0, "land": 0, "forest": 0, "beach": 0, "river": 0, \
+                "desert": 0, "mountain": 0, "highland snowfield": 0, "town": 0, "grassland": 0}, weight=1, \
+                AP_recovery=15, eatable=True, freshness=20, thirst_satisfied=-20), 
+            Food("bread", {"sea": 0, "land": 0, "forest": 0, "beach": 0, "river": 0, \
+                "desert": 0, "mountain": 0, "highland snowfield": 0, "town": 0, "grassland": 0}, weight=1, \
+                AP_recovery=15, eatable=True, freshness=20, thirst_satisfied=-20)
+        ]
+        
+        worldStatus.current_description = dict()
+        map_record.currentLocation.objects = copy.deepcopy(items)
+        
+        print("1 or 2")
+        defined_command.pickUp(None, 1, "bread")
+        self.assertEqual(len(worldStatus.current_description), 1)
+        self.assertEqual(worldStatus.current_description["pick up bread"], \
+            "You pick up 1 bread and drop them in your bag")
+        self.assertEqual(len(map_record.currentLocation.objects), 1)
+        
+        
+        items = [
+            Food("bread", {"sea": 0, "land": 0, "forest": 0, "beach": 0, "river": 0, \
+                "desert": 0, "mountain": 0, "highland snowfield": 0, "town": 0, "grassland": 0}, weight=1, \
+                AP_recovery=15, eatable=True, freshness=20, thirst_satisfied=-20), 
+            Food("bread", {"sea": 0, "land": 0, "forest": 0, "beach": 0, "river": 0, \
+                "desert": 0, "mountain": 0, "highland snowfield": 0, "town": 0, "grassland": 0}, weight=1, \
+                AP_recovery=15, eatable=True, freshness=20, thirst_satisfied=-20)
+        ]
+        
+        worldStatus.current_description = dict()
+        map_record.currentLocation.objects = copy.deepcopy(items)
+        
+        print("1, 2")
+        defined_command.pickUp(None, 1, "bread")
+        self.assertEqual(len(worldStatus.current_description), 1)
+        self.assertEqual(worldStatus.current_description["pick up bread"], \
+            "You pick up 2 bread and drop them in your bag")
+        self.assertEqual(len(map_record.currentLocation.objects), 0)
+        
+        
+        items = [
+            LandscapeFeature("stream", {"sea": 0, "land": 12, "forest": 15, "beach": 0, \
+                "river": 10, "desert": 0, "mountain": 0, "highland snowfield": 0, "town": 0, "grassland": 0}, \
+                AP_recovery=10, thirst_satisfied=30, eatable=True, freshness=2**10), 
+            Food("bread", {"sea": 0, "land": 0, "forest": 0, "beach": 0, "river": 0, \
+                "desert": 0, "mountain": 0, "highland snowfield": 0, "town": 0, "grassland": 0}, weight=1, \
+                AP_recovery=15, eatable=True, freshness=20, thirst_satisfied=-20)
+        ]
+        
+        worldStatus.current_description = dict()
+        map_record.currentLocation.objects = copy.deepcopy(items)
+        
+        print("1")
+        defined_command.pickUp(None, 1, "stream")
+        self.assertEqual(len(worldStatus.current_description), 1)
+        self.assertEqual(worldStatus.current_description["pick up stream"], \
+            "You pick up 0 stream and drop them in your bag")
+        self.assertEqual(len(map_record.currentLocation.objects), 2)
+    
+    
+    def test_equip(self):
+        worldStatus = globalInfo()
+        player_info = Player_status(action_point = 30)
+        # player_info = Player_status()
+        map_record = Map_information(current_area_type = 1, map_size=(20, 20)) # land type
+        defined_command = Commands(player_info, map_record, worldStatus)
+        buffEffect = character_effectSys(player_info, defined_command, worldStatus)
+        game_content = DefininedSys(defined_command, map_record, buffEffect)
+        
+        player_info.set_currentAction(Actions("Take", [defined_command.pickUp, defined_command.ActionCost], \
+                [[],[]], 2, 1, ["take"]))
+        map_record.currentLocation = Location("land", 0, 0)
+        
+        defined_command.equip(None, "iron sword")
+        self.assertEqual(len(worldStatus.current_description), 1)
+        self.assertEqual(worldStatus.current_description["failed to equip iron sword"], \
+            "You cannot find one iron sword in your package")
+        
+        worldStatus.current_description = dict()
+        
+        items = [
+            Weapon("iron sword", {"sea": 0, "land": 10, "forest": 5, "beach": 10, "river": 0, \
+                "desert": 5, "mountain": 5, "highland snowfield": 2, "town": 0, "grassland": 10}, \
+                    3, 10, 10), 
+            Food("bread", {"sea": 0, "land": 0, "forest": 0, "beach": 0, "river": 0, \
+                "desert": 0, "mountain": 0, "highland snowfield": 0, "town": 0, "grassland": 0}, weight=1, \
+                AP_recovery=15, eatable=True, freshness=20, thirst_satisfied=-20)
+        ]
+        
+        failAdd = defined_command.add_items(None, items) # testing add two legal items
+        currentItem = copy.deepcopy(player_info.get_items()["bread"])
+        combined_list = [item for sublist in player_info.get_items().values() for item in sublist]
+        for food in range(len(items)):
+            attributes1 = vars(items[food])
+            attributes2 = vars(combined_list[food])
+            for attribute1, value1 in attributes1.items():
+                for attribute2, value2 in attributes2.items():
+                    if attribute1 == attribute2:
+                        if attribute1 == "codeName":
+                            self.assertNotEqual(value1, value2)
+                        else:
+                            self.assertEqual(value1, value2)
+        self.assertEqual(failAdd, list())
+        self.assertEqual(len(player_info.get_items()), 2)
+        self.assertEqual(len(currentItem), 1)
+        self.assertEqual(len(player_info.get_items()["iron sword"]), 1)
+        
+        defined_command.equip(None, "iron sword")
+        self.assertEqual(len(worldStatus.current_description), 1)
+        self.assertEqual(worldStatus.current_description["equip iron sword"], \
+            "You have equipped iron sword")
+        self.assertEqual(len(player_info.get_items()["iron sword"]), 0)
+        self.assertEqual(player_info.get_equipment().item_name, "iron sword")
+        
+        worldStatus.current_description = dict()
+        defined_command.unequip(None)
+        self.assertEqual(len(worldStatus.current_description), 1)
+        self.assertEqual(worldStatus.current_description["unequip iron sword"], \
+            "You have unequipped iron sword")
+        self.assertEqual(len(player_info.get_items()["iron sword"]), 1)
+        self.assertEqual(player_info.get_equipment(), None)
+        
+        worldStatus.current_description = dict()
+        defined_command.equip(None, "bread")
+        self.assertEqual(len(worldStatus.current_description), 1)
+        self.assertEqual(worldStatus.current_description["equip bread"], \
+            "You have equipped bread")
+        self.assertEqual(len(player_info.get_items()["bread"]), 0)
+        self.assertEqual(player_info.get_equipment().item_name, "bread")
+        
 
 if __name__ == '__main__':
     unittest.main()

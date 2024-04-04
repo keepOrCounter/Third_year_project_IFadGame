@@ -46,6 +46,8 @@ class rule_system():
         freshnessList = self.__worldStatus.freshNessChangedItems
         for x in freshnessList:
             x.freshness -= 1
+            if x.eatable and x.freshness <= 0:
+                x.eatable = False
         AP_change = self.__worldStatus.naturalAP_reduce
         thirst_change = self.__worldStatus.naturalThirst_reduce
         
@@ -62,12 +64,20 @@ class rule_system():
         if not self.player_active():
             self.__player.set_hp(self.__player.get_hp() + self.__player.get_action_point())
             self.__player.set_action_point(0)
+        elif self.__player.get_action_point() > self.__player.get_maximum_action_point():
+            self.__player.set_action_point(self.__player.get_maximum_action_point())
+            
         if not self.player_alive():
             print("Game over.")
             sys.exit(0)
-        if not self.player_thirst():
+        elif self.__player.get_hp() > self.__player.get_maximum_hp():
+            self.__player.set_hp(self.__player.get_maximum_hp())
             
+        if not self.player_thirst():
+            self.__player.set_hp(self.__player.get_hp() + self.__player.get_thirst())
             self.__player.set_thirst(0)
+        elif self.__player.get_thirst() > self.__player.get_maximum_thirst():
+            self.__player.set_thirst(self.__player.get_maximum_thirst())
         
         if self.__map_info.currentLocation != None:
             currentPlace = self.__map_info.currentLocation.location_name
