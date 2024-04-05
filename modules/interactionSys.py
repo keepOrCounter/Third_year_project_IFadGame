@@ -389,7 +389,7 @@ class InputTranslator():
         nlp = spacy.load("en_core_web_sm")
         nounSet = set()
         verbSet = set()
-        detSet = set()
+        numSet = set()
         doc = nlp(phrase)
 
         verbPhrasesPattern = [
@@ -417,10 +417,14 @@ class InputTranslator():
             if pos.lower() == "adv" or pos.lower() == "noun":
                 nounSet.add(str(token))
 
+        for token, pos in tagged_tokens:
+            if pos.lower() == "num":
+                numSet.add(str(token))
+
         grammarDict = {
             "Noun list": nounSet,
             "Verb list": verbSet,
-            "Determiner list": detSet
+            "Number list": numSet
         }
 
         return grammarDict
