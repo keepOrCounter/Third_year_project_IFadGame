@@ -1,6 +1,6 @@
 from status_record import Player_status, Map_information, globalInfo, Items, Events, \
     Actions, Terrain_type, LandscapeFeature, EnvironmentElement, Tool, Food, \
-        Transportation, Weapon, Container, PassivityEvents, Buff, DisasterEvents, humanNPC
+        Transportation, Weapon, Container, PassivityEvents, Buff, DisasterEvents, humanNPC, NPCs
 import random
 import copy
 import numpy as np
@@ -16,6 +16,10 @@ class OutputTransfer():
         self.outputWordMap = {
             "player_or_other_NPC": 
             {
+                "name": {
+                    "function": [lambda item_name: True],
+                    "map_result": ["<origin>"]
+                },
                 "precentageHP": {
                     "name": "HP",
                     "function": [
@@ -453,7 +457,7 @@ class Commands():
                 container = []
                 result = False
                 for x in range(len(npsList)):
-                    if npsList[x].NPC_name == target:
+                    if npsList[x].name == target:
                         result = True
                         counter = x
                         container.append(npsList[x])
@@ -486,7 +490,7 @@ class Commands():
                     
 
                 for x in range(len(npsList)):
-                    if npsList[x].NPC_name == target:
+                    if npsList[x].name == target:
                         result = True
                         position = x
                         container = npsList
@@ -636,31 +640,41 @@ class Commands():
     def talk(self, action: Actions, npcs: humanNPC):
         pass
         
-    def attack(self, action: Actions, target: str):
-        place = "location"
-        mode = "real name"
-        result, position, container = self.findObject(action, target, place, mode)
-        if not result:
-            mode = "code name"
+    def attack(self, action: Actions, attacker, target: str):
+        if target != "player":
+            place = "location"
+            mode = "real name"
             result, position, container = self.findObject(action, target, place, mode)
-        
-        if mode == "real name":
-            for x in range(len(container)):
-                resultDict = self.__outputTranslate.generalTransfer(container[x], self.__outputTranslate.outputWordMap["player_or_other_NPC"])
-                if len(resultDict.keys()) == 0:
-                    self.__worldStatus.current_description["no target"] = \
-                        "You cannot find a "+target
-                    self.__worldStatus.skipTurn = True
-                    return
-                result_str = '  '.join(str(value) for value in resultDict.values())
-                print(str(x+1)+". "+result_str)
-            choose = input("Which " + target +" you would like to attack? Input a number>>>")
-            
-            targetAttack = container[int(re.findall(r'\d+', choose)[0])-1]
+            if not result:
+                mode = "code name"
+                result, position, container = self.findObject(action, target, place, mode)
+
+            if not result:
+                self.__worldStatus.current_description["no target"] = \
+                    "You cannot find a "+target
+                self.__worldStatus.skipTurn = True
+                return
+
+            if mode == "real name":
+                for x in range(len(container)):
+                    resultDict = self.__outputTranslate.generalTransfer(container[x], self.__outputTranslate.outputWordMap["player_or_other_NPC"])
+                    if len(resultDict.keys()) == 0:
+                        self.__worldStatus.current_description["no target"] = \
+                            "You cannot find a "+target
+                        self.__worldStatus.skipTurn = True
+                        return
+                    result_str = '  '.join(str(value) for value in resultDict.values())
+                    print(str(x+1)+". "+result_str)
+                choose = input("Which " + target +" you would like to attack? Input a number>>>")
+
+                targetAttack = container[int(re.findall(r'\d+', choose)[0])-1]
+            else:
+                targetAttack = container[position]
         else:
-            targetAttack = container[position]
+            targetAttack = self.__player
             
-        item = self.__player.get_equipment()
+        item = attacker.get_equipment()
+        equipName = None
         attackedValue = 0
         if item == None:
             attackedValue += random.randint(0, 5)
@@ -668,30 +682,39 @@ class Commands():
             # self.__worldStatus.current_description["attack"] = \
             #     "You give a punch at " + targetAttack.get_name()
         else:
+            equipName = item.item_name
             if item.category == "weapon":
                 attackedValue += random.randint(0, 5 + item.attack*item.weight)
                 targetAttack.set_hp(targetAttack.get_hp() - attackedValue)
             else:
                 attackedValue += random.randint(0, 5 + item.weight)
                 targetAttack.set_hp(targetAttack.get_hp() - attackedValue)
-            action.actionPointCost += item.weight
+            # action.actionPointCost += item.weight
             # self.__worldStatus.current_description["attack with " + item.item_name] = \
             #     "You attack " + targetAttack.get_name() + " with " + item.item_name
-            
-        self.__worldStatus.descriptor_prompt["player_current_action"] = \
-            self.__player.get_currentAction().nameForDescription
-        self.__worldStatus.descriptor_prompt["player_equipment"] = \
-            self.__player.get_equipment().item_name
-        self.__worldStatus.descriptor_prompt["information_need_to_be_described"]["player_action_result"] \
-            = self.__outputTranslate.outPutTransfer(self.__outputTranslate.outputWordMap["action"]["attack"], attackedValue)[1]
-        self.__worldStatus.descriptor_prompt["information_need_to_be_described"]["description_target"]\
-            .append("player_current_action")
-        self.__worldStatus.descriptor_prompt["information_need_to_be_described"]["description_target"]\
-            .append("player_equipment")
-        self.__worldStatus.descriptor_prompt["information_need_to_be_described"]["description_target"]\
-            .append("player_action_result")
-        self.__worldStatus.descriptor = True
-        # TODO add different output for different level of attack
+        targetAttack.precentageHP = targetAttack.get_hp()/targetAttack.get_maximum_hp()
+        if targetAttack.get_hp() <= 0:
+            self.__worldStatus.current_description[attacker.codeName +" has killed " + targetAttack.codeName] = \
+                ""
+        else:
+            # print("targetAttack", targetAttack.get_hp())
+            self.__worldStatus.descriptor_prompt[attacker.name+"_current_action"] = \
+                attacker.get_currentAction().nameForDescription
+            self.__worldStatus.descriptor_prompt[attacker.name+"_equipment"] = equipName
+            self.__worldStatus.descriptor_prompt["target"] = \
+                self.__outputTranslate.generalTransfer(targetAttack, self.__outputTranslate.outputWordMap["player_or_other_NPC"])
+            self.__worldStatus.descriptor_prompt["information_need_to_be_described"][attacker.name+"_action_result"] \
+                = self.__outputTranslate.outPutTransfer(self.__outputTranslate.outputWordMap["action"]["attack"], attackedValue)[1] + " on " + targetAttack.codeName
+            self.__worldStatus.descriptor_prompt["information_need_to_be_described"]["description_target"]\
+                .append(attacker.name+"_current_action")
+            self.__worldStatus.descriptor_prompt["information_need_to_be_described"]["description_target"]\
+                .append(attacker.name+"_equipment")
+            self.__worldStatus.descriptor_prompt["information_need_to_be_described"]["description_target"]\
+                .append(attacker.name+"_action_result")
+            self.__worldStatus.descriptor_prompt["information_need_to_be_described"]["description_target"]\
+                .append("target's status")
+            self.__worldStatus.descriptor = True
+            # TODO add different output for different level of attack
     
     def check(self, action: Actions, target: str):
         if target.lower() == "player":
@@ -1069,6 +1092,13 @@ class DefininedSys(): #
         self.__map_record = map_record
         self.__buffEffect = buffEffect
         
+        self.__def_NPCs = [
+            NPCs("wolf", 10, 80, 120, 120, 60, 60, -10, Weapon("claws", \
+                {"sea": 0, "land": 5, "forest": 10, "beach": 10, "river": 0, \
+                "desert": 5, "mountain": 5, "highland snowfield": 2, "town": 0, "grassland": 10}, \
+                    1, 10, 2 ** 10), {"sea": 0, "land": 12, "forest": 15, "beach": 0, \
+                "river": 0, "desert": 4, "mountain": 7, "highland snowfield": 4, "town": 0, "grassland": 15})
+        ]
         
         self.__def_items = [
             # LandscapeFeature
@@ -1214,7 +1244,9 @@ class DefininedSys(): #
             "Fill": Actions("Fill", [preDefinedCommands.filled, preDefinedCommands.ActionCost], \
                 [[],[]], 1, 0, ["fill"]),
             "Talk": Actions("Talk", [preDefinedCommands.talk, preDefinedCommands.ActionCost], \
-                [[],[]], 1, 2, ["talk"])
+                [[],[]], 1, 2, ["talk"]),
+            "Attack": Actions("Attack", [preDefinedCommands.attack, preDefinedCommands.ActionCost], \
+                [[],[]], 4, 2, ["attack"])
         }
         ["Take all", "Take lamb leg", "Take glass water bottle", "Equip sword", "Unequip weapon crafting bench", "Check player", "Check all", "Check stream", "drink stream", "eat soup", "eat grilled fish", "fill glass water bottle with stream", "get on wooden boat", "get off wooden boat", "talk to Bob"]
         
@@ -1297,6 +1329,11 @@ class DefininedSys(): #
             definitely_Object = self.__terrain_type[terrain].definitely_Object
             possible_Object = self.__terrain_type[terrain].possible_Object
             weight = self.__terrain_type[terrain].possible_Object_Weight
+            
+            definitely_npc = self.__terrain_type[terrain].definitely_npc
+            possible_npc = self.__terrain_type[terrain].possible_npc
+            weight_npc = self.__terrain_type[terrain].weight_npc
+            
             for item in self.__def_items:
                 if item.possibleWeight[terrain] >= 20:
                     definitely_Object = np.append(definitely_Object, item)
@@ -1309,6 +1346,19 @@ class DefininedSys(): #
             self.__terrain_type[terrain].definitely_Object = definitely_Object
             self.__terrain_type[terrain].possible_Object = possible_Object
             self.__terrain_type[terrain].possible_Object_Weight = weight
+            
+            for npc in self.__def_NPCs:
+                if npc.possibleWeight[terrain] >= 20:
+                    definitely_npc = np.append(definitely_npc, npc)
+                    # print(definitely_npc[-1].item_name)
+                    # self.__terrain_type[terrain].definitely_npc.append(npc)
+                elif npc.possibleWeight[terrain] > 0:
+                    possible_npc = np.append(possible_npc, npc)
+                    weight_npc = np.append(weight_npc, npc.possibleWeight[terrain])
+            
+            self.__terrain_type[terrain].definitely_npc = definitely_npc
+            self.__terrain_type[terrain].possible_npc = possible_npc
+            self.__terrain_type[terrain].weight_npc = weight_npc
                     # print(weight[-1])
                     # .append(item)
                     # .append(item.possibleWeight[terrain])
@@ -1318,6 +1368,9 @@ class DefininedSys(): #
             
     def get_items(self) -> list[Items]:
         return self.__def_items
+    
+    def get_npc(self) -> list[NPCs]:
+        return self.__def_NPCs
     
     # Setter method for def_items
     def set_items(self, new_items: list[Items]):

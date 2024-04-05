@@ -328,7 +328,7 @@ class objectsGenerator():
         """
         all_terrain = self.__defininedContent.get_terrain_type()
         result = copy.deepcopy(all_terrain[terrian_type].definitely_Object)
-        objectList = all_terrain[terrian_type].possible_Object
+        objectList = copy.deepcopy(all_terrain[terrian_type].possible_Object)
         weight = all_terrain[terrian_type].possible_Object_Weight
         
         if highest_amount > objectList.shape[0]:
@@ -338,7 +338,7 @@ class objectsGenerator():
 
 
         randomWeight = np.random.rand(*objectList.shape) * 20
-        print(randomWeight)
+        # print(randomWeight)
         strongItems = np.where(randomWeight<weight)[0]
         if strongItems.shape[0] < lowest_amount:
             gap = lowest_amount - strongItems.shape[0]
@@ -360,8 +360,89 @@ class objectsGenerator():
         # generateResult = random.choices(objectList, k=random.randint(lowest_amount, highest_amount))
         # generateResult = np.append(result, choice)
         generateResult = np.append(generateResult, result)
+        for x in range(generateResult.shape[0]):
+            generateResult[x].codeName = generateResult[x].item_name+ "_" + str(x + 1)
+        return generateResult
+    
+    
+class npcGenerator():
+    def __init__(self, defininedContent: DefininedSys, worldStatus: globalInfo) -> None:
+        self.__defininedContent = defininedContent
+        self.__worldStatus = worldStatus
+        
+    def npcGeneration(self, lowest_amount: int, highest_amount: int, terrian_type: str) -> list[NPCs]:
+        """
+        Args:
+            `lowest_amount` (int): lower bound of number of objects generated \
+                (includ end point, other than definitely_Object, which will always generated)\n
+            `highest_amount` (int): upper bound of number of objects generated \
+                (includ end point, other than definitely_Object, which will always generated)\n
+        """
+        all_terrain = self.__defininedContent.get_terrain_type()
+        result = copy.deepcopy(all_terrain[terrian_type].definitely_npc)
+        objectList = copy.deepcopy(all_terrain[terrian_type].possible_npc)
+        weight = all_terrain[terrian_type].weight_npc
+        
+        if highest_amount > objectList.shape[0]:
+            highest_amount = objectList.shape[0]
+        if lowest_amount > objectList.shape[0]:
+            lowest_amount = objectList.shape[0]
+
+
+        randomWeight = np.random.rand(*objectList.shape) * 20
+        # print(randomWeight)
+        strongItems = np.where(randomWeight<weight)[0]
+        if strongItems.shape[0] < lowest_amount:
+            gap = lowest_amount - strongItems.shape[0]
+            choice = np.random.choice(objectList, size=(gap,), p=(np.divide(weight, np.sum(weight))))
+            generateResult = objectList[strongItems]
+            generateResult = np.append(generateResult, choice)
+        elif strongItems.shape[0] > highest_amount:
+            # gap = lowest_amount - strongItems.shape[0]
+            candidateWeight = weight[strongItems]
+            candidateObject = objectList[strongItems]
+            choice = np.random.choice(candidateObject, size=(highest_amount,), \
+                p=(np.divide(candidateWeight, np.sum(candidateWeight))))
+            generateResult = choice
+        else:
+            generateResult = objectList[strongItems]
+        
+        # choice = np.random.choice(objectList, size=(random.randint(lowest_amount, highest_amount),), \
+        #     p=(np.divide(weight, np.sum(weight))))
+        # generateResult = random.choices(objectList, k=random.randint(lowest_amount, highest_amount))
+        # generateResult = np.append(result, choice)
+        generateResult = np.append(generateResult, result)
+        for x in range(generateResult.shape[0]):
+            generateResult[x].codeName = generateResult[x].name+ "_" + str(x + 1)
         return generateResult
 
+    def npcChoice(self, currentLocation: Location):
+        x = 0
+        while x < range(len(currentLocation.npcs)):
+            if currentLocation.npcs[x].get_hp() <= 0.2:
+                escape_prob_increment = 0.2
+                escape_prob_adjustment = escape_prob_increment / (1 - currentLocation.npcs[x].escape_prob)
+
+                currentLocation.npcs[x].escape_prob += escape_prob_increment
+                currentLocation.npcs[x].attack_player_prob -= currentLocation.npcs[x].attack_player_prob * escape_prob_adjustment
+
+            
+            print(currentLocation.npcs[x].attack_player_prob, currentLocation.npcs[x].escape_prob)
+            print(currentLocation.npcs[x].attack_player_prob+currentLocation.npcs[x].escape_prob)
+            choice = random.random()
+            if choice < self.attack_player_prob:
+                currentLocation.npcs[x].attack_player_prob = 1.0
+                currentLocation.npcs[x].escape_prob = 0
+                currentLocation.npcs[x].npcMove = "Attack Player"
+                arg = self.__defininedContent.get_Actions()["Attack"].command_args_back_up[0] + [currentLocation.npcs[x], "player"]
+                self.__defininedContent.get_Actions()["Attack"].command_executed[0](*arg)
+            else:
+                currentLocation.npcs[x].npcMove = "Escape"
+                self.__worldStatus.current_description[currentLocation.npcs[x].codeName + " escape"] = \
+                    currentLocation.npcs[x].codeName + " has escaped"
+                currentLocation.npcs.pop(x)
+                x -= 1
+            x += 1
 
 class eventGenerator():
     def __init__(self, defininedContent: DefininedSys, player : Player_status, \
@@ -477,6 +558,7 @@ class PCGController():
         self.__objectsPCG = objectsGenerator(defininedContent)
         self.__eventPCG = eventGenerator(defininedContent, player, map_info, eventController, \
             descriptionGenerator, worldStatus)
+        self.__npcPCG = npcGenerator(defininedContent, worldStatus)
         self.__player = player
         self.__map_info = map_info
         self.__descriptionGenerator = descriptionGenerator
@@ -521,8 +603,11 @@ class PCGController():
         else:
             objects_in_current_location = self.__objectsPCG.objectGeneration(1, 3, \
                 player_surrounding["Current location"].location_name) # TODO edit to change object amount
+            
+            npcs = self.__npcPCG.npcGeneration(1, 3, player_surrounding["Current location"].location_name)
 
             player_surrounding["Current location"].objects = objects_in_current_location
+            player_surrounding["Current location"].npcs = npcs
             visted_place[playerCoord] = player_surrounding["Current location"]
             self.__map_info.currentLocation = player_surrounding["Current location"]
             

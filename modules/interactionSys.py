@@ -1,5 +1,5 @@
 import openai
-# import copy
+import copy
 import time
 import Levenshtein
 from status_record import *
@@ -453,32 +453,43 @@ be any of the game command above, just reply a '<Rejected>'."
             classified_command = self.grammarClassifier(command)
             print(classified_command)
             
-            # dis = Levenshtein.distance(move_commands[0], command)
-            for target in classified_command["Verb list"]:
-                target = target
+            for targets in classified_command["Verb list"]:
+                target = targets
                 break
             
+            targetObject = ""
+            for targets in classified_command["Noun list"]:
+                if len(targetObject) < len(targets):
+                    targetObject = targets
+            
             command_id = 0
+            counter = 0
+            # for command in move_commands:
+            #     if target.lower() == command.lower():
+            #         command_id = command_id
+            #         break
+            #     else:
+            #         command_id = command_id + 1
+            dis = Levenshtein.distance(move_commands[0].lower(), command.lower())
             for command in move_commands:
-                if target.lower() == command.lower():
-                    command_id = command_id
-                else:
-                    command_id = command_id + 1
-            # for x in range(1, len(move_commands)):
-            #     tem_dis = Levenshtein.distance(move_commands[x], command)
-            #     if tem_dis < dis:
-            #         target = x
-            #         dis = tem_dis
+                tem_dis = Levenshtein.distance(target.lower(), command.lower())
+                if tem_dis < dis:
+                    command_id = counter
+                    dis = tem_dis
+                counter += 1
             print(move_commands[command_id])
             print(move_commands)
             print(target)
-            # if move_commands[target] != "<Rejected>":
-            #     action = self.__defined_content.get_Actions()[move_commands[target]]
-            #     self.__playerStatus.set_currentAction(action)
-            #     for commands in range(len(action.command_executed)):
-            #         action.command_executed[commands](*action.command_args[commands])
-            #         # commands[0](*commands[1])
-            # else:
-            #     print("Nothing happen...")
+            
+            if move_commands[command_id] != "<Rejected>":
+                action = self.__defined_content.get_Actions()[move_commands[command_id]]
+                action.command_args[0].append(targetObject)
+                self.__playerStatus.set_currentAction(action)
+                for commands in range(len(action.command_executed)):
+                    action.command_executed[commands](*action.command_args[commands])
+                    # commands[0](*commands[1])
+                action.command_args[0].pop()
+            else:
+                print("Nothing happen...")
     
         

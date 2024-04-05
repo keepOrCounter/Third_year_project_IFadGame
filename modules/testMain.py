@@ -1,11 +1,13 @@
 from status_record import Player_status, Map_information, EventsTriggered, globalInfo, \
-    Food, Location, LandscapeFeature, Container, Tool, Actions, Weapon
-from PCGsys import PCGController
+    Food, Location, LandscapeFeature, Container, Tool, Actions, Weapon, NPCs
+from PCGsys import PCGController, npcGenerator, objectsGenerator
 from interactionSys import OutputGenerator, InputTranslator, Gpt3
 from Pre_definedContent import DefininedSys, Commands, character_effectSys
 import sys
 import unittest
 import copy
+import random
+import numpy as np
 
 # from status_record import Location
 class rule_system():
@@ -691,8 +693,8 @@ class TestStringMethods(unittest.TestCase):
         buffEffect = character_effectSys(player_info, defined_command, worldStatus)
         game_content = DefininedSys(defined_command, map_record, buffEffect)
         
-        player_info.set_currentAction(Actions("Take", [defined_command.pickUp, defined_command.ActionCost], \
-                [[],[]], 2, 1, ["take"]))
+        player_info.set_currentAction(Actions("Equip", [defined_command.equip, defined_command.ActionCost], \
+                [[],[]], 1, 0, ["equip"]))
         map_record.currentLocation = Location("land", 0, 0)
         
         defined_command.equip(None, "iron sword")
@@ -752,6 +754,142 @@ class TestStringMethods(unittest.TestCase):
         self.assertEqual(len(player_info.get_items()["bread"]), 0)
         self.assertEqual(player_info.get_equipment().item_name, "bread")
         
+        
+    def test_attack(self):
+        worldStatus = globalInfo()
+        # player_info = Player_status(action_point = 30)
+        player_info = Player_status()
+        map_record = Map_information(current_area_type = 1, map_size=(20, 20)) # land type
+        defined_command = Commands(player_info, map_record, worldStatus)
+        buffEffect = character_effectSys(player_info, defined_command, worldStatus)
+        game_content = DefininedSys(defined_command, map_record, buffEffect)
+        
+        player_info.set_currentAction(Actions("Attack", [defined_command.attack, defined_command.ActionCost], \
+                [["player"],[]], 4, 2, ["attack"]))
+        map_record.currentLocation = Location("land", 0, 0)
+        defined_command.attack(player_info.get_currentAction(), player_info, "wolf")
+        self.assertEqual(len(worldStatus.current_description), 1)
+        self.assertEqual(worldStatus.current_description["no target"], \
+            "You cannot find a wolf")
+        
+        npcs = [
+            NPCs("wolf", 80, 80, 120, 120, 60, 60, -10, Weapon("claws", \
+                {"sea": 0, "land": 5, "forest": 10, "beach": 10, "river": 0, \
+                "desert": 5, "mountain": 5, "highland snowfield": 2, "town": 0, "grassland": 10}, \
+                    1, 10, 2 ** 10), {"sea": 0, "land": 12, "forest": 15, "beach": 0, \
+                "river": 0, "desert": 4, "mountain": 7, "highland snowfield": 4, "town": 0, "grassland": 15}), 
+            NPCs("wolf", 10, 80, 120, 120, 60, 60, -10, Weapon("claws", \
+                {"sea": 0, "land": 5, "forest": 10, "beach": 10, "river": 0, \
+                "desert": 5, "mountain": 5, "highland snowfield": 2, "town": 0, "grassland": 10}, \
+                    1, 10, 2 ** 10), {"sea": 0, "land": 12, "forest": 15, "beach": 0, \
+                "river": 0, "desert": 4, "mountain": 7, "highland snowfield": 4, "town": 0, "grassland": 15})
+        ]
+        npcs[0].codeName = "wolf_1"
+        npcs[1].codeName = "wolf_2"
+        worldStatus.current_description = dict()
+        map_record.currentLocation.npcs = copy.deepcopy(npcs)
+        
+        print("2")
+        random.seed(50)
+        defined_command.attack(player_info.get_currentAction(), player_info, "wolf")
+        random.seed(50)
+        aTK = random.randint(0, 5)
+        self.assertEqual(map_record.currentLocation.npcs[-1].get_hp(), 10-aTK)
+        self.assertEqual(worldStatus.descriptor_prompt, \
+            {'information_need_to_be_described': {'description_target': ['player_current_action', 'player_equipment', 'player_action_result', "target's status"], 'player_action_result': 'light damage on wolf_2'}, 'player_current_action': '', 'player_equipment': None, 'target': {'name': 'wolf', 'HP': 'intense hurt', 'action_point(AP)': 'normal', '_NPCs__action_dLevel': 'normal', 'thirst_satisfied': 'normal', 'relationship_with_player': 'cautious, on guard'}})
+        # print(worldStatus.descriptor_prompt)
+        
+        worldStatus.current_description = dict()
+        worldStatus.descriptor_prompt = {
+            "information_need_to_be_described": {
+                "description_target": []
+            }
+        }
+        
+        items = [
+            Weapon("iron sword", {"sea": 0, "land": 10, "forest": 5, "beach": 10, "river": 0, \
+                "desert": 5, "mountain": 5, "highland snowfield": 2, "town": 0, "grassland": 10}, \
+                    3, 10, 10), 
+            Food("bread", {"sea": 0, "land": 0, "forest": 0, "beach": 0, "river": 0, \
+                "desert": 0, "mountain": 0, "highland snowfield": 0, "town": 0, "grassland": 0}, weight=1, \
+                AP_recovery=15, eatable=True, freshness=20, thirst_satisfied=-20)
+        ]
+        
+        failAdd = defined_command.add_items(None, items)
+        self.assertEqual(failAdd, list())
+        self.assertEqual(player_info.get_package_weight(), 4)
+        
+        defined_command.equip(None, "iron sword")
+        self.assertEqual(len(worldStatus.current_description), 1)
+        self.assertEqual(worldStatus.current_description["equip iron sword"], \
+            "You have equipped iron sword")
+        self.assertEqual(len(player_info.get_items()["iron sword"]), 0)
+        self.assertEqual(player_info.get_equipment().item_name, "iron sword")
+        worldStatus.current_description = dict()
+        
+        print("1")
+        random.seed(50)
+        defined_command.attack(player_info.get_currentAction(), player_info, "wolf")
+        random.seed(50)
+        aTK = random.randint(0, 5 + 10*3)
+        self.assertEqual(map_record.currentLocation.npcs[0].get_hp(), 80-aTK)
+        self.assertEqual(worldStatus.descriptor_prompt, \
+            {'information_need_to_be_described': {'description_target': ['player_current_action', 'player_equipment', 'player_action_result', "target's status"], 'player_action_result': 'intense damage on wolf_1'}, 'player_current_action': '', 'player_equipment': 'iron sword', 'target': {'name': 'wolf', 'HP': 'moderate hurt', 'action_point(AP)': 'normal', '_NPCs__action_dLevel': 'normal', 'thirst_satisfied': 'normal', 'relationship_with_player': 'cautious, on guard'}})
+        # print(worldStatus.descriptor_prompt)
+        
+        worldStatus.current_description = dict()
+        worldStatus.descriptor_prompt = {
+            "information_need_to_be_described": {
+                "description_target": []
+            }
+        }
+        
+        map_record.currentLocation.npcs[0].set_currentAction(Actions("Attack", [defined_command.attack, defined_command.ActionCost], \
+            [["player"],[]], 4, 2, ["attack"]))
+        
+        random.seed(50)
+        defined_command.attack(player_info.get_currentAction(), map_record.currentLocation.npcs[0], \
+            "player")
+        random.seed(50)
+        aTK = random.randint(0, 5 + 10*1)
+        self.assertEqual(player_info.get_hp(), 100-aTK)
+        self.assertEqual(worldStatus.descriptor_prompt, \
+            {'information_need_to_be_described': {'description_target': ['wolf_current_action', 'wolf_equipment', 'wolf_action_result', "target's status"], 'wolf_action_result': 'moderate damage on player'}, 'wolf_current_action': '', 'wolf_equipment': 'claws', 'target': {'name': 'player', 'HP': 'little hurt', 'action_point(AP)': 'normal', 'thirst_satisfied': 'normal', 'package_weight': 'heavy', 'action_AP_cost': 'normal'}})
+        # print(worldStatus.descriptor_prompt)
+
+
+    def test_generator(self):
+        worldStatus = globalInfo()
+        # player_info = Player_status(action_point = 30)
+        player_info = Player_status()
+        map_record = Map_information(current_area_type = 1, map_size=(20, 20)) # land type
+        defined_command = Commands(player_info, map_record, worldStatus)
+        buffEffect = character_effectSys(player_info, defined_command, worldStatus)
+        game_content = DefininedSys(defined_command, map_record, buffEffect)
+        
+        objectPCG = objectsGenerator(game_content)
+        npcPCG = npcGenerator(game_content)
+        
+        player_info.set_currentAction(Actions("Attack", [defined_command.attack, defined_command.ActionCost], \
+                [["player"],[]], 4, 2, ["attack"]))
+        map_record.currentLocation = Location("land", 0, 0)
+        
+        np.random.seed(50)
+        result = objectPCG.objectGeneration(1, 3, "forest")
+        self.assertEqual(result[0].item_name, "seed")
+        self.assertEqual(result[0].codeName, "seed_1")
+        self.assertEqual(result[-1].item_name, "stick")
+        self.assertEqual(result[-1].codeName, "stick_5")
+        self.assertEqual(result.shape[0], 5)
+        
+        np.random.seed(50)
+        result = npcPCG.npcGeneration(1, 3, "forest")
+        self.assertEqual(result[0].name, "wolf")
+        self.assertEqual(result[0].codeName, "wolf_1")
+        self.assertEqual(result.shape[0], 1)
+
+
+    
 
 if __name__ == '__main__':
     unittest.main()

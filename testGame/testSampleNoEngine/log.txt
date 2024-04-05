@@ -2005,3 +2005,43 @@ Objects at current location(All possible objects and scene in here, please don't
 response by gpt3.5-turbo: 
 You are standing on a narrow path surrounded by towering trees in the middle of a dense forest. Shafts of sunlight filter through the canopy above, casting dappled shadows on the forest floor. The air is filled with the earthy scent of moss and the distant chirping of birds. You notice some mushrooms growing along the edge of the path and a map lying on the ground.
 ////////////////////////////////////////////////////
+[Thu Apr  4 16:44:54 2024]
+systemRole: 
+You are writting the description about 'description_target' for a survival text-based adventure game based on game information given
+
+inquiry: 
+{'information_need_to_be_described': {'description_target': ['player_current_action', 'player_equipment', 'player_action_result', "target's status"], 'player_action_result': 'intense damage on wolf_1'}, 'player_current_action': '', 'player_equipment': 'iron sword', 'target': {'name': 'wolf', 'id': 'wolf_1', 'HP': 'moderate hurt', 'action_point(AP)': 'normal', '_NPCs__action_dLevel': 'normal', 'thirst_satisfied': 'normal', 'relationship_with_player': 'cautious, on guard'}}
+
+response by ft:gpt-3.5-turbo-0125:3rdprojectgroup:generaltest3:91haHqhT: 
+{'title_of_description': 'Injured Wolf', 'description': "You face an injured wolf, identified as 'wolf_1'. The creature bears visible signs of the battle it has endured, showing moderate hurt. Despite its injuries, the wolf remains vigilant, its action point at a normal level. The beast's thirst is currently satisfied, yet its relationship with you remains cautious, with the wolf on guard. \n\nAs you wield your trusty iron sword, you deliver an intense blow to the wolf, inflicting significant damage upon the creature."}
+////////////////////////////////////////////////////
+[Thu Apr  4 19:01:47 2024]
+systemRole: 
+You are writting the description about 'description_target' for a survival text-based adventure game based on game information given
+
+inquiry: 
+{'information_need_to_be_described': {'description_target': ['player_current_action', 'player_equipment', 'player_action_result', "target's status"], 'player_action_result': 'intense damage on wolf_1'}, 'player_current_action': '', 'player_equipment': 'iron sword', 'target': {'name': 'wolf', 'HP': 'moderate hurt', 'action_point(AP)': 'normal', '_NPCs__action_dLevel': 'normal', 'thirst_satisfied': 'normal', 'relationship_with_player': 'cautious, on guard'}}
+
+response by ft:gpt-3.5-turbo-0125:3rdprojectgroup:generaltest3:91haHqhT: 
+{'title_of_description': 'Encounter with a Wounded Wolf', 'description': "You stand before a wounded wolf, its once fierce demeanor now subdued by the intense damage inflicted upon it. The iron sword in your hand gleams, a testament to the power you wield. The wolf, with its fur matted and stained with blood, eyes you warily, cautious and on guard despite its injuries. \n\nThe wolf's movements are slower than before, its once agile form now hindered by its wounds, but its gaze remains sharp, a silent warning of the danger it still poses."}
+////////////////////////////////////////////////////
+[Thu Apr  4 19:03:42 2024]
+systemRole: 
+You are writting the description about 'description_target' for a survival text-based adventure game based on game information given
+
+inquiry: 
+{'information_need_to_be_described': {'description_target': ['player_current_action', 'player_equipment', 'player_action_result', "target's status"], 'player_action_result': 'intense damage on wolf_1'}, 'player_current_action': '', 'player_equipment': 'iron sword', 'target': {'name': 'wolf', 'HP': 'moderate hurt', 'action_point(AP)': 'normal', '_NPCs__action_dLevel': 'normal', 'thirst_satisfied': 'normal', 'relationship_with_player': 'cautious, on guard'}}
+
+response by ft:gpt-3.5-turbo-0125:3rdprojectgroup:generaltest3:91haHqhT: 
+{'title_of_description': 'Wolf - Injured', 'description': 'The wolf, once a fierce predator, now stands before you, its once sleek fur matted and stained with blood. Despite its injuries, it retains a cautious and guarded demeanor, its keen eyes locked onto your every move. The wolf's movements are slow and labored, a stark contrast to its usual agility.'}
+////////////////////////////////////////////////////
+[Thu Apr  4 19:16:17 2024]
+systemRole: 
+You are writting the description about 'description_target' for a survival text-based adventure game based on game information given
+
+inquiry: 
+{'information_need_to_be_described': {'description_target': ['wolf_current_action', 'wolf_equipment', 'wolf_action_result', "target's status"], 'wolf_action_result': 'moderate damage on player'}, 'wolf_current_action': '', 'wolf_equipment': 'claws', 'target': {'name': 'player', 'HP': 'little hurt', 'action_point(AP)': 'normal', 'thirst_satisfied': 'normal', 'package_weight': 'heavy', 'action_AP_cost': 'normal'}}
+
+response by ft:gpt-3.5-turbo-0125:3rdprojectgroup:generaltest3:91haHqhT: 
+{'title_of_the_description': 'Wolf Encounter', 'description': "You are facing a wolf, its sharp claws ready to strike. The wolf has inflicted moderate damage upon you, leaving you a little hurt. Your thirst is normal, but the weight of your heavy package is weighing you down. Your action points are at a normal level, and you are ready to face whatever challenges may come your way."}
+////////////////////////////////////////////////////

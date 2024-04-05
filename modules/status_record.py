@@ -321,11 +321,16 @@ class Buff():
 class NPCs():
     def __init__(self, NPC_name: str, hp: int, maximum_hp: int, action_point: int, \
         maximum_action_point: int, thirst_satisfied: int, maximum_thirst_satisfied: int, \
-            relationship_with_player: int, equipments: Items):
-        self.NPC_name = NPC_name
+            relationship_with_player: int, equipments: Items, possibleWeight: dict):
+        self.name = NPC_name
         self.category = "NPCs"
         
         self.codeName = NPC_name
+        
+        if possibleWeight is None:
+            self.possibleWeight = {}
+        else:
+            self.possibleWeight = dict(possibleWeight)
         
         self.__hp = hp
         self.precentageHP: float = hp/maximum_hp
@@ -344,6 +349,12 @@ class NPCs():
         self.relationship_with_player = relationship_with_player
         
         self.__equipment = equipments
+        
+        self.attack_player_prob = 0.6
+        # self.attack_npc_prob = np.array([0.1])
+        self.escape_prob = 0.3
+        
+        self.npcMove = None
         
         
     def get_hp(self) -> int:
@@ -452,8 +463,8 @@ class Location():
             npcs = []
             
         self.location_name = location_name
-        self.objects = objects
-        self.npcs = npcs
+        self.objects: list[Items] = objects
+        self.npcs: list[NPCs] = npcs
         self.description = description
         self.x = x
         self.y = y
@@ -483,6 +494,10 @@ class Terrain_type():
         self.definitely_Object: np.ndarray[Items] = np.array([])
         self.possible_Object: np.ndarray[Items] = np.array([])
         self.possible_Object_Weight: np.ndarray[int] = np.array([]).astype(int)
+        
+        self.definitely_npc: np.ndarray[Items] = np.array([])
+        self.possible_npc: np.ndarray[Items] = np.array([])
+        self.weight_npc: np.ndarray[int] = np.array([]).astype(int)
 
 
 class Player_status():
@@ -500,6 +515,8 @@ class Player_status():
         if buff is None:
             buff = {}
 
+        self.name = "player"
+        self.codeName = "player"
         self.__currentLocation = currentLocation
         self.__lastLocation = [None, None]
         self.__items = items
