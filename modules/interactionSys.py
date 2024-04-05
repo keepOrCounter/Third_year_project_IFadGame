@@ -408,13 +408,16 @@ class InputTranslator():
             verbSet.add(str(verbPharse))
 
         for chunk in doc.noun_chunks:
-            print(chunk)
-            nounSet.add(str(chunk))
+            if chunk != "rest":
+                print(chunk)
+                nounSet.add(str(chunk))
+            else:
+                verbSet.add(str(chunk))
 
         tagged_tokens = [(token.text, token.pos_) for token in doc]
 
         for token, pos in tagged_tokens:
-            if pos.lower() == "adv" or pos.lower() == "noun":
+            if pos.lower() == "adv":
                 nounSet.add(str(token))
 
         for token, pos in tagged_tokens:
