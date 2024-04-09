@@ -25,10 +25,10 @@ while True:
 
     # print(world)
     # print(world)
-    min_value = np.min(world)
-    max_value = np.max(world)
-    normalized_scale = (max_value - min_value) / 2
-    world = np.round(world / normalized_scale).astype(int)
+    # min_value = np.min(world)
+    # max_value = np.max(world)
+    # normalized_scale = (max_value - min_value) / 2
+    # world = np.round(world / normalized_scale).astype(int)
     # print(normalized_array)
     # print(np.where(normalized_array == 0))
     # print(world)

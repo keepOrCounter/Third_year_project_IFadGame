@@ -234,10 +234,11 @@ text-based adventure game based on game information given"
         gpt_response = self.__gptAPI.inquiry(inquiry, self.__generalized_promt2)
         # print(gpt_response)
         self.__OuterData.inquery_response_log_recorder(self.__generalized_promt2, inquiry, gpt_response)
-        
-        # result = json.loads(gpt_response, strict=False)
-        
-        locationList["Current location"].description = gpt_response
+        # json_string = gpt_response.replace("'", "\"", 7)
+        # json_string = json_string[0:-4] + json_string[-4:].replace("'", "\"", 1)
+        # result = json.loads(json_string, strict=False)
+        # keyList = list(result.keys())
+        locationList["Current location"].description = gpt_response + "\n"
         self.__worldStatus.descriptor = False
         self.__worldStatus.descriptor_prompt = {
             "information_need_to_be_described": {
@@ -490,12 +491,15 @@ be any of the game command above, just reply a '<Rejected>'."
             
             if move_commands[command_id] != "<Rejected>":
                 action = self.__defined_content.get_Actions()[move_commands[command_id]]
-                action.command_args[0].append(targetObject)
+                if targetObject != "" and targetObject != None:
+                    action.command_args[0].append(targetObject)
+                print(action.command_args[0])
                 self.__playerStatus.set_currentAction(action)
                 for commands in range(len(action.command_executed)):
                     action.command_executed[commands](*action.command_args[commands])
                     # commands[0](*commands[1])
-                action.command_args[0].pop()
+                if targetObject != "" and targetObject != None:
+                    action.command_args[0].pop()
             else:
                 print("Nothing happen...")
     

@@ -196,6 +196,8 @@ class MapGenerator():
         cv2.waitKey(0)
         cv2.destroyAllWindows()
         
+        cv2.imwrite('test.jpg', scaled_image)
+        
     def mapArea_And_RelativeCoordinate(self, coord: tuple[int]= (0, 0)):
         """Used to calculate what area the location is at(in coordinate of the left coner of current map), 
         and the relative coordinate(index) of this location in current map
@@ -418,7 +420,7 @@ class npcGenerator():
 
     def npcChoice(self, currentLocation: Location):
         x = 0
-        while x < range(len(currentLocation.npcs)):
+        while currentLocation != None and x < len(currentLocation.npcs):
             if currentLocation.npcs[x].get_hp() <= 0.2:
                 escape_prob_increment = 0.2
                 escape_prob_adjustment = escape_prob_increment / (1 - currentLocation.npcs[x].escape_prob)
@@ -430,11 +432,14 @@ class npcGenerator():
             print(currentLocation.npcs[x].attack_player_prob, currentLocation.npcs[x].escape_prob)
             print(currentLocation.npcs[x].attack_player_prob+currentLocation.npcs[x].escape_prob)
             choice = random.random()
-            if choice < self.attack_player_prob:
+            if choice < currentLocation.npcs[x].attack_player_prob:
                 currentLocation.npcs[x].attack_player_prob = 1.0
                 currentLocation.npcs[x].escape_prob = 0
                 currentLocation.npcs[x].npcMove = "Attack Player"
+                action = self.__defininedContent.get_Actions()["Attack"]
+                action.nameForDescription = "Attack Player"
                 arg = self.__defininedContent.get_Actions()["Attack"].command_args_back_up[0] + [currentLocation.npcs[x], "player"]
+                currentLocation.npcs[x].set_currentAction(action)
                 self.__defininedContent.get_Actions()["Attack"].command_executed[0](*arg)
             else:
                 currentLocation.npcs[x].npcMove = "Escape"
@@ -531,13 +536,21 @@ class eventGenerator():
                 result["development description"]
                 
             for y in range(len(result["reward"])):
-                strCommand = triggeredList[x].possible_reward[result["reward"][y]]
+                commandIndex = result["reward"][y]
+                if commandIndex in triggeredList[x].possible_reward:
+                    strCommand = commandIndex
+                else:
+                    strCommand = triggeredList[x].possible_reward[int(commandIndex)]
                 
                 func, arg = self.__defininedContent.get_eventCommandMap()[strCommand]
                 self.__defininedContent.get_commandTranslate()[func](*arg)
                 
             for y in range(len(result["penalty"])):
-                strCommand = triggeredList[x].possible_penalty[result["penalty"][y]]
+                commandIndex = result["penalty"][y]
+                if commandIndex in triggeredList[x].possible_penalty:
+                    strCommand = commandIndex
+                else:
+                    strCommand = triggeredList[x].possible_penalty[int(commandIndex)]
                 
                 func, arg = self.__defininedContent.get_eventCommandMap()[strCommand]
                 self.__defininedContent.get_commandTranslate()[func](*arg)
@@ -571,10 +584,10 @@ class PCGController():
         """
         Should be called each turn to generat objects and other things in current location
         """
+        self.__npcPCG.npcChoice(self.__map_info.currentLocation)
         playerCoord = self.__player.get_currentLocation()
         
         
-
         self.__mapPCG.map_info_update(self.__first_turn)
         self.__first_turn = False
         current_area = self.__map_info.get_current_map_coordinate()
@@ -606,8 +619,8 @@ class PCGController():
             
             npcs = self.__npcPCG.npcGeneration(1, 3, player_surrounding["Current location"].location_name)
 
-            player_surrounding["Current location"].objects = objects_in_current_location
-            player_surrounding["Current location"].npcs = npcs
+            player_surrounding["Current location"].objects = list(objects_in_current_location)
+            player_surrounding["Current location"].npcs = list(npcs)
             visted_place[playerCoord] = player_surrounding["Current location"]
             self.__map_info.currentLocation = player_surrounding["Current location"]
             
@@ -661,7 +674,7 @@ if __name__ == "__main__":
     worldStatus = globalInfo()
     
     defined_command = Commands(player_info, map_record, worldStatus)
-    game_content = DefininedSys(defined_command, map_record)
+    game_content = DefininedSys(defined_command, map_record, character_effectSys(player_info, defined_command, worldStatus))
     test = MapGenerator(player_info, map_record, game_content)
     test.map_info_update(True)
     print(test.mapArea_And_RelativeCoordinate((0, 0)))
@@ -669,3 +682,5 @@ if __name__ == "__main__":
     # print(map_record.get_current_area_type())
     
     test.visualized(test.game_map_generation(10, 3, 4)[-1])
+    # test.visualized(test.generate_random_map(50, 50, 0.7))
+    

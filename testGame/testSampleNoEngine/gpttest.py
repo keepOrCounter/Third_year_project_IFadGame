@@ -81,7 +81,7 @@ table = {"player_or_other_NPC":
                 }
             }
         }
-prompt = "{'player_current_action': 'monitor all', 'player_equipment': 'none', 'NPCs': [{'NPC_name': 'wolf', 'NPC_id': 'wolf_1', 'NPC_category': 'animal', 'current_action': 'monitor player', 'equipment': ['buckteeth', 'claws'], 'relationship_with_player': 'cautious, on guard'}], 'information_need_to_be_described': {'player_action_result': 'none', 'wolf_1_action_result': 'none', 'description_target': ['player_current_action', 'player_equipment', \"NPCs in player's view\", 'wolf_1_action_result', 'player_action_result']}}" # put your test prompt here
+prompt = "{'information_need_to_be_described': {'description_target': ['wolf_current_action', 'wolf_equipment', 'wolf_action_result', \"target's status\"], 'wolf_action_result': 'moderate damage on player'}, 'wolf_current_action': '', 'wolf_equipment': 'claws', 'target': {'name': 'player', 'HP': 'little hurt', 'action_point(AP)': 'normal', 'thirst_satisfied': 'normal', 'package_weight': 'heavy', 'action_AP_cost': 'normal'}}" # put your test prompt here
 
 GptWarpper = Gpt3("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", systemRole, "")
 result = GptWarpper.inquiry(prompt)
