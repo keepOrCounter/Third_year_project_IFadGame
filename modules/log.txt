@@ -1908,3 +1908,417 @@ As you look around, you notice a few traps scattered about, hinting at the prese
 Despite the peaceful surroundings, a wave of exhaustion washes over you, each breath feeling heavier as weariness settles into your bones." 
 }
 ////////////////////////////////////////////////////
+[Tue Apr  9 22:59:24 2024]
+systemRole: 
+You are writting the description about 'description_target' for a survival text-based adventure game based on game information given
+
+inquiry: 
+{'information_need_to_be_described': {'description_target': ['environment_information', 'transportation_used_by_player']}, 'transportation_used_by_player': [], 'environment_information': {'Current location': 'land', 'Front': 'beach', 'Back': 'river', 'Right hand side': 'beach', 'Left hand side': 'river', 'weapon': ['iron sword'], 'landscape feature': ['rocks', 'rocks'], 'move_AP_cost': 'normal'}}
+
+response by gpt3.5-turbo: 
+{'title_of_description': 'The Coastal Land', 'description': "You find yourself standing on a stretch of coastal land, surrounded by the soothing sounds of the waves crashing against the shore. To the front, the sandy expanse unfurls into a picturesque beach, while the rhythmic flow of a river can be heard behind you.\n\nOn your right, the beach continues, offering a view of the endless horizon, while to your left, the river meanders its way through the landscape.\n\nYour trusty weapon, an iron sword, rests at your side, ready for any challenges that may come your way.\n\nThe land is punctuated by scattered rocks, adding a rugged charm to the natural beauty that surrounds you. These rocks serve as both landmarks and potential obstacles in your path.\n\nWith a deep breath of the salty sea air, you prepare to venture forth into this serene yet potentially treacherous coastal environment."}
+////////////////////////////////////////////////////
+[Tue Apr  9 22:59:28 2024]
+systemRole: 
+You are creating a event for a text-based adventure game, you should create event in following form based on game information(Mainly the triggered reason) provided in later:
+{
+	"event_name": <event name here>,
+	"event_discription": <possible discription in third person and first person view>
+}, Here is an example:
+	game information:
+	{
+		"event type": "survival crisis",
+		"triggered reason": "low action point",
+		"Current location": "Road",
+		"Current action": "moving",
+		"Tool(s) assist with moving": [],
+		"player current status": "Normal",
+		"description needed to be modified": "
+Road
+You are standing at a road before a mountain. Around you is a forest. A stream flows down the mountain. 
+There are some keys on the ground here."
+	}
+	
+	expected result:
+	{
+		"event_name": "starting feeling tired",
+		"event_description": "
+Road
+You stand at a road before a mountain. The dense forest surrounds you, its looming trees casting shadows. A weary sensation seeps through your limbs, accentuating the fatigue in your bones. A small stream trickles from the mountain, and amidst the weariness, you notice a glint¡ªkeys scattered on the ground, waiting to be claimed."
+	}
+
+inquiry: 
+{'event type': 'survival crisis', 'triggered reason': 'low action point', 'Current location': 'land', 'Current action': 'None', 'Tool(s) assist with moving': [], 'player current status': 'normal', 'description needed to be modified': '{\'title_of_description\': \'The Coastal Land\', \'description\': "You find yourself standing on a stretch of coastal land, surrounded by the soothing sounds of the waves crashing against the shore. To the front, the sandy expanse unfurls into a picturesque beach, while the rhythmic flow of a river can be heard behind you.\\n\\nOn your right, the beach continues, offering a view of the endless horizon, while to your left, the river meanders its way through the landscape.\\n\\nYour trusty weapon, an iron sword, rests at your side, ready for any challenges that may come your way.\\n\\nThe land is punctuated by scattered rocks, adding a rugged charm to the natural beauty that surrounds you. These rocks serve as both landmarks and potential obstacles in your path.\\n\\nWith a deep breath of the salty sea air, you prepare to venture forth into this serene yet potentially treacherous coastal environment."}\n'}
+
+response by gpt3.5-turbo: 
+{
+	"event_name": "weakening stamina",
+	"event_description": "
+The Coastal Land
+You stand on a stretch of coastal land, the rhythmic crashing of waves providing a peaceful backdrop. The sandy beach stretches out before you, a tranquil scene bathed in the sun's warm embrace. Behind you, the river's gentle flow adds to the symphony of nature's melodies.
+
+To your right, the beach extends endlessly, offering a view of the vast horizon. On your left, the river winds its way through the landscape, a testament to the enduring passage of time.
+
+Your iron sword, a stalwart companion, rests at your side, a silent guardian against the unknown challenges that may lie ahead. 
+
+Amidst the serene beauty of the coast, scattered rocks dot the landscape, their presence both adding to the rugged charm and posing potential obstacles along your path. Each rock stands as a silent sentinel, marking the passage of time in this timeless realm.
+
+As you breathe in the salty sea air, a weariness settles in your limbs, a subtle reminder of the journey's toll on your stamina. With each passing moment, the need to rest and rejuvenate grows more pressing, urging you to find respite in this tranquil yet potentially perilous coastal environment."
+}
+////////////////////////////////////////////////////
+[Thu Apr 11 23:37:22 2024]
+systemRole: 
+You are writting the description about 'description_target' for a survival text-based adventure game based on game information given
+
+inquiry: 
+{'information_need_to_be_described': {'description_target': ['environment_information', 'transportation_used_by_player']}, 'transportation_used_by_player': [], 'environment_information': {'Current location': 'river', 'Front': 'river', 'Back': 'river', 'Right hand side': 'river', 'Left hand side': 'river', 'food': ['raw fish', 'berries'], 'tool': ['fish rod'], 'move_AP_cost': 'normal'}}
+
+response by gpt3.5-turbo: 
+{'title_of_description': 'River', 'content': "You find yourself in the heart of a serene river, encircled by the gentle flow of water in every direction. The tranquil current carries a soothing melody as it meanders through the surrounding landscape.\n\nAmidst this aquatic expanse, the river's embrace provides a bounty of sustenance. Schools of fish dart beneath the surface, offering the promise of a fresh catch. Nearby, clusters of ripe berries hang temptingly from verdant bushes, promising a sweet and refreshing snack.\n\nIn your possession, a trusty fishing rod stands ready to be employed, a tool perfectly suited to harness the river's bounty.\n\nAs you contemplate your next move, the river's gentle currents beckon, offering a tranquil respite from the challenges of the wilderness. The flow of the river is your constant companion, guiding your journey through this watery domain."}
+////////////////////////////////////////////////////
+[Thu Apr 11 23:37:25 2024]
+systemRole: 
+You are creating a event for a text-based adventure game, you should create event in following form based on game information(Mainly the triggered reason) provided in later:
+{
+	"event_name": <event name here>,
+	"event_discription": <possible discription in third person and first person view>
+}, Here is an example:
+	game information:
+	{
+		"event type": "survival crisis",
+		"triggered reason": "low action point",
+		"Current location": "Road",
+		"Current action": "moving",
+		"Tool(s) assist with moving": [],
+		"player current status": "Normal",
+		"description needed to be modified": "
+Road
+You are standing at a road before a mountain. Around you is a forest. A stream flows down the mountain. 
+There are some keys on the ground here."
+	}
+	
+	expected result:
+	{
+		"event_name": "starting feeling tired",
+		"event_description": "
+Road
+You stand at a road before a mountain. The dense forest surrounds you, its looming trees casting shadows. A weary sensation seeps through your limbs, accentuating the fatigue in your bones. A small stream trickles from the mountain, and amidst the weariness, you notice a glint¡ªkeys scattered on the ground, waiting to be claimed."
+	}
+
+inquiry: 
+{'event type': 'survival crisis', 'triggered reason': 'low action point', 'Current location': 'river', 'Current action': 'None', 'Tool(s) assist with moving': [], 'player current status': 'normal', 'description needed to be modified': '{\'title_of_description\': \'River\', \'content\': "You find yourself in the heart of a serene river, encircled by the gentle flow of water in every direction. The tranquil current carries a soothing melody as it meanders through the surrounding landscape.\\n\\nAmidst this aquatic expanse, the river\'s embrace provides a bounty of sustenance. Schools of fish dart beneath the surface, offering the promise of a fresh catch. Nearby, clusters of ripe berries hang temptingly from verdant bushes, promising a sweet and refreshing snack.\\n\\nIn your possession, a trusty fishing rod stands ready to be employed, a tool perfectly suited to harness the river\'s bounty.\\n\\nAs you contemplate your next move, the river\'s gentle currents beckon, offering a tranquil respite from the challenges of the wilderness. The flow of the river is your constant companion, guiding your journey through this watery domain."}\n'}
+
+response by gpt3.5-turbo: 
+{
+	"event_name": "feeling physically drained",
+	"event_description": "
+River
+You find yourself in the heart of a serene river, encircled by the gentle flow of water in every direction. The tranquil current carries a soothing melody as it meanders through the surrounding landscape. 
+
+Amidst this aquatic expanse, the river's embrace provides a bounty of sustenance. Schools of fish dart beneath the surface, offering the promise of a fresh catch. Nearby, clusters of ripe berries hang temptingly from verdant bushes, promising a sweet and refreshing snack. 
+
+In your possession, a trusty fishing rod stands ready to be employed, a tool perfectly suited to harness the river's bounty. 
+
+As you contemplate your next move, the river's gentle currents beckon, offering a tranquil respite from the challenges of the wilderness. The flow of the river is your constant companion, guiding your journey through this watery domain. However, a weariness settles into your muscles, a subtle reminder of the physical toll of your endeavors." 
+}
+////////////////////////////////////////////////////
+[Thu Apr 11 23:42:15 2024]
+systemRole: 
+You are determine the development of an event in a text-based adventure game, you should tell the program the development in following form of event based on (Mainly based on the triggered reason and player information) the game information provided later:
+{
+	"successful": <true if succeed, false if not>,
+	"fail": <true if failed, false if not>,
+	"reward": <select the indices of zero or more of reward like a python list (You may make this with an empty list if you decide to choose no reward) from possible reward list in game information provided based on player action in game information>, 
+	"penalty": <select the indices of zero or more of penalty like a python list (You may make this with an empty list if you decide to choose no penalty) from possible penalty list in game information provided based on player action in game information>,
+	"development description": <A description to tell how the event developed, please describe implicitly like following example>
+}, Here is an example(the event is not necessary be succeed or failed immediately, it won't failed as long as in the time limit, we will tell you if times up), the following example has select a penalty which is the third one in "possible penalty":
+	game information:
+	{
+		"event_name": "Venomous Encounter",
+		"event type": "poisoning potential",
+		"triggered reason": "attacked by snake",
+		"player current status": "normal",
+		"player action": "suck the attcked part",
+		"times up": False,
+		"possible reward": ["increase maximum hp", "increase maximum action point", "obtain a poison"],
+		"possible penalty": ["decrease hp", "decrease action point", "add poisoning status"],
+		"event description": "You find yourself deep in the wilderness, navigating through dense foliage and treacherous terrain. Suddenly, without warning, a venomous snake lunges at you, its fangs sinking into your flesh."
+	}
+	
+	expected result:
+	{
+		"successful": false,
+		"fail": false,
+		"reward": [], 
+		"penalty": [2],
+		"development description": "You decide to suck the wound, hoping to extract the poison. Unfortunately, your efforts prove in vain. The venom takes hold. Nausea and weakness grip you, making the journey ahead more challenging."
+}
+
+inquiry: 
+{'event_name': '', 'event type': 'survival crisis', 'triggered reason': 'low action point', 'player current status': '', 'player action': 'Take', 'times up': False, 'possible reward': ['increase action point', 'increase maximum action point'], 'possible penalty': ['decrease action point', 'decrease maximum action point'], 'event description': ''}
+
+response by gpt3.5-turbo: 
+{
+	"successful": false,
+	"fail": false,
+	"reward": [], 
+	"penalty": [0],
+	"development description": "Feeling the exhaustion setting in, you decide to take a moment to rest and regain your strength. However, the respite is short-lived as you realize that your action point has decreased further, leaving you even more drained and vulnerable."
+}
+////////////////////////////////////////////////////
+[Thu Apr 11 23:43:49 2024]
+systemRole: 
+You are determine the development of an event in a text-based adventure game, you should tell the program the development in following form of event based on (Mainly based on the triggered reason and player information) the game information provided later:
+{
+	"successful": <true if succeed, false if not>,
+	"fail": <true if failed, false if not>,
+	"reward": <select the indices of zero or more of reward like a python list (You may make this with an empty list if you decide to choose no reward) from possible reward list in game information provided based on player action in game information>, 
+	"penalty": <select the indices of zero or more of penalty like a python list (You may make this with an empty list if you decide to choose no penalty) from possible penalty list in game information provided based on player action in game information>,
+	"development description": <A description to tell how the event developed, please describe implicitly like following example>
+}, Here is an example(the event is not necessary be succeed or failed immediately, it won't failed as long as in the time limit, we will tell you if times up), the following example has select a penalty which is the third one in "possible penalty":
+	game information:
+	{
+		"event_name": "Venomous Encounter",
+		"event type": "poisoning potential",
+		"triggered reason": "attacked by snake",
+		"player current status": "normal",
+		"player action": "suck the attcked part",
+		"times up": False,
+		"possible reward": ["increase maximum hp", "increase maximum action point", "obtain a poison"],
+		"possible penalty": ["decrease hp", "decrease action point", "add poisoning status"],
+		"event description": "You find yourself deep in the wilderness, navigating through dense foliage and treacherous terrain. Suddenly, without warning, a venomous snake lunges at you, its fangs sinking into your flesh."
+	}
+	
+	expected result:
+	{
+		"successful": false,
+		"fail": false,
+		"reward": [], 
+		"penalty": [2],
+		"development description": "You decide to suck the wound, hoping to extract the poison. Unfortunately, your efforts prove in vain. The venom takes hold. Nausea and weakness grip you, making the journey ahead more challenging."
+}
+
+inquiry: 
+{'event_name': '', 'event type': 'survival crisis', 'triggered reason': 'low action point', 'player current status': '', 'player action': 'Rest', 'times up': False, 'possible reward': ['increase action point', 'increase maximum action point'], 'possible penalty': ['decrease action point', 'decrease maximum action point'], 'event description': ''}
+
+response by gpt3.5-turbo: 
+{
+	"successful": true,
+	"fail": false,
+	"reward": ["increase action point"],
+	"penalty": [],
+	"development description": "Feeling drained and fatigued, you decide to take a moment to rest and catch your breath. After a brief respite, you find yourself rejuvenated and ready to face the challenges ahead, your action points replenished."
+}
+////////////////////////////////////////////////////
+[Thu Apr 11 23:44:54 2024]
+systemRole: 
+You are writting the description about 'description_target' for a survival text-based adventure game based on game information given
+
+inquiry: 
+{'information_need_to_be_described': {'description_target': ['environment_information', 'transportation_used_by_player']}, 'transportation_used_by_player': [], 'environment_information': {'Current location': 'land', 'Front': 'land', 'Back': 'land', 'Right hand side': 'land', 'Left hand side': 'land', 'landscape feature': ['grass', 'grass', 'rocks'], 'move_AP_cost': 'normal'}}
+
+response by gpt3.5-turbo: 
+{'title_of_description': 'Land of Grass and Rocks', 'description': 'You find yourself in a vast expanse of land, surrounded on all sides by rolling hills of grass and scattered rocks. The landscape is serene, with the gentle sway of the grass in the breeze adding a sense of tranquility to the environment. As you stand amidst the natural beauty, the soft rustling of the grass and the occasional clink of rocks underfoot fill the air, creating a peaceful ambiance.'}
+////////////////////////////////////////////////////
+[Thu Apr 11 23:47:29 2024]
+systemRole: 
+You are writting the description about 'description_target' for a survival text-based adventure game based on game information given
+
+inquiry: 
+{'information_need_to_be_described': {'description_target': ['environment_information', 'transportation_used_by_player']}, 'transportation_used_by_player': [], 'environment_information': {'Current location': 'land', 'Front': 'land', 'Back': 'land', 'Right hand side': 'beach', 'Left hand side': 'beach', 'landscape feature': ['rocks', 'stream'], 'weapon': ['iron sword'], 'move_AP_cost': 'normal'}}
+
+response by gpt3.5-turbo: 
+{'title_of_description': 'Land with Beaches', 'description': "You find yourself standing on a vast expanse of land, surrounded by the serene embrace of beaches on either side. The land stretches out endlessly in front and behind you, while to your right and left, the soft sands of the beaches extend into the distance.\n\nAmidst this tranquil scene, you notice the rugged beauty of rocks scattered across the landscape, and the gentle murmur of a stream meandering its way through the land, enhancing the peaceful ambiance.\n\nYour trusty iron sword is at your side, ready to aid you in your adventures through this land of tranquil beauty."}
+////////////////////////////////////////////////////
+[Thu Apr 11 23:48:12 2024]
+systemRole: 
+You are writting the description about 'description_target' for a survival text-based adventure game based on game information given
+
+inquiry: 
+{'information_need_to_be_described': {'description_target': ['environment_information', 'transportation_used_by_player']}, 'transportation_used_by_player': [], 'environment_information': {'Current location': 'river', 'Front': 'land', 'Back': 'river', 'Right hand side': 'river', 'Left hand side': 'river', 'tool': ['fish rod', 'weapon crafting bench'], 'food': ['raw fish'], 'move_AP_cost': 'normal'}}
+
+response by gpt3.5-turbo: 
+{'title_of_description': 'River', 'description': "You find yourself drifting along a tranquil river, with water gently flowing all around you. The soothing sound of the river's current creates a peaceful atmosphere. \n\nTo your front, a stretch of land lines the riverbank, offering a glimpse of potential refuge. Meanwhile, both your back and sides are enveloped by the river's gentle embrace, with water stretching as far as the eye can see. \n\nAmidst this serene setting, you have at your disposal a fish rod and a crafting bench for weapon creation, tools that may prove invaluable in your survival. Additionally, you possess a provision of raw fish, a potential source of sustenance in this watery domain. \n\nAs you navigate the river's flow, remember that each movement comes at a cost, requiring a measured expenditure of energy to propel yourself forward."}
+////////////////////////////////////////////////////
+[Fri Apr 12 00:13:05 2024]
+systemRole: 
+You are creating a event for a text-based adventure game, you should create event in following form based on game information(Mainly the triggered reason) provided in later:
+{
+	"event_name": <event name here>,
+	"event_discription": <possible discription in third person and first person view>
+}, Here is an example:
+	game information:
+	{
+		"event type": "survival crisis",
+		"triggered reason": "low action point",
+		"Current location": "Road",
+		"Current action": "moving",
+		"Tool(s) assist with moving": [],
+		"player current status": "Normal",
+		"description needed to be modified": "
+Road
+You are standing at a road before a mountain. Around you is a forest. A stream flows down the mountain. 
+There are some keys on the ground here."
+	}
+	
+	expected result:
+	{
+		"event_name": "starting feeling tired",
+		"event_description": "
+Road
+You stand at a road before a mountain. The dense forest surrounds you, its looming trees casting shadows. A weary sensation seeps through your limbs, accentuating the fatigue in your bones. A small stream trickles from the mountain, and amidst the weariness, you notice a glint¡ªkeys scattered on the ground, waiting to be claimed."
+	}
+
+inquiry: 
+{'event type': 'survival crisis', 'triggered reason': 'high thirst level', 'Current location': 'river', 'Current action': 'Take', 'Tool(s) assist with moving': [], 'player current status': 'normal', 'description needed to be modified': '{\'title_of_description\': \'River\', \'description\': "You find yourself drifting along a tranquil river, with water gently flowing all around you. The soothing sound of the river\'s current creates a peaceful atmosphere. \\n\\nTo your front, a stretch of land lines the riverbank, offering a glimpse of potential refuge. Meanwhile, both your back and sides are enveloped by the river\'s gentle embrace, with water stretching as far as the eye can see. \\n\\nAmidst this serene setting, you have at your disposal a fish rod and a crafting bench for weapon creation, tools that may prove invaluable in your survival. Additionally, you possess a provision of raw fish, a potential source of sustenance in this watery domain. \\n\\nAs you navigate the river\'s flow, remember that each movement comes at a cost, requiring a measured expenditure of energy to propel yourself forward."}\n'}
+
+response by gpt3.5-turbo: 
+{
+	"event_name": "feeling dehydrated",
+	"event_description": "
+River
+You find yourself drifting along a tranquil river, with water gently flowing all around you. The soothing sound of the river's current creates a peaceful atmosphere. \\n\\nTo your front, a stretch of land lines the riverbank, offering a glimpse of potential refuge. Meanwhile, both your back and sides are enveloped by the river's gentle embrace, with water stretching as far as the eye can see. \\n\\nAmidst this serene setting, you have at your disposal a fish rod and a crafting bench for weapon creation, tools that may prove invaluable in your survival. Additionally, you possess a provision of raw fish, a potential source of sustenance in this watery domain. \\n\\nAs you navigate the river's flow, remember that each movement comes at a cost, requiring a measured expenditure of energy to propel yourself forward.\\n\\nDespite the abundance of water surrounding you, a persistent dryness creeps into your throat, a stark reminder of your growing thirst that begs to be quenched."
+}
+////////////////////////////////////////////////////
+[Fri Apr 12 00:13:28 2024]
+systemRole: 
+You are determine the development of an event in a text-based adventure game, you should tell the program the development in following form of event based on (Mainly based on the triggered reason and player information) the game information provided later:
+{
+	"successful": <true if succeed, false if not>,
+	"fail": <true if failed, false if not>,
+	"reward": <select the indices of zero or more of reward like a python list (You may make this with an empty list if you decide to choose no reward) from possible reward list in game information provided based on player action in game information>, 
+	"penalty": <select the indices of zero or more of penalty like a python list (You may make this with an empty list if you decide to choose no penalty) from possible penalty list in game information provided based on player action in game information>,
+	"development description": <A description to tell how the event developed, please describe implicitly like following example>
+}, Here is an example(the event is not necessary be succeed or failed immediately, it won't failed as long as in the time limit, we will tell you if times up), the following example has select a penalty which is the third one in "possible penalty":
+	game information:
+	{
+		"event_name": "Venomous Encounter",
+		"event type": "poisoning potential",
+		"triggered reason": "attacked by snake",
+		"player current status": "normal",
+		"player action": "suck the attcked part",
+		"times up": False,
+		"possible reward": ["increase maximum hp", "increase maximum action point", "obtain a poison"],
+		"possible penalty": ["decrease hp", "decrease action point", "add poisoning status"],
+		"event description": "You find yourself deep in the wilderness, navigating through dense foliage and treacherous terrain. Suddenly, without warning, a venomous snake lunges at you, its fangs sinking into your flesh."
+	}
+	
+	expected result:
+	{
+		"successful": false,
+		"fail": false,
+		"reward": [], 
+		"penalty": [2],
+		"development description": "You decide to suck the wound, hoping to extract the poison. Unfortunately, your efforts prove in vain. The venom takes hold. Nausea and weakness grip you, making the journey ahead more challenging."
+}
+
+inquiry: 
+{'event_name': '', 'event type': 'survival crisis', 'triggered reason': 'high thirst level', 'player current status': '', 'player action': 'Rest', 'times up': False, 'possible reward': ['increase action point', 'increase maximum action point', 'remove thirsty status'], 'possible penalty': ['decrease action point', 'decrease maximum action point', 'add thirsty status(low)', 'upgrade thirsty status'], 'event description': ''}
+
+response by gpt3.5-turbo: 
+{
+	"successful": false,
+	"fail": false,
+	"reward": [], 
+	"penalty": [3],
+	"development description": "You decide to rest, hoping to alleviate your thirst. However, as time passes, your parched throat only becomes more unbearable. The desperate need for water becomes a pressing concern, making your situation even more dire."
+}
+////////////////////////////////////////////////////
+[Fri Apr 12 00:13:47 2024]
+systemRole: 
+You are determine the development of an event in a text-based adventure game, you should tell the program the development in following form of event based on (Mainly based on the triggered reason and player information) the game information provided later:
+{
+	"successful": <true if succeed, false if not>,
+	"fail": <true if failed, false if not>,
+	"reward": <select the indices of zero or more of reward like a python list (You may make this with an empty list if you decide to choose no reward) from possible reward list in game information provided based on player action in game information>, 
+	"penalty": <select the indices of zero or more of penalty like a python list (You may make this with an empty list if you decide to choose no penalty) from possible penalty list in game information provided based on player action in game information>,
+	"development description": <A description to tell how the event developed, please describe implicitly like following example>
+}, Here is an example(the event is not necessary be succeed or failed immediately, it won't failed as long as in the time limit, we will tell you if times up), the following example has select a penalty which is the third one in "possible penalty":
+	game information:
+	{
+		"event_name": "Venomous Encounter",
+		"event type": "poisoning potential",
+		"triggered reason": "attacked by snake",
+		"player current status": "normal",
+		"player action": "suck the attcked part",
+		"times up": False,
+		"possible reward": ["increase maximum hp", "increase maximum action point", "obtain a poison"],
+		"possible penalty": ["decrease hp", "decrease action point", "add poisoning status"],
+		"event description": "You find yourself deep in the wilderness, navigating through dense foliage and treacherous terrain. Suddenly, without warning, a venomous snake lunges at you, its fangs sinking into your flesh."
+	}
+	
+	expected result:
+	{
+		"successful": false,
+		"fail": false,
+		"reward": [], 
+		"penalty": [2],
+		"development description": "You decide to suck the wound, hoping to extract the poison. Unfortunately, your efforts prove in vain. The venom takes hold. Nausea and weakness grip you, making the journey ahead more challenging."
+}
+
+inquiry: 
+{'event_name': '', 'event type': 'survival crisis', 'triggered reason': 'high thirst level', 'player current status': '', 'player action': 'Rest', 'times up': False, 'possible reward': ['increase action point', 'increase maximum action point', 'remove thirsty status'], 'possible penalty': ['decrease action point', 'decrease maximum action point', 'add thirsty status(low)', 'upgrade thirsty status'], 'event description': ''}
+
+response by gpt3.5-turbo: 
+{
+	"successful": false,
+	"fail": false,
+	"reward": [], 
+	"penalty": [3],
+	"development description": "Despite your thirst, you decide to rest. As time passes, your dehydration worsens. The intense dryness in your throat becomes unbearable, and your body weakens further from the lack of water."
+}
+////////////////////////////////////////////////////
+[Fri Apr 12 00:14:23 2024]
+systemRole: 
+You are determine the development of an event in a text-based adventure game, you should tell the program the development in following form of event based on (Mainly based on the triggered reason and player information) the game information provided later:
+{
+	"successful": <true if succeed, false if not>,
+	"fail": <true if failed, false if not>,
+	"reward": <select the indices of zero or more of reward like a python list (You may make this with an empty list if you decide to choose no reward) from possible reward list in game information provided based on player action in game information>, 
+	"penalty": <select the indices of zero or more of penalty like a python list (You may make this with an empty list if you decide to choose no penalty) from possible penalty list in game information provided based on player action in game information>,
+	"development description": <A description to tell how the event developed, please describe implicitly like following example>
+}, Here is an example(the event is not necessary be succeed or failed immediately, it won't failed as long as in the time limit, we will tell you if times up), the following example has select a penalty which is the third one in "possible penalty":
+	game information:
+	{
+		"event_name": "Venomous Encounter",
+		"event type": "poisoning potential",
+		"triggered reason": "attacked by snake",
+		"player current status": "normal",
+		"player action": "suck the attcked part",
+		"times up": False,
+		"possible reward": ["increase maximum hp", "increase maximum action point", "obtain a poison"],
+		"possible penalty": ["decrease hp", "decrease action point", "add poisoning status"],
+		"event description": "You find yourself deep in the wilderness, navigating through dense foliage and treacherous terrain. Suddenly, without warning, a venomous snake lunges at you, its fangs sinking into your flesh."
+	}
+	
+	expected result:
+	{
+		"successful": false,
+		"fail": false,
+		"reward": [], 
+		"penalty": [2],
+		"development description": "You decide to suck the wound, hoping to extract the poison. Unfortunately, your efforts prove in vain. The venom takes hold. Nausea and weakness grip you, making the journey ahead more challenging."
+}
+
+inquiry: 
+{'event_name': '', 'event type': 'survival crisis', 'triggered reason': 'high thirst level', 'player current status': '', 'player action': 'Take', 'times up': False, 'possible reward': ['increase action point', 'increase maximum action point', 'remove thirsty status'], 'possible penalty': ['decrease action point', 'decrease maximum action point', 'add thirsty status(low)', 'upgrade thirsty status'], 'event description': ''}
+
+response by gpt3.5-turbo: 
+{
+	"successful": true,
+	"fail": false,
+	"reward": [1, 2],
+	"penalty": [2],
+	"development description": "Feeling parched, you decide to quench your thirst by taking a few sips of water from your canteen. The refreshing liquid revitalizes you, increasing both your current and maximum action points. However, you realize that your water supply is running low, and you worry about the possibility of facing a more severe thirst in the near future."
+}
+////////////////////////////////////////////////////
+[Fri Apr 12 00:19:03 2024]
+systemRole: 
+You are writting the description about 'description_target' for a survival text-based adventure game based on game information given
+
+inquiry: 
+{'information_need_to_be_described': {'description_target': ['environment_information', 'transportation_used_by_player']}, 'transportation_used_by_player': [], 'environment_information': {'Current location': 'forest', 'Front': 'beach', 'Back': 'forest', 'Right hand side': 'land', 'Left hand side': 'land', 'landscape feature': ['grass'], 'food': ['berries', 'berries'], 'item': ['wood', 'stick'], 'move_AP_cost': 'normal'}}
+
+response by gpt3.5-turbo: 
+{'title_of_the_description': 'Forest Clearing', 'description': 'You find yourself in a serene forest clearing, a small haven of tranquility amidst the dense woodland. \n\nBefore you stretches the vast expanse of a sandy beach, its golden grains gently caressed by the tide. Behind you, the forest resumes its dense embrace, its verdant canopy filtering the sunlight into a dappled mosaic on the forest floor. \n\nTo your right and left, the land stretches out, its contours rising and falling in gentle undulations. \n\nThe clearing is adorned with lush grass, swaying gently in the breeze. \n\nScattered around you are some wild berries, ripe for the picking. Amongst the foliage, you notice a few pieces of wood and a sturdy stick, hinting at the potential for crafting or building. \n\nThe forest beckons, offering a sense of mystery and adventure, while the beach invites you to explore its sandy shores and the secrets that may lie beyond.'}
+////////////////////////////////////////////////////

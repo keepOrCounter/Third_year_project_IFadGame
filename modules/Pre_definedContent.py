@@ -400,7 +400,7 @@ class Commands():
         """
         # if value == "<random>":
         #     value = random.randint(0, 5)
-        newValue = self.valueRetrieval(newValue)
+        newValue = self.valueRetrieval(value)
         self.__player.set_maximum_action_point(self.__player.get_maximum_action_point() + newValue)
         
     def decrease_maximum_action_point(self, action: Actions, value: int) -> None:
@@ -1138,20 +1138,20 @@ class DefininedSys(): #
             Food("bread", {"sea": 0, "land": 0, "forest": 0, "beach": 0, "river": 0, \
                 "desert": 0, "mountain": 0, "highland snowfield": 0, "town": 0, "grassland": 0}, weight=1, \
                 AP_recovery=15, eatable=True, freshness=20, thirst_satisfied=-20),
-            Food("raw fish", {"sea": 15, "land": 0, "forest": 0, "beach": 1, "river": 12, \
+            Food("fish", {"sea": 15, "land": 0, "forest": 0, "beach": 1, "river": 12, \
                 "desert": 0, "mountain": 0, "highland snowfield": 0, "town": 0, "grassland": 0}, weight=2, \
                 AP_recovery=5, eatable=False, freshness=24, thirst_satisfied=-20),
-            Food("grilled fish", {"sea": 0, "land": 0, "forest": 0, "beach": 0, "river": 0, \
-                "desert": 0, "mountain": 0, "highland snowfield": 0, "town": 0, "grassland": 0}, weight=2, \
+            Food("grilled fish", {"sea": 0, "land": 5, "forest": 10, "beach": 5, "river": 0, \
+                "desert": 0, "mountain": 0, "highland snowfield": 0, "town": 15, "grassland": 0}, weight=2, \
                 AP_recovery=15, eatable=True, freshness=24, thirst_satisfied=-10),
-            Food("berries", {"sea": 0, "land": 5, "forest": 10, "beach": 0, "river": 5, \
-                "desert": 0, "mountain": 0, "highland snowfield": 0, "town": 5, "grassland": 12}, weight=1, \
+            Food("berries", {"sea": 0, "land": 12, "forest": 15, "beach": 0, "river": 2, \
+                "desert": 0, "mountain": 5, "highland snowfield": 0, "town": 5, "grassland": 12}, weight=1, \
                 AP_recovery=5, eatable=True, freshness=18, thirst_satisfied=10),
             Food("potato", {"sea": 0, "land": 5, "forest": 2, "beach": 0, "river": 2, \
                 "desert": 12, "mountain": 0, "highland snowfield": 0, "town": 0, "grassland": 12}, weight=1, \
                 AP_recovery=10, eatable=False, freshness=50, thirst_satisfied=-5),
-            Food("grilled potato", {"sea": 0, "land": 0, "forest": 0, "beach": 0, "river": 0, \
-                "desert": 0, "mountain": 0, "highland snowfield": 0, "town": 0, "grassland": 0}, weight=1, \
+            Food("grilled potato", {"sea": 0, "land": 5, "forest": 5, "beach": 5, "river": 0, \
+                "desert": 0, "mountain": 0, "highland snowfield": 0, "town": 15, "grassland": 0}, weight=1, \
                 AP_recovery=10, eatable=True, freshness=72, thirst_satisfied=-10),
             Food("raw venison", {"sea": 0, "land": 1, "forest": 2, "beach": 0, "river": 0, \
                 "desert": 12, "mountain": 5, "highland snowfield": 5, "town": 0, "grassland": 15}, weight=5, \
@@ -1159,12 +1159,18 @@ class DefininedSys(): #
             Food("grilled venison", {"sea": 0, "land": 0, "forest": 0, "beach": 0, "river": 0, \
                 "desert": 0, "mountain": 0, "highland snowfield": 0, "town": 0, "grassland": 0}, weight=5, \
                 AP_recovery=30, eatable=True, freshness=29, thirst_satisfied=20),
-            Food("vegetable soup", {"sea": 0, "land": 0, "forest": 0, "beach": 0, "river": 0, \
-                "desert": 0, "mountain": 0, "highland snowfield": 0, "town": 0, "grassland": 0}, weight=5, \
+            Food("vegetable soup", {"sea": 0, "land": 10, "forest": 15, "beach": 10, "river": 0, \
+                "desert": 0, "mountain": 0, "highland snowfield": 5, "town": 20, "grassland": 10}, weight=5, \
                 AP_recovery=30, eatable=True, freshness=15, thirst_satisfied=50, commandSuitable="have"),
             Food("stew", {"sea": 0, "land": 0, "forest": 0, "beach": 0, "river": 0, "desert": 0, \
                 "mountain": 0, "highland snowfield": 0, "town": 0, "grassland": 0}, weight=10, \
                 AP_recovery=50, eatable=True, freshness=15, thirst_satisfied=30, commandSuitable="have"),
+            Food("bottle water", {"sea": 0, "land": 10, "forest": 5, "beach": 10, "river": 15, "desert": 0, \
+                "mountain": 0, "highland snowfield": 0, "town": 20, "grassland": 0}, weight=10, \
+                AP_recovery=2, eatable=True, freshness=50, thirst_satisfied=50, commandSuitable="have"),
+            Food("ice", {"sea": 0, "land": 0, "forest": 0, "beach": 0, "river": 0, "desert": 0, \
+                "mountain": 0, "highland snowfield": 20, "town": 0, "grassland": 0}, weight=10, \
+                AP_recovery=0, eatable=True, freshness=100, thirst_satisfied=20, commandSuitable="have"),
             
             # Item
             Items("wood", {"sea": 1, "land": 3, "forest": 20, "beach": 1, "river": 3, "desert": 0, \
@@ -1183,7 +1189,7 @@ class DefininedSys(): #
                 "mountain": 0, "highland snowfield": 0, "town": 0, "grassland": 0}, weight=1),
             Items("glass bottle", {"sea": 0, "land": 0, "forest": 0, "beach": 0, "river": 0, \
                 "desert": 0, "mountain": 0, "highland snowfield": 0, "town": 0, "grassland": 0}, weight=1),
-            Items("a bottle of sand", {"sea": 0, "land": 0, "forest": 0, "beach": 0, "river": 0, \
+            Items("bottle of sand", {"sea": 0, "land": 0, "forest": 0, "beach": 0, "river": 0, \
                 "desert": 0, "mountain": 0, "highland snowfield": 0, "town": 0, "grassland": 0}, weight=3),
             
             Weapon("iron sword", {"sea": 0, "land": 10, "forest": 5, "beach": 10, "river": 0, \
@@ -1227,20 +1233,20 @@ class DefininedSys(): #
         # }
         
         self.__def_actions = {
-            "Move": Actions("Move", [preDefinedCommands.move, preDefinedCommands.ActionCost], \
+            "Go": Actions("Move", [preDefinedCommands.move, preDefinedCommands.ActionCost], \
                 [[],[]], 5, 4, ["move"]),
             "Rest": Actions("Rest", [preDefinedCommands.rest, preDefinedCommands.ActionCost], \
                 [[],[]], 0, 0, ["rest"]),
             "Take": Actions("Take", [preDefinedCommands.pickUp, preDefinedCommands.ActionCost], \
-                [[],[]], 2, 1, ["take"]),
+                [[1],[]], 2, 1, ["take"]),
             "Equip": Actions("Equip", [preDefinedCommands.equip, preDefinedCommands.ActionCost], \
                 [[],[]], 1, 0, ["equip"]),
             "Unequip": Actions("Unequip", [preDefinedCommands.unequip, preDefinedCommands.ActionCost], \
                 [[],[]], 1, 0, ["unequip"]),
             "Check": Actions("Check", [preDefinedCommands.check, preDefinedCommands.ActionCost], \
                 [[],[]], 2, 1, ["check"]),
-            "Consume": Actions("Consume", [preDefinedCommands.consume, preDefinedCommands.ActionCost], \
-                [[],[]], 1, 1, ["eat", "drink"]),
+            "Eat": Actions("Consume", [preDefinedCommands.consume, preDefinedCommands.ActionCost], \
+                [[1],[]], 1, 1, ["eat", "drink"]),
             "Fill": Actions("Fill", [preDefinedCommands.filled, preDefinedCommands.ActionCost], \
                 [[],[]], 1, 0, ["fill"]),
             "Talk": Actions("Talk", [preDefinedCommands.talk, preDefinedCommands.ActionCost], \
@@ -1248,7 +1254,7 @@ class DefininedSys(): #
             "Attack": Actions("Attack", [preDefinedCommands.attack, preDefinedCommands.ActionCost], \
                 [[],[]], 4, 2, ["attack"])
         }
-        ["Take all", "Take lamb leg", "Take glass water bottle", "Equip sword", "Unequip weapon crafting bench", "Check player", "Check all", "Check stream", "drink stream", "eat soup", "eat grilled fish", "fill glass water bottle with stream", "get on wooden boat", "get off wooden boat", "talk to Bob"]
+        ["take all", "take lamb leg", "take glass water bottle", "equip sword", "unequip", "check player", "eat soup", "eat grilled fish", "attack wolf", "rest", "go forward", "go back", "go right", "go left", "go north", "go south", "go east", "go west", "take bottle water", "take raw venison", "take palm leave", "take weapon crafting bench", "take bottle of sand", "take aloe vera", "eat aloe vera", "take grilled venison", "eat grilled venison"]
         
         self.__def_buff = { # TODO add end condition
             "thirsty": Buff("thirsty", exe_function= self.__buffEffect.thirsty, \
