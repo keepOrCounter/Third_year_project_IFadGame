@@ -437,10 +437,9 @@ class InputTranslator():
                 nounSet.add(str(chunk))
         
         for verbPharse in verbPhrases:
-        for noun in nounSet:
-            print(noun)
-            if str(verbPharse) not in noun:
-                verbSet.add(str(verbPharse))
+            for noun in nounSet:
+                if str(verbPharse) not in noun:
+                    verbSet.add(str(verbPharse))
 
         tagged_tokens = [(token.text, token.pos_) for token in doc]
 
