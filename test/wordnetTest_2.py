@@ -93,13 +93,7 @@ def grammarClassifier(phrase):
             fixed_noun = str(chunk).replace("unequip ", "")
             nounSet.add(fixed_noun)
             break
-        nounSet.add(str(chunk))
-
-    for verbPharse in verbPhrases:
-        for noun in nounSet:
-            print(noun)
-            if str(verbPharse) not in noun:
-                verbSet.add(str(verbPharse))
+        nounSet.add(str(chunk)) 
 
     tagged_tokens = [(token.text, token.pos_) for token in doc]
     print(tagged_tokens)
@@ -112,6 +106,15 @@ def grammarClassifier(phrase):
         if pos.lower() == "num":
             numSet.add(str(token))
 
+    if len(nounSet) != 0:
+        for verbPharse in verbPhrases:
+            for noun in nounSet:
+                if str(verbPharse) not in noun:
+                    verbSet.add(str(verbPharse))
+    else:
+        for verbPharse in verbPhrases:
+            verbSet.add(str(verbPharse))
+
     grammarDict = {
         "Noun list": nounSet,
         "Verb list": verbSet,
@@ -121,7 +124,7 @@ def grammarClassifier(phrase):
 
     return grammarDict
 
-print(grammarClassifier("attack wolf"))
+print(grammarClassifier("go north"))
 
 # take all #
 # take lamb leg #

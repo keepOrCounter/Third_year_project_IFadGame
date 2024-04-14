@@ -391,6 +391,7 @@ class InputTranslator():
 
         return all_case_word_list
 
+    #Check the spelling of the words in sentence.
     def spell_checker (sentence:str) -> str:
         check_list = sentence.split()
         spell = SpellChecker()
@@ -449,11 +450,6 @@ class InputTranslator():
                 nounSet.add(fixed_noun)
                 break
             nounSet.add(str(chunk))
-        
-        for verbPharse in verbPhrases:
-            for noun in nounSet:
-                if str(verbPharse) not in noun:
-                    verbSet.add(str(verbPharse))
 
         tagged_tokens = [(token.text, token.pos_) for token in doc]
 
@@ -464,6 +460,15 @@ class InputTranslator():
         for token, pos in tagged_tokens:
             if pos.lower() == "num":
                 numSet.add(str(token))
+
+        if len(nounSet) != 0:
+            for verbPharse in verbPhrases:
+                for noun in nounSet:
+                    if str(verbPharse) not in noun:
+                        verbSet.add(str(verbPharse))
+        else:
+            for verbPharse in verbPhrases:
+                verbSet.add(str(verbPharse))
 
         grammarDict = {
             "Noun list": nounSet,
