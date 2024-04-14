@@ -144,21 +144,8 @@ class TestStringMethods(unittest.TestCase):
         self.assertEqual(worldStatus.move_dLevel, 1.0)
         self.assertEqual(player_info.get_action_point(), 30)
         self.assertEqual(player_info.get_thirst(), 100)
-        # # objectPCG = objectsGenerator(game_content)
-        # # event_Engage = eventGenerator(game_content)
-
-        # user_input = input("To start the game, please provide an openai key>>>")
-        # gpt = Gpt3(user_input)
-        # descriptionGenerator = OutputGenerator(gpt, player_info, map_record, worldStatus)
-        # inputAdapter = InputTranslator(gpt, player_info, map_record, game_content)
-        # eventHandler = EventsTriggered()
-
-        # pcgSystem = PCGController(game_content, player_info, map_record, descriptionGenerator, eventHandler, worldStatus)
-
-        # game_rule = rule_system(player_info, map_record, worldStatus, game_content, buffEffect)
         self.assertEqual(y, 1)
         
-        # action.command_args[0].append("south")
         # moving and AP/thirst cost test
         defined_command.move(action, "south")
         x, y = player_info.get_currentLocation()

@@ -1217,10 +1217,10 @@ class DefininedSys(): #
                         lambda player, mapInfo, events, worldStatus: "consume uneatable food" in worldStatus.player_dangerAction.keys())
             ],
             "disaster": [
-                DisasterEvents("", "disaster", "dust storm occur", \
+                DisasterEvents("dust storm approach", "disaster", "dust storm occur", \
                 ["decrease action point", "decrease health point", "decrease maximum health point"], 3, "", \
                     lambda player, mapInfo, events, worldStatus: ((mapInfo.currentLocation.location_name == "desert" and random.random() < 0.5) or \
-                        (mapInfo.currentLocation.location_name == "land" and random.random() < 0.3)), 
+                        (mapInfo.currentLocation.location_name == "land" and random.random() < 0.1)), 
                     lambda player, mapInfo, events, worldStatus: (mapInfo.currentLocation.location_name != "desert" and mapInfo.currentLocation.location_name != "land")),
             ]
         }
@@ -1263,6 +1263,9 @@ class DefininedSys(): #
                         end_Condition=lambda player, mapInfo, worldStatus: player.get_thirst() > 0, start_level = "high"),
             "poisoning": Buff("poisoning", exe_function= self.__buffEffect.poisoning, \
                 exe_args= list(), timeLimit= 5, end_Function= self.__buffEffect.emptyFunc, \
+                    end_args=list()),
+            "recovery": Buff("recovery", exe_function= self.__buffEffect.hp_recovery, \
+                exe_args= [5], timeLimit= 5, end_Function= self.__buffEffect.emptyFunc, \
                     end_args=list())
         }
         

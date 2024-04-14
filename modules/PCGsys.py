@@ -493,7 +493,7 @@ class eventGenerator():
                 state = self.__player.get_buffs()
                 if len(state) == 0:
                     state = "normal"
-                triggered_event.play_current_status = state
+                triggered_event.play_current_status =list(state.keys())
                 triggered_event.description = self.__map_info.currentLocation.description
                 # result.append(triggered_event)
                 break
@@ -670,7 +670,7 @@ if __name__ == "__main__":
     # test = objectsGenerator(DefininedSys())
     # test.objectGeneration(1, 6)
     player_info = Player_status(currentLocation = [0, 0])
-    map_record = Map_information(current_area_type = 1, map_size=(20, 20)) # land type
+    map_record = Map_information(current_area_type = 1, map_size=(100, 100)) # land type
     worldStatus = globalInfo()
     
     defined_command = Commands(player_info, map_record, worldStatus)

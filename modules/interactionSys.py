@@ -325,7 +325,7 @@ text-based adventure game based on game information given"
     def text_output(self):
         for x in self.__worldStatus.current_description.keys():
             print("--------------------------------")
-            print(f"\033[0;31m{x}\033[0m")
+            print(f"\033[0;31m{x}\033[0m") #]]
             print(self.__worldStatus.current_description[x])
             print()
             
