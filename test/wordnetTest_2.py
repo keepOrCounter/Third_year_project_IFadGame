@@ -70,12 +70,22 @@ def grammarClassifier(phrase):
     noisyVerbs = [doc[start:end] for _, start, end in matches]
     verbPhrases = filter_spans(noisyVerbs)
 
-    for verbPharse in verbPhrases:
-        verbSet.add(str(verbPharse))
+    # for chunk in doc.noun_chunks:
+    #     print(chunk)
+    #     nounSet.add(str(chunk))
 
     for chunk in doc.noun_chunks:
-        print(chunk)
+        if str(chunk) == "rest":
+            print(chunk)
+            verbSet.add(str(chunk))
+            break
         nounSet.add(str(chunk))
+
+    for verbPharse in verbPhrases:
+        for noun in nounSet:
+            print(noun)
+            if str(verbPharse) not in noun:
+                verbSet.add(str(verbPharse))
 
     tagged_tokens = [(token.text, token.pos_) for token in doc]
     print(tagged_tokens)
@@ -97,25 +107,35 @@ def grammarClassifier(phrase):
 
     return grammarDict
 
-print(grammarClassifier("talk to Bob"))
+print(grammarClassifier("eat grilled venison"))
 
-# take all finish
-# take glass water bottle finish
-# equip sword
-# unequip weapon crafting bench
-# check player finish
-# check all finish
-# check stream finish
-# drink stream finish
-# eat soup finish
-# eat grilled fish finish
-# fill flass water bottle with stream finish
-# get on wooden boat finish
-# get off wooden boat finish
-# talk to Bob finish
-
-
-
+# take all #
+# take lamb leg #
+# take glass water bottle #
+# equip the sword !
+# unequip #
+# check player #
+# eat soup #
+# eat grilled fish #
+# attack the wolf !
+# rest #
+# go forward #
+# go back #
+# go right #
+# go left #
+# go north #
+# go south #
+# go east #
+# go west #
+# take bottle water #
+# take raw venison #
+# take palm leaves #
+# take weapon crafting bench #
+# take bottle of sand !
+# take aloe vera #
+# eat aloe vera #
+# take grilled venison #
+# eat grilled venison #
 
 
 
