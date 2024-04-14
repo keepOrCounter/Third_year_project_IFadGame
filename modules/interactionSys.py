@@ -6,6 +6,7 @@ from status_record import *
 from Pre_definedContent import DefininedSys, OutputTransfer
 import json
 from autocorrect import Speller
+from spellchecker import SpellChecker
 from numpy import inf
 import inspect
 import spacy
@@ -384,6 +385,24 @@ class InputTranslator():
 
         return all_case_word_list
 
+    def spell_checker (sentence:str) -> str:
+        check_list = sentence.split()
+        spell = SpellChecker()
+
+        for i in range(len(check_list)):
+            if check_list[i] == "aloe" or check_list[i] == "vera" or check_list[i] == "unequip":
+                pass
+            else:
+                misspelled_word = spell.unknown([check_list[i]])
+                for word in misspelled_word:
+                    checked_word = spell.correction(check_list[i])
+                    if check_list[i] != checked_word:
+                        check_list[i] = checked_word
+        
+        finished_sentence = str(' '.join(check_list))
+
+        return finished_sentence
+
     #Break the phrase into words and classify the words into noun, verb and determiner(number).
     def grammarClassifier(self, phrase):
         nlp = spacy.load("en_core_web_sm")
@@ -404,15 +423,18 @@ class InputTranslator():
         noisyVerbs = [doc[start:end] for _, start, end in matches]
         verbPhrases = filter_spans(noisyVerbs)
 
-        for verbPharse in verbPhrases:
-            verbSet.add(str(verbPharse))
-
         for chunk in doc.noun_chunks:
             if str(chunk) == "rest":
                 print(chunk)
                 verbSet.add(str(chunk))
             else:
                 nounSet.add(str(chunk))
+        
+        for verbPharse in verbPhrases:
+        for noun in nounSet:
+            print(noun)
+            if str(verbPharse) not in noun:
+                verbSet.add(str(verbPharse))
 
         tagged_tokens = [(token.text, token.pos_) for token in doc]
 
@@ -449,7 +471,9 @@ be any of the game command above, just reply a '<Rejected>'."
         for i in range(len(all_case_word_list)):
             spell.nlp_data.update({all_case_word_list[i]:inf})
 
-        corrected_user_input = spell(user_input)
+        spelling = spell = SpellChecker()
+
+        corrected_user_input = InputTranslator.spell_checker(user_input)
 
         if (corrected_user_input != user_input):
             print("Wait, why I have that mind, is it\"", corrected_user_input, "\"?")
