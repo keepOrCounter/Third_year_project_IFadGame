@@ -431,10 +431,24 @@ class InputTranslator():
 
         for chunk in doc.noun_chunks:
             if str(chunk) == "rest":
-                print(chunk)
                 verbSet.add(str(chunk))
-            else:
-                nounSet.add(str(chunk))
+                break
+            elif "attack" in str(chunk):
+                verbSet.add("attack")
+                fixed_noun = str(chunk).replace("attack ", "")
+                nounSet.add(fixed_noun)
+                break
+            elif "equip" in str(chunk):
+                verbSet.add("equip")
+                fixed_noun = str(chunk).replace("equip ", "")
+                nounSet.add(fixed_noun)
+                break
+            elif "unequip" in str(chunk):
+                verbSet.add("unequip")
+                fixed_noun = str(chunk).replace("unequip ", "")
+                nounSet.add(fixed_noun)
+                break
+            nounSet.add(str(chunk))
         
         for verbPharse in verbPhrases:
             for noun in nounSet:
