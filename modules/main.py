@@ -131,8 +131,8 @@ class rule_system():
 
 if __name__ == "__main__":
     worldStatus = globalInfo()
-    player_info = Player_status(action_point = 30)
-    # player_info = Player_status()
+    # player_info = Player_status(action_point = 30)
+    player_info = Player_status()
     map_record = Map_information(current_area_type = 1, map_size=(20, 20)) # land type
     # mapPCG = MapGenerator(player_info, map_record)
     defined_command = Commands(player_info, map_record, worldStatus)

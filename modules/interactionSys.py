@@ -68,7 +68,9 @@ Right hand side: Forest, Left hand side: Forest, Landscape Features: [stream], \
 Items: [keyA, keyB, keyC]}". Here is the example of expected result: "
 Road
 You are standing at a road before a mountain. Around you is a forest. A stream flows down the mountain. 
-There are some keys on the ground here." """
+There are some keys on the ground here." Please follow these steps:
+1. introduce terrain type of current location and the terrain type of other direction.
+2. introduce any object in current location."""
 
         self.__eventDescriptionSysRole = """You are creating a event for a text-based adventure game, you should create event in following form based on game information(Mainly the triggered reason) provided in later:
 {
@@ -235,10 +237,11 @@ text-based adventure game based on game information given"
         gpt_response = self.__gptAPI.inquiry(inquiry, self.__generalized_promt2)
         # print(gpt_response)
         self.__OuterData.inquery_response_log_recorder(self.__generalized_promt2, inquiry, gpt_response)
-        
-        # result = json.loads(gpt_response, strict=False)
-        
-        locationList["Current location"].description = gpt_response
+        # json_string = gpt_response.replace("'", "\"", 7)
+        # json_string = json_string[0:-4] + json_string[-4:].replace("'", "\"", 1)
+        # result = json.loads(json_string, strict=False)
+        # keyList = list(result.keys())
+        locationList["Current location"].description = gpt_response + "\n"
         self.__worldStatus.descriptor = False
         self.__worldStatus.descriptor_prompt = {
             "information_need_to_be_described": {
@@ -321,8 +324,10 @@ text-based adventure game based on game information given"
         
     def text_output(self):
         for x in self.__worldStatus.current_description.keys():
-            print(x)
+            print("--------------------------------")
+            print(f"\033[0;31m{x}\033[0m")
             print(self.__worldStatus.current_description[x])
+            print()
             
         print("=======================================\n")
         self.__worldStatus.current_description.clear()
@@ -330,11 +335,12 @@ text-based adventure game based on game information given"
     
 class InputTranslator():
     def __init__(self, gptAPI: Gpt3, playerStatus: Player_status, mapInfo: Map_information, \
-        defined_content: DefininedSys) -> None:
+        defined_content: DefininedSys, worldStatus: globalInfo) -> None:
         self.__gptAPI = gptAPI
         self.__playerStatus = playerStatus
         self.__mapInfo = mapInfo
         self.__defined_content = defined_content
+        self.__worldStatus = worldStatus
         
     def get_function_params_info(self, func):
         func_signature = inspect.signature(func)
@@ -477,6 +483,7 @@ be any of the game command above, just reply a '<Rejected>'."
 
         if (corrected_user_input != user_input):
             print("Wait, why I have that mind, is it\"", corrected_user_input, "\"?")
+            self.__worldStatus.skipTurn = True
         else:
             nlp = spacy.load("en_core_web_sm")
             command = user_input
@@ -484,6 +491,7 @@ be any of the game command above, just reply a '<Rejected>'."
             classified_command = self.grammarClassifier(command)
             print(classified_command)
             
+            target = ""
             for targets in classified_command["Verb list"]:
                 target = targets
                 break
@@ -493,6 +501,7 @@ be any of the game command above, just reply a '<Rejected>'."
                 if len(targetObject) < len(targets):
                     targetObject = targets
             
+            amount = 1
             command_id = 0
             counter = 0
             # for command in move_commands:
@@ -512,14 +521,26 @@ be any of the game command above, just reply a '<Rejected>'."
             print(move_commands)
             print(target)
             
-            if move_commands[command_id] != "<Rejected>":
-                action = self.__defined_content.get_Actions()[move_commands[command_id]]
-                action.command_args[0].append(targetObject)
+            if dis <= 1:
+                commandSelect = move_commands[command_id]
+            else:
+                commandSelect = "<Rejected>"
+            
+            if commandSelect != "<Rejected>":
+                action = self.__defined_content.get_Actions()[commandSelect]
+                if commandSelect == "Attack":
+                    action.command_args[0].append(self.__playerStatus)
+                if targetObject != "" and targetObject != None:
+                    action.command_args[0].append(targetObject)
+                print(action.command_args[0])
                 self.__playerStatus.set_currentAction(action)
                 for commands in range(len(action.command_executed)):
                     action.command_executed[commands](*action.command_args[commands])
                     # commands[0](*commands[1])
-                action.command_args[0].pop()
+                if targetObject != "" and targetObject != None:
+                    action.command_args[0].pop()
+                if commandSelect == "Attack":
+                    action.command_args[0].pop()
             else:
                 print("Nothing happen...")
     
