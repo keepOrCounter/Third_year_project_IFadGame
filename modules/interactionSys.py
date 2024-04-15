@@ -470,6 +470,16 @@ class InputTranslator():
             for verbPharse in verbPhrases:
                 verbSet.add(str(verbPharse))
 
+        if len(nounSet) != 0:
+            for token, pos in tagged_tokens:
+                for noun in nounSet:
+                    if (pos.lower() == "noun" or pos.lower() == "adj") and str(token) not in noun and str(token) not in verbSet and str(token) not in numSet:
+                        nounSet.add(str(token))
+        else:
+            for token, pos in tagged_tokens:
+                if (pos.lower() == "noun" or pos.lower() == "adj") and str(token) not in verbSet and str(token) not in numSet:
+                    nounSet.add(str(token))
+
         grammarDict = {
             "Noun list": nounSet,
             "Verb list": verbSet,

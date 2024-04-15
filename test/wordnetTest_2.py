@@ -75,6 +75,7 @@ def grammarClassifier(phrase):
     #     nounSet.add(str(chunk))
 
     for chunk in doc.noun_chunks:
+        print(chunk)
         if str(chunk) == "rest":
             verbSet.add(str(chunk))
             break
@@ -115,6 +116,16 @@ def grammarClassifier(phrase):
         for verbPharse in verbPhrases:
             verbSet.add(str(verbPharse))
 
+    if len(nounSet) != 0:
+        for token, pos in tagged_tokens:
+            for noun in nounSet:
+                if (pos.lower() == "noun" or pos.lower() == "adj") and str(token) not in noun and str(token) not in verbSet and str(token) not in numSet:
+                    nounSet.add(str(token))
+    else:
+        for token, pos in tagged_tokens:
+            if (pos.lower() == "noun" or pos.lower() == "adj") and str(token) not in verbSet and str(token) not in numSet:
+                nounSet.add(str(token))
+
     grammarDict = {
         "Noun list": nounSet,
         "Verb list": verbSet,
@@ -124,17 +135,17 @@ def grammarClassifier(phrase):
 
     return grammarDict
 
-print(grammarClassifier("go north"))
+print(grammarClassifier("take grilled venison "))
 
 # take all #
 # take lamb leg #
 # take glass water bottle #
-# equip the sword !
+# equip sword #
 # unequip #
 # check player #
 # eat soup #
 # eat grilled fish #
-# attack the wolf !
+# attack wolf #
 # rest #
 # go forward #
 # go back #
@@ -148,7 +159,7 @@ print(grammarClassifier("go north"))
 # take raw venison #
 # take palm leaves #
 # take weapon crafting bench #
-# take bottle of sand !
+# take bottle of sand #
 # take aloe vera #
 # eat aloe vera #
 # take grilled venison #
