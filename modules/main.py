@@ -54,12 +54,21 @@ class rule_system():
         self.__player.set_action_point(self.__player.get_action_point() - AP_change)
         self.__player.set_thirst(self.__player.get_thirst() - thirst_change)
         
+    def scoring(self):
+        if self.__player.get_currentAction() != None and self.__player.get_currentAction().actionName == "Move":
+            self.__worldStatus.score += 5 * self.__worldStatus.move_dLevel
+        else:
+            self.__worldStatus.score += 3
+            
+        self.__worldStatus.current_description["Current Score: "] = str(self.__worldStatus.score)
+        
     def eachTurn_handler(self):
         """Need to be called each turn
         """
         self.buffHandler()
         self.naturalChange()
         # self.__worldStatus.current_description = dict()
+        
         
         if not self.player_active():
             self.__player.set_hp(self.__player.get_hp() + self.__player.get_action_point())
@@ -79,15 +88,6 @@ class rule_system():
         elif self.__player.get_thirst() > self.__player.get_maximum_thirst():
             self.__player.set_thirst(self.__player.get_maximum_thirst())
         
-        if self.__map_info.currentLocation != None:
-            currentPlace = self.__map_info.currentLocation.location_name
-            if self.__worldStatus.lastPlace != None:
-                terrainDict = self.__defininedContent.get_terrain_type()
-                mdLevelGradient = terrainDict[currentPlace].move_dLevel/ \
-                    terrainDict[self.__worldStatus.lastPlace].move_dLevel
-    
-                self.__worldStatus.move_dLevel *= mdLevelGradient
-            self.__worldStatus.lastPlace = currentPlace
             
         if self.__map_info.get_current_area_type() == 1:
             # self.__worldStatus.move_APCost = 5
@@ -98,6 +98,7 @@ class rule_system():
             else:
                 # self.__worldStatus.move_APCost = 20 # determine the action point cost of each move
                 pass
+        
         
     def turnInfoClear(self):
         self.__worldStatus.player_dangerAction = dict()
@@ -119,12 +120,15 @@ class rule_system():
         print("current maximum action_point:", self.__player.get_maximum_action_point())
         print("current thirst:", self.__player.get_thirst())
         print("current maximum thirst:", self.__player.get_maximum_thirst())
+        print("current current weight:", self.__player.get_package_weight())
+        print("current maximum weight:", self.__player.get_package_weight())
         if self.__player.get_currentAction() != None:
             print("Current action:", self.__player.get_currentAction().actionName)
         else:
             print("Current action:", None)
         print("visited place:", self.__map_info.get_visitedPlace())
         print("player hp:", self.__player.get_hp())
+        print("move AP cost", self.__worldStatus.move_dLevel)
         print("--------------------------------------")
     
     # def 
@@ -144,7 +148,7 @@ if __name__ == "__main__":
     user_input = input("To start the game, please provide an openai key>>>")
     gpt = Gpt3(user_input)
     descriptionGenerator = OutputGenerator(gpt, player_info, map_record, worldStatus)
-    inputAdapter = InputTranslator(gpt, player_info, map_record, game_content)
+    inputAdapter = InputTranslator(gpt, player_info, map_record, game_content, worldStatus)
     eventHandler = EventsTriggered()
     
     pcgSystem = PCGController(game_content, player_info, map_record, descriptionGenerator, eventHandler, worldStatus)
@@ -154,12 +158,15 @@ if __name__ == "__main__":
     begin = True
     while begin:
         if not worldStatus.skipTurn:
+            game_rule.scoring()
             game_rule.eachTurn_handler()
             game_rule.debug_information()
             pcgSystem.locationPCG_each_turn()
             game_rule.turnInfoClear()
         else:
             worldStatus.skipTurn = False
+            
+        descriptionGenerator.text_output()
         # print(map_record.get_currentMap())
 
         # print(map_record.currentLocation.description)

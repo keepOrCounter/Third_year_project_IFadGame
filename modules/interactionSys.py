@@ -12,6 +12,7 @@ import inspect
 import spacy
 from spacy.matcher import Matcher
 from spacy.util import filter_spans
+import ast
 
 class IOSys():
     def __init__(self) -> None:
@@ -68,9 +69,7 @@ Right hand side: Forest, Left hand side: Forest, Landscape Features: [stream], \
 Items: [keyA, keyB, keyC]}". Here is the example of expected result: "
 Road
 You are standing at a road before a mountain. Around you is a forest. A stream flows down the mountain. 
-There are some keys on the ground here." Please follow these steps:
-1. introduce terrain type of current location and the terrain type of other direction.
-2. introduce any object in current location."""
+"""
 
         self.__eventDescriptionSysRole = """You are creating a event for a text-based adventure game, you should create event in following form based on game information(Mainly the triggered reason) provided in later:
 {
@@ -197,8 +196,7 @@ Please note that the production of food must be logical. Here are some expected 
 	"title_of_description": "comsumed uneatable bread",
 	"description": "You are trying to have two slices of stale bread. The bread is dry and hard, its texture reminiscent of chewing on ancient parchment. Its taste is a blend of mustiness and decay, assaulting your palate with a bitter, stale flavor that lingers uncomfortably on your tongue. Your stomach churns uncomfortably, protesting against the foreign and indigestible substance. "
 }""" # TODO improve this prompt
-        self.__generalized_promt2 = "You are writting the description about 'description_target' for a survival \
-text-based adventure game based on game information given"
+        self.__generalized_promt2 = "You are writting the description about 'description_target' for a survival text-based adventure game based on game information given"
     def locationDescription(self, locationList: dict[str, Location]) -> None:
         """
         Args:
@@ -218,6 +216,10 @@ text-based adventure game based on game information given"
         
         _, inputDictionary["move_AP_cost"] = self.__outputTranslate.outPutTransfer(self.__outputTranslate.outputWordMap["environment_information"]["move_AP_cost"], self.__worldStatus.move_dLevel)
         
+        npcList = []
+        for x in locationList["Current location"].npcs:
+            npcList.append(self.__outputTranslate.generalTransfer(x, self.__outputTranslate.outputWordMap["player_or_other_NPC"]))
+        
         transPortation = self.__playerStatus.get_transportation()
         transportation_used_by_player = []
         if transPortation != None:
@@ -226,22 +228,48 @@ text-based adventure game based on game information given"
             transportation_used_by_player
         self.__worldStatus.descriptor_prompt["environment_information"] = \
             inputDictionary
+        if len(npcList) > 0:
+            self.__worldStatus.descriptor_prompt["NPCs"] = npcList
+
         self.__worldStatus.descriptor_prompt["information_need_to_be_described"]["description_target"]\
             .append("environment_information")
         self.__worldStatus.descriptor_prompt["information_need_to_be_described"]["description_target"]\
             .append("transportation_used_by_player")
+            
+        if len(npcList) > 0:
+            self.__worldStatus.descriptor_prompt["information_need_to_be_described"]["description_target"]\
+                .append("NPCs in player's view")
+            
+        
         self.__worldStatus.descriptor = True
         inquiry = str(self.__worldStatus.descriptor_prompt)
-        # print(inquiry)
+        print(inquiry)
         # print("=======================================\n")
-        gpt_response = self.__gptAPI.inquiry(inquiry, self.__generalized_promt2)
+        counter = 0
+        while counter < 3:
+            try:
+                gpt_response = self.__gptAPI.inquiry(inquiry, self.__generalized_promt2)
+                if "\n" in gpt_response:
+                    gpt_response = gpt_response.replace("\\n", "\n")
+                    gpt_response = gpt_response.replace("\n", "\\n")
+
+                parsed_output = ast.literal_eval(gpt_response)
+                keyList = list(parsed_output.keys())
+                locationList["Current location"].description = parsed_output[keyList[1]] + "\n"
+                break
+            except:
+                print("Something wrong, trying again...")
+                counter += 1
+                continue
         # print(gpt_response)
+        
         self.__OuterData.inquery_response_log_recorder(self.__generalized_promt2, inquiry, gpt_response)
         # json_string = gpt_response.replace("'", "\"", 7)
         # json_string = json_string[0:-4] + json_string[-4:].replace("'", "\"", 1)
         # result = json.loads(json_string, strict=False)
         # keyList = list(result.keys())
-        locationList["Current location"].description = gpt_response + "\n"
+        # locationList["Current location"].description = gpt_response + "\n"
+        
         self.__worldStatus.descriptor = False
         self.__worldStatus.descriptor_prompt = {
             "information_need_to_be_described": {
@@ -253,45 +281,69 @@ text-based adventure game based on game information given"
     
     
     def eventDescription(self, event: PassivityEvents) -> None:
-        inputDictionary = {"event type": event.eventType, "triggered reason": event.triggered_reason, \
-            "Current location": event.current_location, "Current action": event.currentAction, \
+        paction = "None"
+        if self.__playerStatus.get_currentAction() != None:
+            paction = self.__playerStatus.get_currentAction().nameForDescription
+        inputDictionary = {"event type": event.eventType, "triggered reason": event.triggered_reason_des, \
+            "Current location": event.current_location, "Current action": paction, \
                 "Tool(s) assist with moving": event.moving_tool, "player current status": event.play_current_status, \
                     "description needed to be modified": event.description}
         
         inquiry = str(inputDictionary)
         # print(inquiry)
         # print("=======================================\n")
-        gpt_response = self.__gptAPI.inquiry(inquiry, self.__eventDescriptionSysRole)
+        counter = 0
+        while counter < 3:
+            try:
+                gpt_response = self.__gptAPI.inquiry(inquiry, self.__eventDescriptionSysRole)
+                result = json.loads(gpt_response, strict=False)
+                event.eventName = result["event_name"]
+                event.description = result["event_description"]
+                break
+            except:
+                print("Something wrong, trying again...")
+                counter += 1
+                continue
         # print(gpt_response)
         self.__OuterData.inquery_response_log_recorder(self.__eventDescriptionSysRole, inquiry, gpt_response)
         
-        result = json.loads(gpt_response, strict=False)
+        
 
         # Extract the value of the "event_name" key and "event_description" key
         # result = {"event_name": str(data.get("event_name")), "event_description": str(data.get("event_description"))}
-        event.eventName = result["event_name"]
-        event.description = result["event_description"]
+
 
         return result
         
     def eventDevelopment(self, event: PassivityEvents) -> dict:
         # TODO
+        paction = "None"
+        if self.__playerStatus.get_currentAction() != None:
+            paction = self.__playerStatus.get_currentAction().nameForDescription
         inputDictionary = {"event_name": event.eventName, "event type": event.eventType, \
             "triggered reason": event.triggered_reason, "player current status": event.play_current_status,\
-                "player action": event.currentAction, "times up": (event.triggered_time \
+                "player action": paction, "times up": (event.triggered_time \
                     > event.time_limit and event.time_limit >= 0), \
                     "possible reward": event.possible_reward, "possible penalty": event.possible_penalty, \
                         "event description": event.description
                 }
         
+        counter = 0
+        while counter < 3:
+            try:
+                gpt_response = self.__gptAPI.inquiry(inquiry, self.__eventDevelopmentSysRole)
+                result = json.loads(gpt_response, strict=False)
+                break
+            except:
+                print("Something wrong, trying again...")
+                counter += 1
+                continue
         inquiry = str(inputDictionary)
         # print(inquiry)
         # print("=======================================\n")
-        gpt_response = self.__gptAPI.inquiry(inquiry, self.__eventDevelopmentSysRole)
         # print(gpt_response)
         self.__OuterData.inquery_response_log_recorder(self.__eventDevelopmentSysRole, inquiry, gpt_response)
         
-        result = json.loads(gpt_response, strict=False)
 
         # print(result)
         return result
@@ -320,7 +372,47 @@ text-based adventure game based on game information given"
         #     "environment_information": vars(self.__mapInfo.currentLocation), "information_need_to_be_desctipt": 
         #         vars(target)}
         if self.__worldStatus.descriptor:
-            pass
+            inquiry = str(self.__worldStatus.descriptor_prompt)
+            print(inquiry)
+            # print("=======================================\n")
+            counter = 0
+            while counter < 3:
+                try:
+                    gpt_response = self.__gptAPI.inquiry(inquiry, self.__generalized_promt2)
+                    if "\n" in gpt_response:
+                        gpt_response = gpt_response.replace("\\n", "\n")
+                        gpt_response = gpt_response.replace("\n", "\\n")
+
+                    parsed_output = ast.literal_eval(gpt_response)
+                    keyList = list(parsed_output.keys())
+                    result = parsed_output[keyList[1]] + "\n"
+                    break
+                except:
+                    print("Something wrong, trying again...")
+                    counter += 1
+                    continue
+            # gpt_response = self.__gptAPI.inquiry(inquiry, self.__generalized_promt2)
+            # # print(gpt_response)
+            # if "\n" in gpt_response:
+            #     gpt_response = gpt_response.replace("\\n", "\n")
+            #     gpt_response = gpt_response.replace("\n", "\\n")
+
+            # parsed_output = ast.literal_eval(gpt_response)
+            # keyList = list(parsed_output.keys())
+
+            self.__OuterData.inquery_response_log_recorder(self.__generalized_promt2, inquiry, gpt_response)
+
+            self.__worldStatus.descriptor = False
+            self.__worldStatus.descriptor_prompt = {
+                "information_need_to_be_described": {
+                    "description_target": []
+                }
+            }
+            
+            
+            
+            self.__worldStatus.current_description[parsed_output[keyList[0]]] = result
+            
         
     def text_output(self):
         for x in self.__worldStatus.current_description.keys():
@@ -563,6 +655,7 @@ be any of the game command above, just reply a '<Rejected>'."
                 print(action.command_args[0])
                 self.__playerStatus.set_currentAction(action)
                 for commands in range(len(action.command_executed)):
+                    action.nameForDescription = commandSelect+" "+targetObject
                     action.command_executed[commands](*action.command_args[commands])
                     # commands[0](*commands[1])
                 if targetObject != "" and targetObject != None:

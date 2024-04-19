@@ -316,6 +316,7 @@ class MapGenerator():
         return player_surrounding
 
 
+
 class objectsGenerator():
     def __init__(self, defininedContent: DefininedSys) -> None:
         self.__defininedContent = defininedContent
@@ -459,8 +460,7 @@ class eventGenerator():
         self.__currentEvents = currentEvents
         self.__descriptionGenerator = descriptionGenerator
         self.__worldStatus = worldStatus
-        
-        self.__currentEvents.UnTriggered_passivity_events = copy.deepcopy(self.__defininedContent.get_events_frameWork()["survival crisis"])
+        self.__currentEvents.UnTriggered_passivity_events = copy.deepcopy([value for sublist in self.__defininedContent.get_events_frameWork().values() for value in sublist])
         
     def eventGeneration(self) -> list[Events]:
         eventList = self.__defininedContent.get_events()
@@ -488,13 +488,20 @@ class eventGenerator():
                 if player_action == None:
                     triggered_event.currentAction = "None"
                 else:
-                    triggered_event.currentAction = player_action.actionName
+                    triggered_event.currentAction = player_action.nameForDescription
 
                 state = self.__player.get_buffs()
                 if len(state) == 0:
                     state = "normal"
-                triggered_event.play_current_status =list(state.keys())
+                    triggered_event.play_current_status = state
+                else:
+                    triggered_event.play_current_status = list(state.keys())
                 triggered_event.description = self.__map_info.currentLocation.description
+                if not isinstance(triggered_event.triggered_reason, str):
+                    triggered_event.triggered_reason_des = triggered_event.triggered_reason(self.__player, self.__map_info, \
+                self.__currentEvents, self.__worldStatus)
+                else:
+                    triggered_event.triggered_reason_des = triggered_event.triggered_reason
                 # result.append(triggered_event)
                 break
                 
@@ -577,14 +584,31 @@ class PCGController():
         self.__descriptionGenerator = descriptionGenerator
         self.__eventController = eventController
         self.__worldStatus = worldStatus
+        self.__defininedContent = defininedContent
         
         self.__first_turn = True
+        
+    def mdLevelManage(self):
+        if self.__map_info.currentLocation != None:
+            currentPlace = self.__map_info.currentLocation.location_name
+            if self.__worldStatus.lastPlace != None:
+                terrainDict = self.__defininedContent.get_terrain_type()
+                mdLevelGradient = terrainDict[currentPlace].move_dLevel/ \
+                    terrainDict[self.__worldStatus.lastPlace].move_dLevel
+    
+                self.__worldStatus.move_dLevel *= mdLevelGradient
+            self.__worldStatus.lastPlace = currentPlace
         
     def locationPCG_each_turn(self) -> dict[str, Location]:
         """
         Should be called each turn to generat objects and other things in current location
         """
+        
+        self.__descriptionGenerator.generalDescriptor()
+        
         self.__npcPCG.npcChoice(self.__map_info.currentLocation)
+        
+        self.__descriptionGenerator.generalDescriptor()
         playerCoord = self.__player.get_currentLocation()
         
         
@@ -600,19 +624,20 @@ class PCGController():
             current_location = visted_place[playerCoord]
             player_surrounding["Current location"] = current_location
             self.__map_info.currentLocation = current_location
+            self.mdLevelManage()
             
             triggered_event = self.__eventPCG.event_triger()
             if triggered_event != None:
                 # TODO change the eventDescription to make it description all current events
                 # for
                 if self.__player.get_lastLocation() != playerCoord:
-                    self.__worldStatus.current_description["location"] = current_location.description
+                    self.__worldStatus.current_description["location: "+current_location.location_name] = current_location.description
                 self.__descriptionGenerator.eventDescription(triggered_event)
                 self.__worldStatus.current_description[triggered_event.eventName] = triggered_event.description
                 # output = triggered_event.description
                 # self.__eventController.add_new_event(triggered_event)
             elif self.__player.get_lastLocation() != playerCoord:
-                self.__worldStatus.current_description["location"] = current_location.description
+                self.__worldStatus.current_description["location: "+current_location.location_name] = current_location.description
         else:
             objects_in_current_location = self.__objectsPCG.objectGeneration(1, 3, \
                 player_surrounding["Current location"].location_name) # TODO edit to change object amount
@@ -624,7 +649,7 @@ class PCGController():
             visted_place[playerCoord] = player_surrounding["Current location"]
             self.__map_info.currentLocation = player_surrounding["Current location"]
             
-            
+            self.mdLevelManage()
             # print("\n{}\n\n{}\n\n{}\n\n{}".format(output["location name"], \
             #     output["Description of current and surrounding locations"], output["Landscape Features description"], \
             #         output["Items description"]))
@@ -635,7 +660,7 @@ class PCGController():
                 # TODO change the eventDescription to make it description all current events
                 if self.__player.get_lastLocation() != playerCoord:
                     self.__descriptionGenerator.locationDescription(player_surrounding)
-                    self.__worldStatus.current_description["location"] = self.__map_info.currentLocation.description
+                    self.__worldStatus.current_description["location: "+self.__map_info.currentLocation.location_name] = self.__map_info.currentLocation.description
                     
                 triggered_event.description = list(self.__worldStatus.current_description.values())[-1]
                 self.__descriptionGenerator.eventDescription(triggered_event)
@@ -644,7 +669,7 @@ class PCGController():
                 # self.__eventController.add_new_event(triggered_event)
             elif self.__player.get_lastLocation() != playerCoord:
                 self.__descriptionGenerator.locationDescription(player_surrounding)
-                self.__worldStatus.current_description["location"] = self.__map_info.currentLocation.description
+                self.__worldStatus.current_description["location: "+self.__map_info.currentLocation.location_name] = self.__map_info.currentLocation.description
                 # output = self.__map_info.currentLocation.description
 
         self.__map_info.set_visitedPlace(visted_place)
@@ -659,7 +684,6 @@ class PCGController():
         self.__player.set_lastLocation(*playerCoord)
         # print(output)
         # self.__worldStatus.current_description["location"] = output
-        self.__descriptionGenerator.text_output()
         
     
 

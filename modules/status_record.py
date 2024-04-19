@@ -246,6 +246,7 @@ class PassivityEvents(Events):
         """
         super().__init__(eventName, eventType, time_limit, description)
         self.triggered_reason = triggered_reason
+        self.triggered_reason_des = ""
         self.possible_reward = possible_reward
         self.possible_penalty = possible_penalty
         
@@ -261,7 +262,7 @@ class DisasterEvents(Events):
         """
         super().__init__(eventName, eventType, time_limit, description)
         self.triggered_reason = triggered_reason
-        # self.possible_reward = possible_reward
+        self.possible_reward = []
         self.possible_penalty = possible_penalty
         
         self.triggered_condition = triggered_condition
@@ -352,7 +353,7 @@ class NPCs():
         
         self.attack_player_prob = 0.6
         # self.attack_npc_prob = np.array([0.1])
-        self.escape_prob = 0.3
+        self.escape_prob = 0.4
         
         self.npcMove = None
         
@@ -737,6 +738,9 @@ class EventsTriggered():
         self.eventsTriggered: list[Events]= [] # event happened once
         self.UnTriggered_passivity_events : list[PassivityEvents]= []
         
+        self.diaster_eventsTriggered: list[DisasterEvents]= [] # event happened once
+        self.UnTriggered_diaster_events : list[DisasterEvents]= []
+        
 
 
 class globalInfo():
@@ -753,7 +757,7 @@ class globalInfo():
         self.move_dLevel: float = 1
         
         self.restPlace = True
-        self.lastPlace: str = None
+        self.lastPlace: str = "land"
         
         self.player_dangerAction = dict()
         self.NPC_action_toPlayer = dict()
@@ -772,4 +776,6 @@ class globalInfo():
         self.naturalThirst_reduce: int = 4
         
         self.skipTurn = False
+        
+        self.score = 0
         

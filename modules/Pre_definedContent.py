@@ -69,6 +69,7 @@ class OutputTransfer():
                     "map_result": ["normal", "a little bit strenuous", "strenuous", "extremely strenuous"]
                 },
                 "_NPCs__action_dLevel": {
+                    "name": "action_AP_cost",
                     "function": [
                         lambda action_dLevel: action_dLevel <= 1,
                         lambda action_dLevel: 1 < action_dLevel <= 1.2,
@@ -412,6 +413,24 @@ class Commands():
         newValue = self.valueRetrieval(value)
         self.__player.set_maximum_action_point(self.__player.get_maximum_action_point() - newValue)
     
+    def increase_maximum_hp(self, action: Actions, value: int) -> None:
+        """
+        Recovery action point
+        """
+        # if value == "<random>":
+        #     value = random.randint(0, 5)
+        newValue = self.valueRetrieval(value)
+        self.__player.set_maximum_hp(self.__player.get_maximum_hp() + newValue)
+        
+    def decrease_maximum_hp(self, action: Actions, value: int) -> None:
+        """
+        consume action point
+        """
+        # if value == "<random>":
+        #     value = random.randint(0, 5)
+        newValue = self.valueRetrieval(value)
+        self.__player.set_maximum_hp(self.__player.get_maximum_hp() - newValue)
+    
     def findObject(self, action: Actions, target: str, place: str, mode = "real name"):
         """trying to find an object or an npc in player bag or current location
 
@@ -533,6 +552,8 @@ class Commands():
         if not result:
             self.__worldStatus.current_description["failed to consume "+items] = \
                 "Although you have tried to find one "+items+", yet there is not such thing."
+            action.nameForDescription = "None"
+            self.__worldStatus.skipTurn = True
             return
         
         if mode == "real name":
@@ -541,6 +562,8 @@ class Commands():
                 if len(resultDict.keys()) == 0:
                     self.__worldStatus.current_description["failed to consume " + items] = \
                         "You try to find one "+items+", but there is no such thing in your package"
+                    action.nameForDescription = "None"
+                    self.__worldStatus.skipTurn = True
                     return
                 result_str = '  '.join(str(value) for value in resultDict.values())
                 print(str(x+1)+". "+result_str)
@@ -574,6 +597,8 @@ class Commands():
             else:
                 self.__worldStatus.current_description["failed to consume "+items] = \
                     "You cannot have that."
+                action.nameForDescription = "None"
+                self.__worldStatus.skipTurn = True
                 itemList.pop(counter)
                 counter -= 1
             counter += 1
@@ -630,11 +655,17 @@ class Commands():
             succeed = [obj for obj in itemsList if obj not in failed]
             self.remove_items(action, itemList = succeed, mode = "code name", place=place)
             # print("You pick up "+str(count)+" "+itemName+" and drop them in your bag")
-            self.__worldStatus.current_description["pick up "+itemName] = \
-                "You pick up "+str(len(succeed))+" "+itemName+" and drop them in your bag"
+            if len(failed) > 0:
+                self.__worldStatus.current_description["pick up "+itemName] = \
+                    "They are too heavy! You pick up "+str(len(succeed))+" "+itemName+" and drop them in your bag"
+            else:
+                self.__worldStatus.current_description["pick up "+itemName] = \
+                    "You pick up "+str(len(succeed))+" "+itemName+" and drop them in your bag"
         else:
             self.__worldStatus.current_description["failed to pick up "+itemName] = \
                 "It seems that there is not such things around, even if you try to find one."
+            action.nameForDescription = "None"
+            self.__worldStatus.skipTurn = True
             # print("It seems that there is not such things around, even if you try to find one.")
             
     def talk(self, action: Actions, npcs: humanNPC):
@@ -652,6 +683,7 @@ class Commands():
             if not result:
                 self.__worldStatus.current_description["no target"] = \
                     "You cannot find a "+target
+                action.nameForDescription = "None"
                 self.__worldStatus.skipTurn = True
                 return
 
@@ -661,6 +693,7 @@ class Commands():
                     if len(resultDict.keys()) == 0:
                         self.__worldStatus.current_description["no target"] = \
                             "You cannot find a "+target
+                        action.nameForDescription = "None"
                         self.__worldStatus.skipTurn = True
                         return
                     result_str = '  '.join(str(value) for value in resultDict.values())
@@ -696,6 +729,11 @@ class Commands():
         if targetAttack.get_hp() <= 0:
             self.__worldStatus.current_description[attacker.codeName +" has killed " + targetAttack.codeName] = \
                 ""
+            if targetAttack.codeName != "player":
+                for x in range(len(self.__map.currentLocation.npcs)):
+                    if self.__map.currentLocation.npcs[x].codeName == targetAttack.codeName:
+                        self.__map.currentLocation.npcs.pop(x)
+                        break
         else:
             # print("targetAttack", targetAttack.get_hp())
             self.__worldStatus.descriptor_prompt[attacker.name+"_current_action"] = \
@@ -751,6 +789,8 @@ class Commands():
                     if len(resultDict.keys()) == 0:
                         self.__worldStatus.current_description["failed to equip " + target] = \
                             "You cannot find one "+target+" in your package"
+                        action.nameForDescription = "None"
+                        self.__worldStatus.skipTurn = True
                         return
                     result_str = '  '.join(str(value) for value in resultDict.values())
                     print(str(x+1)+". "+result_str)
@@ -771,6 +811,8 @@ class Commands():
         else:
             self.__worldStatus.current_description["failed to equip " + target] = \
                 "You cannot find one "+target+" in your package"
+            action.nameForDescription = "None"
+            self.__worldStatus.skipTurn = True
         
         
     def unequip(self, action: Actions):
@@ -1093,7 +1135,7 @@ class DefininedSys(): #
         self.__buffEffect = buffEffect
         
         self.__def_NPCs = [
-            NPCs("wolf", 10, 80, 120, 120, 60, 60, -10, Weapon("claws", \
+            NPCs("wolf", 50, 50, 120, 120, 60, 60, -20, Weapon("claws", \
                 {"sea": 0, "land": 5, "forest": 10, "beach": 10, "river": 0, \
                 "desert": 5, "mountain": 5, "highland snowfield": 2, "town": 0, "grassland": 10}, \
                     1, 10, 2 ** 10), {"sea": 0, "land": 12, "forest": 15, "beach": 0, \
@@ -1138,7 +1180,7 @@ class DefininedSys(): #
             Food("bread", {"sea": 0, "land": 0, "forest": 0, "beach": 0, "river": 0, \
                 "desert": 0, "mountain": 0, "highland snowfield": 0, "town": 0, "grassland": 0}, weight=1, \
                 AP_recovery=15, eatable=True, freshness=20, thirst_satisfied=-20),
-            Food("fish", {"sea": 15, "land": 0, "forest": 0, "beach": 1, "river": 12, \
+            Food("fish", {"sea": 15, "land": 0, "forest": 0, "beach": 1, "river": 20, \
                 "desert": 0, "mountain": 0, "highland snowfield": 0, "town": 0, "grassland": 0}, weight=2, \
                 AP_recovery=5, eatable=False, freshness=24, thirst_satisfied=-20),
             Food("grilled fish", {"sea": 0, "land": 5, "forest": 10, "beach": 5, "river": 0, \
@@ -1211,15 +1253,15 @@ class DefininedSys(): #
                 ["increase action point", "increase maximum action point", "remove thirsty status"], \
                     ["decrease action point", "decrease maximum action point", "add thirsty status(low)", "upgrade thirsty status"], -1, "", \
                         lambda player, mapInfo, events, worldStatus: player.get_thirst() < 40),
-                        PassivityEvents("", "survival crisis", lambda player, mapInfo, events, worldStatus: "consume uneatable food" + str(worldStatus.player_dangerAction["consume uneatable food"]), \
+                        PassivityEvents("", "survival crisis", lambda player, mapInfo, events, worldStatus: "consume uneatable food " + str(worldStatus.player_dangerAction["consume uneatable food"]), \
                 ["increase action point", "increase maximum action point", "remove thirsty status"], \
                     ["decrease health point", "add potential poisoning status", "add thirsty status(low)", "upgrade poisoning status"], 5, "", \
-                        lambda player, mapInfo, events, worldStatus: "consume uneatable food" in worldStatus.player_dangerAction.keys())
+                        lambda player, mapInfo, events, worldStatus: "consume uneatable food" in worldStatus.player_dangerAction.keys()),
             ],
             "disaster": [
                 DisasterEvents("dust storm approach", "disaster", "dust storm occur", \
                 ["decrease action point", "decrease health point", "decrease maximum health point"], 3, "", \
-                    lambda player, mapInfo, events, worldStatus: ((mapInfo.currentLocation.location_name == "desert" and random.random() < 0.5) or \
+                    lambda player, mapInfo, events, worldStatus: ((True) or \
                         (mapInfo.currentLocation.location_name == "land" and random.random() < 0.1)), 
                     lambda player, mapInfo, events, worldStatus: (mapInfo.currentLocation.location_name != "desert" and mapInfo.currentLocation.location_name != "land")),
             ]
@@ -1274,6 +1316,10 @@ class DefininedSys(): #
             "decrease action point": ("decrease action point", (None, "<random>")),
             "increase maximum action point": ("increase maximum action point", (None, "<random>")),
             "decrease maximum action point": ("decrease maximum action point", (None, "<random>")),
+            "increase health point": ("increase health point", (None, "<random>")),
+            "decrease health point": ("decrease health point", (None, "<random>")),
+            "increase maximum health point": ("increase maximum health point", (None, "<random>")),
+            "decrease maximum health point": ("decrease maximum health point", (None, "<random>")),
             "add thirsty status(low)": ("add buff", (self.__def_buff["thirsty"], "low")),
             "add thirsty status(median)": ("add buff", (self.__def_buff["thirsty"], "median")),
             "add thirsty status(high)": ("add buff", (self.__def_buff["thirsty"], "high")),
@@ -1292,6 +1338,10 @@ class DefininedSys(): #
             "decrease action point": preDefinedCommands.decrease_action_point,
             "increase maximum action point": preDefinedCommands.increase_maximum_action_point,
             "decrease maximum action point": preDefinedCommands.decrease_maximum_action_point,
+            "increase health point": preDefinedCommands.increase_hp,
+            "decrease health point": preDefinedCommands.decrease_hp,
+            "increase maximum health point": preDefinedCommands.increase_maximum_hp,
+            "decrease maximum health point": preDefinedCommands.decrease_maximum_hp,
             "add buff": self.__buffEffect.add_buff,
             "remove buff": self.__buffEffect.remove_buff,
             "upgrade buff": self.__buffEffect.upgrade_buff,

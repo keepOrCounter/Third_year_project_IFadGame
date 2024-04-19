@@ -129,10 +129,8 @@ class TestStringMethods(unittest.TestCase):
 
     def test_move(self):
         worldStatus = copy.deepcopy(globalInfo())
-        # player_info = Player_status(action_point = 30)
         player_info = copy.deepcopy(Player_status(action_point = 30))
         map_record = copy.deepcopy(Map_information(current_area_type = 1, map_size=(20, 20))) # land type
-        # mapPCG = MapGenerator(player_info, map_record)
         defined_command = Commands(player_info, map_record, worldStatus)
         buffEffect = character_effectSys(player_info, defined_command, worldStatus)
         game_content = DefininedSys(defined_command, map_record, buffEffect)
@@ -156,7 +154,6 @@ class TestStringMethods(unittest.TestCase):
         self.assertEqual(player_info.get_action_point(), 25)
         self.assertEqual(player_info.get_thirst(), 96)
         
-        # action.command_args[0].append("east")
         defined_command.move(action, "east")
         x, y = player_info.get_currentLocation()
         self.assertEqual(x, 1)
@@ -166,7 +163,6 @@ class TestStringMethods(unittest.TestCase):
         self.assertEqual(player_info.get_action_point(), 20)
         self.assertEqual(player_info.get_thirst(), 92)
         
-        # action.command_args[0].append("east")
         defined_command.move(action, "east")
         x, y = player_info.get_currentLocation()
         self.assertEqual(x, 2)
@@ -176,19 +172,12 @@ class TestStringMethods(unittest.TestCase):
         self.assertEqual(player_info.get_action_point(), 15)
         self.assertEqual(player_info.get_thirst(), 88)
         
-        # action.command_args[0].append("east")
         defined_command.move(action, (10, 20))
         x, y = player_info.get_currentLocation()
         self.assertEqual(x, 10)
         self.assertEqual(y, 20)
         self.assertEqual(worldStatus.move_dLevel, 1.0)
         
-        del worldStatus
-        del player_info
-        del map_record
-        del defined_command
-        del buffEffect
-        del game_content
 
     def test_add_itemsOR_drop_items(self):
         worldStatus = copy.deepcopy(globalInfo())
