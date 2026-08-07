@@ -1,4 +1,5 @@
 from sample import Gpt3
+import os
 import time
 
 def inquery_response_log_recorder(systemRole:str, inquiry:str, response:str, model:str) -> None:
@@ -83,7 +84,7 @@ table = {"player_or_other_NPC":
         }
 prompt = "{'information_need_to_be_described': {'description_target': ['wolf_current_action', 'wolf_equipment', 'wolf_action_result', \"target's status\"], 'wolf_action_result': 'moderate damage on player'}, 'wolf_current_action': '', 'wolf_equipment': 'claws', 'target': {'name': 'player', 'HP': 'little hurt', 'action_point(AP)': 'normal', 'thirst_satisfied': 'normal', 'package_weight': 'heavy', 'action_AP_cost': 'normal'}}" # put your test prompt here
 
-GptWarpper = Gpt3("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", systemRole, "")
+GptWarpper = Gpt3(os.environ["OPENAI_API_KEY"], systemRole, "")
 result = GptWarpper.inquiry(prompt)
 print(result) # gpt response will be printed here
 inquery_response_log_recorder(systemRole, prompt, result, "ft:gpt-3.5-turbo-0125:3rdprojectgroup:generaltest3:91haHqhT")

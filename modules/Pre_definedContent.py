@@ -1135,10 +1135,10 @@ class DefininedSys(): #
         self.__buffEffect = buffEffect
         
         self.__def_NPCs = [
-            NPCs("wolf", 50, 50, 120, 120, 60, 60, -20, Weapon("claws", \
+            NPCs("wolf", 25, 50, 120, 120, 60, 60, -20, Weapon("claws", \
                 {"sea": 0, "land": 5, "forest": 10, "beach": 10, "river": 0, \
                 "desert": 5, "mountain": 5, "highland snowfield": 2, "town": 0, "grassland": 10}, \
-                    1, 10, 2 ** 10), {"sea": 0, "land": 12, "forest": 15, "beach": 0, \
+                    1, 10, 2 ** 10), {"sea": 0, "land": 20, "forest": 15, "beach": 0, \
                 "river": 0, "desert": 4, "mountain": 7, "highland snowfield": 4, "town": 0, "grassland": 15})
         ]
         
@@ -1151,10 +1151,10 @@ class DefininedSys(): #
                 "river": 8, "desert": 5, "mountain": 5, "highland snowfield": 0, "town": 0, "grassland": 0}, \
                 freshness=-1), 
             LandscapeFeature("grass", {"sea": 0, "land": 12, "forest": 15, "beach": 0, \
-                "river": 8, "desert": 0, "mountain": 0, "highland snowfield": 0, "town": 0, "grassland": 12}, \
+                "river": 0, "desert": 0, "mountain": 0, "highland snowfield": 0, "town": 0, "grassland": 12}, \
                 AP_recovery=2, thirst_satisfied=10, eatable=False, freshness=2**10),
             LandscapeFeature("aloe vera", {"sea": 0, "land": 12, "forest": 5, "beach": 4, \
-                "river": 2, "desert": 12, "mountain": 0, "highland snowfield": 0, "town": 0, "grassland": 0}, \
+                "river": 0, "desert": 12, "mountain": 0, "highland snowfield": 0, "town": 0, "grassland": 0}, \
                 AP_recovery=2, thirst_satisfied=10, eatable=True, freshness=2**10),
             
             # Tool
@@ -1177,8 +1177,8 @@ class DefininedSys(): #
                 suitablePlace={"sea"}, APReduce=0.5),
             
             # Food
-            Food("bread", {"sea": 0, "land": 0, "forest": 0, "beach": 0, "river": 0, \
-                "desert": 0, "mountain": 0, "highland snowfield": 0, "town": 0, "grassland": 0}, weight=1, \
+            Food("bread", {"sea": 0, "land": 10, "forest": 5, "beach": 5, "river": 0, \
+                "desert": 0, "mountain": 10, "highland snowfield": 0, "town": 10, "grassland": 10}, weight=1, \
                 AP_recovery=15, eatable=True, freshness=20, thirst_satisfied=-20),
             Food("fish", {"sea": 15, "land": 0, "forest": 0, "beach": 1, "river": 20, \
                 "desert": 0, "mountain": 0, "highland snowfield": 0, "town": 0, "grassland": 0}, weight=2, \
@@ -1186,20 +1186,20 @@ class DefininedSys(): #
             Food("grilled fish", {"sea": 0, "land": 5, "forest": 10, "beach": 5, "river": 0, \
                 "desert": 0, "mountain": 0, "highland snowfield": 0, "town": 15, "grassland": 0}, weight=2, \
                 AP_recovery=15, eatable=True, freshness=24, thirst_satisfied=-10),
-            Food("berries", {"sea": 0, "land": 12, "forest": 15, "beach": 0, "river": 2, \
+            Food("berries", {"sea": 0, "land": 12, "forest": 15, "beach": 0, "river": 0, \
                 "desert": 0, "mountain": 5, "highland snowfield": 0, "town": 5, "grassland": 12}, weight=1, \
                 AP_recovery=5, eatable=True, freshness=18, thirst_satisfied=10),
-            Food("potato", {"sea": 0, "land": 5, "forest": 2, "beach": 0, "river": 2, \
+            Food("potato", {"sea": 0, "land": 10, "forest": 5, "beach": 0, "river": 0, \
                 "desert": 12, "mountain": 0, "highland snowfield": 0, "town": 0, "grassland": 12}, weight=1, \
                 AP_recovery=10, eatable=False, freshness=50, thirst_satisfied=-5),
             Food("grilled potato", {"sea": 0, "land": 5, "forest": 5, "beach": 5, "river": 0, \
                 "desert": 0, "mountain": 0, "highland snowfield": 0, "town": 15, "grassland": 0}, weight=1, \
                 AP_recovery=10, eatable=True, freshness=72, thirst_satisfied=-10),
-            Food("raw venison", {"sea": 0, "land": 1, "forest": 2, "beach": 0, "river": 0, \
-                "desert": 12, "mountain": 5, "highland snowfield": 5, "town": 0, "grassland": 15}, weight=5, \
+            Food("raw venison", {"sea": 0, "land": 10, "forest": 12, "beach": 0, "river": 0, \
+                "desert": 5, "mountain": 5, "highland snowfield": 5, "town": 0, "grassland": 15}, weight=5, \
                 AP_recovery=20, eatable=False, freshness=19, thirst_satisfied=50),
-            Food("grilled venison", {"sea": 0, "land": 0, "forest": 0, "beach": 0, "river": 0, \
-                "desert": 0, "mountain": 0, "highland snowfield": 0, "town": 0, "grassland": 0}, weight=5, \
+            Food("grilled venison", {"sea": 0, "land": 5, "forest": 0, "beach": 0, "river": 0, \
+                "desert": 0, "mountain": 0, "highland snowfield": 0, "town": 20, "grassland": 0}, weight=5, \
                 AP_recovery=30, eatable=True, freshness=29, thirst_satisfied=20),
             Food("vegetable soup", {"sea": 0, "land": 10, "forest": 15, "beach": 10, "river": 0, \
                 "desert": 0, "mountain": 0, "highland snowfield": 5, "town": 20, "grassland": 10}, weight=5, \
@@ -1207,12 +1207,12 @@ class DefininedSys(): #
             Food("stew", {"sea": 0, "land": 0, "forest": 0, "beach": 0, "river": 0, "desert": 0, \
                 "mountain": 0, "highland snowfield": 0, "town": 0, "grassland": 0}, weight=10, \
                 AP_recovery=50, eatable=True, freshness=15, thirst_satisfied=30, commandSuitable="have"),
-            Food("bottle water", {"sea": 0, "land": 10, "forest": 5, "beach": 10, "river": 15, "desert": 0, \
-                "mountain": 0, "highland snowfield": 0, "town": 20, "grassland": 0}, weight=10, \
+            Food("bottle water", {"sea": 10, "land": 10, "forest": 5, "beach": 10, "river": 15, "desert": 3, \
+                "mountain": 5, "highland snowfield": 0, "town": 20, "grassland": 5}, weight=10, \
                 AP_recovery=2, eatable=True, freshness=50, thirst_satisfied=50, commandSuitable="have"),
             Food("ice", {"sea": 0, "land": 0, "forest": 0, "beach": 0, "river": 0, "desert": 0, \
                 "mountain": 0, "highland snowfield": 20, "town": 0, "grassland": 0}, weight=10, \
-                AP_recovery=0, eatable=True, freshness=100, thirst_satisfied=20, commandSuitable="have"),
+                AP_recovery=0, eatable=True, freshness=100, thirst_satisfied=30, commandSuitable="have"),
             
             # Item
             Items("wood", {"sea": 1, "land": 3, "forest": 20, "beach": 1, "river": 3, "desert": 0, \
@@ -1221,7 +1221,7 @@ class DefininedSys(): #
                 "desert": 5, "mountain": 15, "highland snowfield": 10, "town": 0, "grassland": 12}, weight=5),
             Items("stick", {"sea": 0, "land": 1, "forest": 20, "beach": 0, "river": 2, "desert": 0, \
                 "mountain": 5, "highland snowfield": 5, "town": 0, "grassland": 15}, weight=2),
-            Items("palm leave", {"sea": 1, "land": 0, "forest": 0, "beach": 19, "river": 2, \
+            Items("palm leave", {"sea": 1, "land": 0, "forest": 0, "beach": 19, "river": 0, \
                 "desert": 0, "mountain": 0, "highland snowfield": 0, "town": 5, "grassland": 15}, weight=1),
             Items("seed", {"sea": 1, "land": 10, "forest": 10, "beach": 1, "river": 3, "desert": 0, \
                 "mountain": 3, "highland snowfield": 0, "town": 8, "grassland": 15}, weight=1),
@@ -1231,11 +1231,11 @@ class DefininedSys(): #
                 "mountain": 0, "highland snowfield": 0, "town": 0, "grassland": 0}, weight=1),
             Items("glass bottle", {"sea": 0, "land": 0, "forest": 0, "beach": 0, "river": 0, \
                 "desert": 0, "mountain": 0, "highland snowfield": 0, "town": 0, "grassland": 0}, weight=1),
-            Items("bottle of sand", {"sea": 0, "land": 0, "forest": 0, "beach": 0, "river": 0, \
-                "desert": 0, "mountain": 0, "highland snowfield": 0, "town": 0, "grassland": 0}, weight=3),
+            Items("bottle of sand", {"sea": 10, "land": 0, "forest": 0, "beach": 10, "river": 0, \
+                "desert": 15, "mountain": 0, "highland snowfield": 0, "town": 0, "grassland": 0}, weight=3),
             
-            Weapon("iron sword", {"sea": 0, "land": 10, "forest": 5, "beach": 10, "river": 0, \
-                "desert": 5, "mountain": 5, "highland snowfield": 2, "town": 0, "grassland": 10}, \
+            Weapon("iron sword", {"sea": 0, "land": 20, "forest": 10, "beach": 10, "river": 0, \
+                "desert": 15, "mountain": 5, "highland snowfield": 2, "town": 20, "grassland": 10}, \
                     3, 10, 10),
         ]
 
@@ -1261,8 +1261,8 @@ class DefininedSys(): #
             "disaster": [
                 DisasterEvents("dust storm approach", "disaster", "dust storm occur", \
                 ["decrease action point", "decrease health point", "decrease maximum health point"], 3, "", \
-                    lambda player, mapInfo, events, worldStatus: ((True) or \
-                        (mapInfo.currentLocation.location_name == "land" and random.random() < 0.1)), 
+                    lambda player, mapInfo, events, worldStatus: ((mapInfo.currentLocation.location_name == "desert" and random.random() < 0.3) or \
+                        (mapInfo.currentLocation.location_name == "land" and random.random() < 0.05)), 
                     lambda player, mapInfo, events, worldStatus: (mapInfo.currentLocation.location_name != "desert" and mapInfo.currentLocation.location_name != "land")),
             ]
         }
@@ -1469,3 +1469,7 @@ class DefininedSys(): #
     def set_terrain(self, new_terrain_name: str, new_terrain: Terrain_type):
         self.__terrain_type[new_terrain_name] = new_terrain
         self.__terrain_type[new_terrain_name].terrain_ID = len(self.__terrain_type.keys())
+        
+
+
+

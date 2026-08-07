@@ -68,7 +68,7 @@ program like this "{Current location: Road, Front: mountain, Back: Forest, \
 Right hand side: Forest, Left hand side: Forest, Landscape Features: [stream], \
 Items: [keyA, keyB, keyC]}". Here is the example of expected result: "
 Road
-You are standing at a road before a mountain. Around you is a forest. A stream flows down the mountain. 
+You are standing at a road before a mountain. Around you is a forest. A stream flows down the mountain." 
 """
 
         self.__eventDescriptionSysRole = """You are creating a event for a text-based adventure game, you should create event in following form based on game information(Mainly the triggered reason) provided in later:
@@ -243,7 +243,7 @@ Please note that the production of food must be logical. Here are some expected 
         
         self.__worldStatus.descriptor = True
         inquiry = str(self.__worldStatus.descriptor_prompt)
-        print(inquiry)
+        # print(inquiry)
         # print("=======================================\n")
         counter = 0
         while counter < 3:
@@ -328,6 +328,7 @@ Please note that the production of food must be logical. Here are some expected 
                         "event description": event.description
                 }
         
+        inquiry = str(inputDictionary)
         counter = 0
         while counter < 3:
             try:
@@ -338,7 +339,6 @@ Please note that the production of food must be logical. Here are some expected 
                 print("Something wrong, trying again...")
                 counter += 1
                 continue
-        inquiry = str(inputDictionary)
         # print(inquiry)
         # print("=======================================\n")
         # print(gpt_response)
@@ -373,7 +373,7 @@ Please note that the production of food must be logical. Here are some expected 
         #         vars(target)}
         if self.__worldStatus.descriptor:
             inquiry = str(self.__worldStatus.descriptor_prompt)
-            print(inquiry)
+            # print(inquiry)
             # print("=======================================\n")
             counter = 0
             while counter < 3:
@@ -583,7 +583,7 @@ class InputTranslator():
     def command_translator(self, user_input:str):
         move_commands = list(self.__defined_content.get_Actions().keys())
         move_commands.append("<Rejected>")
-        print(move_commands)
+        # print(move_commands)
         systemRole = "You are trying to translate the command in natual language \
 from player to the command of text-based adventure game \
 system, the game command are listed below: " + str(move_commands[:-1]) + "\nPlease do \
@@ -609,7 +609,7 @@ be any of the game command above, just reply a '<Rejected>'."
             command = user_input
 
             classified_command = self.grammarClassifier(command)
-            print(classified_command)
+            # print(classified_command)
             
             target = ""
             for targets in classified_command["Verb list"]:
@@ -637,9 +637,9 @@ be any of the game command above, just reply a '<Rejected>'."
                     command_id = counter
                     dis = tem_dis
                 counter += 1
-            print(move_commands[command_id])
-            print(move_commands)
-            print(target)
+            # print(move_commands[command_id])
+            # print(move_commands)
+            # print(target)
             
             if dis <= 1:
                 commandSelect = move_commands[command_id]
@@ -652,12 +652,13 @@ be any of the game command above, just reply a '<Rejected>'."
                     action.command_args[0].append(self.__playerStatus)
                 if targetObject != "" and targetObject != None:
                     action.command_args[0].append(targetObject)
-                print(action.command_args[0])
+                # print(action.command_args[0])
                 self.__playerStatus.set_currentAction(action)
                 for commands in range(len(action.command_executed)):
                     action.nameForDescription = commandSelect+" "+targetObject
                     action.command_executed[commands](*action.command_args[commands])
                     # commands[0](*commands[1])
+                print(commandSelect+" "+targetObject)
                 if targetObject != "" and targetObject != None:
                     action.command_args[0].pop()
                 if commandSelect == "Attack":

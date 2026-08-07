@@ -65,6 +65,7 @@ class rule_system():
     def eachTurn_handler(self):
         """Need to be called each turn
         """
+        self.__worldStatus.current_description["Player's direction: "] = "North"
         self.buffHandler()
         self.naturalChange()
         # self.__worldStatus.current_description = dict()
@@ -160,7 +161,7 @@ if __name__ == "__main__":
         if not worldStatus.skipTurn:
             game_rule.scoring()
             game_rule.eachTurn_handler()
-            game_rule.debug_information()
+            # game_rule.debug_information()
             pcgSystem.locationPCG_each_turn()
             game_rule.turnInfoClear()
         else:

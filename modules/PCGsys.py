@@ -285,7 +285,7 @@ class MapGenerator():
                     #     current_location = visted_place[placement_coord]
                     # else:
                     mapArea, relaCoord = self.mapArea_And_RelativeCoordinate(placement_coord)
-                    print(relaCoord)
+                    # print(relaCoord)
                     # print(type(relaCoord[0]))
                     if current_area == mapArea:
                         # print(self.__map_info.get_currentMap())
@@ -430,8 +430,8 @@ class npcGenerator():
                 currentLocation.npcs[x].attack_player_prob -= currentLocation.npcs[x].attack_player_prob * escape_prob_adjustment
 
             
-            print(currentLocation.npcs[x].attack_player_prob, currentLocation.npcs[x].escape_prob)
-            print(currentLocation.npcs[x].attack_player_prob+currentLocation.npcs[x].escape_prob)
+            # print(currentLocation.npcs[x].attack_player_prob, currentLocation.npcs[x].escape_prob)
+            # print(currentLocation.npcs[x].attack_player_prob+currentLocation.npcs[x].escape_prob)
             choice = random.random()
             if choice < currentLocation.npcs[x].attack_player_prob:
                 currentLocation.npcs[x].attack_player_prob = 1.0
@@ -642,7 +642,7 @@ class PCGController():
             objects_in_current_location = self.__objectsPCG.objectGeneration(1, 3, \
                 player_surrounding["Current location"].location_name) # TODO edit to change object amount
             
-            npcs = self.__npcPCG.npcGeneration(1, 3, player_surrounding["Current location"].location_name)
+            npcs = self.__npcPCG.npcGeneration(0, 2, player_surrounding["Current location"].location_name)
 
             player_surrounding["Current location"].objects = list(objects_in_current_location)
             player_surrounding["Current location"].npcs = list(npcs)

@@ -1,0 +1,11 @@
+# Python
+__pycache__/
+*.py[cod]
+*.so
+
+# Inform 7 test sample workspace (kept local only)
+testGame/testSampleInform7/
+
+# OS
+.DS_Store
+Thumbs.db
