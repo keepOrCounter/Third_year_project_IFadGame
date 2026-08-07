@@ -1,4 +1,5 @@
 import openai
+import os
 import random
 
 class Gpt3():
@@ -57,6 +58,6 @@ need to have a conversation with me and generate some life content based on your
 
 prompt = input()
 
-GptWarpper = Gpt3("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", systemRole, "")
+GptWarpper = Gpt3(os.environ["OPENAI_API_KEY"], systemRole, "")
 
 print(GptWarpper.inquiry(prompt)) 

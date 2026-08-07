@@ -1,3 +1,5 @@
+import os
+
 from interactionSys import Gpt3
 
 systemRole = """You are an item generator for an RPG game and need to generate some food according to the json format and following requirements. Here is the reqirement form:
@@ -67,6 +69,6 @@ Please note that the production of food must be logical. Here are some expected 
 # Please note that in the state, 0 means unusable, 1 means raw, 2 means edible, and 3 means rotten. Please analyze the category according to the actual situation of the generated items. Generate items in dictionary form'
 prompt = "Generate a food please."
 
-GptWarpper = Gpt3("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")
+GptWarpper = Gpt3(os.environ["OPENAI_API_KEY"])
 
 print(GptWarpper.inquiry(prompt, systemRole, 1))

@@ -179,7 +179,7 @@ import random
 #     "freshness": 50,
 #     "thirst": -10
 # }"""
-# test = Gpt3("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")
+# test = Gpt3(os.environ["OPENAI_API_KEY"])
 # t = ["soup", "grilled potato", "raw fish", "bread", "berry", "potato"]
 # result = test.inquiry(str(t) + ", (note that the appear_possibility of human processed food should all be 0)", a)
 # print(result)

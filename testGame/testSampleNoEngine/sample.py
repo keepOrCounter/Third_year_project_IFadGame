@@ -1,5 +1,6 @@
 import openai
 import copy
+import os
 import time
 import Levenshtein
 
@@ -253,7 +254,7 @@ right=east, left=west, south=backward): " + str(move_commands[:-1]) + "\nPlease 
 not reply something more than the command given above(Even if punctuation mark). If the player command is less likely to \
 be any of the game command above, just reply a '<Rejected>.'"
 
-    GptWarpper = Gpt3("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", systemRole, translate_system)
+    GptWarpper = Gpt3(os.environ["OPENAI_API_KEY"], systemRole, translate_system)
     playerSurface = UserInterface(GptWarpper)
     while True:
         playerSurface.output(textual_map, objects_type, (player_current_state.x_coordinate(), \
