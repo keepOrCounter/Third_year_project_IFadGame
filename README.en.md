@@ -4,8 +4,8 @@
 
 A text adventure engine whose narrative content is generated at runtime rather than authored by hand.
 
-The goal was not "call a GPT API and print the text". It was an engineering problem: language models invent
-things, so how do you make one behave inside a game that has real rules and real state?
+The goal was to solve an engineering problem: language models invent things, so how do you make one behave
+inside a game that has real rules and real state?
 
 ## At a glance
 
@@ -69,12 +69,11 @@ grown beaches, and forest, grassland, mountain and town have settled on top.
 
 In a conventional text adventure the map, items and events are all written by hand, so the amount of content
 is capped by how much the developers can write. Handing narration to a language model solves that, but
-immediately creates a new problem: **the model hallucinates, and invents events that contradict the actual
-game state.** The player has no key in their bag, and the model writes that they "unlocked the door with the
-key". The root cause is that if the state of the world exists only in the conversation history, then once that
-history grows past what the model can hold, those facts stop being true.
+immediately creates a new problem: **the model hallucinates, and invents events that contradict the game
+state established earlier.** The narration said there was no key in the player's bag, and then the model
+writes that they "unlocked the door with the key".
 
-What this project set out to test: can the problem be controlled at the root through architecture, rather than
+What this project set out to test: can the problem be suppressed at the root through architecture, rather than
 by piling on prompt instructions?
 
 ## The core design: the simulation is the single source of truth
@@ -83,8 +82,8 @@ by piling on prompt instructions?
   how many loaves are in the bag, whether there is a wolf in this forest: all tracked and decided in code.
 - **The model does exactly one job**: turn those settled facts into prose.
 
-In one sentence: the model does not decide what is true, only how what is true should read. That choice
-downgrades hallucination from "could break the game logic" to "might write something a bit dull".
+That choice downgrades hallucination from "could break the game logic" to "might write something a bit
+dull".
 
 An earlier prototype without an engine is kept in `testGame/testSampleNoEngine/`: its map and items are
 hard-coded, and hallucination is fought by instructing the model in the prompt not to write anything outside
@@ -108,7 +107,7 @@ flowchart TD
 
 ## Three key design decisions
 
-### 1. The model gets multiple choice, not free response
+### 1. Give the model a simpler multiple choice, not free response
 
 Resolving an event, say what happens after a snake bites you, is where things go wrong most easily. Left to
 improvise, a model will award an effect the game has no concept of. So the engine lists every outcome this
@@ -162,8 +161,8 @@ nothing placed by hand.
   and recovery
 - **Ten terrain types**: sea, land, river, forest, beach, desert, mountain, highland snowfield, town,
   grassland, each with its own movement cost and spawns
-- **Automatic item distribution**: every item carries a per-terrain likelihood, so aloe vera grows in the
-  desert and fish appear in rivers, with no location-by-location authoring
+- **Automatic item distribution**: every item carries a per-terrain likelihood, so aloe vera grows on the
+  beach and fish appear in rivers, with no location-by-location authoring
 - **Ten player actions**: go, rest, take, equip, unequip, check, eat, fill, talk, attack
 - **Events**: survival crises (low stamina or health, eating something spoiled) and disasters (dust storms),
   each with trigger conditions and consequences
@@ -173,13 +172,13 @@ nothing placed by hand.
 
 ---
 
-## An honest result: why fine-tuning was not the answer
+## Experiment results
 
 To improve narrative consistency, two routes were tried:
 
 1. **Context-aware prompt templates**: send only the state relevant to the current scene, after the
    number-to-words translation above. This is what shipped.
-2. **Small-sample fine-tuning**: hand-written (game state → ideal narration) examples trained through OpenAI's
+2. **Small-sample fine-tuning**: hand-written (game state -> ideal narration) examples trained through OpenAI's
    fine-tuning API. The set actually used was `data/output.jsonl`, **16 examples**.
 
 **Neither route closed the gap left by GPT-3.5's own reasoning ability.** Prompt engineering reliably fixed
@@ -187,10 +186,8 @@ format and register, but not reasoning: whenever staying consistent required fol
 effect across several pieces of state, GPT-3.5 still broke. On the fine-tuning side the bottleneck was
 unambiguous: 16 examples is nowhere near enough data, and the model never learned a stable pattern.
 
-This is not a success story, but locating the problem precisely is worth more than dressing it up as one.
-Redone today, the next step would be to build the dataset up first, rather than keep iterating on prompts.
-That is also the point of the architecture above: given a model that will be inconsistent, the engineering
-answer is to shrink the surface it can be inconsistent on.
+This was not a fully successful experiment, but locating the problem precisely is worth more than dressing it
+up as one. Redone today, the likely approach would be to collect more data, or move to a stronger model.
 
 ---
 
@@ -249,7 +246,8 @@ cd modules && python -m unittest testMain -v
 ```
 
 Covers movement and its costs, inventory add/remove, consumption, pick-up, equipping, combat and the content
-generators. **1 of the 7 cases passes today**, see [Known limitations](#known-limitations).
+generators. **1 of the 7 cases passes today**; what fails is the test code, not the game logic, see
+[Known limitations](#known-limitations).
 
 ## Repository layout
 
@@ -275,7 +273,11 @@ This is the code as submitted in April 2024, and it has not been modernised sinc
 2. **Response parsing is not hardened**: bare `except:`, unbound variables after exhausted retries,
    order-dependent key access, and unvalidated reward/penalty indices. The fix is JSON mode plus schema
    validation, degrading rather than crashing when retries run out.
-3. **The test suite has drifted**: 1 of 7 cases passes, all for mechanical API-change reasons.
+3. **The test suite has drifted**: 1 of 7 cases passes, but what fails is the test code, not the game logic.
+   The engine's interfaces changed late in the project and the tests were never updated: the action name
+   became `"Go"` instead of `"Move"`, `npcGenerator` gained a parameter, and `pickUp` and `equip` now require
+   a full action object where the tests still pass `None`. All renames and signature changes; the game runs
+   fine.
 4. **Smaller things**: disambiguation blocks on `input()`, no save/load, and the map visualiser needs a
    desktop.
 
@@ -288,9 +290,3 @@ This is the code as submitted in April 2024, and it has not been modernised sinc
   (spelling correction and the spaCy grammar classifier) and the related spikes in `test/`.
 
 Design decisions were discussed jointly.
-
-## License
-
-No license has been chosen yet, so all rights are reserved by default. If you want this code to be reusable,
-add a `LICENSE` file (MIT is the usual choice for a portfolio project); check your institution's policy on
-final-year project IP first.
