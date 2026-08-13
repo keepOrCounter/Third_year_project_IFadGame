@@ -206,16 +206,57 @@ python check.py       # 格式校验 + tiktoken 成本估算，参照 OpenAI coo
 
 ## 已知限制
 
-按项目提交时的真实状态如实列出：
+这是 2024 年 4 月提交时的代码，此后未做现代化改造。下面列出的是「问题 + 我会怎么修」—— 放在 README 而不是
+私人 TODO 里，是因为 clone 这个仓库的人有权先知道自己拿到的是什么。
 
-- **写死的模型是私有的。** `Gpt3.model` 指向项目训练账号下的微调 checkpoint，运行前请改成公开模型（见上文）。
-- **OpenAI SDK 为 1.0 之前版本。** 代码调用 `openai.ChatCompletion.create`，该接口在 `openai>=1.0` 中已被移除。
-  requirements 中锁定了 `openai<1.0`；若要迁移，需要重写 `Gpt3.inquiry`。
-- **部分测试用例已经过时。** 若干用例仍按项目中期的指令层写法调用 —— 例如使用 `get_Actions()["Move"]`，
-  而注册表中的键现已是 `"Go"`；以及在现已要求传入真实 `Actions` 对象的位置传了 `None`。这些需要更新以匹配当前 API。
+### GPT 集成锁死在一套已经不存在的配置上
+
+三个独立的问题，都在 `interactionSys.Gpt3` 里：
+
+1. `self.model` 是一个微调 checkpoint（`ft:gpt-3.5-turbo-0125:3rdprojectgroup:…`），仅对训练它的账号可见 ——
+   其他任何 key 都会拿到 404。
+2. 调用方式是 `openai.ChatCompletion.create`，该接口在 `openai>=1.0` 中已被移除，因此 requirements 锁了
+   `openai<1.0`。
+3. `gpt-3.5-turbo` 本身是正在退场的一代模型。
+
+**修法**是干脆不再写死模型：让 `Gpt3` 从环境变量读取 `api_key`、`model` 与 `base_url`，并把 `inquiry`
+迁移到 1.x 客户端。`base_url` 可配置之后，叙事器可以是任何 OpenAI 兼容端点，包括经由 Ollama 或 vLLM
+的本地模型。
+
+值得一提的是这个改动**不会碰到**什么：`status_record.py`、`Pre_definedContent.py`、`main.py` ——
+状态模型、内容注册表、指令层与回合主循环 —— 逐字节不变。整个大模型集成可以被替换掉而模拟系统毫无察觉，
+而这正是当初做这套架构所要换取的性质。
+
+### 返回值解析不够健壮
+
+叙事层对模型的信任超出了应有的程度：
+
+| 位置 | 问题 |
+|---|---|
+| `interactionSys.py:260, 303, 338, 390` | 裸 `except:` 吞掉一切（含 `KeyboardInterrupt`），并掩盖真实原因 |
+| `interactionSys.py:266, 308, 316, 345, 414` | 三次重试全失败后，`gpt_response` / `result` 从未被绑定 → `NameError` |
+| `interactionSys.py:258, 388` | `parsed_output[keyList[1]]` 按**键的顺序**取描述；模型换个键序就会取到错误字段 |
+| `interactionSys.py:252-254` | 换行 round-trip hack，只是为了让 `ast.literal_eval` 能接受返回值 |
+| 多处 | `ast.literal_eval` 与 `json.loads` 在不同调用点混用；前者无法接受 JSON 的 `true`/`false`/`null` |
+| `PCGsys.py:550, 560` | 模型返回的奖惩索引未做校验 —— 越界抛 `IndexError`，非数字抛 `ValueError`，`eventCommandMap` 查找也没有 `KeyError` 保护 |
+
+**修法**：启用 JSON mode / structured outputs，让大部分解析失败从源头消失；对返回值做 schema 校验，
+并把索引裁剪到引擎给出的菜单范围内；重试耗尽时退回引擎自己生成的模板描述，而不是直接失败。
+最后一条其实是本项目自身前提的直接推论 —— 叙事是装饰性的，事实存放在模拟系统里，所以叙事器挂掉
+应当降级文本质量，而不是让游戏停下来。目前它会让游戏停下来。
+
+### 测试套件已经漂移
+
+`modules/testMain.py` 是按项目中期的指令层 API 写的，7 个用例中今天只有 1 个能通过。原因都是机械性的，
+而非深层设计问题：动作注册表的键现在是 `"Go"` 而非 `"Move"`；`pickUp` / `equip` 现在会写
+`action.nameForDescription`，因此要求传入真实的 `Actions` 对象，而测试传的是 `None`；`npcGenerator`
+新增了 `worldStatus` 参数；`test_attack` 则阻塞在下面提到的交互式消歧提问上。
+
+### 其余较小的问题
+
 - **消歧依赖 `input()` 阻塞。** 当周围有多个可匹配物品时，`consume` 与 `pickUp` 会在指令层内部通过标准输入
-  发问，这让游戏逻辑与终端耦合，也让这些分支难以测试。
-- **没有存档/ 读档。** 世界可以由种子复现，但玩家与背包状态没有持久化。
+  发问，这让游戏逻辑与终端耦合，也正是上述那些分支难以测试的原因。
+- **没有存档 / 读档。** 世界可以由种子复现，但玩家与背包状态没有持久化。
 - **地图可视化需要桌面环境。** `MapGenerator.visualized` 使用 `cv2.imshow`；无头机器上请改用 `cv2.imwrite`
   （本页顶部的两张图正是这样生成的）。
 

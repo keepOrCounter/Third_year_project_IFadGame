@@ -29,6 +29,10 @@ it exists as a demonstration of schema-constrained content generation.
 part of the engine). If you are adding a feature and find yourself wanting the model to decide a fact, add the
 fact to the simulation and let the model describe it instead.
 
+This section describes the *boundary*, which holds. It does not describe the *parsing* of what comes back
+across it, which is not hardened — see [Known limitations](../README.md#known-limitations) before relying on
+these call sites.
+
 ---
 
 ## 2. Module map

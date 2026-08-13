@@ -225,18 +225,60 @@ can be inconsistent on.
 
 ## Known limitations
 
-Honest list, in the state the project was submitted in:
+This is the code as submitted in April 2024, and it has not been modernised since. The list below is what I
+would fix and how — kept in the README rather than in a private TODO, because a reader deserves to know what
+they are cloning.
 
-- **The pinned model is private.** `Gpt3.model` points at a fine-tuned checkpoint owned by the project's
-  training account; change it to a public model before running (see above).
-- **OpenAI SDK is pre-1.0.** The code calls `openai.ChatCompletion.create`, removed in `openai>=1.0`. The
-  requirements file pins `openai<1.0`; porting means rewriting `Gpt3.inquiry`.
-- **Part of the test suite has drifted.** Several cases call the command layer the way it looked mid-project —
-  e.g. `get_Actions()["Move"]` where the registry key is now `"Go"`, and passing `None` where a real `Actions`
-  object is now required. They need updating to match the current API.
+### The GPT integration is pinned to a configuration that no longer exists
+
+Three separate problems, all in `interactionSys.Gpt3`:
+
+1. `self.model` is a fine-tuned checkpoint (`ft:gpt-3.5-turbo-0125:3rdprojectgroup:…`) private to the account
+   that trained it — any other key gets a 404.
+2. The call is `openai.ChatCompletion.create`, removed in `openai>=1.0`, hence the `openai<1.0` pin.
+3. `gpt-3.5-turbo` is a legacy generation being wound down regardless.
+
+**The fix** is to stop hard-coding a model at all: have `Gpt3` read `api_key`, `model` and `base_url` from the
+environment, and port `inquiry` to the 1.x client. A configurable `base_url` additionally lets the narrator be
+any OpenAI-compatible endpoint, local models via Ollama or vLLM included.
+
+Worth noting what that change would *not* touch: `status_record.py`, `Pre_definedContent.py` and `main.py` —
+the state model, content registry, command layer and turn loop — stay byte-identical. The entire LLM
+integration can be replaced without the simulation noticing, which is precisely the property the architecture
+was built for.
+
+### Response parsing is not hardened
+
+The narration layer trusts the model more than it should:
+
+| Where | Problem |
+|---|---|
+| `interactionSys.py:260, 303, 338, 390` | Bare `except:` swallows everything, including `KeyboardInterrupt`, and hides the real cause |
+| `interactionSys.py:266, 308, 316, 345, 414` | After three failed retries `gpt_response` / `result` were never bound → `NameError` |
+| `interactionSys.py:258, 388` | `parsed_output[keyList[1]]` reads the description by **key order**; a different key order returns the wrong field |
+| `interactionSys.py:252-254` | A newline round-trip hack, needed only to make `ast.literal_eval` accept the reply |
+| throughout | `ast.literal_eval` and `json.loads` are used at different call sites; the former rejects JSON `true`/`false`/`null` |
+| `PCGsys.py:550, 560` | Reward/penalty indices from the model are not validated — out of range raises `IndexError`, non-numeric raises `ValueError`, and the `eventCommandMap` lookup has no `KeyError` guard |
+
+**The fix**: request JSON mode / structured outputs so most parse failures stop happening at all; validate the
+reply against the expected schema and clamp indices to the menu the engine supplied; and, when retries are
+exhausted, fall back to an engine-generated template description instead of failing. That last one follows
+directly from the project's own premise — narration is decorative, the facts live in the simulation, so a dead
+narrator should degrade the prose, not stop the game. Today it stops the game.
+
+### The test suite has drifted
+
+`modules/testMain.py` was written against a mid-project revision of the command API; 1 of its 7 cases passes
+today. The causes are mechanical rather than deep: the action registry key is now `"Go"` rather than `"Move"`;
+`pickUp` / `equip` now write to `action.nameForDescription` and so require a real `Actions` object where the
+tests pass `None`; `npcGenerator` gained a `worldStatus` parameter; and `test_attack` blocks on the
+interactive disambiguation prompt described below.
+
+### Smaller things
+
 - **Disambiguation blocks on `input()`.** When several matching items are in reach, `consume` and `pickUp`
-  prompt on stdin from inside the command layer, which couples game logic to the terminal and makes those
-  paths awkward to test.
+  prompt on stdin from inside the command layer, which couples game logic to the terminal and is what makes
+  those paths awkward to test.
 - **No save/load.** The world is reproducible from its seeds, but player and inventory state is not persisted.
 - **The map visualiser needs a desktop.** `MapGenerator.visualized` uses `cv2.imshow`; on a headless machine
   use `cv2.imwrite` instead (that is how the images at the top of this page were produced).
