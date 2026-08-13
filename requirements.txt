@@ -1,0 +1,23 @@
+# Core engine
+numpy>=1.24
+cellpylib>=2.4.0          # 2D cellular automata used by the map generator
+opencv-python>=4.8        # terrain map visualisation (use opencv-python-headless on a server)
+
+# GPT narration layer
+# NOTE: this project targets the pre-1.0 OpenAI SDK (openai.ChatCompletion.create).
+# It will NOT run on openai>=1.0 without rewriting interactionSys.Gpt3.
+openai<1.0
+
+# Natural-language command parsing
+spacy>=3.7                # POS tagging + noun chunks; also needs: python -m spacy download en_core_web_sm
+Levenshtein>=0.21         # fuzzy matching of a parsed verb to the command vocabulary
+pyspellchecker>=0.7       # spelling correction of raw player input
+autocorrect>=2.6          # secondary speller, seeded with the in-game command vocabulary
+
+# Fine-tuning dataset tooling (data/)
+tiktoken>=0.5             # token accounting for the fine-tuning set
+
+# Optional: Perlin-noise map experiment (testGame/testSampleNoEngine/).
+# Not needed to play the game; the shipped map generator uses cellular automata.
+# noise>=1.2
+# matplotlib>=3.7
